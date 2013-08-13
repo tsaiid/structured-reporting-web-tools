@@ -364,15 +364,19 @@
     <script>
       $().tab;
 
-      $(':radio').change(function() {
-        var img_url = $(this).val();
+      function show_image(img_url) {
         $('#bone-age-img').fadeOut(100, function(){
           $('#bone-age-img').html(function(){
             return '<img src="' + img_url + '" alt="">';
           });
           $(this).fadeIn(100);
         });
+      }
+
+      $(':radio').change(function() {
+        var img_url = $(this).val();
         //alert($(this).val());
+        show_image(img_url);
       });
 
       // Hot Keys
@@ -389,6 +393,8 @@
           case 37:   // left
             event.preventDefault();
             $('#tabFemale').click();
+            // update image
+            show_image($('.tabFemale').find(':radio:checked').val());
             break;
           case 38:   // up
             event.preventDefault();
@@ -402,6 +408,8 @@
           case 39:   // right
             event.preventDefault();
             $('#tabMale').click();
+            // update image
+            show_image($('.tabMale').find(':radio:checked').val());
             break;
           case 40:   // down
             event.preventDefault();
@@ -414,6 +422,10 @@
             break;
         }
       });
+
+      // select default radio
+      $('#male').find(':radio').first().click();
+      $('#female').find(':radio').first().click();
     </script>
   </body>
 </html>
