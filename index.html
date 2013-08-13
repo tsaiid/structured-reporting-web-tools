@@ -27,10 +27,10 @@
           <div class="col-lg-2">
         <ul id="myTab" class="nav nav-tabs">
           <li class="active">
-            <a href="#female" data-toggle="tab">Female</a>
+            <a href="#female" data-toggle="tab" id="tabFemale">Female</a>
           </li>
           <li>
-            <a href="#male" data-toggle="tab">Male</a>
+            <a href="#male" data-toggle="tab" id="tabMale">Male</a>
           </li>
         </ul>
         <div id="myTabContent" class="tab-content">
@@ -373,6 +373,28 @@
           $(this).fadeIn(100);
         });
         //alert($(this).val());
+      });
+
+      // Hot Keys
+      $(document).keydown(function(event) {
+        // get current position
+
+        switch (event.which) {
+          case 37:   // left
+            event.preventDefault();
+            $('#tabFemale').click();
+            break;
+          case 38:   // up
+            event.preventDefault();
+            break;
+          case 39:   // right
+            event.preventDefault();
+            $('#tabMale').click();
+            break;
+          case 40:   // down
+            event.preventDefault();
+            break;
+        }
       });
     </script>
   </body>
