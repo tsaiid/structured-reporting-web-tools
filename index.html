@@ -393,9 +393,9 @@
           case 38:   // up
             event.preventDefault();
             if (cur_pos.length) {
-              var nxt_pos = cur_pos.parent().parent().prev().find('input').first();
-              if (nxt_pos.length) {
-                nxt_pos.click();
+              var prv_pos = cur_pos.parent().parent().prev().find('input').first();
+              if (prv_pos.length) {
+                prv_pos.click();
               }
             }
             break;
