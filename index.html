@@ -389,13 +389,13 @@
                     <div class="col-lg-10">
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="">
+                          <input type="checkbox" class="cb_dllfj" value="" checked >
                           Degenerative lower lumbar facet joints
                         </label>
                       </div>
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="">
+                          <input type="checkbox" class="cb_mo" value="" checked >
                           Marginal osteophyte
                         </label>
                       </div>
@@ -551,6 +551,16 @@
               str += "    - " + grade[i].join(', ') + ': grade ' + i + ".\n";
             }
           }
+        }
+
+        // Degenerative lower lumbar facet joints
+        if ($('.cb_dllfj:checked').length) {
+          str += "  - Degenerative lower lumbar facet joints.\n";
+        }
+
+        // Marginal osteophyte
+        if ($('.cb_mo:checked').length) {
+          str += "  - Marginal osteophyte.\n";
         }
 
         // Hypermobility
