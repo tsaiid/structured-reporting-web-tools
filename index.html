@@ -107,7 +107,7 @@
 
                         <!-- Hypermobility -->
                         <label class="checkbox-inline">
-                          <input type="checkbox" value="">
+                          <input type="checkbox" class="cb_hyper" value="">
                           Hypermobility
                         </label>
                       </div>
@@ -168,7 +168,7 @@
                           Retrolisthesis
                         </label>
                         <label class="checkbox-inline">
-                          <input type="checkbox" value="">
+                          <input type="checkbox" class="cb_hyper" value="">
                           Hypermobility
                         </label>
                       </div>
@@ -229,7 +229,7 @@
                           Retrolisthesis
                         </label>
                         <label class="checkbox-inline">
-                          <input type="checkbox" value="">
+                          <input type="checkbox" class="cb_hyper" value="">
                           Hypermobility
                         </label>
                       </div>
@@ -290,7 +290,7 @@
                           Retrolisthesis
                         </label>
                         <label class="checkbox-inline">
-                          <input type="checkbox" value="">
+                          <input type="checkbox" class="cb_hyper" value="">
                           Hypermobility
                         </label>
                       </div>
@@ -351,7 +351,7 @@
                           Retrolisthesis
                         </label>
                         <label class="checkbox-inline">
-                          <input type="checkbox" value="">
+                          <input type="checkbox" class="cb_hyper" value="">
                           Hypermobility
                         </label>
                       </div>
@@ -458,7 +458,9 @@
       $('#sub').click(function(){
         var str = DJDLForm;
         var retro = [];
+        var hyper = [];
 
+        // Disc Space Narrowing
         if ($('.disc_space_narrowing:checked').length == 0) {
           str += '  - No obvious disc space narrowing. ' + "\n";
         } else {
@@ -486,6 +488,7 @@
           }
         }
 
+        // Retrolisthesis
         $('.cb_retro:checked').each(function(){
           var level = $(this).parent().parent().parent().parent().attr('id');
           retro.push(level);
@@ -497,6 +500,17 @@
           str += "  - No retrolisthesis.\n";
         }
 
+        // Hypermobility
+        $('.cb_hyper:checked').each(function(){
+          var level = $(this).parent().parent().parent().parent().attr('id');
+          hyper.push(level);
+        });
+
+        if (hyper.length) {
+          str += "  - Hypermobility: " + hyper.join(', ') + "\n";
+        } else {
+          str += "  - No hypermobility.\n";
+        }
 
         $('#result').text(str);
         return false;
