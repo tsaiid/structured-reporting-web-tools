@@ -77,7 +77,7 @@
                     <div class="col-lg-10">
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="">
+                          <input type="checkbox" class="cb_dsn" value="">
                           Disk space narrowing
                         </label>
                       </div>
@@ -137,7 +137,7 @@
                     <div class="col-lg-10">
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="">
+                          <input type="checkbox" class="cb_dsn" value="">
                           Disk space narrowing
                         </label>
                       </div>
@@ -197,7 +197,7 @@
                     <div class="col-lg-10">
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="">
+                          <input type="checkbox" class="cb_dsn" value="">
                           Disk space narrowing
                         </label>
                       </div>
@@ -257,7 +257,7 @@
                     <div class="col-lg-10">
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="">
+                          <input type="checkbox" class="cb_dsn" value="">
                           Disk space narrowing
                         </label>
                       </div>
@@ -317,7 +317,7 @@
                     <div class="col-lg-10">
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="">
+                          <input type="checkbox" class="cb_dsn" value="">
                           Disk space narrowing
                         </label>
                       </div>
@@ -425,6 +425,25 @@
       $().tab;
 
       var DJDLForm = 'Lumbar spine:' + "\n";
+
+      $('.disc_space_narrowing').change(function(){
+        var cb_dsn = $(this).parent().parent().parent().find('.cb_dsn');
+
+        if (!cb_dsn.is(':checked')) {
+          cb_dsn.click();
+        }
+      });
+
+      $('.cb_dsn').change(function(){
+        if (!$(this).is(':checked')) {
+          $(this).parent().parent().parent().find(':radio').prop('checked', false);
+        } else {
+          // set default degree to mild.
+          if ($(this).parent().parent().parent().find(':radio:checked').length == 0) {
+            $(this).parent().parent().parent().find(':radio').first().prop('checked', true);
+          }
+        }
+      });
 
       $('#sub').click(function(){
         var str = DJDLForm;
