@@ -71,8 +71,8 @@
           <div class="row">
             <div class="col-lg-6">
               <div id="report-form">
-                <form class="form-horizontal" role="form">
-                  <div class="form-group">
+                <form id="form-djd-l" class="form-horizontal" role="form">
+                  <div class="form-group" id="L1-L2">
                     <label for="tabl1-2" class="col-lg-2 control-label">L1-L2</label>
                     <div class="col-lg-10">
                       <div class="checkbox">
@@ -83,15 +83,15 @@
                       </div>
                       <div class="col-lg-offset-1">
                         <label class="radio-inline">
-                          <input type="radio" name="disc_space" value="">
+                          <input type="radio" class="disc_space_narrowing" name="disc_space_l12" value="1">
                           mild
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" name="disc_space" value="">
+                          <input type="radio" class="disc_space_narrowing" name="disc_space_l12" value="2">
                           moderate
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" name="disc_space" value="">
+                          <input type="radio" class="disc_space_narrowing" name="disc_space_l12" value="3">
                           severe
                         </label>
                       </div>
@@ -132,7 +132,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group" id="L2-L3">
                     <label for="tabl1-2" class="col-lg-2 control-label">L2-L3</label>
                     <div class="col-lg-10">
                       <div class="checkbox">
@@ -143,15 +143,15 @@
                       </div>
                       <div class="col-lg-offset-1">
                         <label class="radio-inline">
-                          <input type="radio" name="disc_space" value="">
+                          <input type="radio" class="disc_space_narrowing" name="disc_space_l23" value="1">
                           mild
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" name="disc_space" value="">
+                          <input type="radio" class="disc_space_narrowing" name="disc_space_l23" value="2">
                           moderate
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" name="disc_space" value="">
+                          <input type="radio" class="disc_space_narrowing" name="disc_space_l23" value="3">
                           severe
                         </label>
                       </div>
@@ -192,7 +192,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group" id="L3-L4">
                     <label for="tabl1-2" class="col-lg-2 control-label">L3-L4</label>
                     <div class="col-lg-10">
                       <div class="checkbox">
@@ -203,15 +203,15 @@
                       </div>
                       <div class="col-lg-offset-1">
                         <label class="radio-inline">
-                          <input type="radio" name="disc_space" value="">
+                          <input type="radio" class="disc_space_narrowing" name="disc_space_l34" value="1">
                           mild
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" name="disc_space" value="">
+                          <input type="radio" class="disc_space_narrowing" name="disc_space_l34" value="2">
                           moderate
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" name="disc_space" value="">
+                          <input type="radio" class="disc_space_narrowing" name="disc_space_l34" value="3">
                           severe
                         </label>
                       </div>
@@ -252,7 +252,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group" id="L4-L5">
                     <label for="tabl1-2" class="col-lg-2 control-label">L4-L5</label>
                     <div class="col-lg-10">
                       <div class="checkbox">
@@ -263,15 +263,15 @@
                       </div>
                       <div class="col-lg-offset-1">
                         <label class="radio-inline">
-                          <input type="radio" name="disc_space" value="">
+                          <input type="radio" class="disc_space_narrowing" name="disc_space_l45" value="1">
                           mild
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" name="disc_space" value="">
+                          <input type="radio" class="disc_space_narrowing" name="disc_space_l45" value="2">
                           moderate
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" name="disc_space" value="">
+                          <input type="radio" class="disc_space_narrowing" name="disc_space_l45" value="3">
                           severe
                         </label>
                       </div>
@@ -312,7 +312,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group" id="L5-S1">
                     <label for="tabl1-2" class="col-lg-2 control-label">L5-S1</label>
                     <div class="col-lg-10">
                       <div class="checkbox">
@@ -323,15 +323,15 @@
                       </div>
                       <div class="col-lg-offset-1">
                         <label class="radio-inline">
-                          <input type="radio" name="disc_space" value="">
+                          <input type="radio" class="disc_space_narrowing" name="disc_space_l51" value="1">
                           mild
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" name="disc_space" value="">
+                          <input type="radio" class="disc_space_narrowing" name="disc_space_l51" value="2">
                           moderate
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" name="disc_space" value="">
+                          <input type="radio" class="disc_space_narrowing" name="disc_space_l51" value="3">
                           severe
                         </label>
                       </div>
@@ -389,10 +389,16 @@
                       </div>
                     </div>
                   </div>
+                  <div class="form-group">
+                    <div class="col-lg-offset-2 col-lg-10">
+                      <button id="sub" type="button" class="btn btn-default">Sign in</button>
+                    </div>
+                  </div>
                 </form>
               </div>
             </div>
             <div class="col-lg-6 well">
+              <textarea id="result" class="form-control" rows="15"></textarea>
             </div>
           </div>
 
@@ -418,68 +424,44 @@
     <script>
       $().tab;
 
-      function show_image(img_url) {
-        $('#bone-age-img').fadeOut(100, function(){
-          $('#bone-age-img').html(function(){
-            return '<img src="' + img_url + '" alt="">';
+      var DJDLForm = 'Lumbar spine:' + "\n";
+
+      $('#sub').click(function(){
+        var str = DJDLForm;
+
+        if ($('.disc_space_narrowing:checked').length == 0) {
+          str += '  No obvious disc space narrowing. ' + "\n";
+        } else {
+          var mild = [];
+          var moderate = [];
+          var severe = [];
+          var degree = [];
+          var degree_text = ['', 'mild', 'moderate', 'severe'];
+          var has_disc_space_narrowing = false;
+
+          $('.disc_space_narrowing:checked').each(function(){
+            var level = $(this).parent().parent().parent().parent().attr('id');
+            if (typeof degree[$(this).val()] == "undefined") {
+              degree[$(this).val()] = new Array();
+            }
+            degree[$(this).val()].push(level);
+            has_disc_space_narrowing = true;
           });
-          $(this).fadeIn(100);
-        });
-      }
 
-      $(':radio').change(function() {
-        var img_url = $(this).val();
-        //alert($(this).val());
-        show_image(img_url);
-      });
+          if (has_disc_space_narrowing) {
+            str += "  - Disc space narrowing:\n";
+          }
 
-      // Hot Keys
-      $(document).keydown(function(event) {
-        // get current position
-        var cur_tab = $('#myTab > li.active');
-        var cur_tab_id = cur_tab.find('a').attr('id');
-        //alert(cur_tab.find('a').attr('id'));
-        //return;
-        var cur_pos = $('.' + cur_tab_id).find(':radio:checked');
-        //alert(cur_pos.val());
-
-        switch (event.which) {
-          case 37:   // left
-            event.preventDefault();
-            $('#tabFemale').click();
-            // update image
-            show_image($('.tabFemale').find(':radio:checked').val());
-            break;
-          case 38:   // up
-            event.preventDefault();
-            if (cur_pos.length) {
-              var prv_pos = cur_pos.parent().parent().prev().find('input').first();
-              if (prv_pos.length) {
-                prv_pos.click();
-              }
+          for (i = 1; i < 4; i++) {
+            if (typeof degree[i] != "undefined" && degree[i].length) {
+              str += "    - " + degree[i].join(', ') + ': ' + degree_text[i] + "\n";
             }
-            break;
-          case 39:   // right
-            event.preventDefault();
-            $('#tabMale').click();
-            // update image
-            show_image($('.tabMale').find(':radio:checked').val());
-            break;
-          case 40:   // down
-            event.preventDefault();
-            if (cur_pos.length) {
-              var nxt_pos = cur_pos.parent().parent().next().find('input').first();
-              if (nxt_pos.length) {
-                nxt_pos.click();
-              }
-            }
-            break;
+          }
         }
-      });
 
-      // select default radio
-      $('#male').find(':radio').first().click();
-      $('#female').find(':radio').first().click();
+        $('#result').text(str);
+        return false;
+      });
     </script>
   </body>
 </html>
