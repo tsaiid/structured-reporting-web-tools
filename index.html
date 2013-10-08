@@ -390,16 +390,37 @@
                     <div class="form-group">
                       <label for="tab-other" class="col-lg-2 control-label">Others</label>
                       <div class="col-lg-10">
+                        <!-- Degenerative lower lumbar facet joints -->
                         <div class="checkbox">
                           <label>
                             <input type="checkbox" class="cb_dllfj" value="" checked >
                             Degenerative lower lumbar facet joints
                           </label>
                         </div>
+
+                        <!-- Marginal osteophyte -->
                         <div class="checkbox">
                           <label>
                             <input type="checkbox" class="cb_mo" value="" checked >
                             Marginal osteophyte
+                          </label>
+                        </div>
+
+                        <!-- Scoliosis -->
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" class="cb_scoliosis" value="" >
+                            Scoliosis
+                          </label>
+                        </div>
+                        <div class="col-lg-offset-1">
+                          <label class="radio-inline">
+                            <input type="radio" class="scoliosis" name="scol_side" value="0">
+                            Left
+                          </label>
+                          <label class="radio-inline">
+                            <input type="radio" class="scoliosis" name="scol_side" value="1">
+                            Right
                           </label>
                         </div>
                       </div>
@@ -481,6 +502,26 @@
         }
       });
 
+      // Scoliosis
+      $('.scoliosis').change(function(){
+        var cb_scoliosis = $(this).parent().parent().parent().find('.cb_scoliosis');
+
+        if (!cb_scoliosis.is(':checked')) {
+          cb_scoliosis.click();
+        }
+      });
+
+      $('.cb_scoliosis').change(function(){
+        if (!$(this).is(':checked')) {
+          $(this).parent().parent().next().find(':radio').prop('checked', false);
+        } else {
+          // set default grade to Left.
+          if ($(this).parent().parent().next().find(':radio:checked').length == 0) {
+            $(this).parent().parent().next().find(':radio').first().prop('checked', true);
+          }
+        }
+      });
+
       $(':checkbox, :radio').change(function(){
         analyze();
       });
@@ -495,6 +536,7 @@
         var str = DJDLForm;
         var retro = [];
         var hyper = [];
+        var scol_text = ['left', 'right'];
 
         // Disc Space Narrowing
         if ($('.disc_space_narrowing:checked').length == 0) {
@@ -584,6 +626,11 @@
           str += "  - Hypermobility: " + hyper.join(', ') + "\n";
         } else {
           str += "  - No hypermobility.\n";
+        }
+
+        // Scoliosis
+        if ($('.cb_scoliosis:checked').length) {
+          str += "  - Scoliosis with " + scol_text[$('.scoliosis:checked').first().val()] + " lateral convexity.\n";
         }
 
         $('#result').text(str);
