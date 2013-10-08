@@ -405,6 +405,7 @@
               </div>
             </div>
             <div class="col-lg-6 well">
+              <button type="button" id="btn_clear" class="btn btn-info">Clear</button>
               <textarea id="result" class="form-control" rows="15"></textarea>
             </div>
           </div>
@@ -476,6 +477,11 @@
 
       $(':checkbox, :radio').change(function(){
         analyze();
+      });
+
+      $('#btn_clear').click(function(){
+        $(':checkbox, :radio').prop('checked', false);
+        $('#result').text('');
       });
 
       // # Analysis for output.
