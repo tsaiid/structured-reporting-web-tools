@@ -68,10 +68,17 @@
                 <li class="">
                   <a href="#l2-l3" data-toggle="tab" id="tab-l23">L2-L3</a>
                 </li>
+                <li class="">
+                  <a href="#others" data-toggle="tab" id="tab-others">OTHERS</a>
+                </li>
+                <li class="">
+                  <a href="#methods" data-toggle="tab" id="tab-methods">METHODS</a>
+                </li>
               </ul>
 
               <!-- tab content -->
               <div class="tab-content">
+                <!-- L1-L2 -->
                 <div class="tab-pane active" id="l1-l2">
                   <div class="col-lg-12" id="l12-set">
                     <!-- Disk -->
@@ -177,7 +184,71 @@
                     </div>
                   </div>
                 </div>
+
+                <!-- L2-L3 -->
                 <div class="tab-pane" id="l2-l3">...</div>
+
+                <!-- OTHERS -->
+                <div class="tab-pane" id="others">
+                  <div class="col-lg-10">
+                    <!-- Desiccation -->
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" class="cb_desiccation" value="" checked >
+                        Desiccation
+                      </label>
+                      <span class="col-lg-offset-1">
+                        <select class="">
+                          <option>L1</option>
+                          <option>L2</option>
+                          <option>L3</option>
+                          <option>L4</option>
+                          <option>L5</option>
+                          <option>S1</option>
+                        </select>
+                        through
+                        <select class="">
+                          <option>L1</option>
+                          <option>L2</option>
+                          <option>L3</option>
+                          <option>L4</option>
+                          <option>L5</option>
+                          <option>S1</option>
+                        </select>
+                      </span>
+                    </div>
+
+                    <!-- Scoliosis -->
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" class="cb_scoliosis" value="" >
+                        Scoliosis
+                      </label>
+                      <span class="col-lg-offset-1">
+                        <label class="">
+                          <input type="radio" class="scoliosis" name="scol_side" value="0">
+                          Left
+                        </label>
+                        <label class="">
+                          <input type="radio" class="scoliosis" name="scol_side" value="1">
+                          Right
+                        </label>
+                      </span>
+                    </div>
+                  </div></div>
+
+                <!-- METHODS -->
+                <div class="tab-pane" id="methods">
+                  <div class="col-lg-10">
+                    <!-- With contrast -->
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" class="cb_with_c" value="" >
+                        With contrast
+                      </label>
+                    </div>
+                  </div>
+                </div>
               </div>
 
             </div>
