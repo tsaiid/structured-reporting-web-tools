@@ -426,6 +426,44 @@
                           </label>
                         </div>
 
+                        <!-- Collapse -->
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" class="cb_collapse" value="" >
+                            Collapse
+                          </label>
+                        </div>
+                        <div class="col-lg-offset-1">
+                          <label class="checkbox-inline">
+                            <input type="checkbox" class="v_collapse" name="collapse_level" value="T11">
+                            T11
+                          </label>
+                          <label class="checkbox-inline">
+                            <input type="checkbox" class="v_collapse" name="collapse_level" value="T12">
+                            T12
+                          </label>
+                          <label class="checkbox-inline">
+                            <input type="checkbox" class="v_collapse" name="collapse_level" value="L1">
+                            L1
+                          </label>
+                          <label class="checkbox-inline">
+                            <input type="checkbox" class="v_collapse" name="collapse_level" value="L2">
+                            L2
+                          </label>
+                          <label class="checkbox-inline">
+                            <input type="checkbox" class="v_collapse" name="collapse_level" value="L3">
+                            L3
+                          </label>
+                          <label class="checkbox-inline">
+                            <input type="checkbox" class="v_collapse" name="collapse_level" value="L4">
+                            L4
+                          </label>
+                          <label class="checkbox-inline">
+                            <input type="checkbox" class="v_collapse" name="collapse_level" value="L5">
+                            L5
+                          </label>
+                        </div>
+
                         <!-- Lumbosacral Transitional Vertebrae -->
                         <div class="checkbox">
                           <label>
@@ -568,6 +606,32 @@
           // set default grade to Left.
           if ($(this).parent().parent().next().find(':radio:checked').length == 0) {
             $(this).parent().parent().next().find(':radio').first().prop('checked', true);
+          }
+        }
+      });
+
+      // Vertebral Collapse
+      $('.v_collapse').change(function(){
+        var cb_collapse = $(this).parent().parent().parent().find('.cb_collapse');
+
+        if (!cb_collapse.is(':checked')) {
+          cb_collapse.click();
+        }
+
+        // if not any collapsed level, uncheck.
+        v_collapses = $(this).parent().parent().find(':checkbox:checked');
+        if (v_collapses.length == 0) {
+          cb_collapse.prop('checked', false);
+        }
+      });
+
+      $('.cb_collapse').change(function(){
+        if (!$(this).is(':checked')) {
+          $(this).parent().parent().next().find(':checkbox').prop('checked', false);
+        } else {
+          // set default to T11.
+          if ($(this).parent().parent().next().find(':checkbox:checked').length == 0) {
+            $(this).parent().parent().next().find(':checkbox').first().prop('checked', true);
           }
         }
       });
