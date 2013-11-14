@@ -429,27 +429,43 @@
                         <!-- Lumbosacral Transitional Vertebrae -->
                         <div class="checkbox">
                           <label>
-                            <input type="checkbox" class="cb_ltsv" value="" >
-                            LTSV
+                            <input type="checkbox" class="cb_lstv" value="" >
+                            LSTV
                           </label>
                         </div>
-                        <div class="col-lg-offset-1">
-                          <label class="radio-inline">
-                            <input type="radio" class="ltsv" name="lstv_stage" value="1">
-                            I
-                          </label>
-                          <label class="radio-inline">
-                            <input type="radio" class="ltsv" name="lstv_stage" value="2">
-                            II
-                          </label>
-                          <label class="radio-inline">
-                            <input type="radio" class="ltsv" name="lstv_stage" value="3">
-                            III
-                          </label>
-                          <label class="radio-inline">
-                            <input type="radio" class="ltsv" name="lstv_stage" value="4">
-                            IV
-                          </label>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="col-lg-offset-2">
+                              <label class="radio-inline">
+                                <input type="radio" class="lstv" name="lstv_stage" value="1">
+                                I
+                              </label>
+                              <label class="radio-inline">
+                                <input type="radio" class="lstv" name="lstv_stage" value="2">
+                                II
+                              </label>
+                              <label class="radio-inline">
+                                <input type="radio" class="lstv" name="lstv_stage" value="3">
+                                III
+                              </label>
+                              <label class="radio-inline">
+                                <input type="radio" class="lstv" name="lstv_stage" value="4">
+                                IV
+                              </label>
+                            </div>
+                          </div>
+                          <div id="lstv_side_div" class="col-md-6">
+                            <div class="col-lg-offset-2">
+                              <label class="radio-inline">
+                                <input type="radio" class="lstv" name="lstv_side" value="0">
+                                Left
+                              </label>
+                              <label class="radio-inline">
+                                <input type="radio" class="lstv" name="lstv_side" value="1">
+                                Right
+                              </label>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -542,6 +558,26 @@
       });
 
       $('.cb_scoliosis').change(function(){
+        if (!$(this).is(':checked')) {
+          $(this).parent().parent().next().find(':radio').prop('checked', false);
+        } else {
+          // set default grade to Left.
+          if ($(this).parent().parent().next().find(':radio:checked').length == 0) {
+            $(this).parent().parent().next().find(':radio').first().prop('checked', true);
+          }
+        }
+      });
+
+      // LSTV
+      $('.lstv').change(function(){
+        var cb_lstv = $(this).parent().parent().parent().parent().parent().find('.cb_lstv');
+
+        if (!cb_lstv.is(':checked')) {
+          cb_lstv.click();
+        }
+      });
+
+      $('.cb_lstv').change(function(){
         if (!$(this).is(':checked')) {
           $(this).parent().parent().next().find(':radio').prop('checked', false);
         } else {
