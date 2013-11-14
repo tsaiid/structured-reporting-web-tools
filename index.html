@@ -778,6 +778,20 @@
           str += "  - Scoliosis with " + side_text[$('.scoliosis:checked').first().val()] + " lateral convexity.\n";
         }
 
+        // Collapse Vertebra
+        if ($('.cb_collapse:checked').length) {
+          v_collapses = $('.v_collapse:checked');
+          str += "  - Collapse of ";
+          len = v_collapses.length;
+          v_collapses.each(function(i){
+            str += $(this).val();
+            if (i != len - 1)
+              str += ', ';
+          });
+          str += (len > 1) ? " vertebrae" : " vertebra";
+          str += ".\n";
+        }
+
         // LSTV
         if ($('.cb_lstv:checked').length) {
           lstv_type = $('.lstv:checked').first().val();
