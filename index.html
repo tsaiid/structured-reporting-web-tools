@@ -437,19 +437,19 @@
                           <div class="col-md-6">
                             <div class="col-lg-offset-2">
                               <label class="radio-inline">
-                                <input type="radio" class="lstv" name="lstv_stage" value="1">
+                                <input type="radio" class="lstv" name="lstv_type" value="I">
                                 I
                               </label>
                               <label class="radio-inline">
-                                <input type="radio" class="lstv" name="lstv_stage" value="2">
+                                <input type="radio" class="lstv" name="lstv_type" value="II">
                                 II
                               </label>
                               <label class="radio-inline">
-                                <input type="radio" class="lstv" name="lstv_stage" value="3">
+                                <input type="radio" class="lstv" name="lstv_type" value="III">
                                 III
                               </label>
                               <label class="radio-inline">
-                                <input type="radio" class="lstv" name="lstv_stage" value="4">
+                                <input type="radio" class="lstv" name="lstv_type" value="IV">
                                 IV
                               </label>
                             </div>
@@ -457,12 +457,16 @@
                           <div id="lstv_side_div" class="col-md-6">
                             <div class="col-lg-offset-2">
                               <label class="radio-inline">
-                                <input type="radio" class="lstv" name="lstv_side" value="0">
+                                <input type="radio" class="lstv_side" name="lstv_side" value="0">
                                 Left
                               </label>
                               <label class="radio-inline">
-                                <input type="radio" class="lstv" name="lstv_side" value="1">
+                                <input type="radio" class="lstv_side" name="lstv_side" value="1">
                                 Right
+                              </label>
+                              <label class="radio-inline">
+                                <input type="radio" class="lstv_side" name="lstv_side" value="2">
+                                Both
                               </label>
                             </div>
                           </div>
@@ -575,15 +579,26 @@
         if (!cb_lstv.is(':checked')) {
           cb_lstv.click();
         }
+
+        // clear side if type 4
+        if ($(this).val() == "IV") {
+          $(this).parent().parent().parent().next().find(':radio').prop('checked', false);
+        } else {
+          // default side: both
+          next_div = $(this).parent().parent().parent().next();
+          if (next_div.find(':radio:checked').length == 0)
+            $(this).parent().parent().parent().next().find(':radio').last().prop('checked', true);
+        }
       });
 
       $('.cb_lstv').change(function(){
         if (!$(this).is(':checked')) {
           $(this).parent().parent().next().find(':radio').prop('checked', false);
         } else {
-          // set default grade to Left.
+          // set default grade to 1, and both sides.
           if ($(this).parent().parent().next().find(':radio:checked').length == 0) {
-            $(this).parent().parent().next().find(':radio').first().prop('checked', true);
+            $(this).parent().parent().next().find(':radio').first().prop('checked', true);  // type
+            $(this).parent().parent().next().find(':radio').last().prop('checked', true);   // side
           }
         }
       });
@@ -602,7 +617,7 @@
         var str = DJDLForm;
         var retro = [];
         var hyper = [];
-        var scol_text = ['left', 'right'];
+        var side_text = ['left', 'right'];
 
         // Disc Space Narrowing
         if ($('.disc_space_narrowing:checked').length == 0) {
@@ -696,7 +711,18 @@
 
         // Scoliosis
         if ($('.cb_scoliosis:checked').length) {
-          str += "  - Scoliosis with " + scol_text[$('.scoliosis:checked').first().val()] + " lateral convexity.\n";
+          str += "  - Scoliosis with " + side_text[$('.scoliosis:checked').first().val()] + " lateral convexity.\n";
+        }
+
+        // LSTV
+        if ($('.cb_lstv:checked').length) {
+          lstv_type = $('.lstv:checked').first().val();
+          str += "  - Lumbosacral Transitional Vertebrae, type " + lstv_type;
+          if (lstv_type != "IV") {
+            lstv_side = $('.lstv_side:checked').first().val();
+            str += (lstv_side == 2 ? "b" : "a, " + side_text[lstv_side]);
+          }
+          str += ".\n";
         }
 
         $('#result').text(str);
