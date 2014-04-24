@@ -1,3 +1,3 @@
-$('.ui.rating')
-  .rating()
-;
+$(function(){
+  $('.ui.rating').rating();
+});
