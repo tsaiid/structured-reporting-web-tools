@@ -1,4 +1,10 @@
 $(function(){
+  $('.ui.checkbox').checkbox({
+    'onDisable':  function() {
+      $(this).parent().siblings('.ui.rating').rating('clear rating');
+    }
+  });
+
   $('.ui.rating').rating({
     clearable: true,
     onRate: function(valRate){
