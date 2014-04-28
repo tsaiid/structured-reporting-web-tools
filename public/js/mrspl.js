@@ -19,7 +19,7 @@ $(function(){
     alert($('#disc-hivd-migration-l12').find('.active').text());
   });
 
-  $('.ui.button').on('click', function(){
+  $('.ui.buttons .button').on('click', function(){
     if ($(this).hasClass('active')) {
       $(this).removeClass('active');
     } else {
