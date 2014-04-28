@@ -1,3 +1,7 @@
 .ui.button {
   text-transform: none;
 }
+
+.ui.tab.segment {
+  margin-top: 0;
+}
