@@ -1,6 +1,14 @@
 $(function(){
   $('.ui.rating').rating({
-    clearable: true
+    clearable: true,
+    onRate: function(valRate){
+      if (valRate > 0) {
+        $(this).siblings('.ui.toggle.checkbox').checkbox('enable');
+      } else {
+        // 暫時不要 disable, 有時候會只想取消 rating
+        //$(this).siblings('.ui.toggle.checkbox').checkbox('disable');
+      }
+    }
   });
 
   $('.menu .item').tab({history:false});
