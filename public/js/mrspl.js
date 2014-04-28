@@ -6,8 +6,9 @@ $(function(){
   $('.menu .item').tab({history:false});
 
   $('#test_btn').click(function(){
-    a1 = $('#disc-rating-l12').rating('get rating');
+    //a1 = $('#disc-rating-l12').rating('get rating');
     // alert(a1);
+    alert($('#disc-hivd-migration-l12').find('.active').text());
   });
 
   $('.ui.button').on('click', function(){
