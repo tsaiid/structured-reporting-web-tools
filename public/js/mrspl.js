@@ -27,6 +27,14 @@ $(function(){
 
   $('.ui.toggle.button').state();
 
+  $('#disc-hivd-l12').click(function(){
+    if ($(this).hasClass('active')) {
+      $('.hivd-section').show();
+    } else {
+      $('.hivd-section').hide();
+    }
+  });
+
   $('.ui.buttons .button').on('click', function(){
     if ($(this).hasClass('active')) {
       $(this).removeClass('active');
