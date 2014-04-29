@@ -128,7 +128,7 @@ $(function(){
         }
         report_str += '.';
       } else {
-        report_str += ', however, no obvious significant spinal stenosis.';
+        report_str += ', causing mild indentation of anterior dural sac, however, no obvious significant spinal stenosis.';
       }
 
       final_report += report_str;
