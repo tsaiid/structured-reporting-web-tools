@@ -99,10 +99,12 @@ $(function(){
         report_str += '';
       } else {
         disc_type = $('#disc_'+level).children('.active').text();
-        report_str += disc_rating + 'diffuse ' + disc_type + ' disk, ';
-        $('#characters_'+level).find(':checkbox:checked').each(function(){
+        report_str += disc_rating + 'diffuse ' + disc_type + ' disk';
+        characters = $('#characters_'+level).find(':checkbox:checked');
+        characters.each(function(index, element){
           character_rating = $(this).parent().next().rating('get rating');
-          report_str += rating_str[character_rating] + $(this).next().text() + ', ';
+          report_str += (index == characters.length - 1) ? ', and ' : ', ';
+          report_str += rating_str[character_rating] + $(this).next().text();
         });
       }
 
