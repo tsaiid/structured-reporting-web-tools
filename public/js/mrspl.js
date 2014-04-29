@@ -46,4 +46,12 @@ $(function(){
       ;
     }
   });
+
+  $('#get_report_btn').click(function(){
+    rating_str = ['', 'mild', 'mild-to-moderate', 'moderate', 'moderate-to-severe', 'severe'];
+
+    disc_rating_l12 = $('#disc-rating-l12').rating('get rating');
+
+    $('#report_text').text(rating_str[disc_rating_l12]);
+  });
 });
