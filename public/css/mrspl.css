@@ -5,3 +5,7 @@
 .ui.tab.segment {
   margin-top: 0;
 }
+
+.hivd-section {
+  display: none;
+}
