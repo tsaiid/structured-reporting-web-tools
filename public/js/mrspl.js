@@ -40,11 +40,11 @@ $(function(){
 
   $('.ui.toggle.button').state();
 
-  $('#disc_hivd_l12').click(function(){
+  $('.toggle_child_section').click(function(){
     if ($(this).hasClass('active')) {
-      $('.hivd_section').show();
+      $(this).siblings('.child_section').show();
     } else {
-      $('.hivd_section').hide();
+      $(this).siblings('.child_section').hide();
     }
   });
 
