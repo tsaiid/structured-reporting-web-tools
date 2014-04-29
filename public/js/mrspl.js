@@ -60,6 +60,17 @@ $(function(){
     }
   });
 
+  $('.rating_while_enabling .button').click(function(){
+    current_rating = $(this).parent().siblings('.ui.rating').rating('get rating');
+    if ($(this).hasClass('active')) {
+      if (current_rating === 0) {
+        $(this).parent().siblings('.ui.rating').rating('set rating', 1);
+      }
+    } else {
+      $(this).parent().siblings('.ui.rating').rating('clear rating');
+    }
+  });
+
   $('#get_report_btn').click(function(){
     rating_str = ['', 'mild ', 'mild-to-moderate ', 'moderate ', 'moderate-to-severe ', 'severe '];
     level_str = ['L1-L2', 'L2-L3', 'L3-L4', 'L4-L5', 'L5-S1'];
