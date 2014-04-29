@@ -80,7 +80,7 @@ $(function(){
     final_report = "";
     $.each(level_id, function(i, level){
       disc_ss_rating = $('#disc_ss_rating_'+level).rating('get rating');
-      if ($('#disc_'+level).children('.active').length === 0 && disc_ss_rating === 0) {
+      if (!$('#disc_diffuse_'+level).hasClass('active') && !$('#disc_hivd_'+level).hasClass('active') && disc_ss_rating === 0) {
         final_report += level_str[i] + ": No definite spinal stenosis.";
         return;
       }
