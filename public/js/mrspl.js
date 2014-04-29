@@ -55,9 +55,16 @@ $(function(){
 
     final_report = "";
     $.each(level_id, function(i, level){
+      disc_ss_rating = $('#disc_ss_rating_'+level).rating('get rating');
+      if ($('#disc_'+level).children('.active').length === 0 && disc_ss_rating === 0) {
+        final_report += level_str[i] + ": No definite spinal stenosis.";
+        return;
+      }
+
       disc_rating = rating_str[$('#disc_rating_'+level).rating('get rating')];
       report_str = level_str[i] + ": Presence of ";
 
+      // characters
       if ($('#disc_hivd_'+level).hasClass('active')) {
         report_str += '';
       } else {
@@ -67,6 +74,23 @@ $(function(){
           character_rating = $(this).parent().next().rating('get rating');
           report_str += rating_str[character_rating] + $(this).next().text() + ', ';
         });
+      }
+
+      // stenosis
+      disc_nblr_rating = $('#disc_nblr_rating_'+level).rating('get rating');
+      disc_nfs_rating = $('#disc_nfs_rating_'+level).rating('get rating');
+      if (disc_ss_rating > 0) {
+        report_str += ', causing ' + rating_str[disc_ss_rating] + 'spinal stenosis';
+        if (disc_nblr_rating > 0) {
+          report_str += ', ' + rating_str[disc_nblr_rating] + 'narrowing of bilateral lateral recesses';
+        }
+        if (disc_nfs_rating > 0) {
+          disc_nfs_side = $('#disc_nfs_lr_'+level).children('.active').text();
+          report_str += ', ' + rating_str[disc_nfs_rating] + 'degree degenerative ' + disc_nfs_side + ' neuroforaminal stenosis';
+        }
+        report_str += '.';
+      } else {
+        report_str += ', however, no obvious significant spinal stenosis.';
       }
 
       final_report += report_str;
