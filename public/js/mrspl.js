@@ -17,6 +17,19 @@ $(function(){
     }
   });
 
+  $('.disc_nfs_rating').rating({
+    clearable: true,
+    onRate: function(valRate){
+      if (valRate === 0) {
+        $(this).siblings('.ui.buttons').children('.button').removeClass('active');
+      } else {
+        if ($(this).siblings('.ui.buttons').children('.active').length === 0) {
+          $(this).siblings('.ui.buttons').children().eq(0).addClass('active');
+        }
+      }
+    }
+  });
+
   $('.menu .item').tab({history:false});
 
   $('#test_btn').click(function(){
