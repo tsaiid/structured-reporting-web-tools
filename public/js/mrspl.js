@@ -48,10 +48,30 @@ $(function(){
   });
 
   $('#get_report_btn').click(function(){
-    rating_str = ['', 'mild', 'mild-to-moderate', 'moderate', 'moderate-to-severe', 'severe'];
+    rating_str = ['', 'mild ', 'mild-to-moderate ', 'moderate ', 'moderate-to-severe ', 'severe '];
+    level_str = ['L1-L2', 'L2-L3', 'L3-L4', 'L4-L5', 'L5-S1'];
+    //level_id = ['l12', 'l23', 'l34', 'l45', 'l5s1'];
+    level_id = ['l12'];
 
-    disc_rating_l12 = $('#disc_rating_l12').rating('get rating');
+    final_report = "";
+    $.each(level_id, function(i, level){
+      disc_rating = rating_str[$('#disc_rating_'+level).rating('get rating')];
+      report_str = level_str[i] + ": Presence of ";
 
-    $('#report_text').text(rating_str[disc_rating_l12]);
+      if ($('#disc_hivd_'+level).hasClass('active')) {
+        report_str += '';
+      } else {
+        disc_type = $('#disc_'+level).children('.active').text();
+        report_str += disc_rating + 'diffuse ' + disc_type + ' disk, ';
+        $('#characters_'+level).find(':checkbox:checked').each(function(){
+          character_rating = $(this).parent().next().rating('get rating');
+          report_str += rating_str[character_rating] + $(this).next().text() + ', ';
+        });
+      }
+
+      final_report += report_str;
+    });
+
+    $('#report_text').text(final_report);
   });
 });
