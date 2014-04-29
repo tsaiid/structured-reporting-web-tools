@@ -48,7 +48,7 @@ $(function(){
     }
   });
 
-  $('.ui.buttons .button').on('click', function(){
+  $('.ui.buttons .button').click(function(){
     if ($(this).hasClass('active')) {
       $(this).removeClass('active');
     } else {
