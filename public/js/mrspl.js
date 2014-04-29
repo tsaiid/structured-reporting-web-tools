@@ -113,12 +113,18 @@ $(function(){
       disc_nfs_rating = $('#disc_nfs_rating_'+level).rating('get rating');
       if (disc_ss_rating > 0) {
         report_str += ', causing ' + rating_str[disc_ss_rating] + 'spinal stenosis';
+        disc_ss_accessory_length = 0;
+        if (disc_nblr_rating > 0) disc_ss_accessory_length++;
+        if (disc_nfs_rating > 0) disc_ss_accessory_length++;
+
         if (disc_nblr_rating > 0) {
-          report_str += ', ' + rating_str[disc_nblr_rating] + 'narrowing of bilateral lateral recesses';
+          report_str += (disc_ss_accessory_length > 1 ? ', ' : ' and ');
+          report_str += rating_str[disc_nblr_rating] + 'narrowing of bilateral lateral recesses';
         }
         if (disc_nfs_rating > 0) {
           disc_nfs_side = $('#disc_nfs_lr_'+level).children('.active').text();
-          report_str += ', ' + rating_str[disc_nfs_rating] + 'degree degenerative ' + disc_nfs_side + ' neuroforaminal stenosis';
+          report_str += (disc_ss_accessory_length > 1 ? ', and ' : ' and ');
+          report_str += rating_str[disc_nfs_rating] + 'degree degenerative ' + disc_nfs_side + ' neuroforaminal stenosis';
         }
         report_str += '.';
       } else {
