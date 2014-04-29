@@ -94,21 +94,52 @@ $(function(){
       disc_rating = rating_str[$('#disc_rating_'+level).rating('get rating')];
       report_str = level_str[i] + ": Presence of ";
 
-      // characters
-      if ($('#disc_hivd_'+level).hasClass('active')) {
-        report_str += '';
-      } else {
+      // diffuse
+      // example: diffuse bulging/protrusion/herniation disk
+      diffuse_is_active = $('#disc_diffuse_'+level).hasClass('active');
+      if (diffuse_is_active) {
         disc_type = $('#disc_'+level).children('.active').text();
-        report_str += disc_rating + 'diffuse ' + disc_type + ' disk';
-        characters = $('#characters_'+level).find(':checkbox:checked');
-        characters.each(function(index, element){
-          character_rating = $(this).parent().next().rating('get rating');
-          report_str += (index == characters.length - 1) ? ', and ' : ', ';
-          report_str += rating_str[character_rating] + $(this).next().text();
-        });
+        report_str += disc_rating + 'diffuse ' + disc_type + ' disc';
       }
 
+      // hivd
+      // example: and associated with the posterior-central/right/left/posterior-lateral/lateral herniated nucleus pulposus (HIVD), cranial/caudal migration of this HIVD, with compression /attachment of the adjacent nerve root/dural sac
+      hivd_is_active = $('#disc_hivd_'+level).hasClass('active');
+      if (hivd_is_active) {
+        if (diffuse_is_active) {
+          report_str += ', and associated with the ';
+        }
+        disc_location = $('#disc_location_'+level).children('.active').text();
+        if (disc_location != 'posterior-central') {
+          disc_location_lr = $('#disc_location_lr_'+level).children('.active').text();
+          disc_location = disc_location_lr + ' ' + disc_location;
+        }
+        report_str += disc_location + ' herniated nucleus pulposus (HIVD)';
+
+        hivd_migration_is_active = ($('#disc_hivd_migration_'+level).children('.active').length > 0);
+        if (hivd_migration_is_active) {
+          disc_hivd_migration = $('#disc_hivd_migration_'+level).children('.active').text();
+          report_str += ', ' + disc_hivd_migration + ' migration of this HIVD';
+        }
+
+        hivd_nerve_is_active = ($('#disc_hivd_nerve_'+level).children('.active').length > 0);
+        if (hivd_nerve_is_active) {
+          disc_hivd_nerve = $('#disc_hivd_nerve_'+level).children('.active').text();
+          report_str += ', with ' + disc_hivd_nerve + ' of the adjacent nerve root';
+        }
+      }
+
+      // characters
+      // example: disc space narrowing, degenerative endplate change, ligament flavum hypertrophy and facet joint degenerative change
+      characters = $('#characters_'+level).find(':checkbox:checked');
+      characters.each(function(index, element){
+        character_rating = $(this).parent().next().rating('get rating');
+        report_str += (index == characters.length - 1) ? ', and ' : ', ';
+        report_str += rating_str[character_rating] + $(this).next().text();
+      });
+
       // stenosis
+      // example: causing mild/moderate/severe degree central spinal stenosis and mild/moderate/severe narrowing of bilateral lateral recesses and mild/moderate/severe degree degenerative bilateral/right/left neuroforaminal stenosis
       disc_nblr_rating = $('#disc_nblr_rating_'+level).rating('get rating');
       disc_nfs_rating = $('#disc_nfs_rating_'+level).rating('get rating');
       if (disc_ss_rating > 0) {
