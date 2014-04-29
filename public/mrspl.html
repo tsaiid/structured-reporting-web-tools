@@ -1,490 +1,432 @@
 <!DOCTYPE html>
-<html lang="zh">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="References for bone age">
-    <meta name="author" content="I-Ta Tsai">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<html>
+<head>
+  <!-- Standard Meta -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-    <title>Structure Report</title>
+  <!-- Site Properities -->
+  <title>MRSPL</title>
 
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Open+Sans:300italic,400,300,700' rel='stylesheet' type='text/css'>
 
-    <!-- For IE 6/7/8 Responsive -->
-    <!--[if lt IE 9]>
-      <script src="js/respond.min.js"></script>
-      <script src="js/html5shiv.js"></script>
-    <![endif]-->
+  <link rel="stylesheet" type="text/css" href="css/semantic.min.css">
+  <link rel="stylesheet" type="text/css" href="css/mrspl.css">
 
-    <style type="text/css">
-      html,
-      body {
-        height: 100%;
-        /* The html and body elements cannot have any padding or margin. */
-      }
+  <script src="js/jquery-1.11.0.min.js"></script>
+  <script src="js/semantic.min.js"></script>
+  <script src="js/mrspl.js"></script>
 
-      /* Wrapper for page content to push down footer */
-      #wrap {
-        min-height: 100%;
-        height: auto !important;
-        height: 100%;
-        /* Negative indent footer by it's height */
-        margin: 0 auto -50px;
-      }
+</head>
+<body id="home">
 
-      /* Set the fixed height of the footer here */
-      #push,
-      #footer {
-        height: 50px;
-      }
-      #footer {
-        background-color: #f5f5f5;
-      }
-    </style>
-  </head>
+<nav class="ui menu">
+  <h3 class="header item">Structure Report</h3>
+  <a class="active item">MR L-spine</a>
+  <a class="item">DJD L-spine</a>
+  <a class="item">Link</a>
+</nav>
 
-  <body>
-    <div id="wrap">
-      <div class="container">
+<div class="ui vertically divided grid">
+  <div class="two column row">
+    <div class="one wide column">
+      <div class="ui vertical pointing menu">
+        <a class="active item" data-tab="l12">
+          <i class="expand icon"></i> L1-2
+        </a>
+        <a class="item" data-tab="l23">
+          <i class="expand icon"></i> L2-3
+        </a>
+        <a class="item" data-tab="l34">
+          <i class="expand icon"></i> L3-4
+        </a>
+        <a class="item" data-tab="l45">
+          <i class="expand icon"></i> L4-5
+        </a>
+        <a class="item" data-tab="l5s1">
+          <i class="expand icon"></i> L5-S1
+        </a>
+        <a class="item" data-tab="others">
+          <i class="expand icon"></i> Others
+        </a>
+      </div>
+    </div>
 
-        <div class="masthead">
-          <h2 class="text-muted">Structure Report</h2>
-        </div>
+    <div class="column">
+      <div class="ui active tab segment" data-tab="l12">
+        <h3 class="ui header">L1-2</h3>
 
-        <div class="body-content">
+        <div class="ui small fluid form segment">
+          <div class="two fields">
+            <div class="field">
+              <div class="ui form">
+                <div class="inline field">
+                  <div class="mini ui toggle button toggle_child_section" id="disc_diffuse_l12">
+                    Diffuse
+                  </div>
 
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">MRI L-spine</h3>
-            </div>
-            <div class="panel-body">
-              <!-- Tabs -->
-              <ul id="myTab" class="nav nav-tabs">
-                <li class="active">
-                  <a href="#l1-l2" data-toggle="tab" id="tab-l12">L1-L2</a>
-                </li>
-                <li class="">
-                  <a href="#l2-l3" data-toggle="tab" id="tab-l23">L2-L3</a>
-                </li>
-                <li class="">
-                  <a href="#l3-l4" data-toggle="tab" id="tab-l34">L3-L4</a>
-                </li>
-                <li class="">
-                  <a href="#l4-l5" data-toggle="tab" id="tab-l45">L4-L5</a>
-                </li>
-                <li class="">
-                  <a href="#l5-s1" data-toggle="tab" id="tab-l51">L5-S1</a>
-                </li>
-                <li class="">
-                  <a href="#others" data-toggle="tab" id="tab-others">OTHERS</a>
-                </li>
-                <li class="">
-                  <a href="#methods" data-toggle="tab" id="tab-methods">METHODS</a>
-                </li>
-              </ul>
+                  <div class="child_section">
+                    <div class="inline field">
+                      <div class="ui rating enable_first_button_while_rating" id="disc_rating_l12">
+                        <i class="icon"></i>
+                        <i class="icon"></i>
+                        <i class="icon"></i>
+                        <i class="icon"></i>
+                        <i class="icon"></i>
+                      </div>
 
-              <!-- tab content -->
-              <div class="tab-content">
-                <!-- L1-L2 -->
-                <div class="tab-pane active" id="l1-l2">
-                  <div class="col-lg-12" id="l12-set">
-                    <!-- Disk -->
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" class="cb_disc" value="">
-                        Disc
-                      </label>
-                    </div>
-                    <div class="col-lg-offset-1">
-                      <label class="radio-inline">
-                        <input type="radio" class="disc" name="disc_l12" value="1">
-                        bulging
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="disc" name="disc_l12" value="2">
-                        protrusion
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="disc" name="disc_l12" value="3">
-                        herniation
-                      </label>
-                    </div>
-                    <div class="col-lg-offset-1">
-                      <label class="radio-inline">
-                        <input type="radio" class="disc" name="disc_l12" value="11">
-                        p. c.
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="disc" name="disc_l12" value="12">
-                        Rt p. l.
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="disc" name="disc_l12" value="13">
-                        Rt lat.
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="disc" name="disc_l12" value="14">
-                        Lt p. l.
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="disc" name="disc_l12" value="15">
-                        Lt lat.
-                      </label>
-                    </div>
-
-                    <div class="">
-                      <!-- disc space narrowing -->
-                      <label class="checkbox-inline col-lg-6">
-                        <input type="checkbox" class="cb_dsn" value="">
-                        Disc space narrowing
-                      </label>
-
-                      <!-- degenerative endplate change -->
-                      <label class="checkbox-inline">
-                        <input type="checkbox" class="cb_dec" value="">
-                        Endplate change
-                      </label>
-                    </div>
-
-                    <div class="">
-                      <!-- spondylolisthesis -->
-                      <label class="checkbox-inline col-lg-6">
-                        <input type="checkbox" class="cb_spond" value="">
-                        Spondylolisthesis
-                      </label>
-
-                      <!-- retrolisthesis -->
-                      <label class="checkbox-inline">
-                        <input type="checkbox" class="cb_retro" value="">
-                        Retrolisthesis
-                      </label>
-                    </div>
-
-                    <div class="checkbox">
-                      <!-- ligament flavum hypertrophy -->
-                      <label class="">
-                        <input type="checkbox" class="cb_lfh" value="">
-                        Ligament flavum hypertrophy
-                      </label>
-                    </div>
-
-                    <!-- spinal stenosis -->
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" class="cb_sp_st" value="">
-                        Spinal stenosis
-                      </label>
-                    </div>
-                    <div class="col-lg-offset-1">
-                      <label class="radio-inline">
-                        <input type="radio" class="sp_st" name="sp_st_l12" value="1">
-                        mild
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="sp_st" name="sp_st_l12" value="2">
-                        moderate
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="sp_st" name="sp_st_l12" value="3">
-                        severe
-                      </label>
+                      <div class="mini ui buttons rating_while_enabling" id="disc_l12">
+                        <div class="ui button">bulging</div>
+                        <div class="ui button">protrusion</div>
+                        <div class="ui button">herniation</div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <!-- L2-L3 -->
-                <div class="tab-pane" id="l2-l3">...</div>
+                <div class="inline field">
+                  <div class="mini ui toggle button toggle_child_section" id="disc_hivd_l12">
+                    HIVD
+                  </div>
 
-                <!-- OTHERS -->
-                <div class="tab-pane" id="others">
-                  <div class="col-lg-10">
-                    <!-- Desiccation -->
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" class="cb_desiccation" value="" checked >
-                        Desiccation
-                      </label>
-                      <span class="col-lg-offset-1">
-                        <select class="">
-                          <option>L1</option>
-                          <option>L2</option>
-                          <option>L3</option>
-                          <option>L4</option>
-                          <option>L5</option>
-                          <option>S1</option>
-                        </select>
-                        through
-                        <select class="">
-                          <option>L1</option>
-                          <option>L2</option>
-                          <option>L3</option>
-                          <option>L4</option>
-                          <option>L5</option>
-                          <option>S1</option>
-                        </select>
+                  <div class="child_section">
+                    <div class="inline field">
+                      <div class="mini ui buttons toggle_location_section" id="disc_location_l12">
+                        <div class="ui button">posterior-central</div>
+                        <div class="ui button">posterior-lateral</div>
+                        <div class="ui button">lateral</div>
+
+                        <div class="child_section">
+                          <div class="inline field">
+                            <div class="mini ui buttons" id="disc_location_lr_l12">
+                              <div class="ui button">right</div>
+                              <div class="ui button">left</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="inline field">
+                      <div class="mini ui buttons" id="disc_hivd_migration_l12">
+                        <div class="ui button">cranial</div>
+                        <div class="ui button">caudal</div>
+                      </div>
+                      <span class="ui">
+                        migration
                       </span>
                     </div>
 
-                    <!-- Scoliosis -->
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" class="cb_scoliosis" value="" >
-                        Scoliosis
-                      </label>
-                      <span class="col-lg-offset-1">
-                        <label class="">
-                          <input type="radio" class="scoliosis" name="scol_side" value="0">
-                          Left
-                        </label>
-                        <label class="">
-                          <input type="radio" class="scoliosis" name="scol_side" value="1">
-                          Right
-                        </label>
+                    <div class="inline field">
+                      <div class="mini ui buttons" id="disc_hivd_nerve_l12">
+                        <div class="ui button">compression</div>
+                        <div class="ui button">attachment</div>
+                      </div>
+                      <span class="ui">
+                        adjacent nerve
                       </span>
                     </div>
-                  </div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                <!-- METHODS -->
-                <div class="tab-pane" id="methods">
-                  <div class="col-lg-10">
-                    <!-- With contrast -->
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" class="cb_with_c" value="" >
-                        With contrast
-                      </label>
+            <div class="field">
+              <div id="characters_l12">
+                <div class="ui form">
+                  <div class="inline field">
+                    <div class="ui toggle checkbox">
+                      <input id="dsn_l12" type="checkbox">
+                      <label for="dsn_l12">disc space narrowing</label>
+                    </div>
+                    <div class="ui rating" id="disc_dsn_rating_l12">
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ui form">
+                  <div class="inline field">
+                    <div class="ui toggle checkbox">
+                      <input id="dec_l12" type="checkbox">
+                      <label for="dec_l12">degenerative endplate change</label>
+                    </div>
+                    <div class="ui rating" id="disc_dec_rating_l12">
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ui form">
+                  <div class="inline field">
+                    <div class="ui toggle checkbox">
+                      <input id="lfh_l12" type="checkbox">
+                      <label for="lfh_l12">ligament flavum hypertrophy</label>
+                    </div>
+                    <div class="ui rating" id="disc_lfh_rating_l12">
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ui form">
+                  <div class="inline field">
+                    <div class="ui toggle checkbox">
+                      <input id="fjdc_l12" type="checkbox">
+                      <label for="fjdc_l12">facet joint degenerative</label>
+                    </div>
+                    <div class="ui rating" id="disc_fjdc_rating_l12">
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                      <i class="icon"></i>
                     </div>
                   </div>
                 </div>
               </div>
 
+              <div id="listhesis_l12">
+                <div class="ui form">
+                  <div class="inline field">
+                    <div class="ui toggle checkbox">
+                      <input id="retro_l12" type="checkbox">
+                      <label for="retro_l12">retrolisthesis</label>
+                    </div>
+                    <div class="ui rating" id="disc_retro_rating_l12">
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ui form">
+                  <div class="inline field">
+                    <div class="ui toggle checkbox">
+                      <input id="spdll_l12" type="checkbox">
+                      <label for="spdll_l12">spondylolisthesis</label>
+                    </div>
+                    <div class="ui rating" id="disc_spdll_rating_l12">
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                      <i class="icon"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ui form">
+                <div class="inline field">
+                  <div class="ui toggle checkbox">
+                    <input id="spdl_l12" type="checkbox">
+                    <label for="spdl_l12">spodylolysis</label>
+                  </div>
+                  <div class="ui rating" id="disc_spdl_rating_l12">
+                    <i class="icon"></i>
+                    <i class="icon"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ui form">
+                <div class="inline field">
+                  <div class="ui rating" id="disc_ss_rating_l12">
+                    <i class="icon"></i>
+                    <i class="icon"></i>
+                    <i class="icon"></i>
+                    <i class="icon"></i>
+                    <i class="icon"></i>
+                  </div>
+                  <label for="ss_l12">spinal stenosis</label>
+                </div>
+              </div>
+
+              <div class="ui form">
+                <div class="inline field">
+                  <div class="ui rating" id="disc_nblr_rating_l12">
+                    <i class="icon"></i>
+                    <i class="icon"></i>
+                    <i class="icon"></i>
+                    <i class="icon"></i>
+                    <i class="icon"></i>
+                  </div>
+                  <label for="nblr_l12">narrowing of bilateral lateral recesses</label>
+                </div>
+              </div>
+
+              <div class="ui form">
+                <div class="inline field">
+                  <div class="ui rating enable_first_button_while_rating" id="disc_nfs_rating_l12">
+                    <i class="icon"></i>
+                    <i class="icon"></i>
+                    <i class="icon"></i>
+                    <i class="icon"></i>
+                    <i class="icon"></i>
+                  </div>
+                  <label for="nfs_l12">neuroforaminal stenosis</label>
+                  <div class="mini ui buttons rating_while_enabling" id="disc_nfs_lr_l12">
+                    <div class="ui button">bilateral</div>
+                    <div class="ui button">right</div>
+                    <div class="ui button">left</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
+      </div>
 
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h4 class="panel-title">Result</h3>
+      <div class="ui tab segment" data-tab="l23">L2-3</div>
+      <div class="ui tab segment" data-tab="l34">L3-4</div>
+      <div class="ui tab segment" data-tab="l45">L4-5</div>
+      <div class="ui tab segment" data-tab="l5s1">L5-S1</div>
+      <div class="ui tab segment" data-tab="others">
+        <h3 class="ui header">Others</h3>
+        <div class="ui small fluid form segment">
+          <div class="two fields">
+            <div class="field">
+              <div class="ui form">
+                <h4>Desiccation</h4>
+                <div class="inline field">
+                  <div class="ui checkbox">
+                    <input id="cb_desiccation_t12l1" name="cb_desiccation" type="checkbox">
+                    <label for="cb_desiccation_t12l1">T12-L1</label>
+                  </div>
+                  <div class="ui checkbox">
+                    <input id="cb_desiccation_l12" name="cb_desiccation" type="checkbox">
+                    <label for="cb_desiccation_l12">L1-2</label>
+                  </div>
+                  <div class="ui checkbox">
+                    <input id="cb_desiccation_l23" name="cb_desiccation" type="checkbox">
+                    <label for="cb_desiccation_l23">L2-3</label>
+                  </div>
+                  <div class="ui checkbox">
+                    <input id="cb_desiccation_l34" name="cb_desiccation" type="checkbox">
+                    <label for="cb_desiccation_l34">L3-4</label>
+                  </div>
+                  <div class="ui checkbox">
+                    <input id="cb_desiccation_l45" name="cb_desiccation" type="checkbox">
+                    <label for="cb_desiccation_l45">L4-5</label>
+                  </div>
+                  <div class="ui checkbox">
+                    <input id="cb_desiccation_l5s1" name="cb_desiccation" type="checkbox">
+                    <label for="cb_desiccation_l5s1">L5-S1</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ui form">
+                <h4>Disc space narrowing</h4>
+                <div class="inline field">
+                  <div class="ui checkbox">
+                    <input id="cb_dsn_t12l1" name="cb_dsn" type="checkbox">
+                    <label for="cb_dsn_t12l1">T12-L1</label>
+                  </div>
+                  <div class="ui checkbox">
+                    <input id="cb_dsn_l12" name="cb_dsn" type="checkbox">
+                    <label for="cb_dsn_l12">L1-2</label>
+                  </div>
+                  <div class="ui checkbox">
+                    <input id="cb_dsn_l23" name="cb_dsn" type="checkbox">
+                    <label for="cb_dsn_l23">L2-3</label>
+                  </div>
+                  <div class="ui checkbox">
+                    <input id="cb_dsn_l34" name="cb_dsn" type="checkbox">
+                    <label for="cb_dsn_l34">L3-4</label>
+                  </div>
+                  <div class="ui checkbox">
+                    <input id="cb_dsn_l45" name="cb_dsn" type="checkbox">
+                    <label for="cb_dsn_l45">L4-5</label>
+                  </div>
+                  <div class="ui checkbox">
+                    <input id="cb_dsn_l5s1" name="cb_dsn" type="checkbox">
+                    <label for="cb_dsn_l5s1">L5-S1</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ui form">
+                <h4>Schmorl's node</h4>
+                <div class="inline field">
+                  <div class="ui checkbox">
+                    <input id="cb_schn_t12l1" name="cb_schn" type="checkbox">
+                    <label for="cb_schn_t12l1">T12-L1</label>
+                  </div>
+                  <div class="ui checkbox">
+                    <input id="cb_schn_l12" name="cb_schn" type="checkbox">
+                    <label for="cb_schn_l12">L1-2</label>
+                  </div>
+                  <div class="ui checkbox">
+                    <input id="cb_schn_l23" name="cb_schn" type="checkbox">
+                    <label for="cb_schn_l23">L2-3</label>
+                  </div>
+                  <div class="ui checkbox">
+                    <input id="cb_schn_l34" name="cb_schn" type="checkbox">
+                    <label for="cb_schn_l34">L3-4</label>
+                  </div>
+                  <div class="ui checkbox">
+                    <input id="cb_schn_l45" name="cb_schn" type="checkbox">
+                    <label for="cb_schn_l45">L4-5</label>
+                  </div>
+                  <div class="ui checkbox">
+                    <input id="cb_schn_l5s1" name="cb_schn" type="checkbox">
+                    <label for="cb_schn_l5s1">L5-S1</label>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="panel-body">
-              <button type="button" id="btn_clear" class="btn btn-info">Clear</button>
-              <textarea id="result" class="form-control" rows="15"></textarea>
-              <button type="button" id="btn_test" class="btn btn-info">Test</button>
+            <div class="field">
+              <div class="ui form">
+                <h4>Scoliosis</h4>
+                <div class="inline field">
+                  <div class="mini ui buttons" id="sco_lr_l12">
+                    <div class="ui button">right</div>
+                    <div class="ui button">left</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-
-        </div><!-- /.body-content -->
-
-        <div id="push"></div>
-      </div> <!-- /container -->
-    </div> <!-- /wrap -->
-
-    <!-- Site footer -->
-    <div id="footer">
-      <div class="container">
-        <p class="text-muted credit">&copy; tsaiid@VGHKS 2013</p>
+        </div>
       </div>
     </div>
+  </div>
 
-    <!-- JavaScript plugins (requires jQuery) -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <div class="two column row">
+    <div class="column">
+      <form class="ui reply form">
+        <div class="field">
+          <textarea id="report_text"></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="two wide column">
+      <div class="ui fluid positive button" id="get_report_btn">
+        Get Report
+      </div>
+      <div class="ui fluid negative button" id="test_btn">
+        Clear
+      </div>
+    </div>
+  </div>
+</div>
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+</body>
 
-    <script>
-      $().tab;
-
-      // For collapse
-      $('#l12-set').collapse({
-        parent: '#L1-L2',
-        toggle: true
-      });
-
-      $('#l12-set').collapse('show');
-
-      $('#btn_l12').click(function(){
-        $('#l12-set').collapse('toggle');
-      });
-
-      var DJDLForm = 'Lumbar spine:' + "\n";
-
-      // Control for radio and checkbox.
-      // Disc Space Narrowing
-      $('.disc_space_narrowing').change(function(){
-        var cb_dsn = $(this).parent().parent().parent().find('.cb_dsn');
-
-        if (!cb_dsn.is(':checked')) {
-          cb_dsn.click();
-        }
-      });
-
-      $('.cb_dsn').change(function(){
-        if (!$(this).is(':checked')) {
-          $(this).parent().parent().next().find(':radio').prop('checked', false);
-        } else {
-          // set default degree to mild.
-          if ($(this).parent().parent().next().find(':radio:checked').length == 0) {
-            $(this).parent().parent().next().find(':radio').first().prop('checked', true);
-          }
-        }
-      });
-
-      // Degenerative Spondylolisthesis
-      $('.deg_spon').change(function(){
-        var cb_deg_spon = $(this).parent().parent().parent().find('.cb_deg_spon');
-
-        if (!cb_deg_spon.is(':checked')) {
-          cb_deg_spon.click();
-        }
-      });
-
-      $('.cb_deg_spon').change(function(){
-        if (!$(this).is(':checked')) {
-          $(this).parent().parent().next().find(':radio').prop('checked', false);
-        } else {
-          // set default grade to 1.
-          if ($(this).parent().parent().next().find(':radio:checked').length == 0) {
-            $(this).parent().parent().next().find(':radio').first().prop('checked', true);
-          }
-        }
-      });
-
-      // Scoliosis
-      $('.scoliosis').change(function(){
-        var cb_scoliosis = $(this).parent().parent().parent().find('.cb_scoliosis');
-
-        if (!cb_scoliosis.is(':checked')) {
-          cb_scoliosis.click();
-        }
-      });
-
-      $('.cb_scoliosis').change(function(){
-        if (!$(this).is(':checked')) {
-          $(this).parent().parent().next().find(':radio').prop('checked', false);
-        } else {
-          // set default grade to Left.
-          if ($(this).parent().parent().next().find(':radio:checked').length == 0) {
-            $(this).parent().parent().next().find(':radio').first().prop('checked', true);
-          }
-        }
-      });
-
-      $(':checkbox, :radio').change(function(){
-        analyze();
-      });
-
-      $('#btn_clear').click(function(){
-        $(':checkbox, :radio').prop('checked', false);
-        $('#result').text('');
-      });
-
-      // # Analysis for output.
-      function analyze () {
-        var str = DJDLForm;
-        var retro = [];
-        var hyper = [];
-        var scol_text = ['left', 'right'];
-
-        // Disc Space Narrowing
-        if ($('.disc_space_narrowing:checked').length == 0) {
-          str += '  - No obvious disc space narrowing. ' + "\n";
-        } else {
-          var degree = [];
-          var degree_text = ['', 'mild', 'moderate', 'severe'];
-          var has_disc_space_narrowing = false;
-
-          $('.disc_space_narrowing:checked').each(function(){
-            var level = $(this).parent().parent().parent().parent().attr('id');
-            if (typeof degree[$(this).val()] == "undefined") {
-              degree[$(this).val()] = new Array();
-            }
-            degree[$(this).val()].push(level);
-            has_disc_space_narrowing = true;
-          });
-
-          if (has_disc_space_narrowing) {
-            str += "  - Disc space narrowing:\n";
-          }
-
-          for (i = 1; i < 4; i++) {
-            if (typeof degree[i] != "undefined" && degree[i].length) {
-              str += "    - " + degree[i].join(', ') + ': ' + degree_text[i] + "\n";
-            }
-          }
-        }
-
-        // Retrolisthesis
-        $('.cb_retro:checked').each(function(){
-          var level = $(this).parent().parent().parent().parent().attr('id');
-          retro.push(level);
-        });
-
-        if (retro.length) {
-          str += "  - Retrolisthesis: " + retro.join(', ') + "\n";
-        } else {
-          str += "  - No retrolisthesis.\n";
-        }
-
-        // Degenerative Spondylolisthesis
-        if ($('.deg_spon:checked').length == 0) {
-          str += '  - No degenerative spondylolisthesis. ' + "\n";
-        } else {
-          var grade = [];
-          //var grade_text = ['', 'mild', 'moderate', 'severe'];
-          var has_spondylolisthesis = false;
-
-          $('.deg_spon:checked').each(function(){
-            var level = $(this).parent().parent().parent().parent().attr('id');
-            if (typeof grade[$(this).val()] == "undefined") {
-              grade[$(this).val()] = new Array();
-            }
-            grade[$(this).val()].push(level);
-            has_spondylolisthesis = true;
-          });
-
-          if (has_spondylolisthesis) {
-            str += "  - Degenerative Spondylolisthesis:\n";
-          }
-
-          for (i = 1; i < 5; i++) {
-            if (typeof grade[i] != "undefined" && grade[i].length) {
-              str += "    - " + grade[i].join(', ') + ': grade ' + i + ".\n";
-            }
-          }
-        }
-
-        // Degenerative lower lumbar facet joints
-        if ($('.cb_dllfj:checked').length) {
-          str += "  - Degenerative lower lumbar facet joints.\n";
-        }
-
-        // Marginal osteophyte
-        if ($('.cb_mo:checked').length) {
-          str += "  - Marginal osteophyte.\n";
-        }
-
-        // Hypermobility
-        $('.cb_hyper:checked').each(function(){
-          var level = $(this).parent().parent().parent().parent().attr('id');
-          hyper.push(level);
-        });
-
-        if (hyper.length) {
-          str += "  - Hypermobility: " + hyper.join(', ') + "\n";
-        } else {
-          str += "  - No hypermobility.\n";
-        }
-
-        // Scoliosis
-        if ($('.cb_scoliosis:checked').length) {
-          str += "  - Scoliosis with " + scol_text[$('.scoliosis:checked').first().val()] + " lateral convexity.\n";
-        }
-
-        $('#result').text(str);
-        return false;
-      }
-    </script>
-  </body>
 </html>
