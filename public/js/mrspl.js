@@ -40,6 +40,18 @@ $(function(){
 
   $('.ui.toggle.button').state();
 
+  $('.ui.buttons .button').click(function(){
+    if ($(this).hasClass('active')) {
+      $(this).removeClass('active');
+    } else {
+      $(this)
+        .addClass('active')
+        .siblings()
+        .removeClass('active')
+      ;
+    }
+  });
+
   $('.toggle_child_section').click(function(){
     if ($(this).hasClass('active')) {
       $(this).siblings('.child_section').show();
@@ -54,15 +66,21 @@ $(function(){
     }
   });
 
-  $('.ui.buttons .button').click(function(){
-    if ($(this).hasClass('active')) {
-      $(this).removeClass('active');
+  $('.toggle_location_section .button').click(function(){
+    if ($(this).hasClass('active') && $(this).text() != 'posterior-central') {
+      $(this).siblings('.child_section').show();
+      // set default rating and button
+      child_section = $(this).siblings('.child_section');
+      fst_buttons = child_section.find('.ui.buttons').eq(0);
+      if (fst_buttons.children('.active').length === 0) {
+        fst_buttons.children().eq(0).click();
+      }
     } else {
-      $(this)
-        .addClass('active')
-        .siblings()
-        .removeClass('active')
-      ;
+      $(this).siblings('.child_section').hide();
+      // toggle parent hivd button
+      if ($(this).parent().children('.active').length === 0) {
+        $(this).parent().parent().parent().siblings('[id^="disc_hivd_"]').click();
+      }
     }
   });
 
