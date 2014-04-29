@@ -17,7 +17,7 @@ $(function(){
     }
   });
 
-  $('.disc_nfs_rating').rating({
+  $('.enable_first_button_while_rating').rating({
     clearable: true,
     onRate: function(valRate){
       if (valRate === 0) {
