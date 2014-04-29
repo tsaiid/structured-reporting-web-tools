@@ -25,6 +25,8 @@ $(function(){
     alert($('#disc-hivd-migration-l12').find('.active').text());
   });
 
+  $('.ui.toggle.button').state();
+
   $('.ui.buttons .button').on('click', function(){
     if ($(this).hasClass('active')) {
       $(this).removeClass('active');
