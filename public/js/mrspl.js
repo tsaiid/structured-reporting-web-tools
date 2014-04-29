@@ -27,11 +27,11 @@ $(function(){
 
   $('.ui.toggle.button').state();
 
-  $('#disc-hivd-l12').click(function(){
+  $('#disc_hivd_l12').click(function(){
     if ($(this).hasClass('active')) {
-      $('.hivd-section').show();
+      $('.hivd_section').show();
     } else {
-      $('.hivd-section').hide();
+      $('.hivd_section').hide();
     }
   });
 
@@ -50,7 +50,7 @@ $(function(){
   $('#get_report_btn').click(function(){
     rating_str = ['', 'mild', 'mild-to-moderate', 'moderate', 'moderate-to-severe', 'severe'];
 
-    disc_rating_l12 = $('#disc-rating-l12').rating('get rating');
+    disc_rating_l12 = $('#disc_rating_l12').rating('get rating');
 
     $('#report_text').text(rating_str[disc_rating_l12]);
   });
