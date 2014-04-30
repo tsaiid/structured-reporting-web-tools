@@ -95,6 +95,25 @@ $(function(){
     }
   });
 
+  var slider_str = ['S1', 'L5', 'L4', 'L3', 'L2', 'L1'];
+
+  var update_slider_value = function(event, ui) {
+    lower_value = (ui.values ? ui.values[0] : $(this).slider('values')[0]);
+    upper_value = (ui.values ? ui.values[1] : $(this).slider('values')[1]);
+    $(this).find('a').eq(0).html('<div class="ui pointing left large label slider_handle">' + slider_str[lower_value] + '</div>');
+    $(this).find('a').eq(1).html('<div class="ui pointing left large label slider_handle">' + slider_str[upper_value] + '</div>');
+  }
+
+  $( "#desiccation-range, #dsn-range" ).slider({
+    orientation: "vertical",
+    range: true,
+    min: 0, max: 5,
+    step: 1,
+    values: [ 1, 4 ],
+    slide: update_slider_value,
+    create: update_slider_value
+  });
+
   $('#get_report_btn').click(function(){
     rating_str = ['', 'mild ', 'mild-to-moderate ', 'moderate ', 'moderate-to-severe ', 'severe '];
     level_str = ['L1-L2', 'L2-L3', 'L3-L4', 'L4-L5', 'L5-S1'];
