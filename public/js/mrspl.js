@@ -119,6 +119,27 @@ $(function(){
         report_str += 'Grade ' + spdll_rating + ' degenerative type spondylolisthesis in combination of ';
       }
 
+      // example: mild retrolisthesis, small spondylosis
+      retro_rating = $('#disc_retro_rating_'+level).rating('get rating');
+      spdl_rating = $('#disc_spdl_rating_'+level).rating('get rating');
+      spdl_is_active = $('#spdl_'+level).is(':checked');
+
+      disc_spine_characters_length = 0;
+      if (retro_rating > 0) disc_spine_characters_length++;
+      if (spdl_is_active > 0) disc_spine_characters_length++;
+
+      if (retro_rating > 0) {
+        report_str += rating_str[retro_rating] + 'retrolisthesis';
+      }
+
+      if (spdl_is_active) {
+        if (disc_spine_characters_length > 1) report_str += ', ';
+        if (spdl_rating > 0) report_str += 'small ';
+        report_str += 'spondylosis';
+      }
+
+      if (disc_spine_characters_length > 0) report_str += ', ';
+
       // diffuse
       // example: diffuse bulging/protrusion/herniation disk
       diffuse_is_active = $('#disc_diffuse_'+level).hasClass('active');
