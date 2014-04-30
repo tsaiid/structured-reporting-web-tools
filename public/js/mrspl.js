@@ -112,6 +112,13 @@ $(function(){
       disc_rating = rating_str[$('#disc_rating_'+level).rating('get rating')];
       report_str = level_str[i] + ": Presence of ";
 
+      // listhesis
+      // example: Grade 1 degenerative type spondylolisthesis in combination of
+      spdll_rating = $('#disc_spdll_rating_'+level).rating('get rating');
+      if (spdll_rating > 0) {
+        report_str += 'Grade ' + spdll_rating + ' degenerative type spondylolisthesis in combination of ';
+      }
+
       // diffuse
       // example: diffuse bulging/protrusion/herniation disk
       diffuse_is_active = $('#disc_diffuse_'+level).hasClass('active');
