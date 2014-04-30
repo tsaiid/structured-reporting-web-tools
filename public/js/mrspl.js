@@ -40,7 +40,7 @@ $(function(){
 
   $('.ui.toggle.button').state();
 
-  $('.ui.buttons .button').click(function(){
+  $('.ui.buttons.exclusive .button').click(function(){
     if ($(this).hasClass('active')) {
       $(this).removeClass('active');
     } else {
@@ -49,6 +49,15 @@ $(function(){
         .siblings()
         .removeClass('active')
       ;
+    }
+  });
+
+  // multiple choice buttons
+  $('.ui.buttons.multiple_choice .button').click(function(){
+    if ($(this).hasClass('active')) {
+      $(this).removeClass('active');
+    } else {
+      $(this).addClass('active');
     }
   });
 
