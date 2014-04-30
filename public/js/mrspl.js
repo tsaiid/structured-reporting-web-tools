@@ -230,6 +230,31 @@ $(function(){
       final_report += report_str;
     });
 
+    // djd
+    // example: Degenerative disc disease:
+    //          1. Desiccation: L1 through L5
+    //          2. Disc space narrowing: L2 through L5
+    desiccation_is_active = $('#desiccation').hasClass('active');
+    narrowing_is_active = $('#narrowing').hasClass('active');
+
+    if (desiccation_is_active || narrowing_is_active) {
+      report_str = "\n\nDegenerative disc disease:\n";
+
+      if (desiccation_is_active) {
+        dec_begin = slider_str[$('#desiccation-range').slider('values')[1]];
+        dec_end = slider_str[$('#desiccation-range').slider('values')[0]];
+        report_str += '- Desiccation: ' + dec_begin + ' through ' + dec_end + "\n";
+      }
+
+      if (narrowing_is_active) {
+        dsn_begin = slider_str[$('#dsn-range').slider('values')[1]];
+        dsn_end = slider_str[$('#dsn-range').slider('values')[0]];
+        report_str += '- Disc space narrowing: ' + dsn_begin + ' through ' + dsn_end + "\n";
+      }
+
+      final_report += report_str;
+    }
+
     $('#report_text').text(final_report);
   });
 });
