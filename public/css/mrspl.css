@@ -9,3 +9,13 @@
 .child_section {
   display: none;
 }
+
+.ui-slider {
+  margin-top: 30px;
+  margin-left: 25px;
+}
+
+.slider_handle {
+  margin-top: -5px !important;
+  margin-left: 30px !important;
+}
