@@ -264,6 +264,20 @@ $(function(){
       final_report += report_str;
     }
 
+    // Schmorl's node
+    // example: Schmorl's node ( vertical intravertebral disc herniation ) over the T12-L1, L1-L2, L2-L3, L3-L4, L4-L5, L5-S1.
+    sch_node_length = $('#sch_node').children('.active').length;
+    if (sch_node_length > 0) {
+      report_str = "\n\nSchmorl's node ( vertical intravertebral disc herniation ) over the ";
+
+      $('#sch_node').children('.active').each(function(i, level){
+        report_str += $(this).text();
+        report_str += (i == sch_node_length - 1) ? '.' : ', ';
+      });
+
+      final_report += report_str;
+    }
+
     $('#report_text').text(final_report);
   });
 });
