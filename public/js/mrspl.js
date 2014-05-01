@@ -249,7 +249,7 @@ $(function(){
     narrowing_is_active = $('#narrowing').hasClass('active');
 
     if (desiccation_is_active || narrowing_is_active) {
-      report_str = "\n\nDegenerative disc disease:\n";
+      report_str = "Degenerative disc disease:\n";
 
       if (desiccation_is_active) {
         dec_begin = slider_str[$('#desiccation-range').slider('values')[1]];
