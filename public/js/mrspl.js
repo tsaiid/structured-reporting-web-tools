@@ -278,6 +278,13 @@ $(function(){
       final_report += report_str;
     }
 
+    // Scoliosis
+    // Example: Rotatory scoliosis of L-spine, convex to left/right side.
+    if ($('#scoliosis').children('.active').length > 0) {
+      scoliosis_side = $('#scoliosis').children('.active').text();
+      final_report += "\n\nRotatory scoliosis of L-spine, convex to " + scoliosis_side + " side.";
+    }
+
     $('#report_text').text(final_report);
   });
 });
