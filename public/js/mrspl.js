@@ -210,7 +210,7 @@ $(function(){
       hivd_is_active = $('#disc_hivd_'+level).hasClass('active');
       if (hivd_is_active) {
         if (diffuse_is_active) {
-          report_str += ', and associated with the ';
+          report_str += ' and associated with the ';
         }
         disc_location = $('#disc_location_'+level).children('.active').text();
         if (disc_location != 'posterior-central') {
@@ -235,11 +235,13 @@ $(function(){
       // characters
       // example: disc space narrowing, degenerative endplate change, ligament flavum hypertrophy and facet joint degenerative change
       characters = $('#characters_'+level).find(':checkbox:checked');
-      characters.each(function(index, element){
-        character_rating = $(this).parent().next().rating('get rating');
-        report_str += (index == characters.length - 1) ? ', and ' : ', ';
-        report_str += rating_str[character_rating] + $(this).next().text();
-      });
+      if (characters.length > 0) {
+        character_ary = characters.map(function(){
+                          character_rating = $(this).parent().next().rating('get rating');
+                          return rating_str[character_rating] + $(this).next().text();
+                        }).get();
+        report_str += (characters.length == 1 ? ' and ' : ', ') + concat_in_english(character_ary);
+      }
 
       // stenosis
       // example: causing mild/moderate/severe degree central spinal stenosis and mild/moderate/severe narrowing of bilateral lateral recesses and mild/moderate/severe degree degenerative bilateral/right/left neuroforaminal stenosis
@@ -304,11 +306,8 @@ $(function(){
     if (sch_node_length > 0) {
       report_str = "Schmorl's node ( vertical intravertebral disc herniation ) over the ";
 
-      $('#sch_node').children('.active').each(function(i, level){
-        report_str += $(this).text();
-        report_str += (i == sch_node_length - 1) ? '.' : ', ';
-      });
-
+      sch_node = $('#sch_node').children('.active').map(function(){ return $(this).text(); }).get();
+      report_str += concat_in_english(sch_node) + '.';
       final_report += report_str + "\n\n";
     }
 
