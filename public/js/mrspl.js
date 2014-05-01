@@ -128,14 +128,14 @@ $(function(){
   $('#get_report_btn').click(function(){
     rating_str = ['', 'mild ', 'mild-to-moderate ', 'moderate ', 'moderate-to-severe ', 'severe '];
     level_str = ['L1-L2', 'L2-L3', 'L3-L4', 'L4-L5', 'L5-S1'];
-    //level_id = ['l12', 'l23', 'l34', 'l45', 'l5s1'];
-    level_id = ['l12'];
+    level_id = ['l12', 'l23', 'l34', 'l45', 'l5s1'];
+    //level_id = ['l12'];
 
     final_report = "";
     $.each(level_id, function(i, level){
       disc_ss_rating = $('#disc_ss_rating_'+level).rating('get rating');
       if (!$('#disc_diffuse_'+level).hasClass('active') && !$('#disc_hivd_'+level).hasClass('active') && disc_ss_rating === 0) {
-        final_report += level_str[i] + ": No definite spinal stenosis.";
+        final_report += level_str[i] + ": No definite spinal stenosis.\n\n";
         return;
       }
 
@@ -238,7 +238,7 @@ $(function(){
         report_str += ', causing mild indentation of anterior dural sac, however, no obvious significant spinal stenosis.';
       }
 
-      final_report += report_str;
+      final_report += report_str + "\n\n";
     });
 
     // djd
