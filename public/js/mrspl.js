@@ -133,6 +133,18 @@ $(function(){
     }
   }
 
+  function concat_in_english(ary){
+    length = ary.length;
+    if (length === 1) {
+      return ary.join();
+    } else if (length === 2) {
+      return ary.join(' and ');
+    } else {
+      last_element = ary.pop();
+      return ary.join(', ') + " and " + last_element;
+    }
+  }
+
   $('#get_report_btn').click(function(){
     rating_str = ['', 'mild ', 'mild-to-moderate ', 'moderate ', 'moderate-to-severe ', 'severe '];
     level_str = { 'l12': 'L1-L2',
@@ -305,6 +317,19 @@ $(function(){
     if ($('#scoliosis').children('.active').length > 0) {
       scoliosis_side = $('#scoliosis').children('.active').text();
       final_report += "Rotatory scoliosis of L-spine, convex to " + scoliosis_side + " side.\n\n";
+    }
+
+    // Hemangioma
+    // example: Presence of small hemangiomas over L1 and L4 spine verterbral body.
+    hemangioma_length = $('#hemangioma').children('.active').length;
+    if (hemangioma_length > 0) {
+      report_str = "Presence of small hemangiomas over ";
+
+      hemangiomas = $('#hemangioma').children('.active').map(function(){ return $(this).text(); }).get();
+      report_str += concat_in_english(hemangiomas);
+      report_str += ' spine verterbral ' + (hemangioma_length > 1 ? 'bodies' : 'body') + ".\n\n";
+
+      final_report += report_str + "\n\n";
     }
 
     $('#report_text').text(final_report);
