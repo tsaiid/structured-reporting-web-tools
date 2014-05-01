@@ -283,28 +283,28 @@ $(function(){
         report_str += '- Disc space narrowing: ' + dsn_begin + ' through ' + dsn_end + "\n";
       }
 
-      final_report += report_str;
+      final_report += report_str + "\n";
     }
 
     // Schmorl's node
     // example: Schmorl's node ( vertical intravertebral disc herniation ) over the T12-L1, L1-L2, L2-L3, L3-L4, L4-L5, L5-S1.
     sch_node_length = $('#sch_node').children('.active').length;
     if (sch_node_length > 0) {
-      report_str = "\n\nSchmorl's node ( vertical intravertebral disc herniation ) over the ";
+      report_str = "Schmorl's node ( vertical intravertebral disc herniation ) over the ";
 
       $('#sch_node').children('.active').each(function(i, level){
         report_str += $(this).text();
         report_str += (i == sch_node_length - 1) ? '.' : ', ';
       });
 
-      final_report += report_str;
+      final_report += report_str + "\n\n";
     }
 
     // Scoliosis
     // Example: Rotatory scoliosis of L-spine, convex to left/right side.
     if ($('#scoliosis').children('.active').length > 0) {
       scoliosis_side = $('#scoliosis').children('.active').text();
-      final_report += "\n\nRotatory scoliosis of L-spine, convex to " + scoliosis_side + " side.";
+      final_report += "Rotatory scoliosis of L-spine, convex to " + scoliosis_side + " side.\n\n";
     }
 
     $('#report_text').text(final_report);
