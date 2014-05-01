@@ -125,17 +125,32 @@ $(function(){
     create: update_slider_value
   });
 
+  function add_or_append_report(ary, level, report) {
+    if (report in ary) {
+      ary[report] = ary[report] + ', ' + level;
+    } else {
+      ary[report] = level;
+    }
+  }
+
   $('#get_report_btn').click(function(){
     rating_str = ['', 'mild ', 'mild-to-moderate ', 'moderate ', 'moderate-to-severe ', 'severe '];
-    level_str = ['L1-L2', 'L2-L3', 'L3-L4', 'L4-L5', 'L5-S1'];
+    level_str = { 'l12': 'L1-L2',
+                  'l23': 'L2-L3',
+                  'l34': 'L3-L4',
+                  'l45': 'L4-L5',
+                  'l5s1': 'L5-S1'
+                };
     level_id = ['l12', 'l23', 'l34', 'l45', 'l5s1'];
     //level_id = ['l12'];
 
     final_report = "";
+    level_report_ary = {};
     $.each(level_id, function(i, level){
       disc_ss_rating = $('#disc_ss_rating_'+level).rating('get rating');
       if (!$('#disc_diffuse_'+level).hasClass('active') && !$('#disc_hivd_'+level).hasClass('active') && disc_ss_rating === 0) {
-        final_report += level_str[i] + ": No definite spinal stenosis.\n\n";
+        report_str = 'No definite spinal stenosis.';
+        add_or_append_report(level_report_ary, level_str[level], report_str);
         return;
       }
 
@@ -238,7 +253,12 @@ $(function(){
         report_str += ', causing mild indentation of anterior dural sac, however, no obvious significant spinal stenosis.';
       }
 
-      final_report += report_str + "\n\n";
+      add_or_append_report(level_report_ary, level_str[level], report_str);
+    });
+
+    // convert report array into string
+    $.each(level_report_ary, function(report_str, level){
+      final_report += level + ': ' + report_str + "\n\n";
     });
 
     // djd
@@ -288,5 +308,6 @@ $(function(){
     }
 
     $('#report_text').text(final_report);
+    //console.log(level_report_ary);
   });
 });
