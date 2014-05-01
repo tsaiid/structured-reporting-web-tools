@@ -34,7 +34,7 @@
   <div class="two column row">
     <div class="one wide column">
       <div class="ui vertical pointing menu">
-        <a class="item" data-tab="l12">
+        <a class="item active" data-tab="l12">
           <i class="expand icon"></i> L1-2
         </a>
         <a class="item" data-tab="l23">
@@ -49,15 +49,28 @@
         <a class="item" data-tab="l5s1">
           <i class="expand icon"></i> L5-S1
         </a>
-        <a class="item active" data-tab="others">
+        <a class="item" data-tab="others">
           <i class="expand icon"></i> Others
         </a>
       </div>
     </div>
 
     <div class="column">
-      <div class="ui tab segment" data-tab="l12">
+      <div class="ui tab segment active" data-tab="l12">
         <h3 class="ui header">L1-2</h3>
+
+        <div class="ui compact small menu floated right copy_from">
+          <div class="ui simple dropdown item">
+            COPY FROM <i class="dropdown icon"></i>
+            <div class="menu">
+              <div class="item">L1-2</div>
+              <div class="item">L2-3</div>
+              <div class="item">L3-4</div>
+              <div class="item">L4-5</div>
+              <div class="item">L5-S1</div>
+            </div>
+          </div>
+        </div>
 
         <div class="ui small fluid form segment">
           <div class="two fields">
@@ -298,7 +311,7 @@
       <div class="ui tab segment" data-tab="l34">L3-4</div>
       <div class="ui tab segment" data-tab="l45">L4-5</div>
       <div class="ui tab segment" data-tab="l5s1">L5-S1</div>
-      <div class="ui tab segment active" data-tab="others">
+      <div class="ui tab segment" data-tab="others">
         <h3 class="ui header">Others</h3>
         <div class="ui small fluid form segment">
           <div class="three fields">
