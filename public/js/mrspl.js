@@ -1,4 +1,6 @@
 $(function(){
+  //$('.ui.dropdown').dropdown();
+
   $('.ui.checkbox').checkbox({
     'onDisable':  function() {
       $(this).parent().siblings('.ui.rating').rating('clear rating');
