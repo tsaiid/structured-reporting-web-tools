@@ -331,6 +331,18 @@ $(function(){
       final_report += report_str + "\n\n";
     }
 
+    // Annulus Tear
+    // example: Presence of small posterior annulus fibrosus tear between L2-L3, L3-L4, L4-L5 and L5-S1.
+    annulus_tear_length = $('[id^=annulus_tear_]').length;
+    if (annulus_tear_length > 0) {
+      report_str = "Presence of small hemangiomas posterior annulus fibrosus tear between ";
+
+      annulus_tears = $('[id^=annulus_tear_]').map(function(){ return level_str[$(this).attr('id').split('_').pop()]; }).get();
+      report_str += concat_in_english(annulus_tears) + ".\n\n";
+
+      final_report += report_str + "\n\n";
+    }
+
     $('#report_text').text(final_report);
     //console.log(level_report_ary);
   });
