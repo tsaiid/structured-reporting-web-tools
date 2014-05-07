@@ -53,6 +53,13 @@
           <i class="expand icon"></i> Others
         </a>
       </div>
+
+      <div class="ui fluid positive button" id="get_report_btn">
+        Get Report
+      </div>
+      <div class="ui fluid negative button" id="test_btn">
+        Clear
+      </div>
     </div>
 
     <div class="column">
@@ -1422,21 +1429,17 @@
       </div>
     </div>
   </div>
+</div>
 
-  <div class="two column row">
-    <div class="column">
-      <form class="ui reply form">
-        <div class="field">
-          <textarea id="report_text"></textarea>
-        </div>
-      </form>
-    </div>
-    <div class="two wide column">
-      <div class="ui fluid positive button" id="get_report_btn">
-        Get Report
-      </div>
-      <div class="ui fluid negative button" id="test_btn">
-        Clear
+<div class="ui modal" id="report_model">
+  <i class="close icon"></i>
+  <div class="header">
+    Primitive Report
+  </div>
+  <div class="content">
+    <div class="ui form">
+      <div class="field">
+        <textarea id="report_textarea"></textarea>
       </div>
     </div>
   </div>
