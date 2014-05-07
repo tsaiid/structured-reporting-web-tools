@@ -349,7 +349,7 @@ $(function(){
     //console.log(level_report_ary);
 
     // toggle modal box.
-    $('#report_model')
+    $('#report_modal')
       .modal('setting', 'transition', 'fade')
       .modal('show');
   });
