@@ -23,3 +23,7 @@
 .copy_from {
   margin-top: -50px !important;
 }
+
+#report_textarea {
+  height: 50em;
+}
