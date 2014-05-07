@@ -1,6 +1,8 @@
 $(function(){
   //$('.ui.dropdown').dropdown();
 
+  $('.ui.modal').modal();
+
   $('.ui.checkbox').checkbox({
     'onDisable':  function() {
       $(this).parent().siblings('.ui.rating').rating('clear rating');
@@ -343,7 +345,12 @@ $(function(){
       final_report += report_str + "\n\n";
     }
 
-    $('#report_text').text(final_report);
+    $('#report_textarea').text(final_report);
     //console.log(level_report_ary);
+
+    // toggle modal box.
+    $('#report_model')
+      .modal('setting', 'transition', 'fade')
+      .modal('show');
   });
 });
