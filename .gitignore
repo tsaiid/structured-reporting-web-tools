@@ -1,3 +1,5 @@
 Capfile
+.capistrano
 config/
-
+build
+node_modules
