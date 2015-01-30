@@ -12,6 +12,8 @@
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Simple Sidebar CSS -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
 
     <!-- For IE 6/7/8 Responsive -->
     <!--[if lt IE 9]>
@@ -27,48 +29,53 @@
     }
     /* Wrapper for page content to push down footer */
 
-    #wrap {
+    #inner-wrapper {
         min-height: 100%;
         height: auto !important;
         height: 100%;
-        /* Negative indent footer by it's height */
-
         margin: 0 auto -50px;
+        padding: 0 auto 50px;
+        width: 100%;
     }
     /* Set the fixed height of the footer here */
 
-    #push,
+    #sidebar-wrapper {
+        margin-bottom: -50px;
+    }
+
     #footer {
         height: 50px;
-    }
-    #footer {
-        background-color: #f5f5f5;
+        background-color: #000;
     }
     </style>
 </head>
 
 <body>
-    <div id="wrap">
-        <div class="container">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <div id="inner-wrapper">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-brand">
+                        <a href="#">
+                        Structure Report
+                    </a>
+                    </li>
+                    <li>
+                        <a href="#">DJD L-spine</a>
+                    </li>
+                </ul>
+            </div>
 
-            <nav class="navbar navbar-default">
-                <div class="container-fluid">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="#">Structure Report</a>
-                    </div>
+            <!-- Site footer -->
+            <div id="footer">
+                    <p class="text-muted credit text-center">&copy; tsaiid@VGHKS 2013</p>
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
 
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="navbar-collapse-1">
-                        <ul class="nav navbar-nav">
-                            <li class="active"><a href="#">DJD L-spine</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- /.navbar-collapse -->
-                </div>
-                <!-- /.container-fluid -->
-            </nav>
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
 
             <div class="body-content">
 
@@ -461,14 +468,7 @@
         </div>
         <!-- /container -->
     </div>
-    <!-- /wrap -->
-
-    <!-- Site footer -->
-    <div id="footer">
-        <div class="container">
-            <p class="text-muted credit">&copy; tsaiid@VGHKS 2013</p>
-        </div>
-    </div>
+    <!-- /wrapper -->
 
     <!-- JavaScript plugins (requires jQuery) -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
