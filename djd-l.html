@@ -11,9 +11,9 @@
     <title>Structure Report</title>
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="vendor/css/bootstrap.min.css">
     <!-- Simple Sidebar CSS -->
-    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/simple-sidebar.css">
 
     <!-- For IE 6/7/8 Responsive -->
     <!--[if lt IE 9]>
@@ -471,12 +471,12 @@
     <!-- /wrapper -->
 
     <!-- JavaScript plugins (requires jQuery) -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="vendor/js/jquery.min.js"></script>
 
     <!-- Latest compiled and minified JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="vendor/js/bootstrap.min.js"></script>
 
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.2.0/ZeroClipboard.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.2.0/ZeroClipboard.min.js"></script>
 
     <script>
     $().tab;
@@ -743,8 +743,8 @@
 
     // ZeroClipboard
     ZeroClipboard.config({
-        swfPath: "//cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.2.0/ZeroClipboard.swf",
-        trustedDomains: ["localhost", "vghks.tsai.it"]
+        swfPath: "vendor/images/ZeroClipboard.swf",
+        trustedDomains: ["localhost:4000", "radtools.tsai.it"]
     });
     var client = new ZeroClipboard($("#btn_copy"));
     </script>
