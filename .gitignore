@@ -3,3 +3,4 @@ Capfile
 config/
 build
 node_modules
+_site/
