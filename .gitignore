@@ -1,6 +1,6 @@
 Capfile
 .capistrano
 config/
-build
-node_modules
+node_modules/
 _site/
+bower_components/
