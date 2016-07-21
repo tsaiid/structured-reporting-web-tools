@@ -30,7 +30,8 @@ module.exports = (grunt) ->
         verbose: true,
         pretend: false, # Don't do any disk operations - just write log
         ignoreInDest: "**/.git/**", # Never remove js files from destination
-        updateAndDelete: true # Remove all files from dest that are not found in src
+        updateAndDelete: true, # Remove all files from dest that are not found in src
+        compareUsing: "md5"
       }
     }
 
