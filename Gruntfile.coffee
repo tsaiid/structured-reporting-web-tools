@@ -22,11 +22,10 @@ module.exports = (grunt) ->
       main: {
         files: [
           { src: ['assets/**', 'djd-l.html'], dest: '<%= opts.base_path %>'},
-          { cwd: 'bower_components/jquery/dist/', src: 'jquery.min.js', dest: '<%= opts.js_path %>' },
+          { cwd: 'bower_components/jquery/dist/', src: ['jquery.min.js', 'jquery.min.map'], dest: '<%= opts.js_path %>' },
           { cwd: 'bower_components/bootstrap/dist/css/', src: 'bootstrap.min.css', dest: '<%= opts.css_path %>' },
           { cwd: 'bower_components/bootstrap/dist/js/', src: 'bootstrap.min.js', dest: '<%= opts.js_path %>' },
-          { cwd: 'bower_components/zeroclipboard/dist/', src: 'ZeroClipboard.min.js', dest: '<%= opts.js_path %>' },
-          { cwd: 'bower_components/zeroclipboard/dist/', src: 'ZeroClipboard.swf', dest: '<%= opts.image_path %>' },
+          { cwd: 'bower_components/clipboard/dist/', src: 'clipboard.min.js', dest: '<%= opts.js_path %>' },
         ],
         verbose: true,
         pretend: false, # Don't do any disk operations - just write log
