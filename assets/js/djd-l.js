@@ -211,7 +211,11 @@ function analyze() {
 
     // Marginal osteophyte
     if ($('.cb_mo:checked').length) {
-        str += "  - Marginal osteophyte.\n";
+        if ($('.cb_mo_sm:checked').length) {
+            str += "  - Small marginal osteophyte.\n";
+        } else {
+            str += "  - Marginal osteophyte.\n";
+        }
     }
 
     // Hypermobility
