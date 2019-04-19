@@ -264,7 +264,7 @@ function analyze() {
     return false;
 }
 
-var clipboard = new Clipboard('#btn_copy');
+var clipboard = new ClipboardJS('#btn_copy');
 clipboard.on('success', function(e) {
     console.info('Action:', e.action);
     console.info('Text:', e.text);
@@ -281,5 +281,5 @@ clipboard.on('error', function(e) {
 });
 
 $('#btn_copy').mouseleave(function(){
-    $(this).tooltip('destroy');
+    $(this).tooltip('dispose');
 });
