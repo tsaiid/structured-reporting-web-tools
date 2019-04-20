@@ -5,15 +5,19 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
 
   // https://webpack.js.org/concepts/entry-points/#multi-page-application
-  entry: './src/index.js',
+  entry: {
+    djd_l: './src/djd_l.js',
+  },
   output: {
-    filename: 'index_bundle.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'dist')
   },
 
   // https://webpack.js.org/configuration/dev-server/
   devServer: {
-    port: 8080
+    port: 8080,
+    contentBase: './dist',
+    hot: true,
   },
 
   module: {
@@ -45,12 +49,20 @@ module.exports = {
           'style-loader',  // 這個會後執行 (順序很重要)
           'css-loader' // 這個會先執行
         ]
-      }
+      },
+      {
+        test: /\.html$/,
+        loader: "raw-loader" // loaders: ['raw-loader']，這個方式也是可以被接受的。
+      },
     ]
   },
 
   // https://webpack.js.org/concepts/plugins/
   plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/html/djd_l.html',
+      filename: 'djd_l.html',
+    }),
     /*
     new webpack.ProvidePlugin({
       $: 'jquery',
@@ -59,13 +71,6 @@ module.exports = {
       Popper: ['popper.js', 'default'],
       ClipboardJS: 'clipboard',
     }),
-    /*
-    new HtmlWebpackPlugin({
-      template: './src/djd-l.html',
-      inject: true,
-      chunks: ['djd-l'],
-      filename: 'djd-l.html'
-    })
     */
   ],
 };

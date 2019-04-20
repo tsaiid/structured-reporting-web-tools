@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --mode development",
-    "build": "webpack --mode development"
+    "dev": "webpack-dev-server --mode development",
+    "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",
@@ -19,9 +19,10 @@
   },
   "homepage": "https://github.com/tsaiid/structured-reporting-web-tools",
   "devDependencies": {
-    "expose-loader": "^0.7.5",
     "css-loader": "^2.1.1",
+    "expose-loader": "^0.7.5",
     "html-webpack-plugin": "^3.2.0",
+    "raw-loader": "^2.0.0",
     "script-loader": "^0.7.2",
     "style-loader": "^0.23.1",
     "webpack": "^4.30.0",
