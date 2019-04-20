@@ -51,10 +51,6 @@ module.exports = {
           'css-loader' // 這個會先執行
         ]
       },
-      {
-        test: /\.html$/,
-        loader: "raw-loader" // loaders: ['raw-loader']，這個方式也是可以被接受的。
-      },
     ]
   },
 
