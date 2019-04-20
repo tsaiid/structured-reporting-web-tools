@@ -6,8 +6,8 @@ module.exports = {
 
   // https://webpack.js.org/concepts/entry-points/#multi-page-application
   entry: {
-    'djd_l': './src/djd_l.js',
-    'ajcc8/lung': './src/ajcc8_lung.js',
+    djd_l: './src/djd_l.js',
+    ajcc8_lung: './src/ajcc8_lung.js',
   },
   output: {
     filename: '[name].js',
@@ -63,8 +63,8 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: './src/html/ajcc8/lung.html',
-      filename: 'ajcc8/lung.html',
-      chunks: ['ajcc8/lung'],
+      filename: 'ajcc8_lung.html',
+      chunks: ['ajcc8_lung'],
     }),
     /*
     new webpack.ProvidePlugin({
