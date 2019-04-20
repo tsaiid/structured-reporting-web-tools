@@ -4,4 +4,4 @@ import 'clipboard';
 //import './js/djd-l.js';
 import './css/dashboard.css';
 //import './css/djd-l.css';
-require('./html/ajcc8/lung.html');
+require('raw-loader!./html/ajcc8/lung.html');
