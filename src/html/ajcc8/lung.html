@@ -4,37 +4,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="References for bone age">
+  <meta name="description" content="Structured report for lung cancer staging">
   <meta name="author" content="I-Ta Tsai">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title>Structure Report</title>
+  <title>Structure Report for Lung Cancer Staging</title>
 
   <!-- For IE 6/7/8 Responsive -->
   <!--[if lt IE 9]>
       <script src="js/respond.min.js"></script>
       <script src="js/html5shiv.js"></script>
     <![endif]-->
+
+  <!-- Google Analytics -->
+<%= require('html-loader!../partials/google_analytics.html') %>
 </head>
 
 <body>
-  <!-- Google Analytics -->
-  <script>
-    (function (i, s, o, g, r, a, m) {
-      i['GoogleAnalyticsObject'] = r;
-      i[r] = i[r] || function () {
-        (i[r].q = i[r].q || []).push(arguments)
-      }, i[r].l = 1 * new Date();
-      a = s.createElement(o),
-        m = s.getElementsByTagName(o)[0];
-      a.async = 1;
-      a.src = g;
-      m.parentNode.insertBefore(a, m)
-    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
-    ga('create', 'UA-65868756-1', 'auto');
-    ga('send', 'pageview');
-  </script>
 
 <%= require('html-loader!../partials/nav.html') %>
 
@@ -43,9 +29,8 @@
 <%= require('html-loader!../partials/sidebar.html') %>
 
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-        <div
-          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h2">L-spine</h1>
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h3">Lung Cancer Staging Form</h1>
 
           <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
@@ -59,390 +44,256 @@
           </div>
         </div>
 
-          <div class="row">
-              <div class="col">
-                <!-- L1-L2 -->
-                <div class="form-group" id="L1-L2">
-                  <label for="tabl1-2" class="col-lg-2 control-label">L1-L2</label>
-                  <div class="col">
-                    <!-- Disk Space Narrowing -->
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" class="cb_dsn" value=""> Disk space narrowing
-                      </label>
-                    </div>
-                    <div class="col-lg-offset-1">
-                      <label class="radio-inline">
-                        <input type="radio" class="disc_space_narrowing" name="disc_space_l12" value="1"> mild
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="disc_space_narrowing" name="disc_space_l12" value="2"> moderate
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="disc_space_narrowing" name="disc_space_l12" value="3"> severe
-                      </label>
-                    </div>
+        <div class="row">
+          <div class="col">
+            <!-- Scanning Protocol -->
+            <h2 class="h4">Scanning Protocol</h2>
+            <form class="form-inline">
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1" checked>
+                <label class="form-check-label" for="inlineCheckbox1">NCCT</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2" checked>
+                <label class="form-check-label" for="inlineCheckbox2">CECT</label>
+              </div>
+            </form>
 
-                    <div class="">
-                      <!-- Retrolisthesis -->
-                      <label class="checkbox-inline col-lg-6">
-                        <input type="checkbox" class="cb_retro" value=""> Retrolisthesis
-                      </label>
-
-                      <!-- Hypermobility -->
-                      <label class="checkbox-inline">
-                        <input type="checkbox" class="cb_hyper" value=""> Hypermobility
-                      </label>
-                    </div>
-
-                    <!-- Degenerative Spondylolisthesis -->
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" class="cb_deg_spon" value=""> Degenerative spondylolisthesis
-                      </label>
-                    </div>
-                    <div class="col-lg-offset-1">
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l12" value="1"> grade 1
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l12" value="2"> grade 2
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l12" value="3"> grade 3
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l12" value="4"> grade 4
-                      </label>
-                    </div>
+            <!-- Tumor Profile -->
+            <h2 class="h4 mt-3">Tumor Profile</h2>
+            <!-- Tumor Location -->
+            <h3 class="h5">Tumor Location</h3>
+            <form class="form-inline">
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">RUL</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                <label class="form-check-label" for="inlineCheckbox2">RML</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
+                <label class="form-check-label" for="inlineCheckbox3">RLL</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
+                <label class="form-check-label" for="inlineCheckbox3">LUL</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
+                <label class="form-check-label" for="inlineCheckbox3">LLL</label>
+              </div>
+              <div class="input-group input-group-sm mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <input type="checkbox" aria-label="Checkbox for following text input">
                   </div>
+                  <span class="input-group-text">Others</span>
                 </div>
-                <!-- L2-L3 -->
-                <div class="form-group" id="L2-L3">
-                  <label for="tabl1-2" class="col-lg-2 control-label">L2-L3</label>
-                  <div class="col-lg-10">
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" class="cb_dsn" value=""> Disk space narrowing
-                      </label>
-                    </div>
-                    <div class="col-lg-offset-1">
-                      <label class="radio-inline">
-                        <input type="radio" class="disc_space_narrowing" name="disc_space_l23" value="1"> mild
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="disc_space_narrowing" name="disc_space_l23" value="2"> moderate
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="disc_space_narrowing" name="disc_space_l23" value="3"> severe
-                      </label>
-                    </div>
+                <input type="text" class="form-control" aria-label="Text input with checkbox">
+              </div>
+            </form>
 
-                    <div class="">
-                      <label class="checkbox-inline col-lg-6">
-                        <input type="checkbox" class="cb_retro" value=""> Retrolisthesis
-                      </label>
-                      <label class="checkbox-inline">
-                        <input type="checkbox" class="cb_hyper" value=""> Hypermobility
-                      </label>
-                    </div>
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" class="cb_deg_spon" value=""> Degenerative spondylolisthesis
-                      </label>
-                    </div>
-                    <div class="col-lg-offset-1">
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l23" value="1"> grade 1
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l23" value="2"> grade 2
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l23" value="3"> grade 3
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l23" value="4"> grade 4
-                      </label>
-                    </div>
-                  </div>
+            <!-- Tumor Size -->
+            <h3 class="h5 mt-3">Tumor Size</h3>
+            <form class="form-inline">
+              <div class="input-group input-group-sm mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Greatest Diameter</span>
                 </div>
-                <!-- L3-L4 -->
-                <div class="form-group" id="L3-L4">
-                  <label for="tabl1-2" class="col-lg-2 control-label">L3-L4</label>
-                  <div class="col-lg-10">
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" class="cb_dsn" value=""> Disk space narrowing
-                      </label>
-                    </div>
-                    <div class="col-lg-offset-1">
-                      <label class="radio-inline">
-                        <input type="radio" class="disc_space_narrowing" name="disc_space_l34" value="1"> mild
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="disc_space_narrowing" name="disc_space_l34" value="2"> moderate
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="disc_space_narrowing" name="disc_space_l34" value="3"> severe
-                      </label>
-                    </div>
-
-                    <div class="">
-                      <label class="checkbox-inline col-lg-6">
-                        <input type="checkbox" class="cb_retro" value=""> Retrolisthesis
-                      </label>
-                      <label class="checkbox-inline">
-                        <input type="checkbox" class="cb_hyper" value=""> Hypermobility
-                      </label>
-                    </div>
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" class="cb_deg_spon" value=""> Degenerative spondylolisthesis
-                      </label>
-                    </div>
-                    <div class="col-lg-offset-1">
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l34" value="1"> grade 1
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l34" value="2"> grade 2
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l34" value="3"> grade 3
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l34" value="4"> grade 4
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <!-- L4-L5 -->
-                <div class="form-group" id="L4-L5">
-                  <label for="tabl1-2" class="col-lg-2 control-label">L4-L5</label>
-                  <div class="col-lg-10">
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" class="cb_dsn" value=""> Disk space narrowing
-                      </label>
-                    </div>
-                    <div class="col-lg-offset-1">
-                      <label class="radio-inline">
-                        <input type="radio" class="disc_space_narrowing" name="disc_space_l45" value="1"> mild
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="disc_space_narrowing" name="disc_space_l45" value="2"> moderate
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="disc_space_narrowing" name="disc_space_l45" value="3"> severe
-                      </label>
-                    </div>
-
-                    <div class="">
-                      <label class="checkbox-inline col-lg-6">
-                        <input type="checkbox" class="cb_retro" value=""> Retrolisthesis
-                      </label>
-                      <label class="checkbox-inline">
-                        <input type="checkbox" class="cb_hyper" value=""> Hypermobility
-                      </label>
-                    </div>
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" class="cb_deg_spon" value=""> Degenerative spondylolisthesis
-                      </label>
-                    </div>
-                    <div class="col-lg-offset-1">
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l45" value="1"> grade 1
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l45" value="2"> grade 2
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l45" value="3"> grade 3
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l45" value="4"> grade 4
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <!-- L5-S1 -->
-                <div class="form-group" id="L5-S1">
-                  <label for="tabl1-2" class="col-lg-2 control-label">L5-S1</label>
-                  <div class="col-lg-10">
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" class="cb_dsn" value=""> Disk space narrowing
-                      </label>
-                    </div>
-                    <div class="col-lg-offset-1">
-                      <label class="radio-inline">
-                        <input type="radio" class="disc_space_narrowing" name="disc_space_l51" value="1"> mild
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="disc_space_narrowing" name="disc_space_l51" value="2"> moderate
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="disc_space_narrowing" name="disc_space_l51" value="3"> severe
-                      </label>
-                    </div>
-
-                    <div class="">
-                      <label class="checkbox-inline col-lg-6">
-                        <input type="checkbox" class="cb_retro" value=""> Retrolisthesis
-                      </label>
-                      <label class="checkbox-inline">
-                        <input type="checkbox" class="cb_hyper" value=""> Hypermobility
-                      </label>
-                    </div>
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" class="cb_deg_spon" value=""> Degenerative spondylolisthesis
-                      </label>
-                    </div>
-                    <div class="col-lg-offset-1">
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l51" value="1"> grade 1
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l51" value="2"> grade 2
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l51" value="3"> grade 3
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" class="deg_spon" name="deg_spon_l51" value="4"> grade 4
-                      </label>
-                    </div>
-                  </div>
+                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                <div class="input-group-append">
+                  <span class="input-group-text">cm</span>
                 </div>
               </div>
-
-              <!-- second column -->
-              <div class="col">
-                <div class="row">
-                  <div class="col-lg-12">
-                    <!-- OTHERS -->
-                    <div class="form-group">
-                      <label for="tab-other" class="col-lg-2 control-label">Others</label>
-                      <div class="col-lg-10">
-                        <!-- Degenerative lower lumbar facet joints -->
-                        <div class="checkbox">
-                          <label>
-                            <input type="checkbox" class="cb_dllfj" value="" checked> Degenerative lower lumbar facet
-                            joints
-                          </label>
-                        </div>
-
-                        <!-- Marginal osteophyte -->
-                        <div class="">
-                          <label class="checkbox-inline col-lg-6">
-                            <input type="checkbox" class="cb_mo" value="" checked> Marginal osteophyte
-                          </label>
-                          <label class="checkbox-inline">
-                            <input type="checkbox" class="cb_mo_sm" value="" checked> small
-                          </label>
-                        </div>
-
-                        <!-- Scoliosis -->
-                        <div class="checkbox">
-                          <label>
-                            <input type="checkbox" class="cb_scoliosis" value=""> Scoliosis
-                          </label>
-                        </div>
-                        <div class="col-lg-offset-1">
-                          <label class="radio-inline">
-                            <input type="radio" class="scoliosis" name="scol_side" value="0"> Left
-                          </label>
-                          <label class="radio-inline">
-                            <input type="radio" class="scoliosis" name="scol_side" value="1"> Right
-                          </label>
-                        </div>
-
-                        <!-- Collapse -->
-                        <div class="checkbox">
-                          <label>
-                            <input type="checkbox" class="cb_collapse" value=""> Collapse
-                          </label>
-                        </div>
-                        <div class="col-lg-offset-1">
-                          <label class="checkbox-inline">
-                            <input type="checkbox" class="v_collapse" name="collapse_level" value="T11"> T11
-                          </label>
-                          <label class="checkbox-inline">
-                            <input type="checkbox" class="v_collapse" name="collapse_level" value="T12"> T12
-                          </label>
-                          <label class="checkbox-inline">
-                            <input type="checkbox" class="v_collapse" name="collapse_level" value="L1"> L1
-                          </label>
-                          <label class="checkbox-inline">
-                            <input type="checkbox" class="v_collapse" name="collapse_level" value="L2"> L2
-                          </label>
-                          <label class="checkbox-inline">
-                            <input type="checkbox" class="v_collapse" name="collapse_level" value="L3"> L3
-                          </label>
-                          <label class="checkbox-inline">
-                            <input type="checkbox" class="v_collapse" name="collapse_level" value="L4"> L4
-                          </label>
-                          <label class="checkbox-inline">
-                            <input type="checkbox" class="v_collapse" name="collapse_level" value="L5"> L5
-                          </label>
-                        </div>
-
-                        <!-- Lumbosacral Transitional Vertebrae -->
-                        <div class="checkbox">
-                          <label>
-                            <input type="checkbox" class="cb_lstv" value=""> LSTV
-                          </label>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="col-lg-offset-2">
-                              <label class="radio-inline">
-                                <input type="radio" class="lstv" name="lstv_type" value="I"> I
-                              </label>
-                              <label class="radio-inline">
-                                <input type="radio" class="lstv" name="lstv_type" value="II"> II
-                              </label>
-                              <label class="radio-inline">
-                                <input type="radio" class="lstv" name="lstv_type" value="III"> III
-                              </label>
-                              <label class="radio-inline">
-                                <input type="radio" class="lstv" name="lstv_type" value="IV"> IV
-                              </label>
-                            </div>
-                          </div>
-                          <div id="lstv_side_div" class="col-md-6">
-                            <div class="col-lg-offset-2">
-                              <label class="radio-inline">
-                                <input type="radio" class="lstv_side" name="lstv_side" value="0"> Left
-                              </label>
-                              <label class="radio-inline">
-                                <input type="radio" class="lstv_side" name="lstv_side" value="1"> Right
-                              </label>
-                              <label class="radio-inline">
-                                <input type="radio" class="lstv_side" name="lstv_side" value="2"> Both
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Report -->
-                <div class="row">
-                  <div class="col-lg-12 well">
-                    <button type="button" id="btn_clear" class="btn btn-info">Clear</button>
-                    <button type="button" id="btn_copy" class="btn btn-primary" data-clipboard-target="#result"
-                      data-toggle="tooltip" data-original-title="Copied!">Copy</button>
-                    <textarea id="result" class="form-control" rows="15"></textarea>
-                  </div>
-                </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
+                <label class="form-check-label" for="inlineCheckbox3">Non-measurable</label>
               </div>
+            </form>
+
+            <!-- Tumor Invasion -->
+            <h3 class="h5 mt-3">Tumor Invasion</h3>
+            <h4 class="h6">T2</h4>
+            <form class="form-inline">
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">Main bronchus</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">visceral pleura</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">Focal atelectasis or obstructive pneumonitis
+                  to hilum</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">Involves part or anterior longitudinal
+                  ligament of the lung</label>
+              </div>
+            </form>
+
+            <h4 class="h6 mt-2">T3</h4>
+            <form class="form-inline">
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">Parietal pleura</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">Chest wall (including superior sulcus
+                  tumors)</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">Phrenic nerve</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">Parietal pericardium</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">Separate tumor nodule(s) in same
+                  lobe</label>
+              </div>
+            </form>
+
+            <h4 class="h6 mt-2">T4</h4>
+            <form class="form-inline">
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">Mediastinum</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">Heart</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">Great vessels</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">Trachea</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">Recurrent laryngeal nerve</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">Esophagus</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">Vertebral body</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">Carina</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">Separate tumor nodule(s) in a different
+                  ipsilateral lobe</label>
+              </div>
+            </form>
           </div>
+
+          <!-- second column -->
+          <div class="col">
+            <!-- Regional Lymph Node -->
+            <h3 class="h5">Regional Lymph Node</h3>
+            <h4 class="h6">N1</h4>
+              <form class="form-inline">
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                  <label class="form-check-label" for="inlineCheckbox1">ipsilateral peribronchial</label>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                  <label class="form-check-label" for="inlineCheckbox1">ipsilateral hilar</label>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                  <label class="form-check-label" for="inlineCheckbox1">ipsilateral intrapulmonary</label>
+                </div>
+              </form>
+
+            <h4 class="h6 mt-2">N2</h4>
+              <form class="form-inline">
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                  <label class="form-check-label" for="inlineCheckbox1">ipsilateral mediastinal</label>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                  <label class="form-check-label" for="inlineCheckbox1">subcarinal</label>
+                </div>
+              </form>
+
+            <h4 class="h6 mt-2">N3</h4>
+              <form class="form-inline">
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                  <label class="form-check-label" for="inlineCheckbox1">contralateral mediastinal</label>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                  <label class="form-check-label" for="inlineCheckbox1">contralateral hilar</label>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                  <label class="form-check-label" for="inlineCheckbox1">ipsilateral or contralateral scalene</label>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                  <label class="form-check-label" for="inlineCheckbox1">supraclavicular</label>
+                </div>
+              </form>
+
+            <!-- Distant Metastasis -->
+            <h3 class="h5 mt-3">Distant Metastasis</h3>
+              <form class="form-inline">
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                  <label class="form-check-label" for="inlineCheckbox1">Separate tumor nodule(s) in a contralateral
+                    lobe (M1a)</label>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                  <label class="form-check-label" for="inlineCheckbox1">Pleural or pericardial nodules, or malignant
+                    pleural (or pericardial) effusion (M1a)</label>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                  <label class="form-check-label" for="inlineCheckbox1">Single extrathoracic metastasis in a single
+                    organ (M1b)</label>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                  <label class="form-check-label" for="inlineCheckbox1">Multiple extrathoracic metastasis in a
+                    single organ or multiple organs (M1c)</label>
+                </div>
+              </form>
+
+            <!-- Report -->
+              <div class="d-flex flex-row justify-content-end mt-5">
+                <a href="" class="btn btn-info w-200 mr-2">Clear</a>
+                <a href="" id="btn_copy" class="btn btn-primary w-200" data-clipboard-target="#result"
+                  data-toggle="tooltip" data-original-title="Copied!">Copy</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
 </body>
 
 </html>
