@@ -50,12 +50,12 @@
             <h2 class="h4">Scanning Protocol</h2>
             <form class="form-inline">
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1" checked>
-                <label class="form-check-label" for="inlineCheckbox1">NCCT</label>
+                <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_ncct" value="NCCT" checked>
+                <label class="form-check-label" for="cb_sp_ncct">NCCT</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2" checked>
-                <label class="form-check-label" for="inlineCheckbox2">CECT</label>
+                <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_cect" value="CECT" checked>
+                <label class="form-check-label" for="cb_sp_cect">CECT</label>
               </div>
             </form>
 
@@ -63,53 +63,55 @@
             <h2 class="h4 mt-3">Tumor Profile</h2>
             <!-- Tumor Location -->
             <h3 class="h5">Tumor Location</h3>
-            <form class="form-inline">
+            <form class="form-inline needs-validation">
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                <label class="form-check-label" for="inlineCheckbox1">RUL</label>
+                <input class="form-check-input cb_tp_tl" type="checkbox" id="cb_tp_tl_rul" value="RUL">
+                <label class="form-check-label" for="cb_tp_tl_rul">RUL</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-                <label class="form-check-label" for="inlineCheckbox2">RML</label>
+                <input class="form-check-input cb_tp_tl" type="checkbox" id="cb_tp_tl_rml" value="RML">
+                <label class="form-check-label" for="cb_tp_tl_rml">RML</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
-                <label class="form-check-label" for="inlineCheckbox3">RLL</label>
+                <input class="form-check-input cb_tp_tl" type="checkbox" id="cb_tp_tl_rll" value="RLL">
+                <label class="form-check-label" for="cb_tp_tl_rll">RLL</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
-                <label class="form-check-label" for="inlineCheckbox3">LUL</label>
+                <input class="form-check-input cb_tp_tl" type="checkbox" id="cb_tp_tl_lul" value="LUL">
+                <label class="form-check-label" for="cb_tp_tl_lul">LUL</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
-                <label class="form-check-label" for="inlineCheckbox3">LLL</label>
+                <input class="form-check-input cb_tp_tl" type="checkbox" id="cb_tp_tl_lll" value="LLL">
+                <label class="form-check-label" for="cb_tp_tl_lll">LLL</label>
               </div>
               <div class="input-group input-group-sm mb-2 mr-sm-2">
                 <div class="input-group-prepend">
                   <div class="input-group-text">
-                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <input type="checkbox" class="cb_tp_tl" aria-label="Checkbox for other tumor locations" id="cb_tp_tl_others" value="">
                   </div>
                   <span class="input-group-text">Others</span>
                 </div>
-                <input type="text" class="form-control" aria-label="Text input with checkbox">
+                <input type="text" class="form-control" aria-label="Text input with checkbox for other tumor locations" id="txt_tp_tl_others">
               </div>
             </form>
 
             <!-- Tumor Size -->
             <h3 class="h5 mt-3">Tumor Size</h3>
-            <form class="form-inline">
-              <div class="input-group input-group-sm mb-2 mr-sm-2">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">Greatest Diameter</span>
-                </div>
-                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+            <form class="form-inline needs-validation" id="form_tumor_size" novalidate>
+              <div class="input-group input-group-sm col-md-6 pl-0 mb-2 mr-sm-2">
+                <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" step="0.1" class="form-control"
+                  aria-label="Greatest diameter of tumor in cm" id="txt_tp_ts_diameter" placeholder="Greatest diameter"
+                  required>
                 <div class="input-group-append">
                   <span class="input-group-text">cm</span>
                 </div>
+                <div class="invalid-tooltip">
+                  Please choose a username.
+                </div>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
-                <label class="form-check-label" for="inlineCheckbox3">Non-measurable</label>
+                <input class="form-check-input" type="checkbox" id="cb_tp_ts_nm" value="1">
+                <label class="form-check-label" for="cb_tp_ts_nm">Non-measurable</label>
               </div>
             </form>
 
@@ -118,47 +120,42 @@
             <h4 class="h6">T2</h4>
             <form class="form-inline">
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                <label class="form-check-label" for="inlineCheckbox1">Main bronchus</label>
+                <input class="form-check-input cb_ti cb_ti_t2" type="checkbox" id="cb_tp_ti_mb" value="main bronchus">
+                <label class="form-check-label" for="cb_tp_ti_mb">Main bronchus</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                <label class="form-check-label" for="inlineCheckbox1">visceral pleura</label>
+                <input class="form-check-input cb_ti cb_ti_t2" type="checkbox" id="cb_tp_ti_vp" value="visceral pleura">
+                <label class="form-check-label" for="cb_tp_ti_vp">Visceral pleura</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                <label class="form-check-label" for="inlineCheckbox1">Focal atelectasis or obstructive pneumonitis
+                <input class="form-check-input cb_ti cb_ti_t2" type="checkbox" id="cb_tp_ti_fa" value="focal atelectasis or obstructive pneumonitis to hilum">
+                <label class="form-check-label" for="cb_tp_ti_fa">Focal atelectasis or obstructive pneumonitis
                   to hilum</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                <label class="form-check-label" for="inlineCheckbox1">Involves part or anterior longitudinal
-                  ligament of the lung</label>
               </div>
             </form>
 
             <h4 class="h6 mt-2">T3</h4>
             <form class="form-inline">
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                <label class="form-check-label" for="inlineCheckbox1">Parietal pleura</label>
+                <input class="form-check-input cb_ti cb_ti_t3" type="checkbox" id="cb_tp_ti_pp" value="parietal pleura">
+                <label class="form-check-label" for="cb_tp_ti_pp">Parietal pleura</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                <label class="form-check-label" for="inlineCheckbox1">Chest wall (including superior sulcus
+                <input class="form-check-input cb_ti cb_ti_t3" type="checkbox" id="cb_tp_ti_cw" value="chest wall">
+                <label class="form-check-label" for="cb_tp_ti_cw">Chest wall (including superior sulcus
                   tumors)</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                <label class="form-check-label" for="inlineCheckbox1">Phrenic nerve</label>
+                <input class="form-check-input cb_ti cb_ti_t3" type="checkbox" id="cb_tp_ti_pn" value="phrenic nerve">
+                <label class="form-check-label" for="cb_tp_ti_pn">Phrenic nerve</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                <label class="form-check-label" for="inlineCheckbox1">Parietal pericardium</label>
+                <input class="form-check-input cb_ti cb_ti_t3" type="checkbox" id="cb_tp_ti_pc" value="parietal pericardium">
+                <label class="form-check-label" for="cb_tp_ti_pc">Parietal pericardium</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                <label class="form-check-label" for="inlineCheckbox1">Separate tumor nodule(s) in same
+                <input class="form-check-input cb_ti cb_ti_t3" type="checkbox" id="cb_tp_ti_sln" value="separate tumor nodule(s) in same lobe">
+                <label class="form-check-label" for="cb_tp_ti_sln">Separate tumor nodule(s) in same
                   lobe</label>
               </div>
             </form>
@@ -166,40 +163,40 @@
             <h4 class="h6 mt-2">T4</h4>
             <form class="form-inline">
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                <label class="form-check-label" for="inlineCheckbox1">Mediastinum</label>
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_men" value="mediastinum">
+                <label class="form-check-label" for="cb_tp_ti_men">Mediastinum</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                <label class="form-check-label" for="inlineCheckbox1">Heart</label>
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_h" value="heart">
+                <label class="form-check-label" for="cb_tp_ti_h">Heart</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                <label class="form-check-label" for="inlineCheckbox1">Great vessels</label>
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_gv" value="great vessels">
+                <label class="form-check-label" for="cb_tp_ti_gv">Great vessels</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                <label class="form-check-label" for="inlineCheckbox1">Trachea</label>
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_tr" value="trachea">
+                <label class="form-check-label" for="cb_tp_ti_tr">Trachea</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                <label class="form-check-label" for="inlineCheckbox1">Recurrent laryngeal nerve</label>
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_rln" value="recurrent laryngeal nerve">
+                <label class="form-check-label" for="cb_tp_ti_rln">Recurrent laryngeal nerve</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                <label class="form-check-label" for="inlineCheckbox1">Esophagus</label>
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_eso" value="esophagus">
+                <label class="form-check-label" for="cb_tp_ti_eso">Esophagus</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                <label class="form-check-label" for="inlineCheckbox1">Vertebral body</label>
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_vb" value="vertebral body">
+                <label class="form-check-label" for="cb_tp_ti_vb">Vertebral body</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                <label class="form-check-label" for="inlineCheckbox1">Carina</label>
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_car" value="carina">
+                <label class="form-check-label" for="cb_tp_ti_car">Carina</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                <label class="form-check-label" for="inlineCheckbox1">Separate tumor nodule(s) in a different
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_sdn" value="separate tumor nodule(s) in a different ipsilateral lobe">
+                <label class="form-check-label" for="cb_tp_ti_sdn">Separate tumor nodule(s) in a different
                   ipsilateral lobe</label>
               </div>
             </form>
@@ -212,48 +209,48 @@
             <h4 class="h6">N1</h4>
               <form class="form-inline">
                 <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                  <label class="form-check-label" for="inlineCheckbox1">ipsilateral peribronchial</label>
+                  <input class="form-check-input cb_rn cb_rn_n1" type="checkbox" id="cb_rn_ip" value="ipsilateral peribronchial">
+                  <label class="form-check-label" for="cb_rn_ip">ipsilateral peribronchial</label>
                 </div>
                 <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                  <label class="form-check-label" for="inlineCheckbox1">ipsilateral hilar</label>
+                  <input class="form-check-input cb_rn cb_rn_n1" type="checkbox" id="cb_rn_ih" value="ipsilateral hilar">
+                  <label class="form-check-label" for="cb_rn_ih">ipsilateral hilar</label>
                 </div>
                 <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                  <label class="form-check-label" for="inlineCheckbox1">ipsilateral intrapulmonary</label>
+                  <input class="form-check-input cb_rn cb_rn_n1" type="checkbox" id="cb_rn_ii" value="ipsilateral intrapulmonary">
+                  <label class="form-check-label" for="cb_rn_ii">ipsilateral intrapulmonary</label>
                 </div>
               </form>
 
             <h4 class="h6 mt-2">N2</h4>
               <form class="form-inline">
                 <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                  <label class="form-check-label" for="inlineCheckbox1">ipsilateral mediastinal</label>
+                  <input class="form-check-input cb_rn cb_rn_n2" type="checkbox" id="cb_rn_im" value="ipsilateral mediastinal">
+                  <label class="form-check-label" for="cb_rn_im">ipsilateral mediastinal</label>
                 </div>
                 <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                  <label class="form-check-label" for="inlineCheckbox1">subcarinal</label>
+                  <input class="form-check-input cb_rn cb_rn_n2" type="checkbox" id="cb_rn_sbc" value="subcarinal">
+                  <label class="form-check-label" for="cb_rn_sbc">subcarinal</label>
                 </div>
               </form>
 
             <h4 class="h6 mt-2">N3</h4>
               <form class="form-inline">
                 <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                  <label class="form-check-label" for="inlineCheckbox1">contralateral mediastinal</label>
+                  <input class="form-check-input cb_rn cb_rn_n3" type="checkbox" id="cb_rn_cm" value="contralateral mediastinal">
+                  <label class="form-check-label" for="cb_rn_cm">contralateral mediastinal</label>
                 </div>
                 <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                  <label class="form-check-label" for="inlineCheckbox1">contralateral hilar</label>
+                  <input class="form-check-input cb_rn cb_rn_n3" type="checkbox" id="cb_rn_ch" value="contralateral hilar">
+                  <label class="form-check-label" for="cb_rn_ch">contralateral hilar</label>
                 </div>
                 <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                  <label class="form-check-label" for="inlineCheckbox1">ipsilateral or contralateral scalene</label>
+                  <input class="form-check-input cb_rn cb_rn_n3" type="checkbox" id="cb_rn_ics" value="ipsilateral or contralateral scalene">
+                  <label class="form-check-label" for="cb_rn_ics">ipsilateral or contralateral scalene</label>
                 </div>
                 <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                  <label class="form-check-label" for="inlineCheckbox1">supraclavicular</label>
+                  <input class="form-check-input cb_rn cb_rn_n3" type="checkbox" id="cb_rn_spc" value="ipsilateral or contralateral supraclavicular">
+                  <label class="form-check-label" for="cb_rn_spc">ipsilateral or contralateral supraclavicular</label>
                 </div>
               </form>
 
@@ -261,37 +258,99 @@
             <h3 class="h5 mt-3">Distant Metastasis</h3>
               <form class="form-inline">
                 <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                  <label class="form-check-label" for="inlineCheckbox1">Separate tumor nodule(s) in a contralateral
+                  <input class="form-check-input cb_dm cb_dm_m1a" type="checkbox" id="cb_dm_scn" value="separate tumor nodule(s) in a contralateral lobe">
+                  <label class="form-check-label" for="cb_dm_scn">Separate tumor nodule(s) in a contralateral
                     lobe (M1a)</label>
                 </div>
                 <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                  <label class="form-check-label" for="inlineCheckbox1">Pleural or pericardial nodules, or malignant
-                    pleural (or pericardial) effusion (M1a)</label>
+                  <input class="form-check-input cb_dm cb_dm_m1a" type="checkbox" id="cb_dm_pn" value="pleural nodules">
+                  <label class="form-check-label" for="cb_dm_pn">Pleural nodules (M1a)</label>
                 </div>
                 <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                  <label class="form-check-label" for="inlineCheckbox1">Single extrathoracic metastasis in a single
-                    organ (M1b)</label>
+                  <input class="form-check-input cb_dm cb_dm_m1a" type="checkbox" id="cb_dm_pcn" value="pericardial nodules">
+                  <label class="form-check-label" for="cb_dm_pcn">Pericardial nodules (M1a)</label>
                 </div>
                 <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                  <label class="form-check-label" for="inlineCheckbox1">Multiple extrathoracic metastasis in a
-                    single organ or multiple organs (M1c)</label>
+                  <input class="form-check-input cb_dm cb_dm_m1a" type="checkbox" id="cb_dm_pe" value="malignant pleural effusion">
+                  <label class="form-check-label" for="cb_dm_pe">Malignant pleural effusion (M1a)</label>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input cb_dm cb_dm_m1a" type="checkbox" id="cb_dm_pce" value="malignant pericardial effusion">
+                  <label class="form-check-label" for="cb_dm_pce">Malignant pericardial effusion (M1a)</label>
+                </div>
+              </form>
+            <h4 class="h6 mt-2">Extrathoracic Metastasis (single: M1b, multiple: M1c)</h4>
+              <form class="form-inline">
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input cb_dm cb_dm_m1bc" type="checkbox" id="cb_dm_et_liv" value="liver">
+                  <label class="form-check-label" for="cb_dm_et_liv">Liver</label>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input cb_dm cb_dm_m1bc" type="checkbox" id="cb_dm_et_ad" value="adrenal">
+                  <label class="form-check-label" for="cb_dm_et_ad">Adrenal</label>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input cb_dm cb_dm_m1bc" type="checkbox" id="cb_dm_et_b" value="bone">
+                  <label class="form-check-label" for="cb_dm_et_b">Bone</label>
+                </div>
+                <div class="input-group input-group-sm mb-2 mr-sm-2">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <input type="checkbox" class="cb_dm cb_dm_m1bc" aria-label="Checkbox for other distant metastasis" id="cb_dm_others" value="">
+                    </div>
+                    <span class="input-group-text">Others</span>
+                  </div>
+                  <input type="text" class="form-control" aria-label="Text input with checkbox for other distant metastasis" id="txt_dm_others">
+                </div>
+              </form>
+              <form class="form-inline">
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input cb_dm_m1b" type="checkbox" id="cb_dm_m1b" value="">
+                  <label class="form-check-label" for="cb_dm_m1b">Single extrathoracic metastasis in a single organ (M1b)</label>
                 </div>
               </form>
 
             <!-- Report -->
               <div class="d-flex flex-row justify-content-end mt-5">
                 <a href="" class="btn btn-info w-200 mr-2">Clear</a>
+                <!--
                 <a href="" id="btn_copy" class="btn btn-primary w-200" data-clipboard-target="#result"
                   data-toggle="tooltip" data-original-title="Copied!">Copy</a>
+                 -->
+                <!-- Button trigger modal -->
+                <button type="button" id="btn_copy" class="btn btn-primary">
+                  Launch demo modal
+                </button>
+
               </div>
             </div>
           </div>
         </div>
       </main>
+    </div>
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="reportModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="reportModalLongTitle"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div id="reportModalBody" class="modal-body">
+          <pre><code>
+          ...
+          </code></pre>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
     </div>
   </div>
 </body>
