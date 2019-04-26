@@ -22,13 +22,22 @@ module.exports = {
   },
 
   module: {
-    rules: [
+    rules: [{
+        test: /\.(js)$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      },
       {
         test: require.resolve('jquery'),
         use: [{
           loader: 'expose-loader',
           options: 'jQuery'
-        },{
+        }, {
           loader: 'expose-loader',
           options: '$'
         }]
@@ -42,12 +51,12 @@ module.exports = {
       },
       {
         test: /djd-l\.js$/,
-        use: [ 'script-loader' ]
+        use: ['script-loader']
       },
       {
         test: /\.css$/, // 針對所有.css 的檔案作預處理，這邊是用 regular express 的格式
         use: [
-          'style-loader',  // 這個會後執行 (順序很重要)
+          'style-loader', // 這個會後執行 (順序很重要)
           'css-loader' // 這個會先執行
         ]
       },
