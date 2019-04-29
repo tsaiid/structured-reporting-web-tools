@@ -174,7 +174,7 @@ function generate_report(){
     report += "\n";
 
     // Other Findings
-    report += "6. Other Findings:\n\n\n";
+    report += "6. Other findings:\n\n\n";
 
     // AJCC staging reference text
     var t = t_stage.sort()[t_stage.length-1];
