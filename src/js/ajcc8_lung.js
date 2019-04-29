@@ -101,8 +101,17 @@ function generate_report(){
     }
     if ($('.cb_ti:not(:checked)').length) {
         report += "--- No or Equivocal:\n";
-        report += "* " + join_checkbox_values($('.cb_ti:not(:checked)'));
-        report += "\n";
+        var ti_array = [];
+        if ($('.cb_ti_t2:not(:checked)').length) {
+            ti_array.push("* " + join_checkbox_values($('.cb_ti_t2:not(:checked)')));
+        }
+        if ($('.cb_ti_t3:not(:checked)').length) {
+            ti_array.push("* " + join_checkbox_values($('.cb_ti_t3:not(:checked)')));
+        }
+        if ($('.cb_ti_t4:not(:checked)').length) {
+            ti_array.push("* " + join_checkbox_values($('.cb_ti_t4:not(:checked)')));
+        }
+        report += ti_array.join("\n") + "\n"
     }
     report += "\n";
 
@@ -181,18 +190,41 @@ function generate_report(){
     $('#reportModalLong').modal('show');
 }
 
+$('#cb_tp_ts_nm').change(function() {
+    if($("form.was-validated").length) {
+
+    }
+});
+
 $('#btn_copy').on('click', function(event) {
     event.preventDefault(); // To prevent following the link (optional)
 
+    /*
     // form validation
-    var f = document.getElementById('form_tumor_size');
-    let is_valid = f.checkValidity();
+    var f, is_valid
+    f = document.getElementById('form_tumor_size');
+    is_valid = f.checkValidity();
     if (!is_valid && !$('#cb_tp_ts_nm').is(':checked')) {
         f.classList.add('was-validated');
         return;
     }
+    f = document.getElementById('form_tumor_location');
+    is_valid = f.checkValidity();
+    if (is_valid) {
+        f.classList.add('was-validated');
+        return;
+    }
+    */
 
     generate_report();
+});
+
+new ClipboardJS('#btn_copy', {
+    text: function(trigger) {
+        var report_title = $("#reportModalLongTitle").text();
+        var report_body = $("#reportModalBody pre code").text();
+        return report_title + "\n\n" + report_body;
+    }
 });
 
 
