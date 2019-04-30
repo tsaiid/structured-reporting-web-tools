@@ -25,7 +25,9 @@ T${t}N${n}M${m}
 export function join_checkbox_values(jq_cbs, sep=', '){
    return jq_cbs
    .map(function() {
-     return this.value;
+     if (this.value !== "") {
+      return this.value;
+     }
    })
    .get()
    .join(sep);
