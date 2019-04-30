@@ -149,13 +149,6 @@ function generate_report(){
         }
         report += rn_array.join("\n") + "\n"
     }
-    /*
-    if ($('.cb_rn:not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        report += "* " + join_checkbox_values($('.cb_rn:not(:checked)'), "\n* ");
-        report += "\n";
-    }
-    */
     report += "\n";
 
     // Distant metastasis
@@ -182,8 +175,19 @@ function generate_report(){
             m_stage.push("1c");
         }
         console.log(m_stage);
-    } else {
+    } /* else {
         report += "* No distant metastasis in the scanned range.\n";
+    } */
+    if ($('.cb_dm:not(:checked)').length) {
+        report += "--- No or Equivocal:\n";
+        var dm_array = [];
+        if ($('.cb_dm_m1a:not(:checked)').length) {
+            dm_array.push("* " + join_checkbox_values($('.cb_dm_m1a:not(:checked)')));
+        }
+        if ($('.cb_dm_m1bc:not(:checked)').length) {
+            dm_array.push("* " + join_checkbox_values($('.cb_dm_m1bc:not(:checked)')));
+        }
+        report += dm_array.join("\n") + "\n"
     }
     report += "\n";
 
