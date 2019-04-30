@@ -132,8 +132,22 @@ function generate_report(){
             n_stage.push("3");
         }
         //console.log(n_stage);
-    } else {
+    } /* else {
         report += "* No regional lymph node metastasis.\n";
+    } */
+    if ($('.cb_rn:not(:checked)').length) {
+        report += "--- No or Equivocal:\n";
+        var rn_array = [];
+        if ($('.cb_rn_n1:not(:checked)').length) {
+            rn_array.push("* " + join_checkbox_values($('.cb_rn_n1:not(:checked)')));
+        }
+        if ($('.cb_rn_n2:not(:checked)').length) {
+            rn_array.push("* " + join_checkbox_values($('.cb_rn_n2:not(:checked)')));
+        }
+        if ($('.cb_rn_n3:not(:checked)').length) {
+            rn_array.push("* " + join_checkbox_values($('.cb_rn_n3:not(:checked)')));
+        }
+        report += rn_array.join("\n") + "\n"
     }
     /*
     if ($('.cb_rn:not(:checked)').length) {

@@ -102,7 +102,7 @@
             <form class="form-inline needs-validation" id="form_tumor_size" novalidate>
               <div class="input-group input-group-sm col-md-6 pl-0 mb-2 mr-sm-2">
                 <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" step="0.1" class="form-control"
-                  aria-label="Greatest diameter of tumor in cm" id="txt_tp_ts_diameter" placeholder="Greatest diameter"
+                  aria-label="Greatest dimension of tumor in cm" id="txt_tp_ts_diameter" placeholder="Greatest dimension"
                   required>
                 <div class="input-group-append">
                   <span class="input-group-text">cm</span>
@@ -322,31 +322,12 @@
     </div>
   </div>
 
+  <!-- Report Modal -->
+<%= require('html-loader!../partials/report_modal.html') %>
 
-  <!-- Modal -->
-  <div class="modal fade" id="reportModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="reportModalLongTitle"></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div id="reportModalBody" class="modal-body">
-          <pre><code>
-          ...
-          </code></pre>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <!--
-          <button type="button" class="btn btn-primary">Save changes</button>
-          -->
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- About Modal -->
+<%= require('html-loader!../partials/about_modal.html') %>
+
 </body>
 
 </html>
