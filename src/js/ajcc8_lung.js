@@ -89,7 +89,7 @@ function generate_report(){
         report += "\n";
 
         if ($('.cb_ti_t2:checked').length) {
-            t_stage.push("2");
+            t_stage.push("2a");
         }
         if ($('.cb_ti_t3:checked').length) {
             t_stage.push("3");
