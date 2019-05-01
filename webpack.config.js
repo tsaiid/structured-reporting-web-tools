@@ -8,6 +8,7 @@ module.exports = {
   entry: {
     djd_l: './src/djd_l.js',
     ajcc8_lung: './src/ajcc8_lung.js',
+    ajcc8_esophagus: './src/ajcc8_esophagus.js',
   },
   output: {
     filename: '[name].js',
@@ -74,6 +75,11 @@ module.exports = {
       template: './src/html/ajcc8/lung.html',
       filename: 'ajcc8_lung.html',
       chunks: ['ajcc8_lung'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/html/ajcc8/esophagus.html',
+      filename: 'ajcc8_esophagus.html',
+      chunks: ['ajcc8_esophagus'],
     }),
     /*
     new webpack.ProvidePlugin({
