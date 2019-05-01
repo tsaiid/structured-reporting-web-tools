@@ -5,7 +5,7 @@ import './js/common.js';
 import './js/ajcc8_common.js';
 import './js/ajcc8_lung.js';
 import './css/dashboard.css';
-import './css/ajcc8_lung.css';
+import './css/ajcc8_common.css';
 require('raw-loader!./html/ajcc8/lung.html');
 
 // font awesome
