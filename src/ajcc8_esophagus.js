@@ -1,6 +1,3 @@
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'clipboard';
 import './js/common.js';
 import './js/ajcc8_common.js';
 import './js/ajcc8_esophagus.js';

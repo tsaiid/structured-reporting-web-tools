@@ -1,5 +1,3 @@
-$().tab;
-
 var DJDLForm = 'Lumbar spine:' + "\n";
 
 // Control for radio and checkbox.

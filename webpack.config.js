@@ -34,23 +34,6 @@ module.exports = {
         }
       },
       {
-        test: require.resolve('jquery'),
-        use: [{
-          loader: 'expose-loader',
-          options: 'jQuery'
-        }, {
-          loader: 'expose-loader',
-          options: '$'
-        }]
-      },
-      {
-        test: require.resolve('clipboard'),
-        use: [{
-          loader: 'expose-loader',
-          options: 'ClipboardJS'
-        }]
-      },
-      {
         test: /djd-l\.js$/,
         use: ['script-loader']
       },
@@ -81,14 +64,5 @@ module.exports = {
       filename: 'ajcc8_esophagus.html',
       chunks: ['ajcc8_esophagus'],
     }),
-    /*
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.jQuery': 'jquery',
-      Popper: ['popper.js', 'default'],
-      ClipboardJS: 'clipboard',
-    }),
-    */
   ],
 };
