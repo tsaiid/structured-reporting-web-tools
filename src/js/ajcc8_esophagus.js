@@ -1,7 +1,9 @@
 import './common.js';
 import '../css/dashboard.css';
 import '../css/ajcc8_common.css';
-require('raw-loader!../html/ajcc8/esophagus.html');
+if (process.env.NODE_ENV !== 'production') {
+    require('raw-loader!../html/ajcc8/esophagus.html');
+}
 
 // font awesome
 import { library, dom } from "@fortawesome/fontawesome-svg-core";

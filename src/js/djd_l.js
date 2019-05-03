@@ -1,6 +1,8 @@
 import '../css/dashboard.css';
 import '../css/djd-l.css';
-require('raw-loader!../html/djd_l.html');
+if (process.env.NODE_ENV !== 'production') {
+    require('raw-loader!../html/djd_l.html');
+}
 
 var DJDLForm = 'Lumbar spine:' + "\n";
 
@@ -74,7 +76,7 @@ $('.v_collapse').change(function() {
     }
 
     // if not any collapsed level, uncheck.
-    v_collapses = $(this).parent().parent().find(':checkbox:checked');
+    var v_collapses = $(this).parent().parent().find(':checkbox:checked');
     if (v_collapses.length == 0) {
         cb_collapse.prop('checked', false);
     }
@@ -104,7 +106,7 @@ $('.lstv').change(function() {
         $(this).parent().parent().parent().next().find(':radio').prop('checked', false);
     } else {
         // default side: both
-        next_div = $(this).parent().parent().parent().next();
+        var next_div = $(this).parent().parent().parent().next();
         if (next_div.find(':radio:checked').length == 0)
             $(this).parent().parent().parent().next().find(':radio').last().prop('checked', true);
     }
@@ -241,7 +243,7 @@ function analyze() {
     if ($('.cb_collapse:checked').length) {
         var v_collapses = $('.v_collapse:checked');
         str += "  - Collapse of ";
-        len = v_collapses.length;
+        var len = v_collapses.length;
         v_collapses.each(function(i) {
             str += $(this).val();
             if (i != len - 1)
@@ -253,10 +255,10 @@ function analyze() {
 
     // LSTV
     if ($('.cb_lstv:checked').length) {
-        lstv_type = $('.lstv:checked').first().val();
+        var lstv_type = $('.lstv:checked').first().val();
         str += "  - Lumbosacral Transitional Vertebrae, type " + lstv_type;
         if (lstv_type != "IV") {
-            lstv_side = $('.lstv_side:checked').first().val();
+            var lstv_side = $('.lstv_side:checked').first().val();
             str += (lstv_side == 2 ? "b" : "a, " + side_text[lstv_side]);
         }
         str += ".\n";
