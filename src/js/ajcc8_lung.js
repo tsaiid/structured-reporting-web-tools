@@ -1,4 +1,17 @@
-import {join_checkbox_values, ajcc_template} from './ajcc8_common';
+import './common.js';
+import '../css/dashboard.css';
+import '../css/ajcc8_common.css';
+require('raw-loader!../html/ajcc8/lung.html');
+
+// font awesome
+import { library, dom } from "@fortawesome/fontawesome-svg-core";
+import { faGithub, faFacebookSquare, faTwitterSquare } from "@fortawesome/free-brands-svg-icons";
+import { faFileContract, faAt } from "@fortawesome/free-solid-svg-icons";
+
+library.add(faGithub, faFacebookSquare, faTwitterSquare, faFileContract, faAt);
+dom.watch();
+
+import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_LUNG_T = {
     '1a': 'Tumor ≦1 cm in greatest dimension. A superficial, spreading tumor of any size whose invasive component is limited to the bronchial wall and may extend proximal to the main bronchus.',

@@ -6,9 +6,9 @@ module.exports = {
 
   // https://webpack.js.org/concepts/entry-points/#multi-page-application
   entry: {
-    djd_l: './src/djd_l.js',
-    ajcc8_lung: './src/ajcc8_lung.js',
-    ajcc8_esophagus: './src/ajcc8_esophagus.js',
+    djd_l: './src/js/djd_l.js',
+    ajcc8_lung: './src/js/ajcc8_lung.js',
+    ajcc8_esophagus: './src/js/ajcc8_esophagus.js',
   },
   output: {
     filename: '[name].js',
@@ -32,10 +32,6 @@ module.exports = {
             presets: ['@babel/preset-env']
           }
         }
-      },
-      {
-        test: /djd-l\.js$/,
-        use: ['script-loader']
       },
       {
         test: /\.css$/, // 針對所有.css 的檔案作預處理，這邊是用 regular express 的格式

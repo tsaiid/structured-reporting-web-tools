@@ -1,3 +1,7 @@
+import '../css/dashboard.css';
+import '../css/djd-l.css';
+require('raw-loader!../html/djd_l.html');
+
 var DJDLForm = 'Lumbar spine:' + "\n";
 
 // Control for radio and checkbox.
@@ -195,7 +199,7 @@ function analyze() {
             str += "  - Degenerative Spondylolisthesis:\n";
         }
 
-        for (i = 1; i < 5; i++) {
+        for (var i = 1; i < 5; i++) {
             if (typeof grade[i] != "undefined" && grade[i].length) {
                 str += "    - " + grade[i].join(', ') + ': grade ' + i + ".\n";
             }
@@ -235,7 +239,7 @@ function analyze() {
 
     // Collapse Vertebra
     if ($('.cb_collapse:checked').length) {
-        v_collapses = $('.v_collapse:checked');
+        var v_collapses = $('.v_collapse:checked');
         str += "  - Collapse of ";
         len = v_collapses.length;
         v_collapses.each(function(i) {
@@ -281,3 +285,4 @@ clipboard.on('error', function(e) {
 $('#btn_copy').mouseleave(function(){
     $(this).tooltip('dispose');
 });
+
