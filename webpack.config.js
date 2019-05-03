@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack'); // 這裡
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WebappWebpackPlugin = require('webapp-webpack-plugin');
 
 module.exports = {
 
@@ -59,6 +60,24 @@ module.exports = {
       template: './src/html/ajcc8/esophagus.html',
       filename: 'ajcc8_esophagus.html',
       chunks: ['ajcc8_esophagus'],
+    }),
+    new WebappWebpackPlugin({
+      logo: './src/image/favicon.png',
+      cache: true,
+      favicons: {
+        icons: {
+            android: false,
+            appleIcon: false,
+            appleStartup: false,
+            coast: false,
+            favicons: true,
+            firefox: false,
+            opengraph: false,
+            twitter: false,
+            yandex: false,
+            windows: false
+        }
+      }
     }),
   ],
 };
