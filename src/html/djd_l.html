@@ -38,13 +38,9 @@
 
           <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
-              <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+              <button type="button" id="btn_clear" class="btn btn-sm btn-outline-secondary">Clear</button>
+              <button type="button" id="btn_copy" class="btn btn-sm btn-outline-primary" data-clipboard-target="#result" data-toggle="tooltip" data-original-title="Copied!">Show &amp; Copy</button>
             </div>
-            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-              <span data-feather="calendar"></span>
-              This week
-            </button>
           </div>
         </div>
 
@@ -422,11 +418,9 @@
                 </div>
 
                 <!-- Report -->
-                <div class="row">
-                  <div class="col-lg-12 well">
-                    <button type="button" id="btn_clear" class="btn btn-info">Clear</button>
-                    <button type="button" id="btn_copy" class="btn btn-primary" data-clipboard-target="#result"
-                      data-toggle="tooltip" data-original-title="Copied!">Copy</button>
+                <div class="row mt-5">
+                  <div class="col">
+                    <h2 class="h5">Report Text</h2>
                     <textarea id="result" class="form-control" rows="15"></textarea>
                   </div>
                 </div>
