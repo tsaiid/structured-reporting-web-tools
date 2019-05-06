@@ -10,6 +10,7 @@ module.exports = {
     djd_l: './src/js/djd_l.js',
     ajcc8_lung: './src/js/ajcc8_lung.js',
     ajcc8_esophagus: './src/js/ajcc8_esophagus.js',
+    ajcc8_colon: './src/js/ajcc8_colon.js',
   },
   output: {
     filename: '[name].js',
@@ -60,6 +61,11 @@ module.exports = {
       template: './src/html/ajcc8/esophagus.html',
       filename: 'ajcc8_esophagus.html',
       chunks: ['ajcc8_esophagus'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/html/ajcc8/colon.html',
+      filename: 'ajcc8_colon.html',
+      chunks: ['ajcc8_colon'],
     }),
     new WebappWebpackPlugin({
       logo: './src/image/favicon.png',
