@@ -11,6 +11,7 @@ module.exports = {
     ajcc8_lung: './src/js/ajcc8_lung.js',
     ajcc8_esophagus: './src/js/ajcc8_esophagus.js',
     ajcc8_colon: './src/js/ajcc8_colon.js',
+    ajcc8_cervix: './src/js/ajcc8_cervix.js',
   },
   output: {
     filename: '[name].js',
@@ -66,6 +67,11 @@ module.exports = {
       template: './src/html/ajcc8/colon.html',
       filename: 'ajcc8_colon.html',
       chunks: ['ajcc8_colon'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/html/ajcc8/cervix.html',
+      filename: 'ajcc8_cervix.html',
+      chunks: ['ajcc8_cervix'],
     }),
     new WebappWebpackPlugin({
       logo: './src/image/favicon.png',
