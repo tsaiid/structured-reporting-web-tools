@@ -5,14 +5,6 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc8/colon.html');
 }
 
-// font awesome
-import { library, dom } from "@fortawesome/fontawesome-svg-core";
-import { faGithub, faFacebookSquare, faTwitterSquare } from "@fortawesome/free-brands-svg-icons";
-import { faFileContract, faAt } from "@fortawesome/free-solid-svg-icons";
-
-library.add(faGithub, faFacebookSquare, faTwitterSquare, faFileContract, faAt);
-dom.watch();
-
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_ESO_T = {

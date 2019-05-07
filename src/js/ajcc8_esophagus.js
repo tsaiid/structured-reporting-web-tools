@@ -5,36 +5,29 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc8/esophagus.html');
 }
 
-// font awesome
-import { library, dom } from "@fortawesome/fontawesome-svg-core";
-import { faGithub, faFacebookSquare, faTwitterSquare } from "@fortawesome/free-brands-svg-icons";
-import { faFileContract, faAt } from "@fortawesome/free-solid-svg-icons";
-
-library.add(faGithub, faFacebookSquare, faTwitterSquare, faFileContract, faAt);
-dom.watch();
-
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_ESO_T = {
-    '1a': 'Tumor ≦1 cm in greatest dimension. A superficial, spreading tumor of any size whose invasive component is limited to the bronchial wall and may extend proximal to the main bronchus.',
-    '1b': '1 cm < Tumor ≦2 cm in greatest dimension.',
-    '1c': '2 cm < Tumor ≦3 cm in greatest dimension.',
-    '2a': '3 cm < Tumor ≦4 cm in greatest dimension or tumor size cannot be determined but with features of: (1) Involves main bronchus, but without involvement of the carina; (2) Invades visceral pleura (PL1 or PL2); (3) Associated with atelectasis or obstructive pneumonitis that extends to the hilar region, involving part or anterior longitudinal ligament of the lung.',
-    '2b': '4 cm < Tumor ≦5 cm in greatest dimension.',
-    '3': '5 cm < Tumor ≦7 cm in greatest dimension or one that directly invades any of the following: parietal pleural (PL3), chest wall (including superior sulcus tumors), phrenic nerve, parietal pericardium; or separate tumor nodule(s) in the same lobe as the primary.',
-    '4': 'Tumor > 7 cm or tumor of any size that invades any of the following: diaphragm, mediastinum, heart, great vessels, trachea, recurrent laryngeal nerve, esophagus, vertebral body, or carina; separate tumor nodule(s) in a different ipsilateral lobe.',
+    'x': 'Primary tumor cannot be assessed.',
+    '0': 'No evidence of primary tumor.',
+    '1a': 'Tumor invades lamina propria or muscularis mucosae.',
+    '1b': 'Tumor invades submucosa.',
+    '2': 'Tumor invades muscularis propria.',
+    '3': 'Tumor invades adventitia.',
+    '4a': 'Tumor invading pleura, pericardium, azygos vein, diaphragm or peritoneum.',
+    '4b': 'Tumor invading other adjacent structures, such as aorta, vertebral body, or trachea.',
 };
 const AJCC8_ESO_N = {
+    'x': 'Regional lymph nodes cannot be assessed.',
     '0': 'No regional lymph node metastasis.',
-    '1': 'Metastasis in ipsilateral peribronchial and/or ipsilateral hilar lymph nodes and intrapulmonary nodes, including involvement by direct extension.',
-    '2': 'Metastasis in ipsilateral mediastinal and/or subcarinal lymph node(s).',
-    '3': 'Metastasis in contralateral mediastinal, contralateral hilar, ipsilateral or contralateral scalene, or supraclavicular lymph node(s).',
+    '1': 'Regional lymph node metastases involving 1 to 2 nodes.',
+    '2': 'Regional lymph node metastases involving 3 to 6 nodes.',
+    '3': 'Regional lymph node metastases involving 7 or more nodes.',
 };
 const AJCC8_ESO_M = {
+    'x': 'Undetermined metastasis.',
     '0': 'No distant metastasis (in this study).',
-    '1a': 'Separate tumor nodule(s) in a contralateral lobe; tumor with pleural or pericardial nodules. or malignant pleural (or pericardial) effusion**.',
-    '1b': 'Single extrathoracic metastasis in a single organ (including involvement of a single nonregional node)',
-    '1c': 'Multiple extrathoracic metastasis in a single organ or in multiple organs',
+    '1': 'Distant metastasis.',
 };
 
 function generate_report(){
