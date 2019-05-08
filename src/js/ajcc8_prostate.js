@@ -7,70 +7,64 @@ if (process.env.NODE_ENV !== 'production') {
 
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
-const AJCC8_COLON_T = {
+const AJCC8_PROSTATE_T = {
     'x': 'Primary tumor cannot be assessed.',
     '0': 'No evidence of primary tumor.',
-    'is': 'Carcinoma in situ, intramucosal carcinoma (involvement of lamina propria with no extension through muscularis mucosae).',
-    '1': 'Tumor invades submucosa (through the muscularis mucosa but not into the muscularis propria).',
-    '2': 'Tumor invades muscularis propria.',
-    '3': 'Tumor invades through the muscularis propria into the perirectal tissues.',
-    '4a': 'Tumor penetrates to the surface of the visceral peritoneum (including gross perforation of the bowel through tumor and continuous invasion of tumor through areas of inflammation to th surface of the visceral peritoneum).',
-    '4b': 'Tumor directly invades or adheres to adjacent organs or structures.',
+    '1a': 'Tumor incidental histologic finding in 5% or less of tissue resected.',
+    '1b': 'Tumor incidental histologic finding in more than 5% of tissue resected.',
+    '1c': 'Tumor identified by needle biopsy found in one or both sides, but not palpable.',
+    '2a': 'Tumor involves one-half of one lobe or less.',
+    '2b': 'Tumor involves more than one-half of one lobe but not both lobes.',
+    '2c': 'Tumor involves both lobes.',
+    '3a': 'Extracapsular extension (unilateral or bilateral).',
+    '3b': 'Tumor invades seminal vesicle(s).',
+    '4': 'Tumor is fixed or invades adjacent structures other than seminal vesicles such as external sphincter, rectum, bladder, levator muscles, and/or pelvic wall.',
 };
-const AJCC8_COLON_N = {
+const AJCC8_PROSTATE_N = {
     'x': 'Regional lymph nodes cannot be assessed.',
     '0': 'No regional lymph node metastasis.',
-    '1a': 'Metastasis in 1 regional lymph node.',
-    '1b': 'Metastasis in 2-3 regional lymph nodes.',
-    '1c': 'Tumor deposit(s) in the subserosa, mesentery, or non-peritonealized pericolic or perirectal/mesorectal tissues without regional nodal metastasis.',
-    '2a': 'Metastasis in 4 to 6 regional lymph nodes.',
-    '2b': 'Metastasis in 7 or more regional lymph nodes.',
+    '1': 'Metastasis in regional node(s).',
 };
-const AJCC8_COLON_M = {
+const AJCC8_PROSTATE_M = {
     '0': 'No distant metastasis (in this study).',
-    '1a': 'Metastasis confined to one site or organs is identified without peritoneal metastasis.',
-    '1b': 'Metastases to two or more site or organs is identified without peritoneal metastasis.',
-    '1c': 'Metastases to the peritoneal surface is identified alone or with other site or organ metastases.',
+    '1a': 'Distant metastasis, with non-regional lymph node(s).',
+    '1b': 'Distant metastasis of Bone(s).',
+    '1c': 'Distant metastasis: Other site(s) with or without bone disease.',
 };
 
 function generate_report(){
-    var t_stage = ["0"];    // at least T1?
+    var t_stage = ["1"];    // at least T1?
     var n_stage = ["0"];
     var m_stage = ["0"];
-    var report = "1. ";
+    var report = "1. CT protocol\n";
 
     // Protocol
-    if ($('input[name="protocol_radios"]:checked').val() == 'mr') {
-        report += `MR protocol
-Sagittal and Axial FSE T2WI
-Axial FSE T1WI with FS, pre- and post- contrast
-Axial T1WI with contrast, abdominal survey
-(Coronal FSE T2WI)
-(Axial T2WI, lower abdominal survey)`;
-    } else {
-        report += `CT protocol
-With contrast, range: whole abdomen, slice thickness <= 5mm`;
+    if ($('.cb_sp:checked').length) {
+        report += "TECHNIQUE: ";
+        $('.cb_sp:checked').each(function(i) {
+            report += '(' + (i+1) + ') ' + $(this).val() + ' ';
+        });
+        report += $('.cb_sp:checked').length > 1 ? 'were ' : 'was ';
+        report += "performed\n";
+        report += "SCAN RANGE: lower neck to adrenal gland\n\n";
     }
-    report += "\n\n";
 
-    // Tumor location / size
-    report += `2. Tumor location / size
---- Location:
-`;
+    // Tumor location
+    report += "2. Tumor location\n";
     if ($('.cb_tl:checked').length) {
-        report += "* " + join_checkbox_values($('.cb_tl:checked'), "\n*") + "\n";
+        report += "* " + join_checkbox_values($('.cb_tl:checked'), "\n*") + "\n\n";
     }
 
-    report += "--- Size:\n";
+    // Tumor size
+    report += "3. Tumor size\n";
     if ($('#cb_ts_nm').is(':checked')) {
-        report += "* Non-measurable";
+        report += "--- Non-measurable";
     } else {
         let t_length = parseFloat($('#txt_ts_len').val());
-        report += "* Measurable: Length " + t_length + " cm";
+        report += "--- Measurable: Length " + t_length + " cm, ";
         let t_thick = parseFloat($('#txt_ts_thick').val());
-        if (t_thick) {
-            report += ", Max thickness " + t_thick + " cm";
-        }
+        report += "Max thickness " + t_thick + " cm";
+        //t_stage.push(get_t_stage_by_size(t_size));
         //console.log(t_stage);
     }
     report += "\n\n";
@@ -99,9 +93,6 @@ With contrast, range: whole abdomen, slice thickness <= 5mm`;
     if ($('.cb_ti:not(:checked)').length) {
         report += "--- No or Equivocal:\n";
         var ti_array = [];
-        if ($('.cb_ti_t1:not(:checked)').length) {
-            ti_array.push("* " + join_checkbox_values($('.cb_ti_t1:not(:checked)')));
-        }
         if ($('.cb_ti_t2:not(:checked)').length) {
             ti_array.push("* " + join_checkbox_values($('.cb_ti_t2:not(:checked)')));
         }
@@ -110,6 +101,9 @@ With contrast, range: whole abdomen, slice thickness <= 5mm`;
         }
         if ($('.cb_ti_t4a:not(:checked)').length) {
             ti_array.push("* " + join_checkbox_values($('.cb_ti_t4a:not(:checked)')));
+        }
+        if ($('.cb_ti_t4b:not(:checked)').length) {
+            ti_array.push("* " + join_checkbox_values($('.cb_ti_t4b:not(:checked)')));
         }
         report += ti_array.join("\n") + "\n"
     }
@@ -123,13 +117,11 @@ With contrast, range: whole abdomen, slice thickness <= 5mm`;
         report += "--- Number of suspicious lymph node: " + rln_num + "\n";
 
         if (rln_num >= 7) {
-            n_stage.push("2b");
-        } else if (rln_num >= 4) {
-            n_stage.push("2a");
-        } else if (rln_num >= 2) {
-            n_stage.push("1b");
+            n_stage.push("3");
+        } else if (rln_num >= 3) {
+            n_stage.push("2");
         } else if (rln_num >= 1) {
-            n_stage.push("1a");
+            n_stage.push("1");
         } else {
             n_stage.push("0");
         }
@@ -138,11 +130,9 @@ With contrast, range: whole abdomen, slice thickness <= 5mm`;
         report += "--- Location:\n";
         report += "* " + join_checkbox_values($('.cb_rn:checked'), "\n* ");
         report += "\n";
-    } else {
-        if ($('.cb_td:checked').length) {
-            n_stage.push("1c");
-        }
-    }
+    } /* else {
+        report += "* No regional lymph node metastasis.\n";
+    } */
     if ($('.cb_rn:not(:checked)').length) {
         report += "--- No or Equivocal:\n";
         var rn_array = [];
@@ -162,15 +152,7 @@ With contrast, range: whole abdomen, slice thickness <= 5mm`;
             report += $('#txt_dm_others').val();
         }
         report += "\n";
-        if ($('.cb_dm_m1c:checked').length) {
-            m_stage.push("1c");
-        } else {
-            if ($('.cb_dm_m1ab:checked').length == 1) {
-                m_stage.push("1a");
-            } else {
-                m_stage.push("1b");
-            }
-        }
+        m_stage.push("1");
         //console.log(m_stage);
     } /* else {
         report += "* No distant metastasis in the scanned range.\n";
@@ -188,12 +170,12 @@ With contrast, range: whole abdomen, slice thickness <= 5mm`;
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_COLON_T[t];
-    let n_str = AJCC8_COLON_N[n];
-    let m_str = AJCC8_COLON_M[m];
-    report += ajcc_template("Colorectal Carcinoma", t, t_str, n, n_str, m, m_str);
+    let t_str = AJCC8_ESO_T[t];
+    let n_str = AJCC8_ESO_N[n];
+    let m_str = AJCC8_ESO_M[m];
+    report += ajcc_template("Esophageal Carcinoma", t, t_str, n, n_str, m, m_str);
 
-    $('#reportModalLongTitle').html("Colorectal Cancer Staging Form");
+    $('#reportModalLongTitle').html("Esophageal Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
     $('#reportModalLong').modal('show');
 }
