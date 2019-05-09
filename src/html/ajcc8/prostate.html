@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Structured report for lung cancer staging">
+  <meta name="author" content="I-Ta Tsai">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>Structure Report for Prostate Cancer Staging</title>
+
+  <!-- For IE 6/7/8 Responsive -->
+  <!--[if lt IE 9]>
+      <script src="js/respond.min.js"></script>
+      <script src="js/html5shiv.js"></script>
+    <![endif]-->
+
+  <!-- Google Analytics -->
+<%= require('html-loader!../partials/google_analytics.html') %>
+
+  <!-- Vendors: jquery, bootstrap, clipboard.js -->
+<%= require('html-loader!../partials/vendors_css.html') %>
+</head>
+
+<body>
+
+<%= require('html-loader!../partials/nav.html') %>
+
+  <div class="container-fluid">
+    <div class="row">
+<%= require('html-loader!../partials/sidebar.html') %>
+
+      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h3">Prostate Cancer Staging Form</h1>
+
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+              <button type="button" class="btn btn-sm btn-outline-secondary">Clear</button>
+              <button type="button" id="btn_copy" class="btn btn-sm btn-outline-primary">Show &amp; Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <!-- Tumor Location -->
+            <h2 class="h4">Tumor Location</h2>
+            <form class="needs-validation" id="form_tumor_location" novalidate>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_c" value="right lobe">
+                <label class="form-check-label" for="cb_tl_c">Right lobe</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_ac" value="left lobe">
+                <label class="form-check-label" for="cb_tl_ac">Left lobe</label>
+              </div>
+            </form>
+
+            <!-- Tumor Size -->
+            <h2 class="h4 mt-4">Tumor Size</h2>
+            <form class="needs-validation" id="form_tumor_size" novalidate>
+              <div class="row">
+                <div class="col">
+                  <div class="input-group input-group-sm mb-2 mr-sm-2">
+                    <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" step="0.1" class="form-control"
+                      aria-label="Largest diameter of the biggest tumor" id="txt_ts_dia"
+                      placeholder="Largest diameter of the biggest tumor" required>
+                    <div class="input-group-append">
+                      <span class="input-group-text">cm</span>
+                    </div>
+                    <div class="invalid-tooltip">
+                      Please enter a number.
+                    </div>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input" type="checkbox" id="cb_ts_nm" value="1">
+                    <label class="form-check-label" for="cb_ts_nm">Non-measurable</label>
+                    <div class="valid-tooltip">
+                      Or, check Non-measurable.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <!-- Tumor Invasion -->
+            <h2 class="h4 mt-4">Tumor Invasion</h2>
+            <div class="row">
+              <div class="col">
+                <form class="">
+                  <fieldset class="form-group">
+                    <div class="row">
+                      <legend class="col-form-label col-sm-2 pt-0">Prostate</legend>
+                      <div class="col-sm-10">
+                        <div class="form-check">
+                          <input class="form-check-input cb_ti cb_ti_t1a" type="checkbox" id="cb_ti_loh"
+                            value="right paracervical">
+                          <label class="form-check-label" for="cb_ti_loh">One-half of one lobe or less</label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input cb_ti cb_ti_t1b" type="checkbox" id="cb_ti_moh"
+                            value="left paracervical">
+                          <label class="form-check-label" for="cb_ti_moh">More than one-half of one lobe but not both
+                            lobes</label>
+                        </div>
+                        <div class="form-check disabled">
+                          <input class="form-check-input cb_ti cb_ti_t1c" type="checkbox" id="cb_ti_bl"
+                            value="left paracervical">
+                          <label class="form-check-label" for="cb_ti_bl">Involves both lobes</label>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                </form>
+                <form class="form-inline">
+                  <div class="form-check mb-2 mr-sm-2">
+                    <label class="form-check-label" for="">Extracapsular extension (neurovascular bundle
+                      invasion)</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_ti cb_ti_t3a" type="checkbox" id="cb_ti_ecr" value="right">
+                    <label class="form-check-label" for="cb_ti_ecr">right</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_ti cb_ti_t3a" type="checkbox" id="cb_ti_ecl" value="left">
+                    <label class="form-check-label" for="cb_ti_lpc">left</label>
+                  </div>
+                </form>
+                <form class="form-inline">
+                  <div class="form-check mb-2 mr-sm-2">
+                    <label class="form-check-label" for="">Seminal vesicle invasion</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_ti cb_ti_t3b" type="checkbox" id="cb_ti_svr" value="right">
+                    <label class="form-check-label" for="cb_ti_svr">right</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_ti cb_ti_t3b" type="checkbox" id="cb_ti_svl" value="left">
+                    <label class="form-check-label" for="cb_ti_svl">left</label>
+                  </div>
+                </form>
+                <form class="form-inline">
+                  <div class="form-check mb-2 mr-sm-2">
+                    <label class="form-check-label" for="">Pelvic sidewall</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_psr" value="right">
+                    <label class="form-check-label" for="cb_ti_psr">right</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_psl" value="left">
+                    <label class="form-check-label" for="cb_ti_psl">left</label>
+                  </div>
+                </form>
+                <form class="form-inline">
+                  <div class="form-check mb-2 mr-sm-2">
+                    <label class="form-check-label" for="">Pelvic organs invasion</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_ub" value="urinary bladder">
+                    <label class="form-check-label" for="cb_ti_ub">Bladder</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_rec" value="rectum">
+                    <label class="form-check-label" for="cb_ti_rec">Rectum</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_es" value="external sphincter">
+                    <label class="form-check-label" for="cb_ti_es">External sphincter</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_lm" value="levator muscles">
+                    <label class="form-check-label" for="cb_ti_lm">Levator muscles</label>
+                  </div>
+                  <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <input type="checkbox" class="cb_tl cb_ti_t4" aria-label="Checkbox for other tumor invasion"
+                          id="cb_ti_others" value="">
+                      </div>
+                      <span class="input-group-text">Others</span>
+                    </div>
+                    <input type="text" class="form-control"
+                      aria-label="Text input with checkbox for other tumor invasion" id="txt_ti_others">
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- second column -->
+          <div class="col">
+            <!-- Regional Lymph Node -->
+            <h2 class="h4">Regional Lymph Node</h2>
+            <h3 class="h5 mt-2">Locations</h3>
+            <form class="form-inline">
+              <div class="form-check mb-2 mr-sm-2">
+                <label class="form-check-label" for="cb_ti_pl">Obturator</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_ro" value="right obturator">
+                <label class="form-check-label" for="cb_rn_ro">right</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_lo" value="left obturator">
+                <label class="form-check-label" for="cb_rn_lo">left</label>
+              </div>
+            </form>
+            <form class="form-inline">
+              <div class="form-check mb-2 mr-sm-2">
+                <label class="form-check-label" for="cb_ti_pl">Internal iliac</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_rii" value="right internal iliac">
+                <label class="form-check-label" for="cb_rn_rii">right</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_lii" value="left internal iliac">
+                <label class="form-check-label" for="cb_rn_lii">left</label>
+              </div>
+            </form>
+            <form class="form-inline">
+              <div class="form-check mb-2 mr-sm-2">
+                <label class="form-check-label" for="cb_ti_pl">External iliac</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_rei" value="right external iliac">
+                <label class="form-check-label" for="cb_rn_rei">right</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_lei" value="left external iliac">
+                <label class="form-check-label" for="cb_rn_lei">left</label>
+              </div>
+            </form>
+            <form class="form-inline">
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_ps" value="presacral">
+                <label class="form-check-label" for="cb_rn_ps">Sacral</label>
+              </div>
+            </form>
+
+            <!-- Distant Metastasis -->
+            <h2 class="h4 mt-4">Distant Metastasis</h2>
+            <form class="">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_dm cb_dm_m1ab" type="checkbox" id="cb_dm_li" value="liver">
+                <label class="form-check-label" for="cb_dm_li">Liver</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_dm cb_dm_m1ab" type="checkbox" id="cb_dm_ad" value="adrenal">
+                <label class="form-check-label" for="cb_dm_ad">Adrenal</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_dm cb_dm_m1ab" type="checkbox" id="cb_dm_lu" value="lung">
+                <label class="form-check-label" for="cb_dm_lu">Lung</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_dm cb_dm_m1ab" type="checkbox" id="cb_dm_b" value="bone">
+                <label class="form-check-label" for="cb_dm_b">Bone</label>
+              </div>
+              <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <input type="checkbox" class="cb_dm cb_dm_m1ab" aria-label="Checkbox for other distant metastasis"
+                      id="cb_dm_others" value="">
+                  </div>
+                  <span class="input-group-text">Others</span>
+                </div>
+                <input type="text" class="form-control"
+                  aria-label="Text input with checkbox for other distant metastasis" id="txt_dm_others">
+              </div>
+            </form>
+
+            <!-- Scanning Protocol -->
+            <h2 class="h4 mt-4">Scanning Protocol</h2>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="protocol_radios" id="radio_mr" value="mr" checked>
+              <label class="form-check-label" for="radio_mr">
+                MR
+              </label>
+              <form class="form-inline">
+                <div class="form-group mb-2 mr-sm-2">
+                  <div id="ref_rln_num" class="text-muted">
+                    Contrast
+                  </div>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_ncmr" value="ncmr" checked>
+                  <label class="form-check-label" for="cb_sp_ncmr">without</label>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_cemr" value="cemr" checked>
+                  <label class="form-check-label" for="cb_sp_cemr">with</label>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Report Modal -->
+<%= require('html-loader!../partials/report_modal.html') %>
+
+  <!-- About Modal -->
+<%= require('html-loader!../partials/about_modal.html') %>
+
+  <!-- Vendors: jquery, bootstrap, clipboard.js -->
+<%= require('html-loader!../partials/vendors_js.html') %>
+</body>
+
+</html>
+
