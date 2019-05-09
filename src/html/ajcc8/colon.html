@@ -57,43 +57,35 @@
             <h2 class="h4">Tumor Location</h2>
             <form class="needs-validation" id="form_tumor_location" novalidate>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_c"
-                  value="cecum">
+                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_c" value="cecum">
                 <label class="form-check-label" for="cb_tl_c">Cecum</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_ac"
-                  value="ascending colon">
+                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_ac" value="ascending colon">
                 <label class="form-check-label" for="cb_tl_ac">Ascending colon</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_hf"
-                  value="hepatic flexure">
+                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_hf" value="hepatic flexure">
                 <label class="form-check-label" for="cb_tl_hf">Hepatic flexure</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_tc"
-                  value="transverse colon">
+                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_tc" value="transverse colon">
                 <label class="form-check-label" for="cb_tl_tc">Transverse colon</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_sf"
-                  value="splenic flexure">
+                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_sf" value="splenic flexure">
                 <label class="form-check-label" for="cb_tl_sf">Splenic flexure</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_dc"
-                  value="descending colon">
+                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_dc" value="descending colon">
                 <label class="form-check-label" for="cb_tl_dc">Descending colon</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_sc"
-                  value="sigmoid colon">
+                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_sc" value="sigmoid colon">
                 <label class="form-check-label" for="cb_tl_sc">Sigmoid colon</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_r"
-                  value="rectum">
+                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_r" value="rectum">
                 <label class="form-check-label" for="cb_tl_r">Rectum</label>
               </div>
             </form>
@@ -105,8 +97,7 @@
                 <div class="col">
                   <div class="input-group input-group-sm mb-2 mr-sm-2">
                     <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" step="0.1" class="form-control"
-                      aria-label="Length of tumor in cm" id="txt_ts_len"
-                      placeholder="Length" required>
+                      aria-label="Length of tumor in cm" id="txt_ts_len" placeholder="Length" required>
                     <div class="input-group-append">
                       <span class="input-group-text">cm</span>
                     </div>
@@ -118,8 +109,7 @@
                 <div class="col">
                   <div class="input-group input-group-sm mb-2 mr-sm-2">
                     <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" step="0.1" class="form-control"
-                      aria-label="Max thickness of tumor in cm" id="txt_ts_thick"
-                      placeholder="Max thickness" required>
+                      aria-label="Max thickness of tumor in cm" id="txt_ts_thick" placeholder="Max thickness" required>
                     <div class="input-group-append">
                       <span class="input-group-text">cm</span>
                     </div>
@@ -141,54 +131,60 @@
             <!-- Tumor Invasion -->
             <h2 class="h4 mt-4">Tumor Invasion</h2>
             <div class="row">
-            <div class="col">
-              <h3 class="h5">T1</h3>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t1" type="checkbox" id="cb_ti_sm" value="submucosa">
-                <label class="form-check-label" for="cb_ti_sm">Submucosa</label>
-              </div>
+              <div class="col">
+                <h3 class="h5">T1</h3>
+                <div class="form-check form-check-inline mb-2 mr-sm-2">
+                  <input class="form-check-input cb_ti cb_ti_t1" type="checkbox" id="cb_ti_sm" value="submucosa">
+                  <label class="form-check-label" for="cb_ti_sm">Submucosa</label>
+                </div>
 
-            </div>
-            <div class="col">
-              <h3 class="h5">T2</h3>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t2" type="checkbox" id="cb_ti_mp" value="muscularis propria">
-                <label class="form-check-label" for="cb_ti_mp">Muscularis propria</label>
               </div>
-            </div>
-            </div>
-
-            <div class="row mt-3">
-            <div class="col">
-              <h3 class="h5">T3</h3>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t3" type="checkbox" id="cb_ti_pt" value="perirectal tissues">
-                <label class="form-check-label" for="cb_ti_pt">Perirectal tissues</label>
+              <div class="col">
+                <h3 class="h5">T2</h3>
+                <div class="form-check form-check-inline mb-2 mr-sm-2">
+                  <input class="form-check-input cb_ti cb_ti_t2" type="checkbox" id="cb_ti_mp"
+                    value="muscularis propria">
+                  <label class="form-check-label" for="cb_ti_mp">Muscularis propria</label>
+                </div>
               </div>
-
-            </div>
-            <div class="col">
-              <h3 class="h5">T4a</h3>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4a" type="checkbox" id="cb_ti_vp" value="penetrates visceral peritoneum">
-                <label class="form-check-label" for="cb_ti_vp">Penetrates to the surface of the visceral peritoneum</label>
-              </div>
-            </div>
             </div>
 
             <div class="row mt-3">
-            <div class="col">
-              <h3 class="h5">T4b</h3>
+              <div class="col">
+                <h3 class="h5">T3</h3>
+                <div class="form-check form-check-inline mb-2 mr-sm-2">
+                  <input class="form-check-input cb_ti cb_ti_t3" type="checkbox" id="cb_ti_pt"
+                    value="perirectal tissues">
+                  <label class="form-check-label" for="cb_ti_pt">Perirectal tissues</label>
+                </div>
+
+              </div>
+              <div class="col">
+                <h3 class="h5">T4a</h3>
+                <div class="form-check form-check-inline mb-2 mr-sm-2">
+                  <input class="form-check-input cb_ti cb_ti_t4a" type="checkbox" id="cb_ti_vp"
+                    value="penetrates visceral peritoneum">
+                  <label class="form-check-label" for="cb_ti_vp">Penetrates to the surface of the visceral
+                    peritoneum</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col">
+                <h3 class="h5">T4b</h3>
                 <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
                   <div class="input-group-prepend">
                     <div class="input-group-text">
-                      <input type="checkbox" class="cb_ti cb_ti_t4b" aria-label="Checkbox for other tumor invasion" id="cb_ti_others" value="">
+                      <input type="checkbox" class="cb_ti cb_ti_t4b" aria-label="Checkbox for other tumor invasion"
+                        id="cb_ti_others" value="">
                     </div>
                     <span class="input-group-text">Adjacent organs</span>
                   </div>
-                  <input type="text" class="form-control" aria-label="Text input with checkbox for other tumor invasion" id="txt_ti_others">
+                  <input type="text" class="form-control" aria-label="Text input with checkbox for other tumor invasion"
+                    id="txt_ti_others">
                 </div>
-            </div>
+              </div>
             </div>
           </div>
 
@@ -213,141 +209,143 @@
               </div>
             </form>
             <h3 class="h5 mt-2">Locations</h3>
-              <form class="">
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_pc" value="pericolic/perirectal">
-                  <label class="form-check-label" for="cb_rn_pc">Pericolic/perirectal</label>
-                </div>
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_sr" value="superior rectal">
-                  <label class="form-check-label" for="cb_rn_sr">Superior rectal</label>
-                </div>
-              </form>
-              <form class="">
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_ic" value="ileocolic">
-                  <label class="form-check-label" for="cb_rn_ic">Ileocolic</label>
-                </div>
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_rc" value="right colic">
-                  <label class="form-check-label" for="cb_rn_rc">Right colic</label>
-                </div>
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_mc" value="middle colic">
-                  <label class="form-check-label" for="cb_rn_mc">Middle colic</label>
-                </div>
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_lc" value="left colic">
-                  <label class="form-check-label" for="cb_rn_lc">Left colic</label>
-                </div>
-              </form>
-              <form class="">
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_sma" value="superior mesenteric artery">
-                  <label class="form-check-label" for="cb_rn_sma">Superior mesenteric artery</label>
-                </div>
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_ima" value="inferior mesenteric artery">
-                  <label class="form-check-label" for="cb_rn_ima">Inferior mesenteric artery</label>
-                </div>
-              </form>
+            <form class="">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_pc" value="pericolic/perirectal">
+                <label class="form-check-label" for="cb_rn_pc">Pericolic/perirectal</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_sr" value="superior rectal">
+                <label class="form-check-label" for="cb_rn_sr">Superior rectal</label>
+              </div>
+            </form>
+            <form class="">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_ic" value="ileocolic">
+                <label class="form-check-label" for="cb_rn_ic">Ileocolic</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_rc" value="right colic">
+                <label class="form-check-label" for="cb_rn_rc">Right colic</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_mc" value="middle colic">
+                <label class="form-check-label" for="cb_rn_mc">Middle colic</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_lc" value="left colic">
+                <label class="form-check-label" for="cb_rn_lc">Left colic</label>
+              </div>
+            </form>
+            <form class="">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_sma" value="superior mesenteric artery">
+                <label class="form-check-label" for="cb_rn_sma">Superior mesenteric artery</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_ima" value="inferior mesenteric artery">
+                <label class="form-check-label" for="cb_rn_ima">Inferior mesenteric artery</label>
+              </div>
+            </form>
 
             <h3 class="h5 mt-2">Tumor deposit(s) (N1c)</h3>
-              <form class="">
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input class="form-check-input cb_td" type="checkbox" id="cb_td_ss" value="">
-                  <label class="form-check-label" for="cb_td_ss">Subserosa</label>
-                </div>
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input class="form-check-input cb_td" type="checkbox" id="cb_td_m" value="">
-                  <label class="form-check-label" for="cb_td_m">Mesentery</label>
-                </div>
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input class="form-check-input cb_td" type="checkbox" id="cb_td_pc" value="">
-                  <label class="form-check-label" for="cb_td_pc">Pericolic/perirectal/mesorectal tissues</label>
-                </div>
-              </form>
+            <form class="">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_td" type="checkbox" id="cb_td_ss" value="">
+                <label class="form-check-label" for="cb_td_ss">Subserosa</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_td" type="checkbox" id="cb_td_m" value="">
+                <label class="form-check-label" for="cb_td_m">Mesentery</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_td" type="checkbox" id="cb_td_pc" value="">
+                <label class="form-check-label" for="cb_td_pc">Pericolic/perirectal/mesorectal tissues</label>
+              </div>
+            </form>
 
             <!-- Distant Metastasis -->
             <h2 class="h4 mt-4">Distant Metastasis</h2>
-              <form class="">
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input class="form-check-input cb_dm cb_dm_m1c" type="checkbox" id="cb_dm_ps" value="peritoneal seeding">
-                  <label class="form-check-label" for="cb_dm_ps">Peritoneal seeding (M1c)</label>
-                </div>
-              </form>
-              <form class="">
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input class="form-check-input cb_dm cb_dm_m1ab" type="checkbox" id="cb_dm_li" value="liver">
-                  <label class="form-check-label" for="cb_dm_li">Liver</label>
-                </div>
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input class="form-check-input cb_dm cb_dm_m1ab" type="checkbox" id="cb_dm_ad" value="adrenal">
-                  <label class="form-check-label" for="cb_dm_ad">Adrenal</label>
-                </div>
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input class="form-check-input cb_dm cb_dm_m1ab" type="checkbox" id="cb_dm_lu" value="lung">
-                  <label class="form-check-label" for="cb_dm_lu">Lung</label>
-                </div>
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input class="form-check-input cb_dm cb_dm_m1ab" type="checkbox" id="cb_dm_b" value="bone">
-                  <label class="form-check-label" for="cb_dm_b">Bone</label>
-                </div>
-                <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      <input type="checkbox" class="cb_dm cb_dm_m1ab" aria-label="Checkbox for other distant metastasis" id="cb_dm_others" value="">
-                    </div>
-                    <span class="input-group-text">Others</span>
+            <form class="">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_dm cb_dm_m1c" type="checkbox" id="cb_dm_ps"
+                  value="peritoneal seeding">
+                <label class="form-check-label" for="cb_dm_ps">Peritoneal seeding (M1c)</label>
+              </div>
+            </form>
+            <form class="">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_dm cb_dm_m1ab" type="checkbox" id="cb_dm_li" value="liver">
+                <label class="form-check-label" for="cb_dm_li">Liver</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_dm cb_dm_m1ab" type="checkbox" id="cb_dm_ad" value="adrenal">
+                <label class="form-check-label" for="cb_dm_ad">Adrenal</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_dm cb_dm_m1ab" type="checkbox" id="cb_dm_lu" value="lung">
+                <label class="form-check-label" for="cb_dm_lu">Lung</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_dm cb_dm_m1ab" type="checkbox" id="cb_dm_b" value="bone">
+                <label class="form-check-label" for="cb_dm_b">Bone</label>
+              </div>
+              <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <input type="checkbox" class="cb_dm cb_dm_m1ab" aria-label="Checkbox for other distant metastasis"
+                      id="cb_dm_others" value="">
                   </div>
-                  <input type="text" class="form-control" aria-label="Text input with checkbox for other distant metastasis" id="txt_dm_others">
+                  <span class="input-group-text">Others</span>
                 </div>
-              </form>
+                <input type="text" class="form-control"
+                  aria-label="Text input with checkbox for other distant metastasis" id="txt_dm_others">
+              </div>
+            </form>
 
             <!-- Scanning Protocol -->
             <h2 class="h4 mt-4">Scanning Protocol</h2>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="protocol_radios" id="radio_ct" value="ct" checked>
-                    <label class="form-check-label" for="radio_ct">
-                        CT
-                    </label>
-                    <form class="form-inline">
-                    <div class="form-group mb-2 mr-sm-2">
-                        <div id="ref_rln_num" class="text-muted">
-                        Contrast
-                        </div>
-                    </div>
-                    <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_ncct" value="ncct" checked>
-                        <label class="form-check-label" for="cb_sp_ncct">without</label>
-                    </div>
-                    <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_cect" value="cect" checked>
-                        <label class="form-check-label" for="cb_sp_cect">with</label>
-                    </div>
-                    </form>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="protocol_radios" id="radio_ct" value="ct" checked>
+              <label class="form-check-label" for="radio_ct">
+                CT
+              </label>
+              <form class="form-inline">
+                <div class="form-group mb-2 mr-sm-2">
+                  <div id="ref_rln_num" class="text-muted">
+                    Contrast
+                  </div>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="protocol_radios" id="radio_mr" value="mr">
-                    <label class="form-check-label" for="radio_mr">
-                        MR
-                    </label>
-                    <form class="form-inline">
-                    <div class="form-group mb-2 mr-sm-2">
-                        <div id="ref_rln_num" class="text-muted">
-                        Contrast
-                        </div>
-                    </div>
-                    <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_ncmr" value="ncmr" checked>
-                        <label class="form-check-label" for="cb_sp_ncmr">without</label>
-                    </div>
-                    <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_cemr" value="cemr" checked>
-                        <label class="form-check-label" for="cb_sp_cemr">with</label>
-                    </div>
-                    </form>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_ncct" value="ncct" checked>
+                  <label class="form-check-label" for="cb_sp_ncct">without</label>
                 </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_cect" value="cect" checked>
+                  <label class="form-check-label" for="cb_sp_cect">with</label>
+                </div>
+              </form>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="protocol_radios" id="radio_mr" value="mr">
+              <label class="form-check-label" for="radio_mr">
+                MR
+              </label>
+              <form class="form-inline">
+                <div class="form-group mb-2 mr-sm-2">
+                  <div id="ref_rln_num" class="text-muted">
+                    Contrast
+                  </div>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_ncmr" value="ncmr" checked>
+                  <label class="form-check-label" for="cb_sp_ncmr">without</label>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_cemr" value="cemr" checked>
+                  <label class="form-check-label" for="cb_sp_cemr">with</label>
+                </div>
+              </form>
             </div>
           </div>
         </div>
