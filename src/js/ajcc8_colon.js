@@ -58,7 +58,7 @@ With contrast, range: whole abdomen, slice thickness <= 5mm`;
 --- Location:
 `;
     if ($('.cb_tl:checked').length) {
-        report += "* " + join_checkbox_values($('.cb_tl:checked'), "\n*") + "\n";
+        report += "* " + join_checkbox_values($('.cb_tl:checked'), "\n* ") + "\n";
     }
 
     report += "--- Size:\n";
