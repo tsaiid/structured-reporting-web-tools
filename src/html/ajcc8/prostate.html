@@ -75,8 +75,8 @@
                     </div>
                   </div>
                   <div class="form-check mb-2 mr-sm-2">
-                    <input class="form-check-input" type="checkbox" id="cb_ts_nm" value="1">
-                    <label class="form-check-label" for="cb_ts_nm">Non-measurable</label>
+                    <input class="form-check-input" type="checkbox" id="cb_ts_na" value="1">
+                    <label class="form-check-label" for="cb_ts_na">Not assessable</label>
                     <div class="valid-tooltip">
                       Or, check Non-measurable.
                     </div>
@@ -95,29 +95,28 @@
                       <legend class="col-form-label col-sm-2 pt-0">Prostate</legend>
                       <div class="col-sm-10">
                         <div class="form-check">
-                          <input class="form-check-input cb_ti cb_ti_t1a" type="checkbox" id="cb_ti_loh"
-                            value="right paracervical">
-                          <label class="form-check-label" for="cb_ti_loh">One-half of one lobe or less</label>
+                          <input class="form-check-input" type="radio" name="rb_ti_p" id="rb_ti_loh"
+                            value="One-half of one lobe or less">
+                          <label class="form-check-label" for="rb_ti_loh">One-half of one lobe or less</label>
                         </div>
                         <div class="form-check">
-                          <input class="form-check-input cb_ti cb_ti_t1b" type="checkbox" id="cb_ti_moh"
-                            value="left paracervical">
-                          <label class="form-check-label" for="cb_ti_moh">More than one-half of one lobe but not both
+                          <input class="form-check-input" type="radio" name="rb_ti_p" id="rb_ti_moh"
+                            value="More than one-half of one lobe but not both lobes">
+                          <label class="form-check-label" for="rb_ti_moh">More than one-half of one lobe but not both
                             lobes</label>
                         </div>
                         <div class="form-check disabled">
-                          <input class="form-check-input cb_ti cb_ti_t1c" type="checkbox" id="cb_ti_bl"
-                            value="left paracervical">
-                          <label class="form-check-label" for="cb_ti_bl">Involves both lobes</label>
+                          <input class="form-check-input" type="radio" name="rb_ti_p" id="rb_ti_bl"
+                            value="Involves both lobes">
+                          <label class="form-check-label" for="rb_ti_bl">Involves both lobes</label>
                         </div>
                       </div>
                     </div>
                   </fieldset>
                 </form>
-                <form class="form-inline">
+                <form class="form-inline ti_item">
                   <div class="form-check mb-2 mr-sm-2">
-                    <label class="form-check-label" for="">Extracapsular extension (neurovascular bundle
-                      invasion)</label>
+                    <label class="form-check-label cb_ti_title" for="">Extracapsular extension (neurovascular bundle invasion)</label>
                   </div>
                   <div class="form-check mb-2 mr-sm-2">
                     <input class="form-check-input cb_ti cb_ti_t3a" type="checkbox" id="cb_ti_ecr" value="right">
@@ -128,9 +127,9 @@
                     <label class="form-check-label" for="cb_ti_lpc">left</label>
                   </div>
                 </form>
-                <form class="form-inline">
+                <form class="form-inline ti_item">
                   <div class="form-check mb-2 mr-sm-2">
-                    <label class="form-check-label" for="">Seminal vesicle invasion</label>
+                    <label class="form-check-label cb_ti_title" for="">Seminal vesicle invasion</label>
                   </div>
                   <div class="form-check mb-2 mr-sm-2">
                     <input class="form-check-input cb_ti cb_ti_t3b" type="checkbox" id="cb_ti_svr" value="right">
@@ -141,9 +140,9 @@
                     <label class="form-check-label" for="cb_ti_svl">left</label>
                   </div>
                 </form>
-                <form class="form-inline">
+                <form class="form-inline ti_item">
                   <div class="form-check mb-2 mr-sm-2">
-                    <label class="form-check-label" for="">Pelvic sidewall</label>
+                    <label class="form-check-label cb_ti_title" for="">Pelvic sidewall</label>
                   </div>
                   <div class="form-check mb-2 mr-sm-2">
                     <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_psr" value="right">
@@ -287,7 +286,7 @@
                   </div>
                 </div>
                 <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_ncmr" value="ncmr" checked>
+                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_ncmr" value="ncmr" checked disabled>
                   <label class="form-check-label" for="cb_sp_ncmr">without</label>
                 </div>
                 <div class="form-check mb-2 mr-sm-2">

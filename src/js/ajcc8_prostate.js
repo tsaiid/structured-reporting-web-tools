@@ -31,47 +31,69 @@ const AJCC8_PROSTATE_M = {
     '1b': 'Distant metastasis of Bone(s).',
     '1c': 'Distant metastasis: Other site(s) with or without bone disease.',
 };
+const map_prostate_invasion = {
+    'One-half of one lobe or less': '2a',
+    'More than one-half of one lobe but not both lobes': '2b',
+    'Involves both lobes': '2c',
+};
 
 function generate_report(){
     var t_stage = ["1"];    // at least T1?
     var n_stage = ["0"];
     var m_stage = ["0"];
-    var report = "1. CT protocol\n";
 
     // Protocol
-    if ($('.cb_sp:checked').length) {
-        report += "TECHNIQUE: ";
-        $('.cb_sp:checked').each(function(i) {
-            report += '(' + (i+1) + ') ' + $(this).val() + ' ';
-        });
-        report += $('.cb_sp:checked').length > 1 ? 'were ' : 'was ';
-        report += "performed\n";
-        report += "SCAN RANGE: lower neck to adrenal gland\n\n";
-    }
+    var report = `1. MR protocol
+- Distended rectum with jelly
+- Abdomen and pelvis:
+  * HASTE T2: axial, coronal
+  * DWI: coronal`;
+    if ($('#cb_sp_cemr').is(':checked')) { report += '\n  * T1+C: axial'; }
+    report += `
+- Prostate:
+  * TSE T2, DWI, ADC: axial
+  * T1+FS: axial, sagittal`;
+    if ($('#cb_sp_cemr').is(':checked')) { report += '\n  * T1+C+FS: axial, coronal, sagittal'; }
+    report += '\n\n';
 
-    // Tumor location
-    report += "2. Tumor location\n";
-    if ($('.cb_tl:checked').length) {
-        report += "* " + join_checkbox_values($('.cb_tl:checked'), "\n*") + "\n\n";
-    }
-
-    // Tumor size
-    report += "3. Tumor size\n";
-    if ($('#cb_ts_nm').is(':checked')) {
-        report += "--- Non-measurable";
+    // Tumor location / size
+    report += "2. Tumor location / size\n";
+    if ($('#cb_ts_na').is(':checked')) {
+        report += "--- Not assessable";
     } else {
-        let t_length = parseFloat($('#txt_ts_len').val());
-        report += "--- Measurable: Length " + t_length + " cm, ";
-        let t_thick = parseFloat($('#txt_ts_thick').val());
-        report += "Max thickness " + t_thick + " cm";
+        report += "Location: ";
+        if ($('.cb_tl:checked').length) {
+            report += join_checkbox_values($('.cb_tl:checked')) + "\n";
+        }
+        let t_dia = parseFloat($('#txt_ts_dia').val());
+        report += `Size: ${t_dia} cm (largest diameter of the biggest tumor)`;
         //t_stage.push(get_t_stage_by_size(t_size));
         //console.log(t_stage);
     }
     report += "\n\n";
 
     // Tumor invasion
-    report += "4. Tumor invasion\n";
-    if ($('.cb_ti:checked').length) {
+    report += "3. Tumor invasion\n";
+    //// Prostate
+    if ($("input[name='rb_ti_p']:checked").length) {
+        report += `Prostate (${ $("input[name='rb_ti_p']:checked").val() })\n`;
+        t_stage.push(map_prostate_invasion[$("input[name='rb_ti_p']:checked").val()]);
+        //console.log(t_stage);
+    }
+    var ti_pos = "", ti_neg = "--- No or Equivocal:\n";
+    $('.ti_item').each(function(){
+        if ($(this).find('.cb_ti:checked').length) {
+            ti_pos += $(this).find('.cb_ti_title').text() + ": " + join_checkbox_values($(this).find('.cb_ti:checked')) + "\n";
+        } else {
+            ti_neg += $(this).find('.cb_ti_title').text() + "\n";
+        }
+    });
+    if (ti_pos.length) {
+        ti_pos = "--- Yes:\n" + ti_pos;
+    }
+    report += ti_pos + ti_neg;
+
+        if ($('.cb_ti:checked').length) {
         report += "--- Yes:\n";
         report += "* " + join_checkbox_values($('.cb_ti:checked'), "\n* ");
         report += "\n";
@@ -170,12 +192,12 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_ESO_T[t];
-    let n_str = AJCC8_ESO_N[n];
-    let m_str = AJCC8_ESO_M[m];
-    report += ajcc_template("Esophageal Carcinoma", t, t_str, n, n_str, m, m_str);
+    let t_str = AJCC8_PROSTATE_T[t];
+    let n_str = AJCC8_PROSTATE_N[n];
+    let m_str = AJCC8_PROSTATE_M[m];
+    report += ajcc_template("Prostate Carcinoma", t, t_str, n, n_str, m, m_str);
 
-    $('#reportModalLongTitle').html("Esophageal Cancer Staging Form");
+    $('#reportModalLongTitle').html("Prostate Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
     $('#reportModalLong').modal('show');
 }
