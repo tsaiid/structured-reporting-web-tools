@@ -82,7 +82,7 @@ function generate_report(){
         report += "Non-measurable";
     } else {
         var t_size = parseFloat($('#txt_tp_ts_diameter').val());
-        report += t_size + " cm";
+        report += t_size + " cm (greatest diameter)";
         t_stage.push(get_t_stage_by_size(t_size));
         //console.log(t_stage);
     }
