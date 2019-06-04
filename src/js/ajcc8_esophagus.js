@@ -50,7 +50,7 @@ function generate_report(){
     // Tumor location
     report += "2. Tumor location\n";
     if ($('.cb_tl:checked').length) {
-        report += "* " + join_checkbox_values($('.cb_tl:checked'), "\n*") + "\n\n";
+        report += "* " + join_checkbox_values($('.cb_tl:checked'), "\n* ") + "\n\n";
     }
 
     // Tumor size

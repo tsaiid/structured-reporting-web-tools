@@ -170,7 +170,6 @@ function generate_report(){
             report += $('#txt_dm_others').val();
         }
         report += "\n";
-        report += "\n";
 
         if ($('.cb_dm_m1a:checked').length) {
             m_stage.push("1a");
