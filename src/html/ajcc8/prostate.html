@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Structured report for lung cancer staging">
+  <meta name="description" content="Structured report for prostate cancer staging">
   <meta name="author" content="I-Ta Tsai">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -116,7 +116,7 @@
                 </form>
                 <form class="form-inline ti_item">
                   <div class="form-check mb-2 mr-sm-2">
-                    <label class="form-check-label cb_ti_title" for="">Extracapsular extension (neurovascular bundle invasion)</label>
+                    <label class="form-check-label cb_ti_title" for="">Extracapsular extension</label>
                   </div>
                   <div class="form-check mb-2 mr-sm-2">
                     <input class="form-check-input cb_ti cb_ti_t3a" type="checkbox" id="cb_ti_ecr" value="right">
@@ -129,7 +129,7 @@
                 </form>
                 <form class="form-inline ti_item">
                   <div class="form-check mb-2 mr-sm-2">
-                    <label class="form-check-label cb_ti_title" for="">Seminal vesicle invasion</label>
+                    <label class="form-check-label cb_ti_title" for="">Seminal vesicle</label>
                   </div>
                   <div class="form-check mb-2 mr-sm-2">
                     <input class="form-check-input cb_ti cb_ti_t3b" type="checkbox" id="cb_ti_svr" value="right">
@@ -155,22 +155,22 @@
                 </form>
                 <form class="form-inline">
                   <div class="form-check mb-2 mr-sm-2">
-                    <label class="form-check-label" for="">Pelvic organs invasion</label>
+                    <label class="form-check-label cb_ti_title" for="">Pelvic organs</label>
                   </div>
                   <div class="form-check mb-2 mr-sm-2">
-                    <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_ub" value="urinary bladder">
+                    <input class="form-check-input cb_ti cb_ti_t4 cb_ti_po" type="checkbox" id="cb_ti_ub" value="urinary bladder">
                     <label class="form-check-label" for="cb_ti_ub">Bladder</label>
                   </div>
                   <div class="form-check mb-2 mr-sm-2">
-                    <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_rec" value="rectum">
+                    <input class="form-check-input cb_ti cb_ti_t4 cb_ti_po" type="checkbox" id="cb_ti_rec" value="rectum">
                     <label class="form-check-label" for="cb_ti_rec">Rectum</label>
                   </div>
                   <div class="form-check mb-2 mr-sm-2">
-                    <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_es" value="external sphincter">
+                    <input class="form-check-input cb_ti cb_ti_t4 cb_ti_po" type="checkbox" id="cb_ti_es" value="external sphincter">
                     <label class="form-check-label" for="cb_ti_es">External sphincter</label>
                   </div>
                   <div class="form-check mb-2 mr-sm-2">
-                    <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_lm" value="levator muscles">
+                    <input class="form-check-input cb_ti cb_ti_t4 cb_ti_po" type="checkbox" id="cb_ti_lm" value="levator muscles">
                     <label class="form-check-label" for="cb_ti_lm">Levator muscles</label>
                   </div>
                   <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
@@ -196,7 +196,7 @@
             <h3 class="h5 mt-2">Locations</h3>
             <form class="form-inline">
               <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label" for="cb_ti_pl">Obturator</label>
+                <label class="form-check-label">Obturator</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
                 <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_ro" value="right obturator">
@@ -209,7 +209,7 @@
             </form>
             <form class="form-inline">
               <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label" for="cb_ti_pl">Internal iliac</label>
+                <label class="form-check-label">Internal iliac</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
                 <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_rii" value="right internal iliac">
@@ -222,7 +222,7 @@
             </form>
             <form class="form-inline">
               <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label" for="cb_ti_pl">External iliac</label>
+                <label class="form-check-label">External iliac</label>
               </div>
               <div class="form-check mb-2 mr-sm-2">
                 <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_rei" value="right external iliac">
@@ -235,8 +235,8 @@
             </form>
             <form class="form-inline">
               <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_ps" value="presacral">
-                <label class="form-check-label" for="cb_rn_ps">Sacral</label>
+                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_s" value="sacral">
+                <label class="form-check-label">Sacral</label>
               </div>
             </form>
 
@@ -295,6 +295,83 @@
                 </div>
               </form>
             </div>
+
+            <!-- Prostate Characteristics -->
+            <h2 class="h4 mt-4">Prostate</h2>
+            <form class="form-inline">
+                <div class="form-group mb-2 mr-sm-2">
+                  <div class="">
+                    Size
+                  </div>
+                </div>
+              <div class="form-group col-lg-3">
+                <div class="input-group input-group-sm mb-2 mr-sm-2">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">W</span>
+                  </div>
+                  <input type="number" pattern="[0-9]+" step="1" class="form-control"
+                    aria-label="Prostatic width" id="txt_prsz_w" placeholder="0" value="0">
+                    <div class="input-group-append">
+                        <span class="input-group-text">mm</span>
+                    </div>
+                </div>
+              </div>
+              <div class="form-group col-lg-3">
+                <div class="input-group input-group-sm mb-2 mr-sm-2">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">H</span>
+                  </div>
+                  <input type="number" pattern="[0-9]+" step="1" class="form-control"
+                    aria-label="Prostatic height" id="txt_prsz_h" placeholder="0" value="0">
+                    <div class="input-group-append">
+                        <span class="input-group-text">mm</span>
+                    </div>
+                </div>
+              </div>
+              <div class="form-group col-lg-3">
+                <div class="input-group input-group-sm mb-2 mr-sm-2">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">L</span>
+                  </div>
+                  <input type="number" pattern="[0-9]+" step="1" class="form-control"
+                    aria-label="Prostatic length" id="txt_prsz_l" placeholder="0" value="0">
+                    <div class="input-group-append">
+                        <span class="input-group-text">mm</span>
+                    </div>
+                </div>
+              </div>
+            </form>
+
+              <form class="form-inline">
+                <div class="form-group mb-2 mr-sm-2">
+                  <div class="">
+                    Zonal demarcation
+                  </div>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input" type="radio" id="radio_zd_clear" name="zd_radios" value="clear" checked>
+                  <label class="form-check-label" for="radio_zd_clear">clear</label>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input" type="radio" id="radio_zd_unclear" name="zd_radios" value="unclear">
+                  <label class="form-check-label" for="radio_zd_unclear">unclear</label>
+                </div>
+              </form>
+
+              <form class="form-inline">
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input" type="checkbox" id="cb_bph" value="">
+                  <label class="form-check-label" for="cb_bph">BPH</label>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input" type="checkbox" id="cb_trus_bx" value="">
+                  <label class="form-check-label" for="cb_trus_bx">s/p TRUS biopsy</label>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input class="form-check-input" type="checkbox" id="cb_turp" value="">
+                  <label class="form-check-label" for="cb_turp">s/p TURP</label>
+                </div>
+              </form>
           </div>
         </div>
       </main>

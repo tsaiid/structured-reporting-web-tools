@@ -38,7 +38,7 @@ const map_prostate_invasion = {
 };
 
 function generate_report(){
-    var t_stage = ["1"];    // at least T1?
+    var t_stage = ["0"];
     var n_stage = ["0"];
     var m_stage = ["0"];
 
@@ -88,70 +88,45 @@ function generate_report(){
             ti_neg += $(this).find('.cb_ti_title').text() + "\n";
         }
     });
+    if ($('.cb_ti_po:checked').length) {
+        //ti_neg = ti_neg.slice(0, -1);
+        ti_pos += "Pelvic organs: " + join_checkbox_values($('.cb_ti_po:checked')) + "\n";
+    }
+    if ($('.cb_ti_po:not(:checked)').length) {
+        //ti_neg = ti_neg.slice(0, -1);
+        ti_neg += "Pelvic organs: " + join_checkbox_values($('.cb_ti_po:not(:checked)')) + "\n";
+    }
     if (ti_pos.length) {
         ti_pos = "--- Yes:\n" + ti_pos;
     }
     report += ti_pos + ti_neg;
 
-        if ($('.cb_ti:checked').length) {
-        report += "--- Yes:\n";
-        report += "* " + join_checkbox_values($('.cb_ti:checked'), "\n* ");
-        report += "\n";
-
+    if ($('.cb_ti:checked').length) {
         if ($('.cb_ti_t2:checked').length) {
             t_stage.push("2");
         }
-        if ($('.cb_ti_t3:checked').length) {
-            t_stage.push("3");
+        if ($('.cb_ti_t3a:checked').length) {
+            t_stage.push("3a");
         }
-        if ($('.cb_ti_t4a:checked').length) {
-            t_stage.push("4a");
+        if ($('.cb_ti_t3b:checked').length) {
+            t_stage.push("3b");
         }
-        if ($('.cb_ti_t4b:checked').length) {
-            t_stage.push("4b");
+        if ($('.cb_ti_t4:checked').length) {
+            t_stage.push("4");
         }
         //console.log(t_stage);
-    }
-    if ($('.cb_ti:not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        var ti_array = [];
-        if ($('.cb_ti_t2:not(:checked)').length) {
-            ti_array.push("* " + join_checkbox_values($('.cb_ti_t2:not(:checked)')));
-        }
-        if ($('.cb_ti_t3:not(:checked)').length) {
-            ti_array.push("* " + join_checkbox_values($('.cb_ti_t3:not(:checked)')));
-        }
-        if ($('.cb_ti_t4a:not(:checked)').length) {
-            ti_array.push("* " + join_checkbox_values($('.cb_ti_t4a:not(:checked)')));
-        }
-        if ($('.cb_ti_t4b:not(:checked)').length) {
-            ti_array.push("* " + join_checkbox_values($('.cb_ti_t4b:not(:checked)')));
-        }
-        report += ti_array.join("\n") + "\n"
     }
     report += "\n";
 
     // Regional nodal metastasis
     report += "4. Regional nodal metastasis\n";
     if ($('.cb_rn:checked').length) {
-        let rln_num = parseInt($('#txt_rln_num').val());
         report += "--- Yes:\n";
-        report += "--- Number of suspicious lymph node: " + rln_num + "\n";
-
-        if (rln_num >= 7) {
-            n_stage.push("3");
-        } else if (rln_num >= 3) {
-            n_stage.push("2");
-        } else if (rln_num >= 1) {
-            n_stage.push("1");
-        } else {
-            n_stage.push("0");
-        }
-        //console.log(n_stage);
-
         report += "--- Location:\n";
         report += "* " + join_checkbox_values($('.cb_rn:checked'), "\n* ");
         report += "\n";
+        n_stage.push("1");
+        //console.log(n_stage);
     } /* else {
         report += "* No regional lymph node metastasis.\n";
     } */
@@ -186,7 +161,23 @@ function generate_report(){
     report += "\n";
 
     // Other Findings
-    report += "6. Other findings:\n\n\n";
+    report += "6. Other findings:\n";
+    let prsz_w = $('#txt_prsz_w').val() / 10;
+    let prsz_h = $('#txt_prsz_h').val() / 10;
+    let prsz_l = $('#txt_prsz_l').val() / 10;
+    let prsz_v = Math.round(prsz_w * prsz_h * prsz_l * 10) / 10
+    report += `Prostate:\n- Size (cm): ${prsz_w} x ${prsz_w} x ${prsz_w}; volume about ${prsz_v} cm3.\n`;
+    report += "- Zonal demarcation: " + $('input[name="zd_radios"]:checked').val() + "\n";
+    if ($('#cb_bph').is(':checked')) {
+        report += "- Enlarged transition zone with heterogeneous nodular signal intensity, suggestive of benign prostatic hyperplasia.\n";
+    }
+    if ($('#cb_trus_bx').is(':checked')) {
+        report += "- Focal T1 hyperintensities at bilateral lobes, probably post-biopsy changes.\n";
+    }
+    if ($('#cb_turp').is(':checked')) {
+        report += "- s/p TURP appearance.\n";
+    }
+    report += "\n";
 
     // AJCC staging reference text
     let t = t_stage.sort()[t_stage.length-1];
@@ -205,18 +196,6 @@ function generate_report(){
 $('#cb_tp_ts_nm').change(function() {
     if($("form.was-validated").length) {
 
-    }
-});
-
-// auto- increase or decrease lymph node numbers
-$('.cb_rn').change(function(){
-    let rln_num = +$('#txt_rln_num').val();
-    if (this.checked) {
-        $('#txt_rln_num').val(rln_num + 1);
-    } else {
-        if (rln_num > 0) {
-            $('#txt_rln_num').val(rln_num - 1);
-        }
     }
 });
 
