@@ -132,7 +132,7 @@ function generate_report(){
     report += "\n";
 
     // Regional nodal metastasis
-    report += "5. Regional nodal metastasis\n";
+    report += "4. Regional nodal metastasis\n";
     if ($('.cb_rn:checked').length) {
         let rln_num = parseInt($('#txt_rln_num').val());
         report += "--- Yes:\n";
@@ -166,7 +166,7 @@ function generate_report(){
     report += "\n";
 
     // Distant metastasis
-    report += "6. Distant metastasis (In this study)\n";
+    report += "5. Distant metastasis (In this study)\n";
     if ($('.cb_dm:checked').length) {
         report += "--- Yes:\n";
         report += "* " + join_checkbox_values($('.cb_dm:checked'), "\n* ");
@@ -186,7 +186,7 @@ function generate_report(){
     report += "\n";
 
     // Other Findings
-    report += "7. Other findings:\n\n\n";
+    report += "6. Other findings:\n\n\n";
 
     // AJCC staging reference text
     let t = t_stage.sort()[t_stage.length-1];

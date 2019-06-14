@@ -14,7 +14,7 @@ const AJCC8_COLON_T = {
     '1': 'Tumor invades submucosa (through the muscularis mucosa but not into the muscularis propria).',
     '2': 'Tumor invades muscularis propria.',
     '3': 'Tumor invades through the muscularis propria into the perirectal tissues.',
-    '4a': 'Tumor penetrates to the surface of the visceral peritoneum (including gross perforation of the bowel through tumor and continuous invasion of tumor through areas of inflammation to th surface of the visceral peritoneum).',
+    '4a': 'Tumor penetrates to the surface of the visceral peritoneum (including gross perforation of the bowel through tumor and continuous invasion of tumor through areas of inflammation to the surface of the visceral peritoneum).',
     '4b': 'Tumor directly invades or adheres to adjacent organs or structures.',
 };
 const AJCC8_COLON_N = {
