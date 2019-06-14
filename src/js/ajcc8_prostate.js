@@ -165,8 +165,8 @@ function generate_report(){
     let prsz_w = $('#txt_prsz_w').val() / 10;
     let prsz_h = $('#txt_prsz_h').val() / 10;
     let prsz_l = $('#txt_prsz_l').val() / 10;
-    let prsz_v = Math.round(prsz_w * prsz_h * prsz_l * 10) / 10
-    report += `Prostate:\n- Size (cm): ${prsz_w} x ${prsz_w} x ${prsz_w}; volume about ${prsz_v} cm3.\n`;
+    let prsz_v = Math.round(prsz_w * prsz_h * prsz_l * 0.52 * 10) / 10
+    report += `Prostate:\n- Size (cm): ${prsz_w} x ${prsz_h} x ${prsz_l}; volume about ${prsz_v} ml.\n`;
     report += "- Zonal demarcation: " + $('input[name="zd_radios"]:checked').val() + "\n";
     if ($('#cb_bph').is(':checked')) {
         report += "- Enlarged transition zone with heterogeneous nodular signal intensity, suggestive of benign prostatic hyperplasia.\n";
