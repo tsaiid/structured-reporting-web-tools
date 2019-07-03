@@ -78,8 +78,13 @@ With contrast, range: whole abdomen, slice thickness <= 5mm`;
     // Tumor invasion
     report += "4. Tumor invasion\n";
     if ($('.cb_ti:checked').length) {
-        report += "--- Yes:\n";
-        report += "* " + join_checkbox_values($('.cb_ti:checked'), "\n* ");
+        report += "--- Yes:";
+        if ($('.cb_ti:not(.cb_ti_t4b):checked').length) {
+            report += "\n* " + join_checkbox_values($('.cb_ti:not(.cb_ti_t4b):checked'), "\n* ");
+        }
+        if ($('.cb_ti_t4b:checked').length) {
+            report += "\n* " + $('#txt_ti_others').val();
+        }
         report += "\n";
 
         if ($('.cb_ti_t2:checked').length) {
