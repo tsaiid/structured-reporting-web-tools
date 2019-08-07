@@ -40,7 +40,13 @@ function generate_report(){
 
     // Protocol
     if ($('input[name="protocol_radios"]:checked').val() == 'mr') {
-        report += "MR protocol\n";
+        report += `MR protocol
+- Distended rectum with jelly
+- Abdomen and pelvis:
+  * T2: coronal  * DWI (b=400): coronal
+- Uterus:
+  * TSE T2: axial, coronal, sagittal  * DWI (b=1000), ADC: axial
+  * T1+FS: axial, sagittal  * T1+C+FS: axial, sagittal`;
     } else {
         report += "CT protocol\n";
     }
