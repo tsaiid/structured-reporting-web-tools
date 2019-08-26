@@ -149,7 +149,15 @@ function generate_report(){
             report += $('#txt_dm_others').val();
         }
         report += "\n";
-        m_stage.push("1");
+        if ($('.cb_dm_m1a:checked').length) {
+            m_stage.push("1a");
+        }
+        if ($('.cb_dm_m1b:checked').length) {
+            m_stage.push("1b");
+        }
+        if ($('.cb_dm_m1c:checked').length) {
+            m_stage.push("1c");
+        }
         //console.log(m_stage);
     } /* else {
         report += "* No distant metastasis in the scanned range.\n";
