@@ -9,7 +9,7 @@ var DJDLForm = 'Lumbar spine:' + "\n";
 // Control for radio and checkbox.
 // Disc Space Narrowing
 $('.disc_space_narrowing').change(function() {
-    var cb_dsn = $(this).parent().parent().parent().find('.cb_dsn');
+    var cb_dsn = $(this).parent().parent().find('.cb_dsn');
 
     if (!cb_dsn.is(':checked')) {
         cb_dsn.click();
@@ -18,18 +18,18 @@ $('.disc_space_narrowing').change(function() {
 
 $('.cb_dsn').change(function() {
     if (!$(this).is(':checked')) {
-        $(this).parent().parent().next().find(':radio').prop('checked', false);
+        $(this).parent().parent().find(':radio').prop('checked', false);
     } else {
         // set default degree to mild.
-        if ($(this).parent().parent().next().find(':radio:checked').length == 0) {
-            $(this).parent().parent().next().find(':radio').first().prop('checked', true);
+        if ($(this).parent().parent().find(':radio:checked').length == 0) {
+            $(this).parent().parent().find(':radio').first().prop('checked', true);
         }
     }
 });
 
 // Degenerative Spondylolisthesis
 $('.deg_spon').change(function() {
-    var cb_deg_spon = $(this).parent().parent().parent().find('.cb_deg_spon');
+    var cb_deg_spon = $(this).parent().parent().find('.cb_deg_spon');
 
     if (!cb_deg_spon.is(':checked')) {
         cb_deg_spon.click();
@@ -38,18 +38,18 @@ $('.deg_spon').change(function() {
 
 $('.cb_deg_spon').change(function() {
     if (!$(this).is(':checked')) {
-        $(this).parent().parent().next().find(':radio').prop('checked', false);
+        $(this).parent().parent().find(':radio').prop('checked', false);
     } else {
         // set default grade to 1.
-        if ($(this).parent().parent().next().find(':radio:checked').length == 0) {
-            $(this).parent().parent().next().find(':radio').first().prop('checked', true);
+        if ($(this).parent().parent().find(':radio:checked').length == 0) {
+            $(this).parent().parent().find(':radio').first().prop('checked', true);
         }
     }
 });
 
 // Scoliosis
 $('.scoliosis').change(function() {
-    var cb_scoliosis = $(this).parent().parent().parent().find('.cb_scoliosis');
+    var cb_scoliosis = $(this).parent().parent().find('.cb_scoliosis');
 
     if (!cb_scoliosis.is(':checked')) {
         cb_scoliosis.click();
@@ -58,25 +58,25 @@ $('.scoliosis').change(function() {
 
 $('.cb_scoliosis').change(function() {
     if (!$(this).is(':checked')) {
-        $(this).parent().parent().next().find(':radio').prop('checked', false);
+        $(this).parent().parent().find(':radio').prop('checked', false);
     } else {
         // set default grade to Left.
-        if ($(this).parent().parent().next().find(':radio:checked').length == 0) {
-            $(this).parent().parent().next().find(':radio').first().prop('checked', true);
+        if ($(this).parent().parent().find(':radio:checked').length == 0) {
+            $(this).parent().parent().find(':radio').first().prop('checked', true);
         }
     }
 });
 
 // Vertebral Collapse
 $('.v_collapse').change(function() {
-    var cb_collapse = $(this).parent().parent().parent().find('.cb_collapse');
+    var cb_collapse = $(this).parent().parent().find('.cb_collapse');
 
     if (!cb_collapse.is(':checked')) {
         cb_collapse.click();
     }
 
     // if not any collapsed level, uncheck.
-    var v_collapses = $(this).parent().parent().find(':checkbox:checked');
+    var v_collapses = $(this).parent().parent().find('.v_collapse:checkbox:checked');
     if (v_collapses.length == 0) {
         cb_collapse.prop('checked', false);
     }
@@ -84,42 +84,45 @@ $('.v_collapse').change(function() {
 
 $('.cb_collapse').change(function() {
     if (!$(this).is(':checked')) {
-        $(this).parent().parent().next().find(':checkbox').prop('checked', false);
+        $(this).parent().parent().find(':checkbox').prop('checked', false);
     } else {
         // set default to T11.
-        if ($(this).parent().parent().next().find(':checkbox:checked').length == 0) {
-            $(this).parent().parent().next().find(':checkbox').first().prop('checked', true);
+        if ($(this).parent().parent().find('.v_collapse:checkbox:checked').length == 0) {
+            $(this).parent().parent().find('.v_collapse:checkbox').first().prop('checked', true);
         }
     }
 });
 
 // LSTV
 $('.lstv').change(function() {
-    var cb_lstv = $(this).parent().parent().parent().parent().parent().find('.cb_lstv');
+    var cb_lstv = $(this).parent().parent().find('.cb_lstv');
 
     if (!cb_lstv.is(':checked')) {
         cb_lstv.click();
     }
 
     // clear side if type 4
+    console.log($(this).val());
     if ($(this).val() == "IV") {
-        $(this).parent().parent().parent().next().find(':radio').prop('checked', false);
+        $(this).parent().parent().find('.lstv_side:radio').prop('checked', false);
     } else {
         // default side: both
-        var next_div = $(this).parent().parent().parent().next();
-        if (next_div.find(':radio:checked').length == 0)
-            $(this).parent().parent().parent().next().find(':radio').last().prop('checked', true);
+        var checked_side_radios = $(this).parent().parent().find('.lstv_side:radio:checked');
+        console.log(checked_side_radios.length);
+        if (checked_side_radios.length == 0)
+            $(this).parent().parent().find('.lstv_side:radio').last().prop('checked', true);
     }
 });
 
 $('.cb_lstv').change(function() {
     if (!$(this).is(':checked')) {
-        $(this).parent().parent().next().find(':radio').prop('checked', false);
+        $(this).parent().parent().find(':radio').prop('checked', false);
     } else {
         // set default grade to 1, and both sides.
-        if ($(this).parent().parent().next().find(':radio:checked').length == 0) {
-            $(this).parent().parent().next().find(':radio').first().prop('checked', true); // type
-            $(this).parent().parent().next().find(':radio').last().prop('checked', true); // side
+        if ($(this).parent().parent().find('.lstv:radio:checked').length == 0) {
+            console.log($(this).parent().parent().find('.lstv:radio').first());
+            $(this).parent().parent().find(':radio[name="lstv_type"]').first().prop('checked', true); // type
+            $(this).parent().parent().find('.lstv_side:radio').last().prop('checked', true); // side
         }
     }
 });
@@ -149,7 +152,7 @@ function analyze() {
         var has_disc_space_narrowing = false;
 
         $('.disc_space_narrowing:checked').each(function() {
-            var level = $(this).parent().parent().parent().parent().attr('id');
+            var level = $(this).parent().parent().parent().attr('id');
             if (typeof degree[$(this).val()] == "undefined") {
                 degree[$(this).val()] = new Array();
             }
@@ -170,7 +173,7 @@ function analyze() {
 
     // Retrolisthesis
     $('.cb_retro:checked').each(function() {
-        var level = $(this).parent().parent().parent().parent().attr('id');
+        var level = $(this).parent().parent().parent().attr('id');
         retro.push(level);
     });
 
@@ -189,7 +192,7 @@ function analyze() {
         var has_spondylolisthesis = false;
 
         $('.deg_spon:checked').each(function() {
-            var level = $(this).parent().parent().parent().parent().attr('id');
+            var level = $(this).parent().parent().parent().attr('id');
             if (typeof grade[$(this).val()] == "undefined") {
                 grade[$(this).val()] = new Array();
             }
@@ -224,7 +227,7 @@ function analyze() {
 
     // Hypermobility
     $('.cb_hyper:checked').each(function() {
-        var level = $(this).parent().parent().parent().parent().attr('id');
+        var level = $(this).parent().parent().parent().attr('id');
         hyper.push(level);
     });
 
