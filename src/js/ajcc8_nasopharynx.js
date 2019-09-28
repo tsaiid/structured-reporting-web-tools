@@ -2,27 +2,28 @@ import './common.js';
 import '../css/dashboard.css';
 import '../css/ajcc8_common.css';
 if (process.env.NODE_ENV !== 'production') {
-    require('raw-loader!../html/ajcc8/colon.html');
+    require('raw-loader!../html/ajcc8/nasopharynx.html');
 }
 
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
-const AJCC8_COLON_T = {
+const AJCC8_NASOPHARYNX_T = {
     'x': 'Primary tumor cannot be assessed.',
     '0': 'No tumor identified, but EBV(+) cervical nodes involvement.',
+    'is': 'Tumor in situ.',
     '1': 'Tumor confined to the nasopharynx, or extension to oropharynx and/or nasal cavity without parapharyngeal extension.',
     '2': 'Tumor with extension to parapharyngeal space and/or adjacent soft tissue involvement (medial or lateral pterygoid, prevertebral muscles)',
     '3': 'Tumor with infiltration of bony structures at skull base, cervical vertebra, pterygoid structures, and/or paranasal sinuses.',
     '4': 'Tumor with intracranial extension, involvement of cranial nerves, hypopharynx, orbit, parotid gland, and/or extensive soft tissue infiltration beyond the lateral surface of the lateral pterygoid muscle.',
 };
-const AJCC8_COLON_N = {
+const AJCC8_NASOPHARYNX_N = {
     'x': 'Regional lymph nodes cannot be assessed.',
     '0': 'No regional lymph node metastasis.',
     '1': 'Unilateral metastasis in cervical lymph node(s), and/or unilateral or bilateral metastasis in retropharyngeal lymph node(s), ≦ 6 cm in greatest dimension, above the caudal border of cricoid cartilage.',
     '2': 'Bilateral metastasis in cervical lymph node(s), ≦ 6 cm in greatest dimension, above the caudal border of cricoid cartilage.',
     '3': 'Unilateral or bilateral metastasis in cervical lymph node(s), > 6 cm and/or extension below the caudal border of cricoid cartilage.',
 };
-const AJCC8_COLON_M = {
+const AJCC8_NASOPHARYNX_M = {
     '0': 'No distant metastasis (in this study).',
     '1': 'Distant metastasis.',
 };
@@ -31,18 +32,17 @@ function generate_report(){
     var t_stage = ["1"];    // at least T1?
     var n_stage = ["0"];
     var m_stage = ["0"];
-    var report = "1. CT protocol\n";
-
     // Protocol
-    if ($('.cb_sp:checked').length) {
-        report += "TECHNIQUE: ";
-        $('.cb_sp:checked').each(function(i) {
-            report += '(' + (i+1) + ') ' + $(this).val() + ' ';
-        });
-        report += $('.cb_sp:checked').length > 1 ? 'were ' : 'was ';
-        report += "performed\n";
-        report += "SCAN RANGE: lower neck to adrenal gland\n\n";
+    var report = `1. MR protocol
+SEQUENCES:
+- Axial T1WI and T2WI with fat suppression;
+`;
+    if ($('#cb_sp_cemr').is(':checked')) {
+        report += '- Axial, coronal and sagittal post Gd-enhanced T1WI with fat suppression';
+    } else {
+        report += '- Axial, coronal and sagittal T1WI with fat suppression';
     }
+    report += '\n\n';
 
     // Tumor location
     report += "2. Tumor location\n";
@@ -55,12 +55,8 @@ function generate_report(){
     if ($('#cb_ts_nm').is(':checked')) {
         report += "--- Non-measurable";
     } else {
-        let t_length = parseFloat($('#txt_ts_len').val());
-        report += "--- Measurable: Length " + t_length + " cm, ";
-        let t_thick = parseFloat($('#txt_ts_thick').val());
-        report += "Max thickness " + t_thick + " cm";
-        //t_stage.push(get_t_stage_by_size(t_size));
-        //console.log(t_stage);
+        let t_length = parseFloat($('#txt_ts_dia').val());
+        report += "--- Measurable: Maximal length " + t_length + " cm.";
     }
     report += "\n\n";
 
@@ -77,11 +73,8 @@ function generate_report(){
         if ($('.cb_ti_t3:checked').length) {
             t_stage.push("3");
         }
-        if ($('.cb_ti_t4a:checked').length) {
-            t_stage.push("4a");
-        }
-        if ($('.cb_ti_t4b:checked').length) {
-            t_stage.push("4b");
+        if ($('.cb_ti_t4:checked').length) {
+            t_stage.push("4");
         }
         //console.log(t_stage);
     }
@@ -105,38 +98,35 @@ function generate_report(){
     report += "\n";
 
     // Regional nodal metastasis
+    let n_length = parseFloat($('#txt_rn_len').val());
     report += "5. Regional nodal metastasis\n";
     if ($('.cb_rn:checked').length) {
-        let rln_num = parseInt($('#txt_rln_num').val());
         report += "--- Yes:\n";
-        report += "--- Number of suspicious lymph node: " + rln_num + "\n";
-
-        if (rln_num >= 7) {
-            n_stage.push("3");
-        } else if (rln_num >= 3) {
-            n_stage.push("2");
-        } else if (rln_num >= 1) {
-            n_stage.push("1");
-        } else {
-            n_stage.push("0");
+        if ($('.cb_rn_r:checked').length) {
+            report += "* Right neck level: " + join_checkbox_values($('.cb_rn_r:checked')) + "\n";
         }
-        //console.log(n_stage);
-
-        report += "--- Location:\n";
-        report += "* " + join_checkbox_values($('.cb_rn:checked'), "\n* ");
-        report += "\n";
-    } /* else {
-        report += "* No regional lymph node metastasis.\n";
-    } */
+        if ($('.cb_rn_l:checked').length) {
+            report += "* Left neck level: " + join_checkbox_values($('.cb_rn_l:checked')) + "\n";
+        }
+        report += "* Maximal size of the largest positive node: " + n_length + " cm.\n";
+    }
     if ($('.cb_rn:not(:checked)').length) {
         report += "--- No or Equivocal:\n";
-        var rn_array = [];
-        if ($('.cb_rn:not(:checked)').length) {
-            rn_array.push("* " + join_checkbox_values($('.cb_rn:not(:checked)')));
+        if ($('.cb_rn_r:not(:checked)').length) {
+            report += "* Right neck level: " + join_checkbox_values($('.cb_rn_r:not(:checked)')) + "\n";
         }
-        report += rn_array.join("\n") + "\n"
+        if ($('.cb_rn_l:not(:checked)').length) {
+            report += "* Left neck level: " + join_checkbox_values($('.cb_rn_l:not(:checked)')) + "\n";
+        }
     }
     report += "\n";
+    if (($('.cb_rn_r_nrp:checked, .cb_rn_l_nrp:checked').length && n_length > 6.0) || $('.cb_rn_n3:checked').length) {
+        n_stage.push("3");
+    } else if ($('.cb_rn_r_nrp:checked').length && $('.cb_rn_l_nrp:checked').length) {
+        n_stage.push("2");
+    } else if (($('.cb_rn_r:checked').length ^ $('.cb_rn_l:checked').length) || $('.cb_rn_n1:checked').length) {
+        n_stage.push("1");
+    }
 
     // Distant metastasis
     report += "6. Distant metastasis (In this study)\n";
@@ -165,9 +155,9 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_ESO_T[t];
-    let n_str = AJCC8_ESO_N[n];
-    let m_str = AJCC8_ESO_M[m];
+    let t_str = AJCC8_NASOPHARYNX_T[t];
+    let n_str = AJCC8_NASOPHARYNX_N[n];
+    let m_str = AJCC8_NASOPHARYNX_M[m];
     report += ajcc_template("Esophageal Carcinoma", t, t_str, n, n_str, m, m_str);
 
     $('#reportModalLongTitle').html("Esophageal Cancer Staging Form");
