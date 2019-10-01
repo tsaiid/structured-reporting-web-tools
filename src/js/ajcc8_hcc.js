@@ -51,11 +51,11 @@ With contrast, range: whole abdomen, slice thickness <= 5mm`;
     let txt_tl_loc = $('#txt_tl_loc').val();
     report += "--- Location: " + txt_tl_loc + "\n";
 
+    let t_length = parseFloat($('#txt_ts_len').val());
     report += "--- Size:\n";
     if ($('#cb_ts_nm').is(':checked')) {
         report += "* Non-measurable";
     } else {
-        let t_length = parseFloat($('#txt_ts_len').val());
         report += "* Measurable: " + t_length + " cm (the largest tumor)";
         //console.log(t_stage);
     }
@@ -72,20 +72,6 @@ With contrast, range: whole abdomen, slice thickness <= 5mm`;
             report += "\n* " + $('#cb_tc_pvt').val() + ", location: " + $('#txt_tc_pvt').val();
         }
         report += "\n";
-
-        if ($('.cb_ti_t2:checked').length) {
-            t_stage.push("2");
-        }
-        if ($('.cb_ti_t3:checked').length) {
-            t_stage.push("3");
-        }
-        if ($('.cb_ti_t4a:checked').length) {
-            t_stage.push("4a");
-        }
-        if ($('.cb_ti_t4b:checked').length) {
-            t_stage.push("4b");
-        }
-        //console.log(t_stage);
     }
     if ($('.cb_tc:not(:checked)').length) {
         report += "--- No or Equivocal:\n";
@@ -93,18 +79,20 @@ With contrast, range: whole abdomen, slice thickness <= 5mm`;
     }
     report += "\n";
 
-    if (tl_num == 1) {
-        if ($('#cb_tc_pvt').is(':checked')) {
-            t_stage.push('2');
+    if ($('.cb_tc_t4:checked').length) {
+        t_stage.push('4');
+    } else if (tl_num == 1) {
+        if (t_length > 2) {
+            t_stage.push('1b');
         } else {
-            if (t_length > 2) {
-                t_stage.push('1b');
-            } else {
-                t_stage.push('1a');
-            }
+            t_stage.push('1a');
         }
     } else {
-
+        if (t_length > 5) {
+            t_stage.push('3');
+        } else {
+            t_stage.push('2');
+        }
     }
 
     // Regional nodal metastasis
