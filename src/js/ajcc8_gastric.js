@@ -156,9 +156,9 @@ With contrast, range: whole abdomen, slice thickness <= 5mm`;
     let t_str = AJCC8_GASTRIC_T[t];
     let n_str = AJCC8_GASTRIC_N[n];
     let m_str = AJCC8_GASTRIC_M[m];
-    report += ajcc_template("Colorectal Carcinoma", t, t_str, n, n_str, m, m_str);
+    report += ajcc_template("Gastric Carcinoma", t, t_str, n, n_str, m, m_str);
 
-    $('#reportModalLongTitle').html("Colorectal Cancer Staging Form");
+    $('#reportModalLongTitle').html("Gastric Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
     $('#reportModalLong').modal('show');
 }
