@@ -2,34 +2,47 @@ import './common.js';
 import '../css/dashboard.css';
 import '../css/ajcc8_common.css';
 if (process.env.NODE_ENV !== 'production') {
-    require('raw-loader!../html/ajcc8/nasopharynx.html');
+    require('raw-loader!../html/ajcc8/oropharynx.html');
 }
 
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
-const AJCC8_NASOPHARYNX_T = {
+const AJCC8_OROPHARYNX_T = {
     'x': 'Primary tumor cannot be assessed.',
-    '0': 'No tumor identified, but EBV(+) cervical nodes involvement.',
+    '0': 'No evidence of primary tumor.',
     'is': 'Tumor in situ.',
-    '1': 'Tumor confined to the nasopharynx, or extension to oropharynx and/or nasal cavity without parapharyngeal extension.',
-    '2': 'Tumor with extension to parapharyngeal space and/or adjacent soft tissue involvement (medial or lateral pterygoid, prevertebral muscles)',
-    '3': 'Tumor with infiltration of bony structures at skull base, cervical vertebra, pterygoid structures, and/or paranasal sinuses.',
-    '4': 'Tumor with intracranial extension, involvement of cranial nerves, hypopharynx, orbit, parotid gland, and/or extensive soft tissue infiltration beyond the lateral surface of the lateral pterygoid muscle.',
+    '1': 'Tumor ≤ 2 cm in greatest dimension.',
+    '2': 'Tumor > 2 cm but ≤ 4 cm in greatest dimension.',
+    '3': 'Tumor > 4 cm in greatest dimension or extension to lingual surface of epiglottis.',
+    '4a': 'Moderately advanced local disease: Tumor invades the larynx, extrinsic muscle of tongue, medial pterygoid, hard palate, or mandible.',
+    '4b': 'Very advanced local disease: Tumor invades lateral pterygoid muscle, pterygoid plates, lateral nasopharynx, or skull base or encases carotid artery.',
 };
-const AJCC8_NASOPHARYNX_N = {
+const AJCC8_OROPHARYNX_N_HPV = {
     'x': 'Regional lymph nodes cannot be assessed.',
     '0': 'No regional lymph node metastasis.',
-    '1': 'Unilateral metastasis in cervical lymph node(s), and/or unilateral or bilateral metastasis in retropharyngeal lymph node(s), ≦ 6 cm in greatest dimension, above the caudal border of cricoid cartilage.',
-    '2': 'Bilateral metastasis in cervical lymph node(s), ≦ 6 cm in greatest dimension, above the caudal border of cricoid cartilage.',
-    '3': 'Unilateral or bilateral metastasis in cervical lymph node(s), > 6 cm and/or extension below the caudal border of cricoid cartilage.',
+    '1': 'Unilateral cervical LN(S), ≦ 6cm in greatest dimension, above caudal border of cricoid cartilage; or Unilateral or bilateral retropharyngeal LN, ≦ 6cm in greatest dimension (above the caudal border of cricoid cartilage).',
+    '2': 'Bilateral cervical LN(S) , ≦6cm in greatest dimension, above the caudal border of cricoid cartilage.',
+    '3': 'Unilateral or bilateral cervical LN(S), ＞6cm in greatest dimension, and/or Extension below the caudal border of cricoid cartilage.',
 };
-const AJCC8_NASOPHARYNX_M = {
+const AJCC8_OROPHARYNX_N_NONHPV = {
+    'x': 'Regional lymph nodes cannot be assessed.',
+    '0': 'No regional lymph node metastasis.',
+    '1': 'Metastasis in a single ipsilateral lymph node, ≤ 3 cm in greatest dimension and ENE(-).',
+    '2': 'Metastasis in a single ipsilateral lymph node, > 3 cm but ≤ 6 cm in greatest dimension and ENE(-); or in bilateral or contralateral lymph nodes, none > 6 cm in greatest dimension and ENE(-).',
+    '2a': 'Metastasis in a single ipsilateral lymph node > 3 cm but ≤ 6 cm in greatest dimension and ENE(-).',
+    '2b': 'Metastasis in multiple ipsilateral lymph nodes, none > 6 cm in greatest dimension and ENE(-).',
+    '2c': 'Metastasis in bilateral or contralateral lymph nodes, none > 6 cm in greatest dimension and ENE(-).',
+    '3': 'Metastasis in a lymph node > 6 cm in greatest dimension and ENE(-) or metastasis in any node(s) and clinically overt ENE(+).',
+    '3a': 'Metastasis in a lymph node >6 cm in greatest dimension and ENE(+).',
+    '3b': 'Metastasis in any node(s) and clinically overt ENE(+).',
+};
+const AJCC8_OROPHARYNX_M = {
     '0': 'No distant metastasis (in this study).',
     '1': 'Distant metastasis.',
 };
 
 function generate_report(){
-    var t_stage = ["1"];    // at least T1?
+    var t_stage = ["0"];
     var n_stage = ["0"];
     var m_stage = ["0"];
     // Protocol
@@ -46,17 +59,28 @@ SEQUENCES:
 
     // Tumor location
     report += "2. Tumor location\n";
-    if ($('.cb_tl:checked').length) {
-        report += "* " + join_checkbox_values($('.cb_tl:checked'), "\n*") + "\n\n";
+    if ($('#cb_ts_nm').is(':checked')) {
+        report += "--- Not assessable";
+    } else if ($('#cb_ts_no').is(':checked')) {
+        report += "--- No evidence of primary tumor";
+    } else if ($('.cb_tl:checked').length) {
+        report += "* " + join_checkbox_values($('.cb_tl:checked'), "\n*") + "\n";
+        report += "Laterality: " + join_checkbox_values($('.cb_tl_lat:checked'));
     }
+    report += "\n\n";
 
     // Tumor size
     report += "3. Tumor size\n";
     if ($('#cb_ts_nm').is(':checked')) {
         report += "--- Non-measurable";
+        t_stage.push('x');
+    } else if ($('#cb_ts_no').is(':checked')) {
+        report += "--- No evidence of primary tumor";
     } else {
         let t_length = parseFloat($('#txt_ts_dia').val());
-        report += "--- Measurable: Maximal length " + t_length + " cm.";
+        report += "--- Size: " + t_length + " cm (largest diameter)\n";
+        let t_thick = parseFloat($('#txt_ts_thick').val());
+        report += "--- Tumor thickness: " + t_thick + " cm";
     }
     report += "\n\n";
 
@@ -67,23 +91,20 @@ SEQUENCES:
         report += "* " + join_checkbox_values($('.cb_ti:checked'), "\n* ");
         report += "\n";
 
-        if ($('.cb_ti_t2:checked').length) {
-            t_stage.push("2");
-        }
         if ($('.cb_ti_t3:checked').length) {
             t_stage.push("3");
         }
-        if ($('.cb_ti_t4:checked').length) {
-            t_stage.push("4");
+        if ($('.cb_ti_t4a:checked').length) {
+            t_stage.push("4a");
+        }
+        if ($('.cb_ti_t4b:checked').length) {
+            t_stage.push("4b");
         }
         //console.log(t_stage);
     }
     if ($('.cb_ti:not(:checked)').length) {
         report += "--- No or Equivocal:\n";
         var ti_array = [];
-        if ($('.cb_ti_t2:not(:checked)').length) {
-            ti_array.push("* " + join_checkbox_values($('.cb_ti_t2:not(:checked)')));
-        }
         if ($('.cb_ti_t3:not(:checked)').length) {
             ti_array.push("* " + join_checkbox_values($('.cb_ti_t3:not(:checked)')));
         }
@@ -120,12 +141,30 @@ SEQUENCES:
         }
     }
     report += "\n";
-    if (($('.cb_rn_r_nrp:checked, .cb_rn_l_nrp:checked').length && n_length > 6.0) || $('.cb_rn_n3:checked').length) {
-        n_stage.push("3");
-    } else if ($('.cb_rn_r_nrp:checked').length && $('.cb_rn_l_nrp:checked').length) {
-        n_stage.push("2");
-    } else if (($('.cb_rn_r:checked').length ^ $('.cb_rn_l:checked').length) || $('.cb_rn_n1:checked').length) {
-        n_stage.push("1");
+    if ($('#cb_rn_hpv').is(':checked')) {
+        if (($('.cb_rn_r_nrp:checked, .cb_rn_l_nrp:checked').length && n_length > 6.0) || $('#cb_rn_bc').is(':checked')) {
+            n_stage.push("3");
+        } else if ($('.cb_rn_r_nrp:checked').length && $('.cb_rn_l_nrp:checked').length) {
+            n_stage.push("2");
+        } else if (($('.cb_rn_r:checked').length ^ $('.cb_rn_l:checked').length) || $('.cb_rn_n1:checked').length) {
+            n_stage.push("1");
+        }
+    } else {
+        if ($('.cb_rn:checked').length) {
+            if ($('#cb_rn_ene').is(':checked')) {
+                n_stage.push("3b");
+            } else if (n_length > 6.0) {
+                n_stage.push("3a");
+            } else if (($('.cb_rn_r:checked').length && $('.cb_rn_l:checked').length) || ($('#cb_tl_r').is(':checked') && $('.cb_rn_l:checked').length) || ($('#cb_tl_l').is(':checked') && $('.cb_rn_r:checked').length)) {
+                n_stage.push("2c");
+            } else if (!$('#cb_rn_sin').is(':checked')) {
+                n_stage.push("2b");
+            } else if (n_length > 3.0) {
+                n_stage.push("2a");
+            } else {
+                n_stage.push("1");
+            }
+        }
     }
 
     // Distant metastasis
@@ -155,12 +194,13 @@ SEQUENCES:
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_NASOPHARYNX_T[t];
-    let n_str = AJCC8_NASOPHARYNX_N[n];
-    let m_str = AJCC8_NASOPHARYNX_M[m];
-    report += ajcc_template("Esophageal Carcinoma", t, t_str, n, n_str, m, m_str);
+    let AJCC8_OROPHARYNX_N = ($('#cb_rn_hpv').is(':checked') ? AJCC8_OROPHARYNX_N_HPV : AJCC8_OROPHARYNX_N_NONHPV);
+    let t_str = AJCC8_OROPHARYNX_T[t];
+    let n_str = AJCC8_OROPHARYNX_N[n];
+    let m_str = AJCC8_OROPHARYNX_M[m];
+    report += ajcc_template("Oropharyngeal Carcinoma", t, t_str, n, n_str, m, m_str);
 
-    $('#reportModalLongTitle').html("Esophageal Cancer Staging Form");
+    $('#reportModalLongTitle').html("Oropharyngeal Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
     $('#reportModalLong').modal('show');
 }
