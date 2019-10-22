@@ -33,7 +33,7 @@ const AJCC8_OROPHARYNX_N_NONHPV = {
     '2b': 'Metastasis in multiple ipsilateral lymph nodes, none > 6 cm in greatest dimension and ENE(-).',
     '2c': 'Metastasis in bilateral or contralateral lymph nodes, none > 6 cm in greatest dimension and ENE(-).',
     '3': 'Metastasis in a lymph node > 6 cm in greatest dimension and ENE(-) or metastasis in any node(s) and clinically overt ENE(+).',
-    '3a': 'Metastasis in a lymph node >6 cm in greatest dimension and ENE(+).',
+    '3a': 'Metastasis in a lymph node >6 cm in greatest dimension and ENE(-).',
     '3b': 'Metastasis in any node(s) and clinically overt ENE(+).',
 };
 const AJCC8_OROPHARYNX_M = {
