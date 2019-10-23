@@ -22,6 +22,7 @@ module.exports = {
     ajcc8_endometrium: './src/js/ajcc8_endometrium.js',
     ajcc8_rcc: './src/js/ajcc8_rcc.js',
     ajcc8_oral: './src/js/ajcc8_oral.js',
+    ajcc8_hypopharynx: './src/js/ajcc8_hypopharynx.js',
   },
   output: {
     filename: '[name].js',
@@ -132,6 +133,11 @@ module.exports = {
       template: './src/html/ajcc8/oral.html',
       filename: 'ajcc8_oral.html',
       chunks: ['ajcc8_oral'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/html/ajcc8/hypopharynx.html',
+      filename: 'ajcc8_hypopharynx.html',
+      chunks: ['ajcc8_hypopharynx'],
     }),
     new WebappWebpackPlugin({
       logo: './src/image/favicon.png',
