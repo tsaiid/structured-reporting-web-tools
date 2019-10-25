@@ -24,6 +24,7 @@ module.exports = {
     ajcc8_oral: './src/js/ajcc8_oral.js',
     ajcc8_hypopharynx: './src/js/ajcc8_hypopharynx.js',
     ajcc8_larynx_supraglottis: './src/js/ajcc8_larynx_supraglottis.js',
+    ajcc8_larynx_glottis: './src/js/ajcc8_larynx_glottis.js',
   },
   output: {
     filename: '[name].js',
@@ -144,6 +145,11 @@ module.exports = {
       template: './src/html/ajcc8/larynx_supraglottis.html',
       filename: 'ajcc8_larynx_supraglottis.html',
       chunks: ['ajcc8_larynx_supraglottis'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/html/ajcc8/larynx_glottis.html',
+      filename: 'ajcc8_larynx_glottis.html',
+      chunks: ['ajcc8_larynx_glottis'],
     }),
     new WebappWebpackPlugin({
       logo: './src/image/favicon.png',
