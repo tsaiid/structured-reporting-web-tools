@@ -192,7 +192,7 @@ SEQUENCES:
     let t_str = AJCC8_LARYNX_SUPRAGLOTTIS_T[t];
     let n_str = AJCC8_LARYNX_SUPRAGLOTTIS_N[n];
     let m_str = AJCC8_LARYNX_SUPRAGLOTTIS_M[m];
-    report += ajcc_template("Oral Cavity Carcinoma", t, t_str, n, n_str, m, m_str);
+    report += ajcc_template("Laryngeal Cancer (Supraglottis) Carcinoma", t, t_str, n, n_str, m, m_str);
 
     $('#reportModalLongTitle').html("Laryngeal Cancer (Supraglottis) Staging Form");
     $('#reportModalBody pre code').html(report);
