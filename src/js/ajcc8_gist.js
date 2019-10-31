@@ -33,14 +33,20 @@ function generate_report(){
     // Protocol
     if ($('input[name="protocol_radios"]:checked').val() == 'mr') {
         report += `MR protocol
-Sagittal and Axial FSE T2WI
-Axial FSE T1WI with FS, pre- and post- contrast
-Axial T1WI with contrast, abdominal survey
-(Coronal FSE T2WI)
-(Axial T2WI, lower abdominal survey)`;
+Slice thickness: 5 mm or less
+Range: abdomen
+T1 in-phase/opposed phase, axial
+T2 axial or coronal
+Dynamic T1 fat saturation, axial
+T1 fat saturation, coronal
+DWI, axial`;
     } else {
         report += `CT protocol
-With contrast, range: whole abdomen, slice thickness <= 5mm`;
+Slice thickness: 5 mm or less
+Range: abdomen
+Contrast enhanced imaging, axial image
+Dynamic contrast–enhanced axial imaging at arterial phase, venous phase
+(+venous phase coronal reformation optionally)`;
     }
     report += "\n\n";
 

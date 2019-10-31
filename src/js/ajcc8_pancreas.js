@@ -45,8 +45,19 @@ Axial T1WI with contrast, abdominal survey
 (Coronal FSE T2WI)
 (Axial T2WI, lower abdominal survey)`;
     } else {
-        report += `CT protocol
-With contrast, range: whole abdomen, slice thickness <= 5mm`;
+        if ($('#cb_sp_ncct').is(':checked')) {
+            report += `CT protocol
+Contrast–enhanced axial imaging at arterial and venous phase
+Slice thickness: 5 mm or less
+Range: whole liver and pancreas at arterial phase, whole abdomen at venous phase
+Coronal reconstruction at arterial phase and venous phase
+Slice thickness: 5 mm or less`
+        } else {
+            report += `CT protocol
+Unenhanced axial imaging
+Slice thickness: 5 mm or less
+Range: upper abdomen`;
+        }
     }
     report += "\n\n";
 

@@ -34,10 +34,27 @@ function generate_report(){
 
     // Protocol
     if ($('input[name="protocol_radios"]:checked').val() == 'mr') {
-        report += `MR protocol`;
+        report += `MR protocol
+Slice thickness: 5 mm or less
+Range: whole liver
+
+Unenhanced axial T1WI
+Unenhanced axial T2WI
+Dynamic contrast-enhanced axial T1WI with fat saturation(arterial phase, and venous phase)
+
+Diffusion- weighted sequences, axial image
+Dynamic contrast-enhanced axial T1WI with fat saturation(equilibrium phase)`;
     } else {
         report += `CT protocol
-With contrast, range: whole abdomen, slice thickness <= 5mm`;
+Slice thickness: 5 mm or less
+Range: whole liver
+
+Unenhanced imaging, axial image
+Dynamic contrast–enhanced axial imaging at arterial phase, venous phase
+
+Dynamic contrast–enhanced imaging at equilibrium phase
+Whole abdomen survey in portal venous phase or equilibrium phase
+Coronal reconstruction`;
     }
     report += "\n\n";
 

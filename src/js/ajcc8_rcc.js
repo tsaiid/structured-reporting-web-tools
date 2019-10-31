@@ -48,7 +48,10 @@ Axial T1WI with contrast, abdominal survey
 (Axial T2WI, lower abdominal survey)`;
     } else {
         report += `CT protocol
-With contrast, range: whole abdomen, slice thickness <= 5mm`;
+Without and with contrast medium at nephrographic phase
+Axial section slice thickness/interval: 5/5mm
+Coronal section slice thickness/interval: 5/5mm
+Range: diaphragm to the pelvis cavity`;
     }
     report += "\n\n";
 

@@ -48,7 +48,9 @@ function generate_report(){
   * TSE T2: axial, coronal, sagittal  * DWI (b=1000), ADC: axial
   * T1+FS: axial, sagittal  * T1+C+FS: axial, sagittal`;
     } else {
-        report += "CT protocol\n";
+        report += `CT protocol
+Intravenous contrast injection
+Range: whole abdomen, slice thickness <= 5mm`;
     }
     report += "\n\n";
 

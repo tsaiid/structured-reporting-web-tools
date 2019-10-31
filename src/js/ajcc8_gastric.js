@@ -48,7 +48,14 @@ Axial T1WI with contrast, abdominal survey
 (Axial T2WI, lower abdominal survey)`;
     } else {
         report += `CT protocol
-With contrast, range: whole abdomen, slice thickness <= 5mm`;
+Distention of stomach with 600ml water (or effervescent agent)
+Administration of a hypotonic agent before examination (If there are no contraindications)
+Dynamic CT from diaphragm to upper abdomen
+(with/without) pre-contrast phase of upper abdomen, slice thickness: 5mm
+Post-contrast phase of upper abdomen, slice thickness: 5mm
+Arterial phase with at least 2ml/s IV contrast infusion, of upper abdomen
+Venous phase, of whole abdomen and pelvis
+Coronal reconstruction`;
     }
     report += "\n\n";
 

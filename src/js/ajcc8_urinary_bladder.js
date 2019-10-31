@@ -42,14 +42,18 @@ function generate_report(){
     // Protocol
     if ($('input[name="protocol_radios"]:checked').val() == 'mr') {
         report += `MR protocol
-- Distended rectum with jelly
-- Abdomen and pelvis:
-  * T2: coronal  * DWI (b=400): coronal
-- Uterus:
-  * TSE T2: axial, coronal, sagittal  * DWI (b=1000), ADC: axial
-  * T1+FS: axial, sagittal  * T1+C+FS: axial, sagittal`;
+Axial and Sagittal T2WI
+Axial T1WI or T1FS: pre- and post-contrast
+Sagittal T1FS: post-contrast
+For lymph node assessment: axial T1FS or axial DWI/ADC
+For other sites of the urinary tract: coronal MRU`;
     } else {
-        report += "CT protocol\n";
+        report += `CT protocol
+Slice thickness: 5 mm or less
+Range: kidney to urinary bladder
+Pre-contrast imaging: axial imaging
+Post-contrast imaging: axial imaging
+(excretory phase, at least 5 minutes after contrast medium administration): axial imaging and coronal reformation`;
     }
     report += "\n\n";
 

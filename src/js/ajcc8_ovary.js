@@ -56,7 +56,10 @@ function generate_report(){
   * TSE T2: axial, coronal, sagittal  * DWI (b=1000), ADC: axial
   * T1+FS: axial, sagittal  * T1+C+FS: axial, sagittal`;
     } else {
-        report += "CT protocol\n";
+        report += `CT protocol
+Without contrast, range: pelvis, slice thickness <= 5mm
+With contrast, range: whole abdomen, slice thickness <= 5mm
+Oral contrast may improve detection of small peritoneal seeding`;
     }
     report += "\n\n";
 
