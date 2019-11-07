@@ -137,7 +137,7 @@ SEQUENCES:
         if ($('.cb_rn_l:checked').length) {
             report += "* Left neck level: " + join_checkbox_values($('.cb_rn_l:checked')) + "\n";
         }
-        report += "* Maximal size of the largest positive node: " + n_length + " cm.\n";
+        report += "* Maximum size of the largest positive node: " + n_length + " cm.\n";
     }
     if ($('.cb_rn:not(:checked)').length) {
         report += "--- No or Equivocal:\n";

@@ -137,7 +137,7 @@ Oral contrast may improve detection of small peritoneal seeding`;
     if ($('.cb_rn:checked').length) {
         report += "--- Yes:\n";
         report += "* " + join_checkbox_values($('.cb_rn:checked'), "\n* ") + "\n";
-        report += "* Maximal size of the largest positive node: " + n_length + " cm.\n";
+        report += "* Maximum size of the largest positive node: " + n_length + " cm.\n";
 
         t_stage.push("3");
         n_stage.push("1a");
