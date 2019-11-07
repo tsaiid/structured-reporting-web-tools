@@ -30,6 +30,7 @@ module.exports = {
     ajcc8_urinary_bladder: './src/js/ajcc8_urinary_bladder.js',
     ajcc8_ccc_ibd: './src/js/ajcc8_ccc_ibd.js',
     ajcc8_ccc_pbd: './src/js/ajcc8_ccc_pbd.js',
+    ajcc8_ccc_dbd: './src/js/ajcc8_ccc_dbd.js',
   },
   output: {
     filename: '[name].js',
@@ -180,6 +181,11 @@ module.exports = {
       template: './src/html/ajcc8/ccc_pbd.html',
       filename: 'ajcc8_ccc_pbd.html',
       chunks: ['ajcc8_ccc_pbd'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/html/ajcc8/ccc_dbd.html',
+      filename: 'ajcc8_ccc_dbd.html',
+      chunks: ['ajcc8_ccc_dbd'],
     }),
     new WebappWebpackPlugin({
       logo: './src/image/favicon.png',
