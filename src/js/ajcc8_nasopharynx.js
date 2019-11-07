@@ -132,19 +132,20 @@ SEQUENCES:
     report += "6. Distant metastasis (In this study)\n";
     if ($('.cb_dm:checked').length) {
         report += "--- Yes:\n";
-        report += "* " + join_checkbox_values($('.cb_dm:checked'), "\n* ");
-        if ($('#cb_dm_others:checked').length) {
-            report += $('#txt_dm_others').val();
+        if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
+            report += "* " + join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'), "\n* ") + "\n";
         }
-        report += "\n";
+        if ($('#cb_dm_others').is(':checked')) {
+            report += "* " + $('#txt_dm_others').val() + "\n";
+        }
         m_stage.push("1");
         //console.log(m_stage);
     } /* else {
         report += "* No distant metastasis in the scanned range.\n";
     } */
-    if ($('.cb_dm:not(:checked)').length) {
+    if ($('.cb_dm:not("#cb_dm_others"):not(:checked)').length) {
         report += "--- No or Equivocal:\n";
-        report += "* " + join_checkbox_values($('.cb_dm:not(:checked)')) + "\n";
+        report += "* " + join_checkbox_values($('.cb_dm:not("#cb_dm_others"):not(:checked)')) + "\n";
     }
     report += "\n";
 

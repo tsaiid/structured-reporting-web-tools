@@ -162,11 +162,12 @@ With contrast, range: whole abdomen, slice thickness <= 5mm`;
     report += "5. Distant metastasis (In this study)\n";
     if ($('.cb_dm:checked').length) {
         report += "--- Yes:\n";
-        report += "* " + join_checkbox_values($('.cb_dm:checked'), "\n* ");
-        if ($('#cb_dm_others:checked').length) {
-            report += $('#txt_dm_others').val();
+        if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
+            report += "* " + join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'), "\n* ") + "\n";
         }
-        report += "\n";
+        if ($('#cb_dm_others').is(':checked')) {
+            report += "* " + $('#txt_dm_others').val() + "\n";
+        }
         if ($('.cb_dm_m1c:checked').length) {
             m_stage.push("1c");
         } else {
@@ -180,9 +181,9 @@ With contrast, range: whole abdomen, slice thickness <= 5mm`;
     } /* else {
         report += "* No distant metastasis in the scanned range.\n";
     } */
-    if ($('.cb_dm:not(:checked)').length) {
+    if ($('.cb_dm:not("#cb_dm_others"):not(:checked)').length) {
         report += "--- No or Equivocal:\n";
-        report += "* " + join_checkbox_values($('.cb_dm:not(:checked)')) + "\n";
+        report += "* " + join_checkbox_values($('.cb_dm:not("#cb_dm_others"):not(:checked)')) + "\n";
     }
     report += "\n";
 
