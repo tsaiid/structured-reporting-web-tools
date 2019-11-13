@@ -32,6 +32,7 @@ module.exports = {
     ajcc8_ccc_pbd: './src/js/ajcc8_ccc_pbd.js',
     ajcc8_ccc_dbd: './src/js/ajcc8_ccc_dbd.js',
     ajcc8_ogs_trunk: './src/js/ajcc8_ogs_trunk.js',
+    ajcc8_ogs_spine: './src/js/ajcc8_ogs_spine.js',
   },
   output: {
     filename: '[name].js',
@@ -192,6 +193,11 @@ module.exports = {
       template: './src/html/ajcc8/ogs_trunk.html',
       filename: 'ajcc8_ogs_trunk.html',
       chunks: ['ajcc8_ogs_trunk'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/html/ajcc8/ogs_spine.html',
+      filename: 'ajcc8_ogs_spine.html',
+      chunks: ['ajcc8_ogs_spine'],
     }),
     new WebappWebpackPlugin({
       logo: './src/image/favicon.png',
