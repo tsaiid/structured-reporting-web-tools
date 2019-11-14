@@ -8,6 +8,7 @@ module.exports = {
   // https://webpack.js.org/concepts/entry-points/#multi-page-application
   entry: {
     'djd_l': './src/js/djd_l.js',
+    'ajcc8/index': './src/js/ajcc8_index.js',
     'ajcc8/lung': './src/js/ajcc8_lung.js',
     'ajcc8/esophagus': './src/js/ajcc8_esophagus.js',
     'ajcc8/colon': './src/js/ajcc8_colon.js',
@@ -204,6 +205,11 @@ module.exports = {
       template: './src/html/ajcc8/ogs_pelvis.html',
       filename: 'ajcc8/ogs_pelvis.html',
       chunks: ['ajcc8/ogs_pelvis'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/html/ajcc8/index.html',
+      filename: 'ajcc8/index.html',
+      chunks: ['ajcc8/index'],
     }),
     new WebappWebpackPlugin({
       logo: './src/image/favicon.png',
