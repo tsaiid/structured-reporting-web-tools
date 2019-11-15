@@ -8,29 +8,29 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_CCC_PBD_T = {
-    'x': 'Primary tumor cannot be assessed.',
-    '0': 'No evidence of primary tumor.',
-    'is': 'Carcinoma in situ/high-grade dysplasia.',
-    '1': 'Tumor confined to the bile duct, with extension up to the muscle layer or fibrous tissue.',
-    '2': 'Tumor invades beyond the wall of the bile duct to surrounding adipose tissue, or tumor invades adjacent hepatic parenchyma.',
-    '2a': 'Tumor invades beyond the wall of the bile duct to surrounding adipose tissue.',
-    '2b': 'Tumor invades adjacent hepatic parenchyma.',
-    '3': 'Tumor invades unilateral branches of the portal vein or hepatic artery.',
-    '4': 'Tumor invades the main portal vein or its branches bilaterally, or the common hepatic artery; or unilateral second-order biliary radicals with contralateral portal vein or hepatic artery involvement.',
+    'x': 'Primary tumor cannot be assessed',
+    '0': 'No evidence of primary tumor',
+    'is': 'Carcinoma in situ/high-grade dysplasia',
+    '1': 'Tumor confined to the bile duct, with extension up to the muscle layer or fibrous tissue',
+    '2': 'Tumor invades beyond the wall of the bile duct to surrounding adipose tissue, or tumor invades adjacent hepatic parenchyma',
+    '2a': 'Tumor invades beyond the wall of the bile duct to surrounding adipose tissue',
+    '2b': 'Tumor invades adjacent hepatic parenchyma',
+    '3': 'Tumor invades unilateral branches of the portal vein or hepatic artery',
+    '4': 'Tumor invades the main portal vein or its branches bilaterally, or the common hepatic artery; or unilateral second-order biliary radicals with contralateral portal vein or hepatic artery involvement',
 };
 const AJCC8_CCC_PBD_N = {
-    'x': 'Regional lymph nodes cannot be assessed.',
-    '0': 'No regional lymph node metastasis.',
-    '1': 'One to three positive lymph nodes typically involving the hilar, cystic duct, common bile duct, hepatic artery, posterior pancreatoduodenal, and portal vein lymph nodes.',
-    '2': 'Four or more positive lymph nodes from the sites described for N1.',
+    'x': 'Regional lymph nodes cannot be assessed',
+    '0': 'No regional lymph node metastasis',
+    '1': 'One to three positive lymph nodes typically involving the hilar, cystic duct, common bile duct, hepatic artery, posterior pancreatoduodenal, and portal vein lymph nodes',
+    '2': 'Four or more positive lymph nodes from the sites described for N1',
 };
 const AJCC8_CCC_PBD_M = {
-    '0': 'No distant metastasis (in this study).',
-    '1': 'Distant metastasis.',
+    '0': 'No distant metastasis (in this study)',
+    '1': 'Distant metastasis',
 };
 
 function generate_report(){
-    var t_stage = ["0"];    // at least T1?
+    var t_stage = ["0"];
     var n_stage = ["0"];
     var m_stage = ["0"];
     var report = "1. ";

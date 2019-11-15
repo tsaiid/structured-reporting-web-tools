@@ -8,30 +8,30 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_PANCREAS_T = {
-    'x': 'Primary tumor cannot be assessed.',
-    '0': 'No evidence of primary tumor.',
-    'is': 'Carcinoma in situ.',
-    '1': 'Tumor limited to the pancreas, ≤ 2 cm in greatest dimension.',
-    '1a': 'Tumor ≤ 0.5 cm in greatest dimension.',
-    '1b': 'Tumor >0.5 cm and <1 cm in greatest dimension.',
-    '1c': 'Tumor 1-2 cm in greatest dimension.',
-    '2': 'Tumor >2 cm and ≤4 cm in greatest dimension.',
-    '3': 'Tumor >4cm in greatest dimension.',
-    '4': 'Tumor involves the celiac axis, superior mesenteric artery, and/or common hepatic artery, regardless of size.',
+    'x': 'Primary tumor cannot be assessed',
+    '0': 'No evidence of primary tumor',
+    'is': 'Carcinoma in situ. This includes high-grade pancreatic intraepithelial neoplasia (PanIn-3), intraductal papillary mucinous neoplasm with high-grade dysplasia, intraductal tubulopapillary neoplasm with high-grade dysplasia, and mucinous cystic neoplasm with high-grade dysplasia.',
+    '1': 'Tumor ≤2 cm in greatest dimension',
+    '1a': 'Tumor ≤0.5 cm in greatest dimension',
+    '1b': 'Tumor >0.5 cm and <1 cm in greatest dimension',
+    '1c': 'Tumor 1–2 cm in greatest dimension',
+    '2': 'Tumor >2 cm and ≤4 cm in greatest dimension',
+    '3': 'Tumor >4 cm in greatest dimension',
+    '4': 'Tumor involves celiac axis, superior mesenteric artery, and/or common hepatic artery, regardless of size',
 };
 const AJCC8_PANCREAS_N = {
-    'x': 'Regional lymph nodes cannot be assessed.',
-    '0': 'No regional lymph node metastasis.',
-    '1': 'Metastasis in one to three regional lymph nodes.',
-    '2': 'Metastasis in four or more regional lymph nodes.',
+    'x': 'Regional lymph nodes cannot be assessed',
+    '0': 'No regional lymph node metastasis',
+    '1': 'Metastasis in one to three regional lymph nodes',
+    '2': 'Metastasis in four or more regional lymph nodes',
 };
 const AJCC8_PANCREAS_M = {
-    '0': 'No distant metastasis (in this study).',
-    '1': 'Distant metastasis.',
+    '0': 'No distant metastasis (in this study)',
+    '1': 'Distant metastasis',
 };
 
 function generate_report(){
-    var t_stage = ["0"];    // at least T1?
+    var t_stage = ["0"];
     var n_stage = ["0"];
     var m_stage = ["0"];
     var report = "1. ";

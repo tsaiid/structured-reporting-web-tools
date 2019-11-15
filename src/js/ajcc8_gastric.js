@@ -8,32 +8,34 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_GASTRIC_T = {
-    'x': 'Primary tumor cannot be assessed.',
-    '0': 'No evidence of primary tumor.',
-    'is': 'Carcinoma in situ: Intraepithelial tumor without invasion of the lamina propria.',
-    '1': 'Tumor invades lamina propria, muscularis mucosae, or submucosa.',
-    '1a': 'Tumor invades lamina propria or muscularis mucosae.',
-    '1b': 'Tumor invades submucosa.',
-    '2': 'Tumor invades muscularis propria.',
-    '3': 'Tumor penetrates subserosal connective tissue without invasion of visceral peritoneum or adjacent structures.',
-    '4a': 'Tumor invades serosa (visceral peritoneum).',
-    '4b': 'Tumor invades adjacent structures.',
+    'x': 'Primary tumor cannot be assessed',
+    '0': 'No evidence of primary tumor',
+    'is': 'Carcinoma in situ: intraepithelial tumor without invasion of the lamina propria, high-grade dysplasia',
+    '1': 'Tumor invades the lamina propria, muscularis mucosae, or submucosa',
+    '1a': 'Tumor invades the lamina propria or muscularis mucosae',
+    '1b': 'Tumor invades the submucosa',
+    '2': 'Tumor invades the muscularis propria',
+    '3': 'Tumor penetrates the subserosal connective tissue without invasion of the visceral peritoneum or adjacent structures',
+    '4': 'Tumor invades the serosa (visceral peritoneum) or adjacent structures',
+    '4a': 'Tumor invades the serosa (visceral peritoneum)',
+    '4b': 'Tumor invades adjacent structures/organs',
 };
 const AJCC8_GASTRIC_N = {
-    'x': 'Regional lymph nodes cannot be assessed.',
-    '0': 'No regional lymph node metastasis.',
-    '1': 'Metastasis in 1-2 regional lymph nodes.',
-    '2': 'Metastasis in 3-6 regional lymph nodes.',
-    '3a': 'Metastasis in 7-15 regional lymph nodes.',
-    '3b': 'Metastasis in 16 or more regional lymph nodes.',
+    'x': 'Regional lymph node(s) cannot be assessed',
+    '0': 'No regional lymph node metastasis',
+    '1': 'Metastasis in one or two regional lymph nodes',
+    '2': 'Metastasis in three to six regional lymph nodes',
+    '3': 'Metastasis in seven or more regional lymph nodes',
+    '3a': 'Metastasis in seven to 15 regional lymph nodes',
+    '3b': 'Metastasis in 16 or more regional lymph nodes',
 };
 const AJCC8_GASTRIC_M = {
-    '0': 'No distant metastasis (in this study).',
-    '1': 'Distant metastasis.',
+    '0': 'No distant metastasis (in this study)',
+    '1': 'Distant metastasis',
 };
 
 function generate_report(){
-    var t_stage = ["0"];    // at least T1?
+    var t_stage = ["0"];
     var n_stage = ["0"];
     var m_stage = ["0"];
     var report = "1. ";

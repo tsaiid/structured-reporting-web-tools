@@ -8,29 +8,33 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_COLON_T = {
-    'x': 'Primary tumor cannot be assessed.',
-    '0': 'No evidence of primary tumor.',
-    'is': 'Carcinoma in situ, intramucosal carcinoma (involvement of lamina propria with no extension through muscularis mucosae).',
-    '1': 'Tumor invades submucosa (through the muscularis mucosa but not into the muscularis propria).',
-    '2': 'Tumor invades muscularis propria.',
-    '3': 'Tumor invades through the muscularis propria into the perirectal tissues.',
-    '4a': 'Tumor penetrates to the surface of the visceral peritoneum (including gross perforation of the bowel through tumor and continuous invasion of tumor through areas of inflammation to the surface of the visceral peritoneum).',
-    '4b': 'Tumor directly invades or adheres to adjacent organs or structures.',
+    'x': 'Primary tumor cannot be assessed',
+    '0': 'No evidence of primary tumor',
+    'is': 'Carcinoma in situ, intramucosal carcinoma (involvement of lamina propria with no extension through muscularis mucosae)',
+    '1': 'Tumor invades the submucosa (through the muscularis mucosa but not into the muscularis propria)',
+    '2': 'Tumor invades the muscularis propria',
+    '3': 'Tumor invades through the muscularis propria into pericolorectal tissues',
+    '4': 'Tumor invades the visceral peritoneum or invades or adheres to adjacent organ or structure',
+    '4a': 'Tumor invades through the visceral peritoneum (including gross perforation of the bowel through tumor and continuous invasion of tumor through areas of inflammation to the surface of the visceral peritoneum)',
+    '4b': 'Tumor directly invades or adheres to adjacent organs or structures',
 };
 const AJCC8_COLON_N = {
-    'x': 'Regional lymph nodes cannot be assessed.',
-    '0': 'No regional lymph node metastasis.',
-    '1a': 'Metastasis in 1 regional lymph node.',
-    '1b': 'Metastasis in 2-3 regional lymph nodes.',
-    '1c': 'Tumor deposit(s) in the subserosa, mesentery, or non-peritonealized pericolic or perirectal/mesorectal tissues without regional nodal metastasis.',
-    '2a': 'Metastasis in 4 to 6 regional lymph nodes.',
-    '2b': 'Metastasis in 7 or more regional lymph nodes.',
+    'x': 'Regional lymph nodes cannot be assessed',
+    '0': 'No regional lymph node metastasis',
+    '1': 'One to three regional lymph nodes are positive (tumor in lymph nodes measuring ≥ 0.2 mm), or any number of tumor deposits are present and all identifiable lymph nodes are negative',
+    '1a': 'One regional lymph node is positive',
+    '1b': 'Two or three regional lymph nodes are positive',
+    '1c': 'No regional lymph nodes are positive, but there are tumor deposits in the subserosa, mesentery or nonperitonealized pericolic, or perirectal/mesorectal tissues',
+    '2': 'Four or more regional nodes are positive',
+    '2a': 'Four to six regional lymph nodes are positive',
+    '2b': 'Seven or more regional lymph nodes are positive',
 };
 const AJCC8_COLON_M = {
-    '0': 'No distant metastasis (in this study).',
-    '1a': 'Metastasis confined to one site or organs is identified without peritoneal metastasis.',
-    '1b': 'Metastases to two or more site or organs is identified without peritoneal metastasis.',
-    '1c': 'Metastases to the peritoneal surface is identified alone or with other site or organ metastases.',
+    '0': 'No distant metastasis by imaging, etc.; no evidence of tumor in distant sites or organs (This category is not assigned by pathologists.)',
+    '1': 'Metastasis to one or more distant sites or organs or peritoneal metastasis is identified',
+    '1a': 'Metastasis to one site or organ is identified without peritoneal metastasis',
+    '1b': 'Metastasis to two or more sites or organs is identified without peritoneal metastasis',
+    '1c': 'Metastasis to the peritoneal surface is identified alone or with other site or organ metastases',
 };
 
 function generate_report(){

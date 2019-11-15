@@ -8,25 +8,30 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_ENDOMETRIUM_T = {
-    'x': 'Primary tumor cannot be assessed.',
-    '0': 'No evidence of primary tumor.',
-    '1': 'Tumor confined to the corpus uteri, including endocervical glandular involvement.',
-    '1a': 'Tumor limited to the endometrium or invading less than half the myometrium.',
-    '1b': 'Tumor invading one half or more of the myometrium.',
+    'x': 'Primary tumor cannot be assessed',
+    '0': 'No evidence of primary tumor',
+    '1': 'Tumor confined to the corpus uteri, including endocervical glandular involvement',
+    '1a': 'Tumor limited to the endometrium or invading less than half the myometrium',
+    '1b': 'Tumor invading one half or more of the myometrium',
     '2': 'Tumor invading the stromal connective tissue of the cervix but not extending beyond the uterus. Does NOT include endocervical glandular involvement.',
-    '3': 'Tumor involving serosa, adnexa, vagina, or parametrium.',
-    '3a': 'Tumor involving the serosa and/or adnexa (direct extension or metastasis).',
-    '3b': 'Vaginal involvement (direct extension or metastasis) or parametrial involvement.',
-    '4': 'Tumor invading the bladder mucosa and/or bowel mucosa (bullous edema is not sufficient to classify a tumor as T4).',
+    '3': 'Tumor involving serosa, adnexa, vagina, or parametrium',
+    '3a': 'Tumor involving the serosa and/or adnexa (direct extension or metastasis)',
+    '3b': 'Vaginal involvement (direct extension or metastasis) or parametrial involvement',
+    '4': 'Tumor invading the bladder mucosa and/or bowel mucosa (bullous edema is not sufficient to classify a tumor as T4)',
 };
 const AJCC8_ENDOMETRIUM_N = {
-    'x': 'Regional lymph node cannot be assessed.',
-    '0': 'No regional lymph node metastasis.',
-    '1': 'Regional lymph node metastasis to pelvic lymph nodes.',
-    '2': 'Regional lymph node metastasis to para-aortic lymph nodes, with or without positive pelvic lymph nodes.',
+    'x': 'Regional lymph node cannot be assessed',
+    '0': 'No regional lymph node metastasis',
+    '0(i+)': 'Isolated tumor cells in regional lymph node(s) no greater than 0.2 mm',
+    '1': 'Regional lymph node metastasis to pelvic lymph nodes',
+    '1mi': 'Regional lymph node metastasis (greater than 0.2 mm but not greater than 2.0 mm in diameter) to pelvic lymph nodes',
+    '1a': 'Regional lymph node metastasis (greater than 2.0 mm in diameter) to pelvic lymph nodes',
+    '2': 'Regional lymph node metastasis to para-aortic lymph nodes, with or without positive pelvic lymph nodes',
+    '2mi': 'Regional lymph node metastasis (greater than 0.2 mm but not greater than 2.0 mm in diameter) to para-aortic lymph nodes, with or without positive pelvic lymph nodes',
+    '2a': 'Regional lymph node metastasis (greater than 2.0 mm in diameter) to para-aortic lymph nodes, with or without positive pelvic lymph nodes',
 };
 const AJCC8_ENDOMETRIUM_M = {
-    '0': 'No distant metastasis (in this study).',
+    '0': 'No distant metastasis (in this study)',
     '1': 'Distant metastasis (includes metastasis to inguinal lymph nodes intraperitoneal disease, lung, liver, or bone). (It excludes metastasis to pelvic or para-aortic lymph nodes, vagina, uterine serosa, or adnexa).',
 };
 

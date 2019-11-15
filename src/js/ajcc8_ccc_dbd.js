@@ -8,27 +8,27 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_CCC_DBD_T = {
-    'x': 'Primary tumor cannot be assessed.',
-    '0': 'No evidence of primary tumor.',
-    'is': 'Carcinoma in situ/high-grade dysplasia.',
-    '1': 'Tumor invades the bile duct wall with a depth less than 5 mm.',
-    '2': 'Tumor invades the bile duct wall with a depth of 5-12 mm.',
-    '3': 'Tumor invades the bile duct wall with a depth greater than 12 mm.',
-    '4': 'Tumor involves the celiac axis, superior mesenteric artery, and/or common hepatic artery.',
+    'x': 'Primary tumor cannot be assessed',
+    '0': 'No evidence of primary tumor',
+    'is': 'Carcinoma in situ/high-grade dysplasia',
+    '1': 'Tumor invades the bile duct wall with a depth less than 5 mm',
+    '2': 'Tumor invades the bile duct wall with a depth of 5-12 mm',
+    '3': 'Tumor invades the bile duct wall with a depth greater than 12 mm',
+    '4': 'Tumor involves the celiac axis, superior mesenteric artery, and/or common hepatic artery',
 };
 const AJCC8_CCC_DBD_N = {
-    'x': 'Regional lymph nodes cannot be assessed.',
-    '0': 'No regional lymph node metastasis.',
-    '1': 'Metastasis in one to three regional lymph nodes.',
-    '2': 'Metastasis in four or more regional lymph nodes.',
+    'x': 'Regional lymph nodes cannot be assessed',
+    '0': 'No regional lymph node metastasis',
+    '1': 'Metastasis in one to three regional lymph nodes',
+    '2': 'Metastasis in four or more regional lymph nodes',
 };
 const AJCC8_CCC_DBD_M = {
-    '0': 'No distant metastasis (in this study).',
-    '1': 'Distant metastasis.',
+    '0': 'No distant metastasis (in this study)',
+    '1': 'Distant metastasis',
 };
 
 function generate_report(){
-    var t_stage = ["0"];    // at least T1?
+    var t_stage = ["0"];
     var n_stage = ["0"];
     var m_stage = ["0"];
     var report = "1. ";

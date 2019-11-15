@@ -8,28 +8,32 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_PROSTATE_T = {
-    'x': 'Primary tumor cannot be assessed.',
-    '0': 'No evidence of primary tumor.',
-    '1a': 'Tumor incidental histologic finding in 5% or less of tissue resected.',
-    '1b': 'Tumor incidental histologic finding in more than 5% of tissue resected.',
-    '1c': 'Tumor identified by needle biopsy found in one or both sides, but not palpable.',
-    '2a': 'Tumor involves one-half of one lobe or less.',
-    '2b': 'Tumor involves more than one-half of one lobe but not both lobes.',
-    '2c': 'Tumor involves both lobes.',
-    '3a': 'Extracapsular extension (unilateral or bilateral).',
-    '3b': 'Tumor invades seminal vesicle(s).',
-    '4': 'Tumor is fixed or invades adjacent structures other than seminal vesicles such as external sphincter, rectum, bladder, levator muscles, and/or pelvic wall.',
+    'x': 'Primary tumor cannot be assessed',
+    '0': 'No evidence of primary tumor',
+    '1': 'Clinically inapparent tumor that is not palpable',
+    '1a': 'Tumor incidental histologic finding in 5% or less of tissue resected',
+    '1b': 'Tumor incidental histologic finding in more than 5% of tissue resected',
+    '1c': 'Tumor identified by needle biopsy found in one or both sides, but not palpable',
+    '2': 'Tumor is palpable and confined within prostate',
+    '2a': 'Tumor involves one-half of one lobe or less',
+    '2b': 'Tumor involves more than one-half of one lobe but not both lobes',
+    '2c': 'Tumor involves both lobes',
+    '3': 'Extraprostatic tumor that is not fixed or does not invade adjacent structures',
+    '3a': 'Extracapsular extension (unilateral or bilateral)',
+    '3b': 'Tumor invades seminal vesicle(s)',
+    '4': 'Tumor is fixed or invades adjacent structures other than seminal vesicles such as external sphincter, rectum, bladder, levator muscles, and/or pelvic wall',
 };
 const AJCC8_PROSTATE_N = {
-    'x': 'Regional lymph nodes cannot be assessed.',
-    '0': 'No regional lymph node metastasis.',
-    '1': 'Metastasis in regional node(s).',
+    'x': 'Regional lymph nodes cannot be assessed',
+    '0': 'No positive regional nodes',
+    '1': 'Metastasis in regional node(s)',
 };
 const AJCC8_PROSTATE_M = {
-    '0': 'No distant metastasis (in this study).',
-    '1a': 'Distant metastasis, with non-regional lymph node(s).',
-    '1b': 'Distant metastasis of Bone(s).',
-    '1c': 'Distant metastasis: Other site(s) with or without bone disease.',
+    '0': 'No distant metastasis (in this study)',
+    '1': 'Distant metastasis',
+    '1a': 'Nonregional lymph node(s)',
+    '1b': 'Bone(s)',
+    '1c': 'Other site(s) with or without bone disease',
 };
 const map_prostate_invasion = {
     'One-half of one lobe or less': '2a',

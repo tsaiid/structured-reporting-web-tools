@@ -8,25 +8,33 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_LUNG_T = {
-    '1a': 'Tumor ≦1 cm in greatest dimension. A superficial, spreading tumor of any size whose invasive component is limited to the bronchial wall and may extend proximal to the main bronchus.',
-    '1b': '1 cm < Tumor ≦2 cm in greatest dimension.',
-    '1c': '2 cm < Tumor ≦3 cm in greatest dimension.',
-    '2a': '3 cm < Tumor ≦4 cm in greatest dimension or tumor size cannot be determined but with features of: (1) Involves main bronchus, but without involvement of the carina; (2) Invades visceral pleura (PL1 or PL2); (3) Associated with atelectasis or obstructive pneumonitis that extends to the hilar region, involving part or anterior longitudinal ligament of the lung.',
-    '2b': '4 cm < Tumor ≦5 cm in greatest dimension.',
-    '3': '5 cm < Tumor ≦7 cm in greatest dimension or one that directly invades any of the following: parietal pleural (PL3), chest wall (including superior sulcus tumors), phrenic nerve, parietal pericardium; or separate tumor nodule(s) in the same lobe as the primary.',
-    '4': 'Tumor > 7 cm or tumor of any size that invades any of the following: diaphragm, mediastinum, heart, great vessels, trachea, recurrent laryngeal nerve, esophagus, vertebral body, or carina; separate tumor nodule(s) in a different ipsilateral lobe.',
+    'x': 'Primary tumor cannot be assessed, or tumor proven by the presence of malignant cells in sputum or bronchial washings but not visualized by imaging or bronchoscopy',
+    '0': 'No evidence of primary tumor',
+    'is': 'Carcinoma in situ; Squamous cell carcinoma in situ (SCIS); Adenocarcinoma in situ (AIS): adenocarcinoma with pure lepidic pattern, ≤3 cm in greatest dimension',
+    '1': 'Tumor ≤3 cm in greatest dimension, surrounded by lung or visceral pleura, without bronchoscopic evidence of invasion more proximal than the lobar bronchus (i.e., not in the main bronchus)',
+    '1mi': 'Minimally invasive adenocarcinoma: adenocarcinoma (≤3 cm in greatest dimension) with a predominantly lepidic pattern and ≤5 mm invasion in greatest dimension',
+    '1a': 'Tumor ≤1 cm in greatest dimension. A superficial, spreading tumor of any size whose invasive component is limited to the bronchial wall and may extend proximal to the main bronchus also is classified as T1a, but these tumors are uncommon',
+    '1b': 'Tumor >1 cm but ≤2 cm in greatest dimension',
+    '1c': 'Tumor >2 cm but ≤3 cm in greatest dimension',
+    '2': 'Tumor >3 cm but ≤5 cm or having any of the following features: Involves the main bronchus regardless of distance to the carina, but without involvement of the carina; Invades visceral pleura (PL1 or PL2); Associated with atelectasis or obstructive pneumonitis that extends to the hilar region, involving part or all of the lung; T2 tumors with these features are classified as T2a if ≤4 cm or if the size cannot be determined and T2b if >4 cm but ≤5 cm.',
+    '2a': 'Tumor >3 cm but ≤4 cm in greatest dimension',
+    '2b': 'Tumor >4 cm but ≤5 cm in greatest dimension',
+    '3': 'Tumor >5 cm but ≤7 cm in greatest dimension or directly invading any of the following: parietal pleura (PL3), chest wall (including superior sulcus tumors), phrenic nerve, parietal pericardium; or separate tumor nodule(s) in the same lobe as the primary',
+    '4': 'Tumor >7 cm or tumor of any size invading one or more of the following: diaphragm, mediastinum, heart, great vessels, trachea, recurrent laryngeal nerve, esophagus, vertebral body, or carina; separate tumor nodule(s) in an ipsilateral lobe different from that of the primary',
 };
 const AJCC8_LUNG_N = {
-    '0': 'No regional lymph node metastasis.',
-    '1': 'Metastasis in ipsilateral peribronchial and/or ipsilateral hilar lymph nodes and intrapulmonary nodes, including involvement by direct extension.',
-    '2': 'Metastasis in ipsilateral mediastinal and/or subcarinal lymph node(s).',
-    '3': 'Metastasis in contralateral mediastinal, contralateral hilar, ipsilateral or contralateral scalene, or supraclavicular lymph node(s).',
+    'x': 'Regional lymph nodes cannot be assessed',
+    '0': 'No regional lymph node metastasis',
+    '1': 'Metastasis in ipsilateral peribronchial and/or ipsilateral hilar lymph nodes and intrapulmonary nodes, including involvement by direct extension',
+    '2': 'Metastasis in ipsilateral mediastinal and/or subcarinal lymph node(s)',
+    '3': 'Metastasis in contralateral mediastinal, contralateral hilar, ipsilateral or contralateral scalene, or supraclavicular lymph node(s)',
 };
 const AJCC8_LUNG_M = {
-    '0': 'No distant metastasis (in this study).',
-    '1a': 'Separate tumor nodule(s) in a contralateral lobe; tumor with pleural or pericardial nodules. or malignant pleural (or pericardial) effusion**.',
+    '0': 'No distant metastasis (in this study)',
+    '1': 'Distant metastasis',
+    '1a': 'Separate tumor nodule(s) in a contralateral lobe; tumor with pleural or pericardial nodules or malignant pleural or pericardial effusion. Most pleural (pericardial) effusions with lung cancer are a result of the tumor. In a few patients, however, multiple microscopic examinations of pleural (pericardial) fluid are negative for tumor, and the fluid is nonbloody and not an exudate. If these elements and clinical judgment dictate that the effusion is not related to the tumor, the effusion should be excluded as a staging descriptor.',
     '1b': 'Single extrathoracic metastasis in a single organ (including involvement of a single nonregional node)',
-    '1c': 'Multiple extrathoracic metastasis in a single organ or in multiple organs',
+    '1c': 'Multiple extrathoracic metastases in a single organ or in multiple organs',
 };
 
 function get_t_stage_by_size(t_size) {

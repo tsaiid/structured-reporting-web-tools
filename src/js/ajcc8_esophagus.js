@@ -8,30 +8,31 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_ESO_T = {
-    'x': 'Primary tumor cannot be assessed.',
-    '0': 'No evidence of primary tumor.',
-    '1a': 'Tumor invades lamina propria or muscularis mucosae.',
-    '1b': 'Tumor invades submucosa.',
-    '2': 'Tumor invades muscularis propria.',
-    '3': 'Tumor invades adventitia.',
-    '4a': 'Tumor invading pleura, pericardium, azygos vein, diaphragm or peritoneum.',
-    '4b': 'Tumor invading other adjacent structures, such as aorta, vertebral body, or trachea.',
+    'x': 'Primary tumor cannot be assessed',
+    '0': 'No evidence of primary tumor',
+    '1': 'Tumor invades the lamina propria, muscularis mucosae, or submucosa',
+    '1a': 'Tumor invades the lamina propria or muscularis mucosae',
+    '1b': 'Tumor invades the submucosa',
+    '2': 'Tumor invades the muscularis propria',
+    '3': 'Tumor invades adventitia',
+    '4': 'Tumor invades adjacent structures',
+    '4a': 'Tumor invades the pleura, pericardium, azygos vein, diaphragm, or peritoneum',
+    '4b': 'Tumor invades other adjacent structures, such as the aorta, vertebral body, or airway',
 };
 const AJCC8_ESO_N = {
-    'x': 'Regional lymph nodes cannot be assessed.',
-    '0': 'No regional lymph node metastasis.',
-    '1': 'Regional lymph node metastases involving 1 to 2 nodes.',
-    '2': 'Regional lymph node metastases involving 3 to 6 nodes.',
-    '3': 'Regional lymph node metastases involving 7 or more nodes.',
+    'x': 'Regional lymph nodes cannot be assessed',
+    '0': 'No regional lymph node metastasis',
+    '1': 'Metastasis in one or two regional lymph nodes',
+    '2': 'Metastasis in three to six regional lymph nodes',
+    '3': 'Metastasis in seven or more regional lymph nodes',
 };
 const AJCC8_ESO_M = {
-    'x': 'Undetermined metastasis.',
-    '0': 'No distant metastasis (in this study).',
-    '1': 'Distant metastasis.',
+    '0': 'No distant metastasis (in this study)',
+    '1': 'Distant metastasis',
 };
 
 function generate_report(){
-    var t_stage = ["1"];    // at least T1?
+    var t_stage = ["0"];
     var n_stage = ["0"];
     var m_stage = ["0"];
     var report = "1. CT protocol\n";

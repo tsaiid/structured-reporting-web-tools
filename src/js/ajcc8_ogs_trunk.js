@@ -8,22 +8,22 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_OGS_TRUNK_T = {
-    'x': 'Primary tumor cannot be assessed.',
-    '0': 'No evidence of primary tumor.',
-    '1': 'Tumor ≤8 cm in greatest dimension.',
-    '2': 'Tumor >8 cm in greatest dimension.',
-    '3': 'Discontinuous tumors in the primary bone site.',
+    'x': 'Primary tumor cannot be assessed',
+    '0': 'No evidence of primary tumor',
+    '1': 'Tumor ≤8 cm in greatest dimension',
+    '2': 'Tumor >8 cm in greatest dimension',
+    '3': 'Discontinuous tumors in the primary bone site',
 };
 const AJCC8_OGS_TRUNK_N = {
     'x': 'Regional lymph nodes cannot be assessed. Because of the rarity of lymph node involvement in bone sarcomas, the designation NX may not be appropriate, and cases should be considered N0 unless clinical node involvement clearly is evident.',
-    '0': 'No regional lymph node metastasis.',
-    '1': 'Regional lymph node metastasis.',
+    '0': 'No regional lymph node metastasis',
+    '1': 'Regional lymph node metastasis',
 };
 const AJCC8_OGS_TRUNK_M = {
-    '0': 'No distant metastasis (in this study).',
-    '1': 'Distant metastasis.',
-    '1a': 'Lung.',
-    '1b': 'Bone or other distant sites.',
+    '0': 'No distant metastasis (in this study)',
+    '1': 'Distant metastasis',
+    '1a': 'Lung',
+    '1b': 'Bone or other distant sites',
 };
 
 function generate_report(){

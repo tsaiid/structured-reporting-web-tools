@@ -8,24 +8,24 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_CCC_IBD_T = {
-    'x': 'Primary tumor cannot be assessed.',
-    '0': 'No evidence of primary tumor.',
-    'is': 'Carcinoma in situ (intraductal tumor).',
-    '1': 'Solitary tumor without vascular invasion, ≤5 cm or >5 cm.',
-    '1a': 'Solitary tumor ≤5 cm without vascular invasion.',
-    '1b': 'Solitary tumor >5 cm without vascular invasion.',
-    '2': 'Solitary tumor with intrahepatic vascular invasion or multiple tumors, with or without vascular invasion.',
-    '3': 'Tumor perforating the visceral peritoneum.',
-    '4': 'Tumor involving local extrahepatic structures by direct invasion.',
+    'x': 'Primary tumor cannot be assessed',
+    '0': 'No evidence of primary tumor',
+    'is': 'Carcinoma in situ (intraductal tumor)',
+    '1': 'Solitary tumor without vascular invasion, ≤5 cm or >5 cm',
+    '1a': 'Solitary tumor ≤5 cm without vascular invasion',
+    '1b': 'Solitary tumor >5 cm without vascular invasion',
+    '2': 'Solitary tumor with intrahepatic vascular invasion or multiple tumors, with or without vascular invasion',
+    '3': 'Tumor perforating the visceral peritoneum',
+    '4': 'Tumor involving local extrahepatic structures by direct invasion',
 };
 const AJCC8_CCC_IBD_N = {
-    'x': 'Regional lymph nodes cannot be assessed.',
-    '0': 'No regional lymph node metastasis.',
-    '1': 'Regional lymph node metastasis.',
+    'x': 'Regional lymph nodes cannot be assessed',
+    '0': 'No regional lymph node metastasis',
+    '1': 'Regional lymph node metastasis',
 };
 const AJCC8_CCC_IBD_M = {
-    '0': 'No distant metastasis (in this study).',
-    '1': 'Distant metastasis.',
+    '0': 'No distant metastasis (in this study)',
+    '1': 'Distant metastasis',
 };
 
 function generate_report(){

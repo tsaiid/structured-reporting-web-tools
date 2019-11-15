@@ -8,31 +8,38 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_CX_T = {
-    'x': 'Primary tumor cannot be assessed.',
-    '0': 'No evidence of primary tumor.',
-    '1': 'Cervical carcinoma confined to the uterus (extension to corpus should be disregarded).',
+    'x': 'Primary tumor cannot be assessed',
+    '0': 'No evidence of primary tumor',
+    '1': 'Cervical carcinoma confined to the uterus (extension to corpus should be disregarded)',
     '1a': 'Invasive carcinoma diagnosed only by microscopy. Stromal invasion with a maximum depth of 5.0 mm measured from the base of the epithelium and a horizontal spread of 7.0 mm or less. Vascular space involvement, venous or lymphatic, does not affect classification.',
+    '1a1': 'Measured stromal invasion of 3.0 mm or less in depth and 7.0 mm or less in horizontal spread',
+    '1a2': 'Measured stromal invasion of more than 3.0 mm and not more than 5.0 mm, with a horizontal spread of 7.0 mm or less',
     '1b': 'Clinically visible lesion confined to the cervix or microscopic lesion greater than T1a/IA2. Includes all macroscopically visible lesions, even those with superficial invasion.',
-    '2': 'Cervical carcinoma invading beyond the uterus but not to the pelvic wall or to lower third of vagina.',
-    '2a': 'Tumor without parametrial invasion.',
-    '2b': 'Tumor with parametrial invasion.',
-    '3': 'Tumor extends to pelvic sidewall* and/or involving the lower third of vagina and/or causing hydronephrosis or nonfunctioning kidney.',
-    '3a': 'Tumor involves lower third of vagina but not extending to the pelvic wall.',
-    '3b': 'Tumor extending to the pelvic wall and/or causing hydronephrosis or nonfunctioning kidney.',
-    '4': 'Tumor invading the mucosa of bladder or rectum, and/or extending beyond the true pelvis.',
+    '1b1': 'Clinically visible lesion 4.0 cm or less in greatest dimension',
+    '1b2': 'Clinically visible lesion more than 4.0 cm in greatest dimension',
+    '2': 'Cervical carcinoma invading beyond the uterus but not to the pelvic wall or to lower third of vagina',
+    '2a': 'Tumor without parametrial invasion',
+    '2a1': 'Clinically visible lesion 4.0 cm or less in greatest dimension',
+    '2a2': 'Clinically visible lesion more than 4.0 cm in greatest dimension',
+    '2b': 'Tumor with parametrial invasion',
+    '3': 'Tumor extends to pelvic sidewall* and/or involving the lower third of vagina and/or causing hydronephrosis or nonfunctioning kidney',
+    '3a': 'Tumor involves lower third of vagina but not extending to the pelvic wall',
+    '3b': 'Tumor extending to the pelvic wall and/or causing hydronephrosis or nonfunctioning kidney',
+    '4': 'Tumor invading the mucosa of the bladder or rectum and/or extending beyond the true pelvis (bullous edema is not sufficient to classify a tumor as T4)',
 };
 const AJCC8_CX_N = {
-    'x': 'Regional lymph node cannot be assessed.',
-    '0': 'No regional lymph node metastasis.',
-    '1': 'Regional lymph node metastasis (+).',
+    'x': 'Regional lymph node cannot be assessed',
+    '0': 'No regional lymph node metastasis',
+    '0(i+)': 'Isolated tumor cells in regional lymph node(s) no greater than 0.2 mm',
+    '1': 'Regional lymph node metastasis',
 };
 const AJCC8_CX_M = {
-    '0': 'No distant metastasis (in this study).',
-    '1': 'Distant metastasis (including peritoneal spread or involvement of the supraclavicular, mediastinal, or distant lymph nodes; lung; liver; or bone).',
+    '0': 'No distant metastasis (in this study)',
+    '1': 'Distant metastasis (including peritoneal spread or involvement of the supraclavicular, mediastinal, or distant lymph nodes; lung; liver; or bone)',
 };
 
 function generate_report(){
-    var t_stage = ["1"];    // at least T1?
+    var t_stage = ["0"];
     var n_stage = ["0"];
     var m_stage = ["0"];
     var report = "1. ";

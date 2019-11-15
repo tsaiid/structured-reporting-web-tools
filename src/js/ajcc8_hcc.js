@@ -8,22 +8,23 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_HCC_T = {
-    'x': 'Primary tumor cannot be assessed.',
-    '0': 'No evidence of primary tumor.',
-    '1a': 'Solitary tumor ≤ 2 cm.',
-    '1b': 'Solitary tumor >2cm without vascular invasion.',
-    '2': 'Solitary tumor >2cm with vascular invasion or multiple tumors, none > 5 cm.',
-    '3': 'Multiple tumors, at least one of which is >5 cm.',
-    '4': 'Single tumor or multiple tumors of any size involving a major branch of the portal vein or hepatic vein, or tumor(s) with direct invasion of adjacent organs other than the gallbladder or with perforation of visceral peritoneum.',
+    'x': 'Primary tumor cannot be assessed',
+    '0': 'No evidence of primary tumor',
+    '1': 'Solitary tumor ≤2 cm, or >2 cm without vascular invasion',
+    '1a': 'Solitary tumor ≤2 cm',
+    '1b': 'Solitary tumor >2 cm without vascular invasion',
+    '2': 'Solitary tumor >2 cm with vascular invasion, or multiple tumors, none >5 cm',
+    '3': 'Multiple tumors, at least one of which is >5 cm',
+    '4': 'Single tumor or multiple tumors of any size involving a major branch of the portal vein or hepatic vein, or tumor(s) with direct invasion of adjacent organs other than the gallbladder or with perforation of visceral peritoneum',
 };
 const AJCC8_HCC_N = {
-    'x': 'Regional lymph nodes cannot be assessed.',
-    '0': 'No regional lymph node metastasis.',
-    '1': 'Regional lymph node metastasis.',
+    'x': 'Regional lymph nodes cannot be assessed',
+    '0': 'No regional lymph node metastasis',
+    '1': 'Regional lymph node metastasis',
 };
 const AJCC8_HCC_M = {
-    '0': 'No distant metastasis (in this study).',
-    '1': 'Distant metastasis.',
+    '0': 'No distant metastasis (in this study)',
+    '1': 'Distant metastasis',
 };
 
 function generate_report(){

@@ -8,28 +8,28 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_NASOPHARYNX_T = {
-    'x': 'Primary tumor cannot be assessed.',
-    '0': 'No tumor identified, but EBV(+) cervical nodes involvement.',
-    'is': 'Tumor in situ.',
-    '1': 'Tumor confined to the nasopharynx, or extension to oropharynx and/or nasal cavity without parapharyngeal extension.',
-    '2': 'Tumor with extension to parapharyngeal space and/or adjacent soft tissue involvement (medial or lateral pterygoid, prevertebral muscles)',
-    '3': 'Tumor with infiltration of bony structures at skull base, cervical vertebra, pterygoid structures, and/or paranasal sinuses.',
-    '4': 'Tumor with intracranial extension, involvement of cranial nerves, hypopharynx, orbit, parotid gland, and/or extensive soft tissue infiltration beyond the lateral surface of the lateral pterygoid muscle.',
+    'x': 'Primary tumor cannot be assessed',
+    '0': 'No tumor identified, but EBV-positive cervical node(s) involvement',
+    'is': 'Tumor in situ',
+    '1': 'Tumor confined to nasopharynx, or extension to oropharynx and/or nasal cavity without parapharyngeal involvement',
+    '2': 'Tumor with extension to parapharyngeal space, and/or adjacent soft tissue involvement (medial pterygoid, lateral pterygoid, prevertebral muscles)',
+    '3': 'Tumor with infiltration of bony structures at skull base, cervical vertebra, pterygoid structures, and/or paranasal sinuses',
+    '4': 'Tumor with intracranial extension, involvement of cranial nerves, hypopharynx, orbit, parotid gland, and/or extensive soft tissue infiltration beyond the lateral surface of the lateral pterygoid muscle',
 };
 const AJCC8_NASOPHARYNX_N = {
-    'x': 'Regional lymph nodes cannot be assessed.',
-    '0': 'No regional lymph node metastasis.',
-    '1': 'Unilateral metastasis in cervical lymph node(s), and/or unilateral or bilateral metastasis in retropharyngeal lymph node(s), ≦ 6 cm in greatest dimension, above the caudal border of cricoid cartilage.',
-    '2': 'Bilateral metastasis in cervical lymph node(s), ≦ 6 cm in greatest dimension, above the caudal border of cricoid cartilage.',
-    '3': 'Unilateral or bilateral metastasis in cervical lymph node(s), > 6 cm and/or extension below the caudal border of cricoid cartilage.',
+    'x': 'Regional lymph nodes cannot be assessed',
+    '0': 'No regional lymph node metastasis',
+    '1': 'Unilateral metastasis in cervical lymph node(s) and/or unilateral or bilateral metastasis in retropharyngeal lymph node(s), 6 cm or smaller in greatest dimension, above the caudal border of cricoid cartilage',
+    '2': 'Bilateral metastasis in cervical lymph node(s), 6 cm or smaller in greatest dimension, above the caudal border of cricoid cartilage',
+    '3': 'Unilateral or bilateral metastasis in cervical lymph node(s), larger than 6 cm in greatest dimension, and/or extension below the caudal border of cricoid cartilage',
 };
 const AJCC8_NASOPHARYNX_M = {
-    '0': 'No distant metastasis (in this study).',
-    '1': 'Distant metastasis.',
+    '0': 'No distant metastasis (in this study)',
+    '1': 'Distant metastasis',
 };
 
 function generate_report(){
-    var t_stage = ["1"];    // at least T1?
+    var t_stage = ["0"];
     var n_stage = ["0"];
     var m_stage = ["0"];
     // Protocol

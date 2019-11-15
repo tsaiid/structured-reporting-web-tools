@@ -8,31 +8,31 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template, ajcc_template_with_parent} from './ajcc8_common.js';
 
 const AJCC8_OGS_PELVIS_T = {
-    'x': 'Primary tumor cannot be assessed.',
-    '0': 'No evidence of primary tumor.',
-    '1': 'Tumor confined to one pelvic segment with no extraosseous extension.',
-    '1a': 'Tumor ≤8 cm in greatest dimension.',
-    '1b': 'Tumor >8 cm in greatest dimension.',
-    '2': 'Tumor confined to one pelvic segment with extraosseous extension or two segments without extraosseous extension.',
-    '2a': 'Tumor ≤8 cm in greatest dimension.',
-    '2b': 'Tumor >8 cm in greatest dimension.',
-    '3': 'Tumor spanning two pelvic segments with extraosseous extension.',
-    '3a': 'Tumor ≤8 cm in greatest dimension.',
-    '3b': 'Tumor >8 cm in greatest dimension.',
-    '4': 'Tumor spanning three pelvic segments or crossing the sacroiliac joint.',
-    '4a': 'Tumor involves sacroiliac joint and extends medial to the sacral neuroforamen.',
-    '4b': 'Tumor encasement of external iliac vessels or presence of gross tumor thrombus in major pelvic vessels.',
+    'x': 'Primary tumor cannot be assessed',
+    '0': 'No evidence of primary tumor',
+    '1': 'Tumor confined to one pelvic segment with no extraosseous extension',
+    '1a': 'Tumor ≤8 cm in greatest dimension',
+    '1b': 'Tumor >8 cm in greatest dimension',
+    '2': 'Tumor confined to one pelvic segment with extraosseous extension or two segments without extraosseous extension',
+    '2a': 'Tumor ≤8 cm in greatest dimension',
+    '2b': 'Tumor >8 cm in greatest dimension',
+    '3': 'Tumor spanning two pelvic segments with extraosseous extension',
+    '3a': 'Tumor ≤8 cm in greatest dimension',
+    '3b': 'Tumor >8 cm in greatest dimension',
+    '4': 'Tumor spanning three pelvic segments or crossing the sacroiliac joint',
+    '4a': 'Tumor involves sacroiliac joint and extends medial to the sacral neuroforamen',
+    '4b': 'Tumor encasement of external iliac vessels or presence of gross tumor thrombus in major pelvic vessels',
 };
 const AJCC8_OGS_PELVIS_N = {
     'x': 'Regional lymph nodes cannot be assessed. Because of the rarity of lymph node involvement in bone sarcomas, the designation NX may not be appropriate, and cases should be considered N0 unless clinical node involvement clearly is evident.',
-    '0': 'No regional lymph node metastasis.',
-    '1': 'Regional lymph node metastasis.',
+    '0': 'No regional lymph node metastasis',
+    '1': 'Regional lymph node metastasis',
 };
 const AJCC8_OGS_PELVIS_M = {
-    '0': 'No distant metastasis (in this study).',
-    '1': 'Distant metastasis.',
-    '1a': 'Lung.',
-    '1b': 'Bone or other distant sites.',
+    '0': 'No distant metastasis (in this study)',
+    '1': 'Distant metastasis',
+    '1a': 'Lung',
+    '1b': 'Bone or other distant sites',
 };
 
 function generate_report(){

@@ -8,29 +8,29 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_UB_T = {
-    'x': 'Primary tumor cannot be assessed.',
-    '0': 'No evidence of primary tumor.',
-    'a': 'Non-invasive papillary carcinoma.',
+    'x': 'Primary tumor cannot be assessed',
+    '0': 'No evidence of primary tumor',
+    'a': 'Non-invasive papillary carcinoma',
     'is': 'Urothelial carcinoma in situ: "flat tumor"',
-    '1': 'Tumor invades lamina propria (subepithelial connective tissue).',
-    '2': 'Tumor invades muscularis propria.',
-    '3': 'Tumor invades perivesical soft tissue.',
-    '4': 'Extravesical tumor directly invades any of the following: prostatic stroma, seminal vesicles, uterus, vagina, pelvic wall, abdominal wall.',
-    '4a': 'Extravesical tumor directly invades into prostatic stroma, uterus, vagina.',
-    '4b': 'Extravesical tumor invades pelvic wall, abdominal wall.',
+    '1': 'Tumor invades lamina propria (subepithelial connective tissue)',
+    '2': 'Tumor invades muscularis propria',
+    '3': 'Tumor invades perivesical soft tissue',
+    '4': 'Extravesical tumor directly invades any of the following: prostatic stroma, seminal vesicles, uterus, vagina, pelvic wall, abdominal wall',
+    '4a': 'Extravesical tumor directly invades into prostatic stroma, uterus, vagina',
+    '4b': 'Extravesical tumor invades pelvic wall, abdominal wall',
 };
 const AJCC8_UB_N = {
-    'x': 'Regional lymph node cannot be assessed.',
-    '0': 'No regional lymph node metastasis.',
-    '1': 'Single regional lymph node metastasis in the true pelvis (perivesical, obturator, internal and external iliac, or sacral lymph node).',
-    '2': 'Multiple regional lymph node metastases in the true pelvis (perivesical, obturator, internal and external iliac, or sacral lymph node metastasis).',
-    '3': 'Lymph node metastasis to common iliac lymph nodes.',
+    'x': 'Lymph nodes cannot be assessed',
+    '0': 'No lymph node metastasis',
+    '1': 'Single regional lymph node metastasis in the true pelvis (perivesical, obturator, internal and external iliac, or sacral lymph node)',
+    '2': 'Multiple regional lymph node metastases in the true pelvis (perivesical, obturator, internal and external iliac, or sacral lymph node metastasis)',
+    '3': 'Lymph node metastasis to the common iliac lymph nodes',
 };
 const AJCC8_UB_M = {
-    '0': 'No distant metastasis (in this study).',
-    '1': 'Distant metastasis.',
-    '1a': 'Distant metastasis limited to lymph nodes beyond the common iliacs.',
-    '1b': 'Non-lymph-node distant metastases.',
+    '0': 'No distant metastasis (in this study)',
+    '1': 'Distant metastasis',
+    '1a': 'Distant metastasis limited to lymph nodes beyond the common iliacs',
+    '1b': 'Non-lymph-node distant metastases',
 };
 
 function generate_report(){

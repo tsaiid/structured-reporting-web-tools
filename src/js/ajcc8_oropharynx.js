@@ -8,37 +8,38 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_OROPHARYNX_T = {
-    'x': 'Primary tumor cannot be assessed.',
-    '0': 'No evidence of primary tumor.',
-    'is': 'Tumor in situ.',
-    '1': 'Tumor ≤ 2 cm in greatest dimension.',
-    '2': 'Tumor > 2 cm but ≤ 4 cm in greatest dimension.',
-    '3': 'Tumor > 4 cm in greatest dimension or extension to lingual surface of epiglottis.',
-    '4a': 'Moderately advanced local disease: Tumor invades the larynx, extrinsic muscle of tongue, medial pterygoid, hard palate, or mandible.',
-    '4b': 'Very advanced local disease: Tumor invades lateral pterygoid muscle, pterygoid plates, lateral nasopharynx, or skull base or encases carotid artery.',
+    'x': 'Primary tumor cannot be assessed',
+    '0': 'No primary identified',
+    'is': 'Carcinoma in situ',
+    '1': 'Tumor 2 cm or smaller in greatest dimension',
+    '2': 'Tumor larger than 2 cm but not larger than 4 cm in greatest dimension',
+    '3': 'Tumor larger than 4 cm in greatest dimension or extension to lingual surface of epiglottis',
+    '4': 'Moderately advanced or very advanced local disease',
+    '4a': 'Moderately advanced local disease: Tumor invades the larynx, extrinsic muscle of tongue, medial pterygoid, hard palate, or mandible',
+    '4b': 'Very advanced local disease: Tumor invades lateral pterygoid muscle, pterygoid plates, lateral nasopharynx, or skull base or encases carotid artery',
 };
 const AJCC8_OROPHARYNX_N_HPV = {
-    'x': 'Regional lymph nodes cannot be assessed.',
-    '0': 'No regional lymph node metastasis.',
-    '1': 'Unilateral cervical LN(S), ≦ 6cm in greatest dimension, above caudal border of cricoid cartilage; or Unilateral or bilateral retropharyngeal LN, ≦ 6cm in greatest dimension (above the caudal border of cricoid cartilage).',
-    '2': 'Bilateral cervical LN(S) , ≦6cm in greatest dimension, above the caudal border of cricoid cartilage.',
-    '3': 'Unilateral or bilateral cervical LN(S), ＞6cm in greatest dimension, and/or Extension below the caudal border of cricoid cartilage.',
+    'x': 'Regional lymph nodes cannot be assessed',
+    '0': 'No regional lymph node metastasis',
+    '1': 'One or more ipsilateral lymph nodes, none larger than 6 cm',
+    '2': 'Contralateral or bilateral lymph nodes, none larger than 6 cm',
+    '3': 'Lymph node(s) larger than 6 cm',
 };
 const AJCC8_OROPHARYNX_N_NONHPV = {
-    'x': 'Regional lymph nodes cannot be assessed.',
-    '0': 'No regional lymph node metastasis.',
-    '1': 'Metastasis in a single ipsilateral lymph node, ≤ 3 cm in greatest dimension and ENE(-).',
-    '2': 'Metastasis in a single ipsilateral lymph node, > 3 cm but ≤ 6 cm in greatest dimension and ENE(-); or in bilateral or contralateral lymph nodes, none > 6 cm in greatest dimension and ENE(-).',
-    '2a': 'Metastasis in a single ipsilateral lymph node > 3 cm but ≤ 6 cm in greatest dimension and ENE(-).',
-    '2b': 'Metastasis in multiple ipsilateral lymph nodes, none > 6 cm in greatest dimension and ENE(-).',
-    '2c': 'Metastasis in bilateral or contralateral lymph nodes, none > 6 cm in greatest dimension and ENE(-).',
-    '3': 'Metastasis in a lymph node > 6 cm in greatest dimension and ENE(-) or metastasis in any node(s) and clinically overt ENE(+).',
-    '3a': 'Metastasis in a lymph node >6 cm in greatest dimension and ENE(-).',
-    '3b': 'Metastasis in any node(s) and clinically overt ENE(+).',
+    'x': 'Regional lymph nodes cannot be assessed',
+    '0': 'No regional lymph node metastasis',
+    '1': 'Metastasis in a single ipsilateral lymph node, 3 cm or smaller in greatest dimension and ENE(−)',
+    '2': 'Metastasis in a single ipsilateral node larger than 3 cm but not larger than 6 cm in greatest dimension and ENE(−); or metastases in multiple ipsilateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(−); or in bilateral or contralateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(−)',
+    '2a': 'Metastasis in a single ipsilateral node larger than 3 cm but not larger than 6 cm in greatest dimension and ENE(−)',
+    '2b': 'Metastases in multiple ipsilateral nodes, none larger than 6 cm in greatest dimension and ENE(−)',
+    '2c': 'Metastases in bilateral or contralateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(−)',
+    '3': 'Metastasis in a lymph node larger than 6 cm in greatest dimension and ENE(−); or metastasis in any node(s) and clinically overt ENE(+)',
+    '3a': 'Metastasis in a lymph node larger than 6 cm in greatest dimension and ENE(−)',
+    '3b': 'Metastasis in any node(s) and clinically overt ENE(+)',
 };
 const AJCC8_OROPHARYNX_M = {
-    '0': 'No distant metastasis (in this study).',
-    '1': 'Distant metastasis.',
+    '0': 'No distant metastasis (in this study)',
+    '1': 'Distant metastasis',
 };
 
 function generate_report(){
@@ -142,11 +143,14 @@ SEQUENCES:
     }
     report += "\n";
     if ($('#cb_rn_hpv').is(':checked')) {
-        if (($('.cb_rn_r_nrp:checked, .cb_rn_l_nrp:checked').length && n_length > 6.0) || $('#cb_rn_bc').is(':checked')) {
+        if (($('.cb_rn:checked').length && n_length > 6.0)) {
             n_stage.push("3");
-        } else if ($('.cb_rn_r_nrp:checked').length && $('.cb_rn_l_nrp:checked').length) {
+        } else if (($('.cb_rn_r:checked').length && $('.cb_rn_l:checked').length)
+                    || ($('#cb_tl_r').is(':checked') && $('.cb_rn_l:checked').length)
+                    || ($('#cb_tl_l').is(':checked') && $('.cb_rn_r:checked').length)) {
             n_stage.push("2");
-        } else if (($('.cb_rn_r:checked').length ^ $('.cb_rn_l:checked').length) || $('.cb_rn_n1:checked').length) {
+        } else if (($('#cb_tl_r').is(':checked') && $('.cb_rn_r:checked').length)
+                    || ($('#cb_tl_l').is(':checked') && $('.cb_rn_l:checked').length)) {
             n_stage.push("1");
         }
     } else {

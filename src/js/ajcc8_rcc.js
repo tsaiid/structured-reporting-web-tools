@@ -8,28 +8,28 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_RCC_T = {
-    'x': 'Primary tumor cannot be assessed.',
-    '0': 'No evidence of primary tumor.',
-    '1': 'Tumor ≤ 7 cm in greatest dimension, limited to the kidney.',
-    '1a': 'Tumor ≤ 4 cm in greatest dimension, limited to the kidney.',
-    '1b': 'Tumor > 4 cm but ≤ 7 cm in greatest dimension, limited to the kidney.',
-    '2': 'Tumor > 7 cm in greatest dimension, limited to the kidney.',
-    '2a': 'Tumor > 7 cm but ≤ 10 cm in greatest dimension, limited to the kidney.',
-    '2b': 'Tumor > 10 cm, limited to the kidney.',
-    '3': 'Tumor extends into major veins or perinephric tissues, but not into the ipsilateral adrenal gland and not beyond Gerota fascia.',
-    '3a': 'Tumor extends into the renal vein or its segmental branches, or invades the pelvicalyceal system, or invades perirenal and/or renal sinus fat but not beyond Gerota fascia.',
-    '3b': 'Tumor extends into the vena cava below the diaphragm.',
-    '3c': 'Tumor extends into the vena cava above the diaphragm or invades the wall of the vena cava.',
-    '4': 'Tumor invades beyond Gerota fascia (including contiguous extension into the ipsilateral adrenal gland).',
+    'x': 'Primary tumor cannot be assessed',
+    '0': 'No evidence of primary tumor',
+    '1': 'Tumor ≤7 cm in greatest dimension, limited to the kidney',
+    '1a': 'Tumor ≤4 cm in greatest dimension, limited to the kidney',
+    '1b': 'Tumor >4 cm but ≤7 cm in greatest dimension limited to the kidney',
+    '2': 'Tumor >7 cm in greatest dimension, limited to the kidney',
+    '2a': 'Tumor >7 cm but ≤10 cm in greatest dimension, limited to the kidney',
+    '2b': 'Tumor >10 cm, limited to the kidney',
+    '3': 'Tumor extends into major veins or perinephric tissues, but not into the ipsilateral adrenal gland and not beyond Gerota’s fascia',
+    '3a': 'Tumor extends into the renal vein or its segmental branches, or invades the pelvicalyceal system, or invades perirenal and/or renal sinus fat but not beyond Gerota’s fascia',
+    '3b': 'Tumor extends into the vena cava below the diaphragm',
+    '3c': 'Tumor extends into the vena cava above the diaphragm or invades the wall of the vena cava',
+    '4': 'Tumor invades beyond Gerota’s fascia (including contiguous extension into the ipsilateral adrenal gland)',
 };
 const AJCC8_RCC_N = {
-    'x': 'Regional lymph nodes cannot be assessed.',
-    '0': 'No regional lymph node metastasis.',
-    '1': 'Metastasis in regional node(s).',
+    'x': 'Regional lymph nodes cannot be assessed',
+    '0': 'No regional lymph node metastasis',
+    '1': 'Metastasis in regional node(s)',
 };
 const AJCC8_RCC_M = {
-    '0': 'No distant metastasis (in this study).',
-    '1': 'Distant metastasis.',
+    '0': 'No distant metastasis (in this study)',
+    '1': 'Distant metastasis',
 };
 
 function generate_report(){

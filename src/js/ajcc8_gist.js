@@ -8,24 +8,24 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
 
 const AJCC8_GIST_T = {
-    'x': 'Primary tumor cannot be assessed.',
-    '0': 'No evidence of primary tumor.',
-    '1': 'Tumor 2 cm or less.',
-    '2': 'Tumor more than 2 cm but not more than 5 cm.',
-    '3': 'Tumor more than 5 cm but not more than 10 cm.',
-    '4': 'Tumor more than 10 cm in greatest dimension.',
+    'x': 'Primary tumor cannot be assessed',
+    '0': 'No evidence of primary tumor',
+    '1': 'Tumor 2 cm or less',
+    '2': 'Tumor more than 2 cm but not more than 5 cm',
+    '3': 'Tumor more than 5 cm but not more than 10 cm',
+    '4': 'Tumor more than 10 cm in greatest dimension',
 };
 const AJCC8_GIST_N = {
-    '0': 'No regional lymph node metastasis.',
-    '1': 'Regional lymph node metastasis.',
+    '0': 'No regional lymph node metastasis or unknown lymph node status',
+    '1': 'Regional lymph node metastasis',
 };
 const AJCC8_GIST_M = {
-    '0': 'No distant metastasis (in this study).',
-    '1': 'Distant metastasis.',
+    '0': 'No distant metastasis (in this study)',
+    '1': 'Distant metastasis',
 };
 
 function generate_report(){
-    var t_stage = ["0"];    // at least T1?
+    var t_stage = ["0"];
     var n_stage = ["0"];
     var m_stage = ["0"];
     var report = "1. ";
