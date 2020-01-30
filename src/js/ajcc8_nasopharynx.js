@@ -159,9 +159,9 @@ SEQUENCES:
     let t_str = AJCC8_NASOPHARYNX_T[t];
     let n_str = AJCC8_NASOPHARYNX_N[n];
     let m_str = AJCC8_NASOPHARYNX_M[m];
-    report += ajcc_template("Esophageal Carcinoma", t, t_str, n, n_str, m, m_str);
+    report += ajcc_template("Nasopharyngeal Carcinoma", t, t_str, n, n_str, m, m_str);
 
-    $('#reportModalLongTitle').html("Esophageal Cancer Staging Form");
+    $('#reportModalLongTitle').html("Nasopharyngeal Carcinoma Staging Form");
     $('#reportModalBody pre code').html(report);
     $('#reportModalLong').modal('show');
 }
