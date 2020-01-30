@@ -145,7 +145,7 @@ function analyze() {
 
     // Disc Space Narrowing
     if ($('.disc_space_narrowing:checked').length == 0) {
-        str += '  - No obvious disc space narrowing. ' + "\n";
+        str += '- No obvious disc space narrowing. ' + "\n";
     } else {
         var degree = [];
         var degree_text = ['', 'mild', 'moderate', 'severe'];
@@ -161,12 +161,12 @@ function analyze() {
         });
 
         if (has_disc_space_narrowing) {
-            str += "  - Disc space narrowing:\n";
+            str += "- Disc space narrowing:\n";
         }
 
         for (i = 1; i < 4; i++) {
             if (typeof degree[i] != "undefined" && degree[i].length) {
-                str += "    - " + degree[i].join(', ') + ': ' + degree_text[i] + "\n";
+                str += "  - " + degree[i].join(', ') + ': ' + degree_text[i] + "\n";
             }
         }
     }
@@ -178,14 +178,14 @@ function analyze() {
     });
 
     if (retro.length) {
-        str += "  - Retrolisthesis: " + retro.join(', ') + "\n";
+        str += "- Retrolisthesis: " + retro.join(', ') + "\n";
     } else {
-        str += "  - No retrolisthesis.\n";
+        str += "- No retrolisthesis.\n";
     }
 
     // Degenerative Spondylolisthesis
     if ($('.deg_spon:checked').length == 0) {
-        str += '  - No degenerative spondylolisthesis. ' + "\n";
+        str += '- No degenerative spondylolisthesis. ' + "\n";
     } else {
         var grade = [];
         //var grade_text = ['', 'mild', 'moderate', 'severe'];
@@ -201,27 +201,27 @@ function analyze() {
         });
 
         if (has_spondylolisthesis) {
-            str += "  - Degenerative Spondylolisthesis:\n";
+            str += "- Degenerative Spondylolisthesis:\n";
         }
 
         for (var i = 1; i < 5; i++) {
             if (typeof grade[i] != "undefined" && grade[i].length) {
-                str += "    - " + grade[i].join(', ') + ': grade ' + i + ".\n";
+                str += "  - " + grade[i].join(', ') + ': grade ' + i + ".\n";
             }
         }
     }
 
     // Degenerative lower lumbar facet joints
     if ($('.cb_dllfj:checked').length) {
-        str += "  - Degenerative lower lumbar facet joints.\n";
+        str += "- Degenerative lower lumbar facet joints.\n";
     }
 
     // Marginal osteophyte
     if ($('.cb_mo:checked').length) {
         if ($('.cb_mo_sm:checked').length) {
-            str += "  - Small marginal osteophyte.\n";
+            str += "- Small marginal osteophyte.\n";
         } else {
-            str += "  - Marginal osteophyte.\n";
+            str += "- Marginal osteophyte.\n";
         }
     }
 
@@ -232,20 +232,20 @@ function analyze() {
     });
 
     if (hyper.length) {
-        str += "  - Hypermobility: " + hyper.join(', ') + "\n";
+        str += "- Hypermobility: " + hyper.join(', ') + "\n";
     } else {
-        str += "  - No hypermobility.\n";
+        str += "- No hypermobility.\n";
     }
 
     // Scoliosis
     if ($('.cb_scoliosis:checked').length) {
-        str += "  - Scoliosis with " + side_text[$('.scoliosis:checked').first().val()] + " lateral convexity.\n";
+        str += "- Scoliosis with " + side_text[$('.scoliosis:checked').first().val()] + " lateral convexity.\n";
     }
 
     // Collapse Vertebra
     if ($('.cb_collapse:checked').length) {
         var v_collapses = $('.v_collapse:checked');
-        str += "  - Collapse of ";
+        str += "- Collapse of ";
         var len = v_collapses.length;
         v_collapses.each(function(i) {
             str += $(this).val();
@@ -259,7 +259,7 @@ function analyze() {
     // LSTV
     if ($('.cb_lstv:checked').length) {
         var lstv_type = $('.lstv:checked').first().val();
-        str += "  - Lumbosacral Transitional Vertebrae, type " + lstv_type;
+        str += "- Lumbosacral Transitional Vertebrae, type " + lstv_type;
         if (lstv_type != "IV") {
             var lstv_side = $('.lstv_side:checked').first().val();
             str += (lstv_side == 2 ? "b" : "a, " + side_text[lstv_side]);
