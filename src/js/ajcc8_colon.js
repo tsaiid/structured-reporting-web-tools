@@ -41,56 +41,53 @@ function generate_report(){
     var t_stage = ["0"];    // at least T1?
     var n_stage = ["0"];
     var m_stage = ["0"];
-    var report = "1. ";
+    var report = `1. Imaging modality
+  - Imaging by `;
 
     // Protocol
-    if ($('input[name="protocol_radios"]:checked').val() == 'mr') {
-        report += `MR protocol
-Sagittal and Axial FSE T2WI
-Axial FSE T1WI with FS, pre- and post- contrast
-Axial T1WI with contrast, abdominal survey
-(Coronal FSE T2WI)
-(Axial T2WI, lower abdominal survey)`;
+    if ($('input[name="protocol_radios"]:checked').val() == 'ct') {
+        report += `[+] CT scan  [ ] MRI`;
     } else {
-        report += `CT protocol
-With contrast, range: whole abdomen, slice thickness <= 5mm`;
+        report += `[ ] CT scan  [+] MRI`;
     }
     report += "\n\n";
 
     // Tumor location / size
     report += `2. Tumor location / size
---- Location:
-`;
-    if ($('.cb_tl:checked').length) {
-        report += "* " + join_checkbox_values($('.cb_tl:checked'), "\n* ") + "\n";
-    }
+  - Location:
+    `;
+    $('.cb_tl').each(function(i){
+        report += "[ ] " + $(this).val() + "    ";
+    });
 
-    report += "--- Size:\n";
-    if ($('#cb_ts_nm').is(':checked')) {
-        report += "* Non-measurable";
+    report += `
+  - Size:`;
+    if ($('#cb_ts_nm').is(':checked') || !$('#txt_ts_len').val()) {
+        report += `
+    [+] Non-measurable
+    [ ] Measurable: ___ cm (largest diameter)`;
     } else {
         let t_length = parseFloat($('#txt_ts_len').val());
-        report += "* Measurable: Length " + t_length + " cm";
         let t_thick = parseFloat($('#txt_ts_thick').val());
-        if (t_thick) {
-            report += ", Max thickness " + t_thick + " cm";
-        }
+        report += `
+    [ ] Non-measurable
+    [+] Measurable: ${t_length} cm (largest diameter)`;
         //console.log(t_stage);
     }
     report += "\n\n";
 
     // Tumor invasion
     report += "3. Tumor invasion\n";
+    report += "[" + ($('#cb_ti_na').is(':checked') ? "+" : " ") + "] Not assessable\n";
+    $('.cb_ti:not(.cb_ti_t4b):not(#cb_ti_na)').each(function(){
+        report += "[" + ($(this).is(':checked') ? "+" : " ") + "] " + $(this).val() + "\n";
+    });
+    if ($('.cb_ti_t4b').is(':checked')) {
+        report += "[+] Adjacent organs: " + $('#txt_ti_others').val() + "\n";
+    } else {
+        report += "[ ] Adjacent organs: ___\n";
+    }
     if ($('.cb_ti:checked').length) {
-        report += "--- Yes:";
-        if ($('.cb_ti:not(.cb_ti_t4b):checked').length) {
-            report += "\n* " + join_checkbox_values($('.cb_ti:not(.cb_ti_t4b):checked'), "\n* ");
-        }
-        if ($('.cb_ti_t4b:checked').length) {
-            report += "\n* " + $('#txt_ti_others').val();
-        }
-        report += "\n";
-
         if ($('.cb_ti_t2:checked').length) {
             t_stage.push("2");
         }
@@ -105,32 +102,19 @@ With contrast, range: whole abdomen, slice thickness <= 5mm`;
         }
         //console.log(t_stage);
     }
-    if ($('.cb_ti:not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        var ti_array = [];
-        if ($('.cb_ti_t1:not(:checked)').length) {
-            ti_array.push("* " + join_checkbox_values($('.cb_ti_t1:not(:checked)')));
-        }
-        if ($('.cb_ti_t2:not(:checked)').length) {
-            ti_array.push("* " + join_checkbox_values($('.cb_ti_t2:not(:checked)')));
-        }
-        if ($('.cb_ti_t3:not(:checked)').length) {
-            ti_array.push("* " + join_checkbox_values($('.cb_ti_t3:not(:checked)')));
-        }
-        if ($('.cb_ti_t4a:not(:checked)').length) {
-            ti_array.push("* " + join_checkbox_values($('.cb_ti_t4a:not(:checked)')));
-        }
-        report += ti_array.join("\n") + "\n"
-    }
     report += "\n";
 
     // Regional nodal metastasis
+    let has_rln = $('.cb_rn:checked').length && $('#txt_rln_num').val();
+    let rln_num = (has_rln ? parseInt($('#txt_rln_num').val()) : "___");
     report += "4. Regional nodal metastasis\n";
-    if ($('.cb_rn:checked').length) {
-        let rln_num = parseInt($('#txt_rln_num').val());
-        report += "--- Yes:\n";
-        report += "--- Number of suspicious lymph node: " + rln_num + "\n";
+    report += "  [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
+    report += "  [" + (has_rln ? "+" : " ") + "] Yes, if yes, number of suspicious lymph node: " + rln_num + ", and locations:\n";
+    $('.cb_rn').each(function(){
+        report += "    [" + ($(this).is(':checked') ? "+" : " ") + "] " + $(this).val() + "\n";
+    });
 
+    if (has_rln) {
         if (rln_num >= 7) {
             n_stage.push("2b");
         } else if (rln_num >= 4) {
@@ -143,35 +127,25 @@ With contrast, range: whole abdomen, slice thickness <= 5mm`;
             n_stage.push("0");
         }
         //console.log(n_stage);
-
-        report += "--- Location:\n";
-        report += "* " + join_checkbox_values($('.cb_rn:checked'), "\n* ");
-        report += "\n";
-    } else {
-        if ($('.cb_td:checked').length) {
-            n_stage.push("1c");
-        }
-    }
-    if ($('.cb_rn:not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        var rn_array = [];
-        if ($('.cb_rn:not(:checked)').length) {
-            rn_array.push("* " + join_checkbox_values($('.cb_rn:not(:checked)')));
-        }
-        report += rn_array.join("\n") + "\n"
     }
     report += "\n";
 
     // Distant metastasis
+    let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
-    if ($('.cb_dm:checked').length) {
-        report += "--- Yes:\n";
+    report += "  [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
+    report += "  [" + (has_dm ? "+" : " ") + "] Yes, location(s): ";
+    if (has_dm) {
         if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
-            report += "* " + join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'), "\n* ") + "\n";
+            report += join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'));
         }
         if ($('#cb_dm_others').is(':checked')) {
-            report += "* " + $('#txt_dm_others').val() + "\n";
+            if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
+                report += ', '
+            }
+            report += $('#txt_dm_others').val();
         }
+
         if ($('.cb_dm_m1c:checked').length) {
             m_stage.push("1c");
         } else {
@@ -182,14 +156,10 @@ With contrast, range: whole abdomen, slice thickness <= 5mm`;
             }
         }
         //console.log(m_stage);
-    } /* else {
-        report += "* No distant metastasis in the scanned range.\n";
-    } */
-    if ($('.cb_dm:not("#cb_dm_others"):not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        report += "* " + join_checkbox_values($('.cb_dm:not("#cb_dm_others"):not(:checked)')) + "\n";
+    } else {
+        report += "___";
     }
-    report += "\n";
+    report += "\n\n";
 
     // Other Findings
     report += "6. Other findings:\n\n\n";
