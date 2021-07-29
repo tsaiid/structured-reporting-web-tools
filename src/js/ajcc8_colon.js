@@ -68,7 +68,6 @@ function generate_report(){
     [ ] Measurable: ___ cm (largest diameter)`;
     } else {
         let t_length = parseFloat($('#txt_ts_len').val());
-        let t_thick = parseFloat($('#txt_ts_thick').val());
         report += `
     [ ] Non-measurable
     [+] Measurable: ${t_length} cm (largest diameter)`;
