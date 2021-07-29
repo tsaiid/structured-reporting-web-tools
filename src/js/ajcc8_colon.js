@@ -104,7 +104,7 @@ function generate_report(){
     report += "\n";
 
     // Regional nodal metastasis
-    let has_rln = $('.cb_rn:checked').length && $('#txt_rln_num').val();
+    let has_rln = $('.cb_rn:checked').length && $('#txt_rln_num').val() > 0;
     let rln_num = (has_rln ? parseInt($('#txt_rln_num').val()) : "___");
     report += "4. Regional nodal metastasis\n";
     report += "  [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
