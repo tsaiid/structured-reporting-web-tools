@@ -1,7 +1,7 @@
 var path = require('path');
 var webpack = require('webpack'); // 這裡
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WebappWebpackPlugin = require('webapp-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 module.exports = {
 
@@ -211,23 +211,6 @@ module.exports = {
       filename: 'ajcc8/index.html',
       chunks: ['ajcc8/index'],
     }),
-    new WebappWebpackPlugin({
-      logo: './src/image/favicon.png',
-      cache: true,
-      favicons: {
-        icons: {
-            android: false,
-            appleIcon: false,
-            appleStartup: false,
-            coast: false,
-            favicons: true,
-            firefox: false,
-            opengraph: false,
-            twitter: false,
-            yandex: false,
-            windows: false
-        }
-      }
-    }),
+    new FaviconsWebpackPlugin('./src/image/favicon.png'),
   ],
 };
