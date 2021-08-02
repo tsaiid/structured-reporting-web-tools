@@ -17,15 +17,15 @@
     <![endif]-->
 
   <!-- Google Analytics -->
-<%= require('html-loader!./partials/google_analytics.html') %>
+<%= require('html-loader!./partials/google_analytics.html').default %>
 
   <!-- Vendors: jquery, bootstrap, clipboard.js -->
-<%= require('html-loader!./partials/vendors_css.html') %>
+<%= require('html-loader!./partials/vendors_css.html').default %>
 </head>
 
 <body>
 
-<%= require('html-loader!./partials/nav.html') %>
+<%= require('html-loader!./partials/nav.html').default %>
 
   <div class="container-fluid">
     <div class="row">
@@ -535,7 +535,7 @@
   </div>
 
   <!-- Vendors: jquery, bootstrap, clipboard.js -->
-<%= require('html-loader!./partials/vendors_js.html') %>
+<%= require('html-loader!./partials/vendors_js.html').default %>
 </body>
 
 </html>
