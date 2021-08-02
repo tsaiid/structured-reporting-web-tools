@@ -2,6 +2,7 @@ var path = require('path');
 var webpack = require('webpack'); // 這裡
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
 
@@ -36,9 +37,24 @@ module.exports = {
     'ajcc8/ogs_spine': './src/js/ajcc8_ogs_spine.js',
     'ajcc8/ogs_pelvis': './src/js/ajcc8_ogs_pelvis.js',
   },
+
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist')
+  },
+
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
+        extractComments: false,
+      }),
+    ],
   },
 
   // https://webpack.js.org/configuration/dev-server/
