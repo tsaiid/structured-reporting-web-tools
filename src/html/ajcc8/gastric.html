@@ -53,50 +53,18 @@
 
         <div class="row">
           <div class="col">
-            <!-- Scanning Protocol -->
-            <h2 class="h4">Scanning Protocol</h2>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="protocol_radios" id="radio_ct" value="ct" checked>
-              <label class="form-check-label" for="radio_ct">
-                CT
-              </label>
-              <form class="form-inline">
-                <div class="form-group mb-2 mr-sm-2">
-                  <div id="ref_rln_num" class="text-muted">
-                    Contrast
-                  </div>
-                </div>
-                <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_ncct" value="ncct" checked>
-                  <label class="form-check-label" for="cb_sp_ncct">without</label>
-                </div>
-                <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_cect" value="cect" checked>
-                  <label class="form-check-label" for="cb_sp_cect">with</label>
-                </div>
-              </form>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="protocol_radios" id="radio_mr" value="mr">
-              <label class="form-check-label" for="radio_mr">
-                MR
-              </label>
-              <form class="form-inline">
-                <div class="form-group mb-2 mr-sm-2">
-                  <div id="ref_rln_num" class="text-muted">
-                    Contrast
-                  </div>
-                </div>
-                <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_ncmr" value="ncmr" checked disabled>
-                  <label class="form-check-label" for="cb_sp_ncmr">without</label>
-                </div>
-                <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_cemr" value="cemr" checked>
-                  <label class="form-check-label" for="cb_sp_cemr">with</label>
-                </div>
-              </form>
-            </div>
+            <!-- Imaging Modality -->
+            <h2 class="h4">Imaging Modality</h2>
+            <form class="">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input" type="radio" name="protocol_radios" id="radio_ct" value="ct" checked>
+                <label class="form-check-label" for="radio_ct">CT</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input" type="radio" name="protocol_radios" id="radio_mr" value="mr">
+                <label class="form-check-label" for="radio_mr">MRI</label>
+              </div>
+            </form>
 
             <!-- Tumor Location -->
             <h2 class="h4 mt-4">Tumor Location</h2>
