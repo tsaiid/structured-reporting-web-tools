@@ -17,19 +17,19 @@
     <![endif]-->
 
   <!-- Google Analytics -->
-<%= require('html-loader!../partials/google_analytics.html') %>
+<%= require('html-loader!../partials/google_analytics.html').default %>
 
   <!-- Vendors: jquery, bootstrap, clipboard.js -->
-<%= require('html-loader!../partials/vendors_css.html') %>
+<%= require('html-loader!../partials/vendors_css.html').default %>
 </head>
 
 <body>
 
-<%= require('html-loader!../partials/nav.html') %>
+<%= require('html-loader!../partials/nav.html').default %>
 
   <div class="container-fluid">
     <div class="row">
-<%= require('html-loader!../partials/sidebar.html') %>
+<%= require('html-loader!../partials/sidebar.html').default %>
 
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -250,13 +250,13 @@
   </div>
 
   <!-- Report Modal -->
-<%= require('html-loader!../partials/report_modal.html') %>
+<%= require('html-loader!../partials/report_modal.html').default %>
 
   <!-- About Modal -->
-<%= require('html-loader!../partials/about_modal.html') %>
+<%= require('html-loader!../partials/about_modal.html').default %>
 
   <!-- Vendors: jquery, bootstrap, clipboard.js -->
-<%= require('html-loader!../partials/vendors_js.html') %>
+<%= require('html-loader!../partials/vendors_js.html').default %>
 </body>
 
 </html>
