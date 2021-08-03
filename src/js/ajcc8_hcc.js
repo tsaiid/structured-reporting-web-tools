@@ -31,31 +31,14 @@ function generate_report(){
     var t_stage = ["0"];    // at least T1?
     var n_stage = ["0"];
     var m_stage = ["0"];
-    var report = "1. ";
+    var report = `1. Imaging modality
+  - Imaging by `;
 
     // Protocol
-    if ($('input[name="protocol_radios"]:checked').val() == 'mr') {
-        report += `MR protocol
-Slice thickness: 5 mm or less
-Range: whole liver
-
-Unenhanced axial T1WI
-Unenhanced axial T2WI
-Dynamic contrast-enhanced axial T1WI with fat saturation(arterial phase, and venous phase)
-
-Diffusion- weighted sequences, axial image
-Dynamic contrast-enhanced axial T1WI with fat saturation(equilibrium phase)`;
+    if ($('input[name="protocol_radios"]:checked').val() == 'ct') {
+        report += `[+] CT scan  [ ] MRI`;
     } else {
-        report += `CT protocol
-Slice thickness: 5 mm or less
-Range: whole liver
-
-Unenhanced imaging, axial image
-Dynamic contrast–enhanced axial imaging at arterial phase, venous phase
-
-Dynamic contrast–enhanced imaging at equilibrium phase
-Whole abdomen survey in portal venous phase or equilibrium phase
-Coronal reconstruction`;
+        report += `[ ] CT scan  [+] MRI`;
     }
     report += "\n\n";
 
@@ -64,37 +47,39 @@ Coronal reconstruction`;
 
     let txt_tl_num = $('#txt_tl_num').val();
     let tl_num = parseInt(txt_tl_num, 10);
-    report += "--- Number: " + txt_tl_num + "\n";
+    if (tl_num > 3 || isNaN(tl_num)) {
+        txt_tl_num = 'multiple';
+    }
+    report += "  - Number (1,2,3 or multiple): " + txt_tl_num + "\n";
 
     let txt_tl_loc = $('#txt_tl_loc').val();
-    report += "--- Location: " + txt_tl_loc + "\n";
+    report += "  - Location (segment or lobe): " + txt_tl_loc + "\n";
 
     let t_length = parseFloat($('#txt_ts_len').val());
-    report += "--- Size:\n";
-    if ($('#cb_ts_nm').is(':checked')) {
-        report += "* Non-measurable";
+    report += "  - Size:";
+    if ($('#cb_ts_nm').is(':checked') || !t_length) {
+        report += `
+    [+] Non-measurable
+    [ ] Measurable: ___ cm (the largest tumor)`;
     } else {
-        report += "* Measurable: " + t_length + " cm (the largest tumor)";
-        //console.log(t_stage);
+        report += `
+    [ ] Non-measurable
+    [+] Measurable: ${t_length} cm (the largest tumor)`;
     }
     report += "\n\n";
 
     // Tumor characteristics and associated liver features
     report += "3. Tumor characteristics and associated liver features\n";
-    if ($('.cb_tc:checked').length) {
-        report += "--- Yes:";
-        if ($('.cb_tc:not(.cb_tc_pvt):checked').length) {
-            report += "\n* " + join_checkbox_values($('.cb_tc:not(.cb_tc_pvt):checked'), "\n* ");
-        }
-        if ($('.cb_tc_pvt:checked').length) {
-            report += "\n* " + $('#cb_tc_pvt').val() + ", location: " + $('#txt_tc_pvt').val();
+    $('.cb_tc').each(function(){
+        let check_or_not = $(this).is(':checked') ? "+" : " ";
+        report += `  [${check_or_not}] ` + $(this).val();
+        if ($(this).hasClass('has_txt')) {
+            report += ", location: ";
+            let loc_txt = $(this).parent().next().children('input:text').val();
+            report += loc_txt ? loc_txt : "___";
         }
         report += "\n";
-    }
-    if ($('.cb_tc:not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        report += "* " + join_checkbox_values($('.cb_tc:not(:checked)')) + "\n";
-    }
+    });
     report += "\n";
 
     if ($('.cb_tc_t4:checked').length) {
@@ -114,45 +99,46 @@ Coronal reconstruction`;
     }
 
     // Regional nodal metastasis
+    let has_rln = $('.cb_rn:checked').length;
     report += "4. Regional nodal metastasis\n";
-    if ($('.cb_rn:checked').length) {
-        report += "--- Yes:\n";
-        report += "--- Location:\n";
-        report += "* " + join_checkbox_values($('.cb_rn:checked'), "\n* ");
-        report += "\n";
-
-        n_stage.push('1');
+    report += "  [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
+    report += "  [" + (has_rln ? "+" : " ") + "] Yes, if yes, locations (specified as below):\n";
+    $('.cb_rn:not("#cb_rn_others")').each(function(){
+        let check_or_not = $(this).is(':checked') ? "+" : " ";
+        report += `    [${check_or_not}] ` + $(this).val() + "\n";
+    });
+    if ($('#cb_rn_others').is(':checked')) {
+        report += "    [+] Others: " + $('#txt_rn_others').val();
+    } else {
+        report += "    [ ] Others: ___";
     }
-    if ($('.cb_rn:not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        var rn_array = [];
-        if ($('.cb_rn:not(:checked)').length) {
-            rn_array.push("* " + join_checkbox_values($('.cb_rn:not(:checked)')));
-        }
-        report += rn_array.join("\n") + "\n"
+    if ($('.cb_rn:checked').length) {
+        n_stage.push('1');
     }
     report += "\n";
 
     // Distant metastasis
+    let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
-    if ($('.cb_dm:checked').length) {
-        report += "--- Yes:\n";
+    report += "  [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
+    report += "  [" + (has_dm ? "+" : " ") + "] Yes, location: ";
+    if (has_dm) {
         if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
-            report += "* " + join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'), "\n* ") + "\n";
+            report += join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'));
         }
         if ($('#cb_dm_others').is(':checked')) {
-            report += "* " + $('#txt_dm_others').val() + "\n";
+            if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
+                report += ', '
+            }
+            report += $('#txt_dm_others').val();
         }
+
         m_stage.push("1");
         //console.log(m_stage);
-    } /* else {
-        report += "* No distant metastasis in the scanned range.\n";
-    } */
-    if ($('.cb_dm:not("#cb_dm_others"):not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        report += "* " + join_checkbox_values($('.cb_dm:not("#cb_dm_others"):not(:checked)')) + "\n";
+    } else {
+        report += "___";
     }
-    report += "\n";
+    report += "\n\n";
 
     // Other Findings
     report += "6. Other findings:\n\n\n";
