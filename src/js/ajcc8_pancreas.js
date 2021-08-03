@@ -50,7 +50,8 @@ function generate_report(){
   - Location:
 `;
     $('.cb_tl:not(#cb_tl_others)').each(function(i){
-        report += "    [ ] " + $(this).val() + "\n";
+        let check_or_not = $(this).is(':checked') ? "+" : " ";
+        report += `    [${check_or_not}] ` + $(this).val() + "\n";
     });
     if ($('#cb_tl_others').is(':checked')) {
         report += "    [+] Others: " + $('#txt_tl_others').val() + "\n";
@@ -99,7 +100,8 @@ function generate_report(){
 `;
     }
     $('.cb_ti:not(#cb_ti_others)').each(function(){
-        report += "    [" + ($(this).is(':checked') ? "+" : " ") + "] " + $(this).val() + "\n";
+        let check_or_not = $(this).is(':checked') ? "+" : " ";
+        report += `    [${check_or_not}] ` + $(this).val() + "\n";
     });
     if ($('#cb_ti_others').is(':checked')) {
         report += "    [+] Others: " + $('#txt_ti_others').val() + "\n";
