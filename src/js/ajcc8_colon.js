@@ -55,13 +55,12 @@ function generate_report(){
     // Tumor location / size
     report += `2. Tumor location / size
   - Location:
-    `;
+`;
     $('.cb_tl').each(function(i){
-        report += "[ ] " + $(this).val() + "    ";
+        let check_or_not = $(this).is(':checked') ? "+" : " ";
+        report += `    [${check_or_not}] ` + $(this).val() + "\n";
     });
-
-    report += `
-  - Size:`;
+    report += "  - Size: ";
     if ($('#cb_ts_nm').is(':checked') || !$('#txt_ts_len').val()) {
         report += `
     [+] Non-measurable
@@ -77,14 +76,14 @@ function generate_report(){
 
     // Tumor invasion
     report += "3. Tumor invasion\n";
-    report += "[" + ($('#cb_ti_na').is(':checked') ? "+" : " ") + "] Not assessable\n";
+    report += "  [" + ($('#cb_ti_na').is(':checked') ? "+" : " ") + "] Not assessable\n";
     $('.cb_ti:not(.cb_ti_t4b):not(#cb_ti_na)').each(function(){
-        report += "[" + ($(this).is(':checked') ? "+" : " ") + "] " + $(this).val() + "\n";
+        report += "  [" + ($(this).is(':checked') ? "+" : " ") + "] " + $(this).val() + "\n";
     });
     if ($('.cb_ti_t4b').is(':checked')) {
-        report += "[+] Adjacent organs: " + $('#txt_ti_others').val() + "\n";
+        report += "  [+] Adjacent organs: " + $('#txt_ti_others').val() + "\n";
     } else {
-        report += "[ ] Adjacent organs: ___\n";
+        report += "  [ ] Adjacent organs: ___\n";
     }
     if ($('.cb_ti:checked').length) {
         if ($('.cb_ti_t2:checked').length) {
