@@ -29,7 +29,7 @@ const AJCC8_CCC_IBD_M = {
 };
 
 function generate_report(){
-    var t_stage = [""];
+    var t_stage = [];
     var n_stage = ["0"];
     var m_stage = ["0"];
     var report = `1. Imaging modality
@@ -84,7 +84,9 @@ function generate_report(){
     });
     report += "\n";
 
-    if ($('#cb_ts_nm').is(':checked') || !t_length) {
+    if ($('.cb_ti_t0:checked').length) {
+        t_stage.push('0');
+    } else if ($('#cb_ts_nm').is(':checked') || !t_length) {
         t_stage.push('x');
     } else if ($('.cb_ti_t4:checked').length) {
         t_stage.push('4');
