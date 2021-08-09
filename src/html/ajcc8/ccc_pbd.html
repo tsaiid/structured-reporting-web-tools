@@ -100,7 +100,13 @@
             <h2 class="h4 mt-4">Tumor Invasion</h2>
             <form class="">
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t1" type="checkbox" id="cb_ti_t1" value="Tumor confines in the bile duct (T1)" checked>
+                <input class="form-check-input cb_ti cb_ti_t0" type="checkbox" id="cb_ti_t0" value="No evidence of primary tumor (T0)">
+                <label class="form-check-label" for="cb_ti_t0">No evidence of primary tumor (T0)</label>
+              </div>
+            </form>
+            <form class="">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_ti cb_ti_t1" type="checkbox" id="cb_ti_t1" value="Tumor confines in the bile duct (T1)">
                 <label class="form-check-label" for="cb_ti_t1">Tumor confines in the bile duct (T1)</label>
               </div>
             </form>
@@ -160,32 +166,10 @@
                   1-3 (N1), ≥4 (N2)
                 </small>
               </div>
-            </form>
-            <h3 class="h5 mt-2">Locations</h3>
-            <form class="">
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_h" value="hilar">
-                <label class="form-check-label" for="cb_rn_h">Hilar</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_cd" value="cystic duct">
-                <label class="form-check-label" for="cb_rn_cd">Cystic duct</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_cbd" value="common bile duct">
-                <label class="form-check-label" for="cb_rn_cbd">Common bile duct</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_ha" value="hepatic artery">
-                <label class="form-check-label" for="cb_rn_ha">Hepatic artery</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_ppd" value="posterior pancreaticoduodenal">
-                <label class="form-check-label" for="cb_rn_ppd">Posterior pancreaticoduodenal</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_pv" value="portal vein">
-                <label class="form-check-label" for="cb_rn_pv">Portal vein</label>
+              <div class="form-group mb-2 mr-sm-2">
+                <small id="ref_rln_loc" class="text-muted">
+              typically involving the hilar, cystic duct, common bile duct, hepatic artery, posterior pancreatoduodenal, and portal vein
+                </small>
               </div>
             </form>
 
@@ -217,50 +201,19 @@
               </div>
             </form>
 
-            <!-- Scanning Protocol -->
-            <h2 class="h4 mt-4">Scanning Protocol</h2>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="protocol_radios" id="radio_ct" value="ct" checked>
-              <label class="form-check-label" for="radio_ct">
-                CT
-              </label>
-              <form class="form-inline">
-                <div class="form-group mb-2 mr-sm-2">
-                  <div id="ref_rln_num" class="text-muted">
-                    Contrast
-                  </div>
-                </div>
-                <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_ncct" value="ncct" checked>
-                  <label class="form-check-label" for="cb_sp_ncct">without</label>
-                </div>
-                <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_cect" value="cect" checked>
-                  <label class="form-check-label" for="cb_sp_cect">with</label>
-                </div>
-              </form>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="protocol_radios" id="radio_mr" value="mr">
-              <label class="form-check-label" for="radio_mr">
-                MR
-              </label>
-              <form class="form-inline">
-                <div class="form-group mb-2 mr-sm-2">
-                  <div id="ref_rln_num" class="text-muted">
-                    Contrast
-                  </div>
-                </div>
-                <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_ncmr" value="ncmr" checked disabled>
-                  <label class="form-check-label" for="cb_sp_ncmr">without</label>
-                </div>
-                <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_cemr" value="cemr" checked>
-                  <label class="form-check-label" for="cb_sp_cemr">with</label>
-                </div>
-              </form>
-            </div>
+            <!-- Imaging Modality -->
+            <h2 class="h4 mt-4">Imaging Modality</h2>
+            <form class="">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input" type="radio" name="protocol_radios" id="radio_ct" value="ct" checked>
+                <label class="form-check-label" for="radio_ct">CT</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input" type="radio" name="protocol_radios" id="radio_mr" value="mr">
+                <label class="form-check-label" for="radio_mr">MRI</label>
+              </div>
+            </form>
+
           </div>
         </div>
       </main>
