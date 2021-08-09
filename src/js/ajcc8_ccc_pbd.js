@@ -79,7 +79,9 @@ function generate_report(){
     });
     report += "\n";
 
-    if ($('#cb_ts_nm').is(':checked') || !t_length) {
+    if ($('.cb_ti_t0:checked').length) {
+        t_stage.push('0');
+    } else if ($('#cb_ts_nm').is(':checked') || !t_length) {
         t_stage.push('x');
     } else if ($('.cb_ti_t4:checked').length) {
         t_stage.push('4');
@@ -91,8 +93,6 @@ function generate_report(){
         t_stage.push('2a');
     } else if ($('.cb_ti_t1:checked').length) {
         t_stage.push('1');
-    } else if ($('.cb_ti_t0:checked').length) {
-        t_stage.push('0');
     } else {
         t_stage.push('x');
     }
