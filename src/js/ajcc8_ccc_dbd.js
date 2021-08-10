@@ -28,68 +28,59 @@ const AJCC8_CCC_DBD_M = {
 };
 
 function generate_report(){
-    var t_stage = ["0"];
+    var t_stage = [];
     var n_stage = ["0"];
     var m_stage = ["0"];
-    var report = "1. ";
+    var report = `1. Imaging modality
+  - Imaging by `;
 
     // Protocol
-    if ($('input[name="protocol_radios"]:checked').val() == 'mr') {
-        report += `MR protocol
-Slice thickness: 5 mm or less
-Range: upper abdomen
-Unenhanced axial T1WI and T2WI
-Magnetic Resonance Cholangiopancreatography (MRCP)
-Dynamic contrast-enhanced axial T1WI with fat saturation, at arterial and portal venous phase
-(Dynamic contrast-enhanced axial T1WI with fat saturation, at equilibrium phase)
-(Diffusion-weighted sequences, axial image)`;
+    if ($('input[name="protocol_radios"]:checked').val() == 'ct') {
+        report += `[+] CT scan  [ ] MRI`;
     } else {
-        report += `CT protocol
-Slice thickness: 5 mm or less
-Range: upper abdomen
-Unenhanced image, axial image
-Dynamic contrast-enhanced axial image at arterial phase and portal venous phase
-(Dynamic contrast-enhanced imaging at equilibrium phase)
-(Whole abdomen survey at portal venous phase or equilibrium phase)
-(Coronal reconstruction)`;
+        report += `[ ] CT scan  [+] MRI`;
     }
     report += "\n\n";
 
     // Tumor location / size
-    report += `2. Tumor size\n`;
-
     let t_length = parseFloat($('#txt_ts_len').val());
-    report += "--- Size: ";
-    if ($('#cb_ts_nm').is(':checked')) {
-        report += "Non-measurable";
+    let is_measurable = !$('#cb_ts_nm').is(':checked') && t_length > 0;
+    report += `2. Tumor size\n`;
+    report += "  - Size: ";
+    if (!is_measurable) {
+        report += `
+    [+] Non-measurable
+    [ ] Measurable: ___ cm (greatest dimension)`;
     } else {
-        report += "Measurable: " + t_length + " cm (greatest dimension)" + "\n";
-        //console.log(t_stage);
+        report += `
+    [ ] Non-measurable
+    [+] Measurable: ${t_length} cm (greatest dimension)`;
     }
-    report += "\n";
+    report += "\n\n";
 
     let t_depth = parseInt($('#txt_ti_dep').val());
+    let has_inv = !$('#cb_ti_na').is(':checked') && t_depth > 0;
     report += "3. Tumor invasion\n";
-    report += "--- Maximum depth of bile duct wall invasion: ";
-    if (!$('#cb_ti_na').is(':checked')) {
-        report += t_depth + " mm\n";
-    } else {
-        report += "difficult to assess.\n";
-        if (!$('.cb_ti_t4:checked').length) {
-            t_stage.push('x');
-        }
-    }
-    if ($('.cb_ti:checked').length) {
-        report += "--- Yes:\n";
-        report += "* " + join_checkbox_values($('.cb_ti:checked'), "\n* ") + "\n";
-    }
-    if ($('.cb_ti:not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        report += "* " + join_checkbox_values($('.cb_ti:not(:checked)'), "\n* ") + "\n";
-    }
+    report += "  - Tumor invades the bile duct wall with a depth (Maximum tumor thickness): " + (has_inv? t_depth + " mm" : "" ) + "\n";
+    report += "    [" + (has_inv? " " : "+") + "] Difficult to access\n";
+    report += "    [" + (has_inv && t_depth < 5 ? "+" : " ") + "] < 5 mm (T1)\n";
+    report += "    [" + (has_inv && t_depth >= 5 && t_depth <= 12 ? "+" : " ") + "] 5-12 mm (T2)\n";
+    report += "    [" + (has_inv && t_depth > 12 ? "+" : " ") + "] > 12 mm (T3)\n";
+    report += "    Tumor invades (T4)\n    ";
+    $('.cb_ti_t4:not("#cb_ti_others")').each(function(){
+        let check_or_not = $(this).is(':checked') ? "+" : " ";
+        report += `[${check_or_not}] ` + $(this).val() + "  ";
+    });
     report += "\n";
+    let has_other_inv = $('#cb_ti_others').is(':checked');
+    report += "    [" + (has_other_inv? "+" : " ") + "] Other adjacent organ: ";
+    report += $('#txt_ti_others').val()? $('#txt_ti_others').val() : "___";
+    report += "\n\n";
 
-    if ($('.cb_ti_t4:checked').length) {
+    // 似乎無法呈現 T0
+    if (!is_measurable || !has_inv && !$('.cb_ti_t4:checked').length) {
+        t_stage.push('x');
+    } else if ($('.cb_ti_t4:checked').length) {
         t_stage.push('4');
     } else if (t_depth > 12) {
         t_stage.push('3');
@@ -100,53 +91,48 @@ Dynamic contrast-enhanced axial image at arterial phase and portal venous phase
     }
 
     // Regional nodal metastasis
-    report += "4. Regional nodal metastasis\n";
-    if ($('.cb_rn:checked').length) {
-        report += "--- Yes:\n";
-        let rln_num = parseInt($('#txt_rln_num').val());
-        report += "--- Numbers: " + rln_num + "\n";
-        report += "--- Location:\n";
-        report += "* " + join_checkbox_values($('.cb_rn:checked'), "\n* ") + "\n";
+    let rln_num = parseInt($('#txt_rln_num').val());
+    let has_rln = rln_num > 0;
+    report += `4. Regional nodal metastasis
+  [` + (has_rln? " " : "+") + `] No regional lymph node metastasis
+  [` + (has_rln && rln_num <= 3 ? "+" : " ") + `] 1-3 positive lymph nodes (N1)
+  [` + (has_rln && rln_num > 3 ? "+" : " ") + `] 4 or more positive lymph nodes (N2)
+  Number: ` + (Number.isInteger(rln_num)? rln_num : "___");
 
+    if (has_rln) {
         if (rln_num >= 4) {
             n_stage.push("2");
         } else if (rln_num >= 1) {
             n_stage.push("1");
         }
     }
-    if ($('.cb_rn:not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        var rn_array = [];
-        if ($('.cb_rn:not(:checked)').length) {
-            rn_array.push("* " + join_checkbox_values($('.cb_rn:not(:checked)')));
-        }
-        report += rn_array.join("\n") + "\n"
-    }
-    report += "\n";
+    report += "\n\n";
 
     // Distant metastasis
+    let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
-    if ($('.cb_dm:checked').length) {
-        report += "--- Yes:\n";
+    report += "  [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
+    report += "  [" + (has_dm ? "+" : " ") + "] Yes, location: ";
+    if (has_dm) {
         if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
-            report += "* " + join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'), "\n* ") + "\n";
+            report += join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'));
         }
         if ($('#cb_dm_others').is(':checked')) {
-            report += "* " + $('#txt_dm_others').val() + "\n";
+            if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
+                report += ', '
+            }
+            report += $('#txt_dm_others').val();
         }
+
         m_stage.push("1");
         //console.log(m_stage);
-    } /* else {
-        report += "* No distant metastasis in the scanned range.\n";
-    } */
-    if ($('.cb_dm:not("#cb_dm_others"):not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        report += "* " + join_checkbox_values($('.cb_dm:not("#cb_dm_others"):not(:checked)')) + "\n";
+    } else {
+        report += "___";
     }
-    report += "\n";
+    report += "\n\n";
 
     // Other Findings
-    report += "6. Other findings:\n\n\n";
+    report += "6. Other findings\n\n\n";
 
     // AJCC staging reference text
     let t = t_stage.sort()[t_stage.length-1];

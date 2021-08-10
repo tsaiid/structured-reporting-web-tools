@@ -53,50 +53,18 @@
 
         <div class="row">
           <div class="col">
-            <!-- Scanning Protocol -->
-            <h2 class="h4">Scanning Protocol</h2>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="protocol_radios" id="radio_ct" value="ct" checked>
-              <label class="form-check-label" for="radio_ct">
-                CT
-              </label>
-              <form class="form-inline">
-                <div class="form-group mb-2 mr-sm-2">
-                  <div id="ref_rln_num" class="text-muted">
-                    Contrast
-                  </div>
-                </div>
-                <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_ncct" value="ncct" checked>
-                  <label class="form-check-label" for="cb_sp_ncct">without</label>
-                </div>
-                <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_cect" value="cect" checked>
-                  <label class="form-check-label" for="cb_sp_cect">with</label>
-                </div>
-              </form>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="protocol_radios" id="radio_mr" value="mr">
-              <label class="form-check-label" for="radio_mr">
-                MR
-              </label>
-              <form class="form-inline">
-                <div class="form-group mb-2 mr-sm-2">
-                  <div id="ref_rln_num" class="text-muted">
-                    Contrast
-                  </div>
-                </div>
-                <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_ncmr" value="ncmr" checked disabled>
-                  <label class="form-check-label" for="cb_sp_ncmr">without</label>
-                </div>
-                <div class="form-check mb-2 mr-sm-2">
-                  <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_cemr" value="cemr" checked>
-                  <label class="form-check-label" for="cb_sp_cemr">with</label>
-                </div>
-              </form>
-            </div>
+            <!-- Imaging Modality -->
+            <h2 class="h4">Imaging Modality</h2>
+            <form class="">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input" type="radio" name="protocol_radios" id="radio_ct" value="ct" checked>
+                <label class="form-check-label" for="radio_ct">CT</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input" type="radio" name="protocol_radios" id="radio_mr" value="mr">
+                <label class="form-check-label" for="radio_mr">MRI</label>
+              </div>
+            </form>
 
             <!-- Tumor Size -->
             <h2 class="h4 mt-4">Tumor Size</h2>
@@ -164,6 +132,17 @@
                 <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_cha" value="common hepatic artery">
                 <label class="form-check-label" for="cb_ti_cha">Common hepatic artery</label>
               </div>
+              <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <input type="checkbox" class="cb_ti cb_ti_t4" aria-label="Checkbox for other tumor invasion"
+                      id="cb_ti_others" value="">
+                  </div>
+                  <span class="input-group-text">Adjacent organs</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Text input with checkbox for other tumor invasion"
+                  id="txt_ti_others">
+              </div>
             </form>
           </div>
 
@@ -186,28 +165,10 @@
                   1-3 (N1), ≥4 (N2)
                 </small>
               </div>
-            </form>
-            <h3 class="h5 mt-2">Locations</h3>
-            <form class="">
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_cbd" value="common bile duct">
-                <label class="form-check-label" for="cb_rn_cbd">Common bile duct</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_ha" value="hepatic artery">
-                <label class="form-check-label" for="cb_rn_ha">Hepatic artery</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_apd" value="anterior pancreaticoduodenal">
-                <label class="form-check-label" for="cb_rn_apd">Anterior pancreaticoduodenal</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_ppd" value="posterior pancreaticoduodenal">
-                <label class="form-check-label" for="cb_rn_ppd">Posterior pancreaticoduodenal</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_rsma" value="right lateral superior mesenteric artery">
-                <label class="form-check-label" for="cb_rn_rsma">Right lateral superior mesenteric artery</label>
+              <div class="form-group mb-2 mr-sm-2">
+                <small id="ref_rln_loc" class="text-muted">
+                  Nodes along the portal triad, pancreaticoduodenal nodes, SMV, or the right aspect of the SMA
+                </small>
               </div>
             </form>
 
