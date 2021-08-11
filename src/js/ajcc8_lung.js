@@ -39,7 +39,11 @@ const AJCC8_LUNG_M = {
 
 function get_t_stage_by_size(t_size) {
     var t_stage;
-    if (t_size <= 1) {
+    if (isNaN(t_size)) {
+        t_stage = "x";
+    } else if (t_size === 0) {
+        t_stage = "0";
+    } else if (t_size <= 1) {
         t_stage = "1a";
     } else if (t_size <= 2) {
         t_stage = "1b";
@@ -58,85 +62,133 @@ function get_t_stage_by_size(t_size) {
 }
 
 function generate_report(){
-    var t_stage = ["0"];
+    var t_stage = [];
     var n_stage = ["0"];
     var m_stage = ["0"];
-    var report = "1. CT protocol\n";
+    var report = `1. Imaging modality
+  - Imaging by `;
 
     // Protocol
-    if ($('.cb_sp:checked').length) {
-        report += "TECHNIQUE: ";
-        $('.cb_sp:checked').each(function(i) {
-            report += '(' + (i+1) + ') ' + $(this).val() + ' ';
-        });
-        report += $('.cb_sp:checked').length > 1 ? 'were ' : 'was ';
-        report += "performed\n";
-        report += "SCAN RANGE: lower neck to adrenal gland\n\n";
+    if ($('input[name="protocol_radios"]:checked').val() == 'ct') {
+        report += `[+] CT scan  [ ] MRI`;
+    } else {
+        report += `[ ] CT scan  [+] MRI`;
     }
+    report += "\n\n";
 
     // Tumor location
-    report += "2. Tumor location / size\n";
-    if ($('.cb_tp_tl:checked').length) {
-        report += "--- Location: " + join_checkbox_values($('.cb_tp_tl:checked'));
-        if ($('#cb_tp_tl_others:checked').length) {
-            report += $('#txt_tp_tl_others').val();
-        }
-        report += "\n";
+    report += `2. Tumor location / size
+  - Location:
+    `;
+    $('.cb_tp_tl:not("#cb_tp_tl_others")').each(function(){
+        let check_or_not = $(this).is(':checked') ? "+" : " ";
+        report += `[${check_or_not}] ` + $(this).val() + "  ";
+    });
+    report += "\n";
+    if ($('#cb_tp_tl_others').is(':checked')) {
+        report += "    [+] Other: " + $('#txt_tp_tl_others').val();
+    } else {
+        report += "    [ ] Other: ___";
     }
+    report += "\n";
 
     // Tumor size
-    report += "--- Size: ";
-    if ($('#cb_tp_ts_nm').is(':checked')) {
-        report += "Non-measurable";
+    let t_size = parseFloat($('#txt_tp_ts_diameter').val());
+    report += "  - Size: ";
+    if ($('#cb_tp_ts_nm').is(':checked') || !t_size) {
+        report += `
+    [ ] Measurable: ___ cm (greatest dimension)
+    [+] Non-measurable`;
     } else {
-        var t_size = parseFloat($('#txt_tp_ts_diameter').val());
-        report += t_size + " cm (greatest diameter)";
-        t_stage.push(get_t_stage_by_size(t_size));
-        //console.log(t_stage);
+        report += `
+    [+] Measurable: ${t_size} cm (greatest dimension)
+    [ ] Non-measurable`;
     }
     report += "\n\n";
 
     // Tumor invasion
-    report += "3. Tumor invasion\n";
-    if ($('.cb_ti:checked').length) {
-        report += "--- Yes:\n";
-        report += "* " + join_checkbox_values($('.cb_ti:checked'), "\n* ");
-        report += "\n";
-
-        if ($('.cb_ti_t2:checked').length) {
-            t_stage.push("2a");
-        }
-        if ($('.cb_ti_t3:checked').length) {
-            t_stage.push("3");
-        }
+    if ($('#cb_tp_ts_nm').is(':checked')) {
+        t_stage.push("x");
+    } else {
+        t_stage.push(get_t_stage_by_size(t_size));
         if ($('.cb_ti_t4:checked').length) {
             t_stage.push("4");
+        } else if ($('.cb_ti_t3:checked').length) {
+            t_stage.push("3");
+        } else if ($('.cb_ti_t2:checked').length) {
+            t_stage.push("2");
         }
-        //console.log(t_stage);
     }
-    if ($('.cb_ti:not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        var ti_array = [];
-        if ($('.cb_ti_t2:not(:checked)').length) {
-            ti_array.push("* " + join_checkbox_values($('.cb_ti_t2:not(:checked)')));
-        }
-        if ($('.cb_ti_t3:not(:checked)').length) {
-            ti_array.push("* " + join_checkbox_values($('.cb_ti_t3:not(:checked)')));
-        }
-        if ($('.cb_ti_t4:not(:checked)').length) {
-            ti_array.push("* " + join_checkbox_values($('.cb_ti_t4:not(:checked)')));
-        }
-        report += ti_array.join("\n") + "\n"
-    }
+    report += "3. Tumor invasion\n";
+    report += "  T1:";
+    let tmp_t = parseInt(t_stage.sort()[t_stage.length-1]);
+    let check_t1_inv = (tmp_t == 1 ? "+" : " ");
+    let check_t1  = (t_size <= 3 ? "+" : " ");
+    let check_t1a = (t_size <= 1 ? "+" : " ");
+    let check_t1b = (t_size <= 2 && t_size > 1 ? "+" : " ");
+    let check_t1c = (t_size <= 3 && t_size > 2 ? "+" : " ");
+    report += `
+    [${check_t1}] Tumor <= 3 cm
+      [${check_t1a}] Tumor <= 1 cm
+      [${check_t1b}] 1 cm < Tumor <= 2 cm
+      [${check_t1c}] 2 cm < Tumor <= 3 cm
+    [${check_t1_inv}] Surrounded by lung or visceral pleura
+    [${check_t1_inv}] Not more proximal than lobar bronchus`;
+    report += "\n";
+    report += "  T2:";
+    let check_t2  = (t_size > 3 && t_size <= 5 ? "+" : " ");
+    let check_t2a = (t_size > 3 && t_size <= 4 ? "+" : " ");
+    let check_t2b = (t_size > 4 && t_size <= 5 ? "+" : " ");
+    report += `
+    [${check_t2}] 3 cm < Tumor <= 5 cm
+      [${check_t2a}] 3 cm < Tumor <= 4 cm
+      [${check_t2b}] 4 cm < Tumor <= 5 cm`;
+    report += "\n";
+    $('.cb_ti_t2').each(function(){
+        let check_or_not = $(this).is(':checked') ? "+" : " ";
+        report += `    [${check_or_not}] ` + $(this).val() + '\n';
+    });
+    report += "  T3:";
+    let check_t3  = (t_size > 5 && t_size <= 7 ? "+" : " ");
+    report += `
+    [${check_t3}] 5 cm < Tumor <= 7 cm`;
+    report += "\n";
+    $('.cb_ti_t3').each(function(){
+        let check_or_not = $(this).is(':checked') ? "+" : " ";
+        report += `    [${check_or_not}] ` + $(this).val() + '\n';
+    });
+    report += "  T4:";
+    let check_t4  = (t_size > 7 ? "+" : " ");
+    report += `
+    [${check_t4}] Tumor > 7 cm`;
+    report += "\n";
+    $('.cb_ti_t4').each(function(){
+        let check_or_not = $(this).is(':checked') ? "+" : " ";
+        report += `    [${check_or_not}] ` + $(this).val() + '\n';
+    });
     report += "\n";
 
     // Regional nodal metastasis
+    let has_rln = $('.cb_rn:checked').length > 0;
     report += "4. Regional nodal metastasis\n";
+    report += "  [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
+    report += "  [" + (has_rln ? "+" : " ") + "] Yes, location: \n";
+    report += "    N1:\n";
+    $('.cb_rn_n1').each(function(){
+        let check_or_not = $(this).is(':checked') ? "+" : " ";
+        report += `      [${check_or_not}] ` + $(this).val() + '\n';
+    });
+    report += "    N2:\n";
+    $('.cb_rn_n2').each(function(){
+        let check_or_not = $(this).is(':checked') ? "+" : " ";
+        report += `      [${check_or_not}] ` + $(this).val() + '\n';
+    });
+    report += "    N3:\n";
+    $('.cb_rn_n3').each(function(){
+        let check_or_not = $(this).is(':checked') ? "+" : " ";
+        report += `      [${check_or_not}] ` + $(this).val() + '\n';
+    });
     if ($('.cb_rn:checked').length) {
-        report += "--- Yes:\n";
-        report += "* " + join_checkbox_values($('.cb_rn:checked'), "\n* ");
-        report += "\n";
-
         if ($('.cb_rn_n1:checked').length) {
             n_stage.push("1");
         }
@@ -147,38 +199,35 @@ function generate_report(){
             n_stage.push("3");
         }
         //console.log(n_stage);
-    } /* else {
-        report += "* No regional lymph node metastasis.\n";
-    } */
-    if ($('.cb_rn:not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        var rn_array = [];
-        if ($('.cb_rn_n1:not(:checked)').length) {
-            rn_array.push("* " + join_checkbox_values($('.cb_rn_n1:not(:checked)')));
-        }
-        if ($('.cb_rn_n2:not(:checked)').length) {
-            rn_array.push("* " + join_checkbox_values($('.cb_rn_n2:not(:checked)')));
-        }
-        if ($('.cb_rn_n3:not(:checked)').length) {
-            rn_array.push("* " + join_checkbox_values($('.cb_rn_n3:not(:checked)')));
-        }
-        report += rn_array.join("\n") + "\n"
     }
     report += "\n";
 
     // Distant metastasis
+    let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
-    if ($('.cb_dm:checked').length) {
-        report += "--- Yes:\n";
-        report += "* " + join_checkbox_values($('.cb_dm:checked'), "\n* ");
-        if ($('.cb_dm_m1bc:checked').length == 1 && $('#cb_dm_m1b').is(':checked')) {
-            report += " (single metastasis in a single organ)";
+    report += "  [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
+    report += "  [" + (has_dm ? "+" : " ") + "] Yes, location:\n";
+    report += "    Thoracic: (M1a)\n";
+    $('.cb_dm_m1a').each(function(){
+        let check_or_not = $(this).is(':checked') ? "+" : " ";
+        report += `      [${check_or_not}] ` + $(this).val() + '\n';
+    });
+    report += "    Extrathoracic: ";
+    if ($('.cb_dm_m1bc:checked').length) {
+        if ($('.cb_dm_m1bc:not("#cb_dm_others"):checked').length) {
+            report += join_checkbox_values($('.cb_dm_m1bc:not("#cb_dm_others"):checked'));
         }
-        if ($('#cb_dm_others:checked').length) {
+        if ($('#cb_dm_others').is(':checked')) {
+            if ($('.cb_dm_m1bc:not("#cb_dm_others"):checked').length) {
+                report += ', '
+            }
             report += $('#txt_dm_others').val();
         }
-        report += "\n";
-
+    } else {
+        report += "___";
+    }
+    report += "\n";
+    if (has_dm) {
         if ($('.cb_dm_m1a:checked').length) {
             m_stage.push("1a");
         }
@@ -188,25 +237,16 @@ function generate_report(){
         if ($('.cb_dm_m1bc:checked').length > 1 || $('.cb_dm_m1bc:checked').length && !$('#cb_dm_m1b').is(':checked')) {
             m_stage.push("1c");
         }
-        console.log(m_stage);
-    } /* else {
-        report += "* No distant metastasis in the scanned range.\n";
-    } */
-    if ($('.cb_dm:not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        var dm_array = [];
-        if ($('.cb_dm_m1a:not(:checked)').length) {
-            dm_array.push("* " + join_checkbox_values($('.cb_dm_m1a:not(:checked)')));
-        }
-        if ($('.cb_dm_m1bc:not(:checked)').length) {
-            dm_array.push("* " + join_checkbox_values($('.cb_dm_m1bc:not(:checked)')));
-        }
-        report += dm_array.join("\n") + "\n"
+        //console.log(m_stage);
     }
+    let check_m1b = ($('.cb_dm_m1bc:checked').length == 1 && $('#cb_dm_m1b').is(':checked') ? "+" : " ");
+    let check_m1c = ($('.cb_dm_m1bc:checked').length > 1 || $('.cb_dm_m1bc:checked').length && !$('#cb_dm_m1b').is(':checked') ? "+" : " ");
+    report += `      M1b: [${check_m1b}] Single extrathoracic metastasis (Single metastasis in single organ)\n`;
+    report += `      M1c: [${check_m1c}] Multiple extrathoracic metastases (multiple metastases in single organ or metastases in multiple organs)\n`;
     report += "\n";
 
     // Other Findings
-    report += "6. Other findings:\n\n\n";
+    report += "6. Other findings\n\n\n";
 
     // AJCC staging reference text
     var t = t_stage.sort()[t_stage.length-1];
