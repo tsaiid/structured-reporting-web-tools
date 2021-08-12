@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc8/cervix.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
+import {join_checkbox_values, ajcc_template, ajcc_template_with_parent} from './ajcc8_common.js';
 
 const AJCC8_CX_T = {
     'x': 'Primary tumor cannot be assessed',
@@ -39,118 +39,144 @@ const AJCC8_CX_M = {
 };
 
 function generate_report(){
-    var t_stage = ["0"];
+    var t_stage = [];
     var n_stage = ["0"];
     var m_stage = ["0"];
-    var report = "1. ";
-    //var report = "1. CT protocol\n";
+    var report = `1. Imaging modality
+  - Imaging by `;
 
     // Protocol
-    if ($('input[name="protocol_radios"]:checked').val() == 'mr') {
-        report += `MR protocol
-- Distended rectum with jelly
-- Abdomen and pelvis:
-  * T2: coronal  * DWI (b=400): coronal
-- Uterus:
-  * TSE T2: axial, coronal, sagittal  * DWI (b=1000), ADC: axial
-  * T1+FS: axial, sagittal  * T1+C+FS: axial, sagittal`;
+    if ($('input[name="protocol_radios"]:checked').val() == 'ct') {
+        report += `[+] CT scan  [ ] MRI`;
     } else {
-        report += `CT protocol
-Intravenous contrast injection
-Range: whole abdomen, slice thickness <= 5mm`;
+        report += `[ ] CT scan  [+] MRI`;
     }
     report += "\n\n";
 
     // Tumor size
+    let t_length = parseFloat($('#txt_ts_len').val());
     report += "2. Tumor size\n";
-    if ($('#cb_ts_nm').is(':checked')) {
-        report += "--- Non-measurable";
+    report += "  - Size: ";
+    if ($('#cb_ts_nm').is(':checked') || !t_length) {
+        report += `
+    [+] Non-measurable
+    [ ] Measurable: ___ cm (in maximum diameter)`;
     } else {
-        let t_dia = parseFloat($('#txt_ts_dia').val());
-        report += "--- Measurable: Greatest diameter " + t_dia + " cm";
+        report += `
+    [ ] Non-measurable
+    [+] Measurable: ${t_length} cm (in maximal diameter)`;
     }
     report += "\n\n";
 
     // Tumor invasion
     report += "3. Tumor invasion\n";
-    if ($('.cb_ti:checked').length) {
-        report += "--- Yes:\n";
-        report += "* " + join_checkbox_values($('.cb_ti:checked'), "\n* ");
-        report += "\n";
+    $('.lb_ti').each(function(){
+        let cb_ti = $(this).attr('for');
+        if ($(this).hasClass('has_parts')) {
+            let check_or_not = $('.' + cb_ti + ':checked').length > 0 ? "+" : " ";
+            report += `  [${check_or_not}] ` + $(this).text() + ": ";
+            let parts = $('.' + cb_ti);
+            parts.each(function(i, e){
+                let check_or_not = $(this).is(':checked') ? "+" : " ";
+                report += `[${check_or_not}] ` + $(this).val();
+                if (i !== parts.length - 1) {
+                    report += "  ";
+                }
+            });
+            report += "\n";
+        } else {
+            let check_or_not = $('#' + cb_ti).is(':checked') ? "+" : " ";
+            report += `  [${check_or_not}] ` + $(this).text() + "\n";
+        }
+    });
+    let other_check_or_not = $('#cb_ti_others').is(':checked') ? "+" : " ";
+    report += `  [${other_check_or_not}] Others (beyond the true pelvis): `;
+    report += $('#txt_ti_others').val() ? $('#txt_ti_others').val() : "___";
+    report += "\n\n";
 
-        if ($('.cb_ti_t2a:checked').length) {
-            t_stage.push("2a");
+    if ($('.cb_ti_t4:checked').length) {
+        t_stage.push("4");
+    } else if ($('.cb_ti_t3b:checked').length) {
+        t_stage.push("3b");
+    } else if ($('.cb_ti_t3a:checked').length) {
+        t_stage.push("3a");
+    } else if ($('.cb_ti_t2b:checked').length) {
+        t_stage.push("2b");
+    } else if ($('.cb_ti_t2a:checked').length) {
+        t_stage.push("2a");
+    } else if ($('.cb_ti_t1:checked').length) {
+        if (!$('#cb_ts_nm').is(':checked') && t_length > 0) {
+            t_stage.push("1b");
+        } else {
+            t_stage.push("1a");
         }
-        if ($('.cb_ti_t2b:checked').length) {
-            t_stage.push("2b");
-        }
-        if ($('.cb_ti_t3a:checked').length) {
-            t_stage.push("3a");
-        }
-        if ($('.cb_ti_t3b:checked').length) {
-            t_stage.push("3b");
-        }
-        if ($('.cb_ti_t4:checked').length) {
-            t_stage.push("4");
-        }
-        //console.log(t_stage);
+    } else if (t_length === 0) {
+        t_stage.push("0");
+    } else {
+        t_stage.push("x");
     }
-    if ($('.cb_ti:not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        report += "* " + join_checkbox_values($('.cb_ti:not(:checked)')) + "\n";
-    }
-    report += "\n";
 
     // Regional nodal metastasis
+    let has_rln = $('.cb_rn:checked').length > 0;
     report += "4. Regional nodal metastasis\n";
-    if ($('.cb_rn:checked').length) {
-        n_stage.push("1");
-        report += "--- Yes:\n";
-        report += "* " + join_checkbox_values($('.cb_rn:checked'), "\n* ");
-        report += "\n";
-    } /* else {
-        report += "* No regional lymph node metastasis.\n";
-    } */
-    if ($('.cb_rn:not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        if ($('.cb_rn:not(:checked)').length) {
-            report += "* " + join_checkbox_values($('.cb_rn:not(:checked)')) + "\n";
+    report += "  [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
+    report += "  [" + (has_rln ? "+" : " ") + "] Yes, if yes:\n";
+    $('.lb_rn').each(function(){
+        let cb_rn = $(this).attr('for');
+        if ($(this).hasClass('has_parts')) {
+            let check_or_not = $('.' + cb_rn + ':checked').length > 0 ? "+" : " ";
+            report += `    [${check_or_not}] ` + $(this).text() + ": ";
+            let parts = $('.' + cb_rn);
+            parts.each(function(i, e){
+                let check_or_not = $(this).is(':checked') ? "+" : " ";
+                report += `[${check_or_not}] ` + $(this).val();
+                if (i !== parts.length - 1) {
+                    report += "  ";
+                }
+            });
+            report += "\n";
+        } else {
+            let check_or_not = $('#' + cb_rn).is(':checked') ? "+" : " ";
+            report += `    [${check_or_not}] ` + $(this).text() + "\n";
         }
+    });
+
+    if (has_rln) {
+        n_stage.push("1");
     }
     report += "\n";
 
     // Distant metastasis
+    let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
-    if ($('.cb_dm:checked').length) {
-        report += "--- Yes:\n";
+    report += "  [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
+    report += "  [" + (has_dm ? "+" : " ") + "] Yes, location: ";
+    if (has_dm) {
         if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
-            report += "* " + join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'), "\n* ") + "\n";
+            report += join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'));
         }
         if ($('#cb_dm_others').is(':checked')) {
-            report += "* " + $('#txt_dm_others').val() + "\n";
+            if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
+                report += ', '
+            }
+            report += $('#txt_dm_others').val();
         }
+
         m_stage.push("1");
         //console.log(m_stage);
-    } /* else {
-        report += "* No distant metastasis in the scanned range.\n";
-    } */
-    if ($('.cb_dm:not("#cb_dm_others"):not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        report += "* " + join_checkbox_values($('.cb_dm:not("#cb_dm_others"):not(:checked)')) + "\n";
+    } else {
+        report += "___";
     }
-    report += "\n";
+    report += "\n\n";
 
     // Other Findings
-    report += "6. Other findings:\n\n\n";
+    report += "6. Other findings\n\n\n";
 
     // AJCC staging reference text
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_CX_T[t];
-    let n_str = AJCC8_CX_N[n];
-    let m_str = AJCC8_CX_M[m];
-    report += ajcc_template("Cervical Carcinoma", t, t_str, n, n_str, m, m_str);
+    report += ajcc_template_with_parent("Cervical Carcinoma", t, AJCC8_CX_T, n, AJCC8_CX_N, m, AJCC8_CX_M);
 
     $('#reportModalLongTitle').html("Cervical Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
