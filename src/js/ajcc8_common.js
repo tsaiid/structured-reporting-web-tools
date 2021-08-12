@@ -32,7 +32,7 @@ export function ajcc_template_with_parent(ca_str, t, t_table, n, n_table, m, m_t
     if (t.match(/[abc]/)) {
         let t_p = parseInt(t);
         let t_p_str = t_table[t_p];
-        report += ` T${t_p} : ${t_p_str}\n`;
+        report += ` T${t_p} : ${t_p_str}\n  `;
     }
     report += ` T${t} : ${t_table[t]}\n\n`;
 
@@ -40,7 +40,7 @@ export function ajcc_template_with_parent(ca_str, t, t_table, n, n_table, m, m_t
     if (n.match(/[abc]/)) {
         let n_p = parseInt(n);
         let n_p_str = n_table[n_p];
-        report += ` N${n_p} : ${n_p_str}\n`;
+        report += ` N${n_p} : ${n_p_str}\n  `;
     }
     report += ` N${n} : ${n_table[n]}\n\n`;
 
@@ -48,7 +48,7 @@ export function ajcc_template_with_parent(ca_str, t, t_table, n, n_table, m, m_t
     if (m.match(/[abc]/)) {
         let m_p = parseInt(m);
         let m_p_str = m_table[m_p];
-        report += ` M${m_p} : ${m_p_str}\n`;
+        report += ` M${m_p} : ${m_p_str}\n  `;
     }
     report += ` M${m} : ${m_table[m]}`;
 
