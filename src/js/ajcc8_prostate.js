@@ -174,7 +174,7 @@ function generate_report(){
     report += "\n";
 
     // Other Findings
-    report += "6. Other findings:\n";
+    report += "6. Other findings\n";
     let prsz_w = $('#txt_prsz_w').val() / 10;
     let prsz_h = $('#txt_prsz_h').val() / 10;
     let prsz_l = $('#txt_prsz_l').val() / 10;

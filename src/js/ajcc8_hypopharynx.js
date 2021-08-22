@@ -181,7 +181,7 @@ SEQUENCES:
     report += "\n";
 
     // Other Findings
-    report += "7. Other findings:\n\n\n";
+    report += "7. Other findings\n\n\n";
 
     // AJCC staging reference text
     let t = t_stage.sort()[t_stage.length-1];

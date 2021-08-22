@@ -132,7 +132,7 @@ Post-contrast imaging: axial imaging, unilateral (lesion side only);
     report += "\n";
 
     // Other Findings
-    report += "6. Other findings:\n\n\n";
+    report += "6. Other findings\n\n\n";
 
     // AJCC staging reference text
     let t = t_stage.sort()[t_stage.length-1];

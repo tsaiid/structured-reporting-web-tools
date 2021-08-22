@@ -166,7 +166,7 @@ Post-contrast imaging: axial imaging
     report += "\n";
 
     // Other Findings
-    report += "6. Other findings:\n";
+    report += "6. Other findings\n";
     report += "- Hydronephrosis: ";
     if ($('.cb_o_hn:checked').length) {
         report += join_checkbox_values($('.cb_o_hn:checked')) + "\n";
