@@ -5,9 +5,9 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc8/prostate.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
+import {join_checkbox_values, ajcc_template, ajcc_template_with_parent} from './ajcc8_common.js';
 
-const AJCC8_PROSTATE_T = {
+const AJCC8_T = {
     'x': 'Primary tumor cannot be assessed',
     '0': 'No evidence of primary tumor',
     '1': 'Clinically inapparent tumor that is not palpable',
@@ -23,12 +23,12 @@ const AJCC8_PROSTATE_T = {
     '3b': 'Tumor invades seminal vesicle(s)',
     '4': 'Tumor is fixed or invades adjacent structures other than seminal vesicles such as external sphincter, rectum, bladder, levator muscles, and/or pelvic wall',
 };
-const AJCC8_PROSTATE_N = {
+const AJCC8_N = {
     'x': 'Regional lymph nodes cannot be assessed',
     '0': 'No positive regional nodes',
     '1': 'Metastasis in regional node(s)',
 };
-const AJCC8_PROSTATE_M = {
+const AJCC8_M = {
     '0': 'No distant metastasis (in this study)',
     '1': 'Distant metastasis',
     '1a': 'Nonregional lymph node(s)',
@@ -42,72 +42,81 @@ const map_prostate_invasion = {
 };
 
 function generate_report(){
-    var t_stage = ["0"];
+    var t_stage = [];
     var n_stage = ["0"];
     var m_stage = ["0"];
+    var report = `1. Imaging modality
+  - Imaging by `;
 
     // Protocol
-    var report = `1. MR protocol
-- Distended rectum with jelly
-- Abdomen and pelvis:
-  * HASTE T2: axial, coronal
-  * DWI: coronal`;
-    if ($('#cb_sp_cemr').is(':checked')) { report += '\n  * T1+C: axial'; }
-    report += `
-- Prostate:
-  * TSE T2, DWI, ADC: axial
-  * T1+FS: axial, sagittal`;
-    if ($('#cb_sp_cemr').is(':checked')) { report += '\n  * T1+C+FS: axial, coronal, sagittal'; }
-    report += '\n\n';
-
-    // Tumor location / size
-    report += "2. Tumor location / size\n";
-    if ($('#cb_ts_na').is(':checked')) {
-        report += "--- Not assessable";
+    if ($('input[name="protocol_radios"]:checked').val() == 'ct') {
+        report += `[+] CT scan  [ ] MRI`;
     } else {
-        report += "Location: ";
-        if ($('.cb_tl:checked').length) {
-            report += join_checkbox_values($('.cb_tl:checked')) + "\n";
-        }
-        let t_dia = parseFloat($('#txt_ts_dia').val());
-        report += `Size: ${t_dia} cm (largest diameter of the biggest tumor)`;
-        //t_stage.push(get_t_stage_by_size(t_size));
-        //console.log(t_stage);
+        report += `[ ] CT scan  [+] MRI`;
     }
     report += "\n\n";
 
-    // Tumor invasion
-    report += "3. Tumor invasion\n";
-    //// Prostate
-    if ($("input[name='rb_ti_p']:checked").length) {
-        report += `Prostate (${ $("input[name='rb_ti_p']:checked").val() })\n`;
-        t_stage.push(map_prostate_invasion[$("input[name='rb_ti_p']:checked").val()]);
-        //console.log(t_stage);
-    }
-    var ti_pos = "", ti_neg = "--- No or Equivocal:\n";
-    $('.ti_item').each(function(){
-        if ($(this).find('.cb_ti:checked').length) {
-            ti_pos += $(this).find('.cb_ti_title').text() + ": " + join_checkbox_values($(this).find('.cb_ti:checked')) + "\n";
-        } else {
-            ti_neg += $(this).find('.cb_ti_title').text() + "\n";
-        }
-    });
-    if ($('.cb_ti_po:checked').length) {
-        //ti_neg = ti_neg.slice(0, -1);
-        ti_pos += "Pelvic organs: " + join_checkbox_values($('.cb_ti_po:checked')) + "\n";
-    }
-    if ($('.cb_ti_po:not(:checked)').length) {
-        //ti_neg = ti_neg.slice(0, -1);
-        ti_neg += "Pelvic organs: " + join_checkbox_values($('.cb_ti_po:not(:checked)')) + "\n";
-    }
-    if (ti_pos.length) {
-        ti_pos = "--- Yes:\n" + ti_pos;
-    }
-    report += ti_pos + ti_neg;
+    // Tumor location / size
+    let t_length = parseFloat($('#txt_ts_len').val());
+    let txt_ts_len = t_length ? t_length : "___";
+    let has_tl_na = $('#cb_tl_na').is(':checked');
+    let tl_na_check = has_tl_na ? "+" : " ";
+    let tl_no_check = !has_tl_na && !$('.cb_tl:checked').length ? "+" : " ";
+    let tl_yes_check = !has_tl_na && $('.cb_tl:checked').length ? "+" : " ";
+    let tl_r_check = !has_tl_na && $('#cb_tl_r').is(':checked') ? "+" : " ";
+    let tl_l_check = !has_tl_na && $('#cb_tl_l').is(':checked') ? "+" : " ";
+    report += `2. Tumor location / size
+  [${tl_na_check}] Not assessable
+  [${tl_no_check}] No or Equivocal
+  [${tl_yes_check}] Yes, if yes:
+    [${tl_r_check}] Right lobe   [${tl_l_check}] Left lobe
+       Size ${txt_ts_len} cm (largest diameter of the biggest tumor)
 
-    if ($('.cb_ti:checked').length) {
-        if ($('.cb_ti_t2:checked').length) {
-            t_stage.push("2");
+`;
+
+    // Tumor invasion
+    let has_ti = $('.cb_ti:checked').length > 0 || $("input[name='rb_ti_p']:checked").length > 0;
+    let ti_no_check = !has_ti ? "+" : " ";
+    let ti_yes_check = has_ti ? "+" : " ";
+    let ti_loh_check = $('#rb_ti_loh').is(':checked') ? "+" : " ";
+    let ti_moh_check = $('#rb_ti_moh').is(':checked') ? "+" : " ";
+    let ti_bl_check = $('#rb_ti_bl').is(':checked') ? "+" : " ";
+    let ti_ecr_check = $('#cb_ti_ecr').is(':checked') ? "+" : " ";
+    let ti_ecl_check = $('#cb_ti_ecl').is(':checked') ? "+" : " ";
+    let ti_svr_check = $('#cb_ti_svr').is(':checked') ? "+" : " ";
+    let ti_svl_check = $('#cb_ti_svl').is(':checked') ? "+" : " ";
+    let ti_psr_check = $('#cb_ti_psr').is(':checked') ? "+" : " ";
+    let ti_psl_check = $('#cb_ti_psl').is(':checked') ? "+" : " ";
+    let ti_ub_check = $('#cb_ti_ub').is(':checked') ? "+" : " ";
+    let ti_rec_check = $('#cb_ti_rec').is(':checked') ? "+" : " ";
+    let ti_es_check = $('#cb_ti_es').is(':checked') ? "+" : " ";
+    let ti_lm_check = $('#cb_ti_lm').is(':checked') ? "+" : " ";
+    let ti_others_check = $('#cb_ti_others').is(':checked') ? "+" : " ";
+    let txt_ti_others = $('#txt_ti_others').val() ? $('#txt_ti_others').val() : "___";
+    report += `3. Tumor invasion
+  [${ti_no_check}] No or Equivocal
+  [${ti_yes_check}] Yes, if yes:
+    Prostate
+      [${ti_loh_check}] One-half of one lobe or less
+      [${ti_moh_check}] More than one-half of one lobe but not both lobes
+      [${ti_bl_check}] Involves both lobes
+    Extracapsular extension [${ti_ecr_check}] right  [${ti_ecl_check}] left
+    Seminal vesicle invasion [${ti_svr_check}] right  [${ti_svl_check}] left
+    Pelvic sidewall [${ti_psr_check}] right  [${ti_psl_check}] left
+    Pelvic organs invasion
+      [${ti_ub_check}] Bladder   [${ti_rec_check}] Rectum   [${ti_es_check}] External sphincter   [${ti_lm_check}] Levator muscles
+      [${ti_others_check}] Others ${txt_ti_others}
+
+`;
+    // Calculate T staging
+    // No T1, do not know if palpable or not
+    if (has_tl_na) {
+        t_stage.push("x");
+    } else if (tl_no_check === "+" || t_length === 0) {
+        t_stage.push("0");
+    } else if (has_ti) {
+        if ($("input[name='rb_ti_p']:checked").length) {
+            t_stage.push(map_prostate_invasion[$("input[name='rb_ti_p']:checked").val()]);
         }
         if ($('.cb_ti_t3a:checked').length) {
             t_stage.push("3a");
@@ -120,40 +129,73 @@ function generate_report(){
         }
         //console.log(t_stage);
     }
-    report += "\n";
 
     // Regional nodal metastasis
+    let has_rln = $('.cb_rn:checked').length > 0;
     report += "4. Regional nodal metastasis\n";
-    if ($('.cb_rn:checked').length) {
-        report += "--- Yes:\n";
-        report += "--- Location:\n";
-        report += "* " + join_checkbox_values($('.cb_rn:checked'), "\n* ");
-        report += "\n";
-        n_stage.push("1");
-        //console.log(n_stage);
-    } /* else {
-        report += "* No regional lymph node metastasis.\n";
-    } */
-    if ($('.cb_rn:not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        var rn_array = [];
-        if ($('.cb_rn:not(:checked)').length) {
-            rn_array.push("* " + join_checkbox_values($('.cb_rn:not(:checked)')));
+    report += "  [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
+    report += "  [" + (has_rln ? "+" : " ") + "] Yes, if yes:\n";
+    $('.lb_rn').each(function(){
+        let cb_rn = $(this).attr('for');
+        if ($(this).hasClass('has_parts')) {
+            let check_or_not = $('.' + cb_rn + ':checked').length > 0 ? "+" : " ";
+            report += `    [${check_or_not}] ` + $(this).text() + ": ";
+            let parts = $('.' + cb_rn);
+            parts.each(function(i, e){
+                let check_or_not = $(this).is(':checked') ? "+" : " ";
+                report += `[${check_or_not}] ` + $(this).val();
+                if (i !== parts.length - 1) {
+                    report += "  ";
+                }
+            });
+            report += "\n";
+        } else {
+            let check_or_not = $('#' + cb_rn).is(':checked') ? "+" : " ";
+            report += `    [${check_or_not}] ` + $(this).text() + "\n";
         }
-        report += rn_array.join("\n") + "\n"
-    }
+    });
     report += "\n";
 
+    if (has_rln) {
+        n_stage.push("1");
+    }
+
     // Distant metastasis
-    report += "5. Distant metastasis (In this study)\n";
-    if ($('.cb_dm:checked').length) {
-        report += "--- Yes:\n";
-        if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
-            report += "* " + join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'), "\n* ") + "\n";
-        }
-        if ($('#cb_dm_others').is(':checked')) {
-            report += "* " + $('#txt_dm_others').val() + "\n";
-        }
+    let has_dm = $('.cb_dm:checked').length > 0;
+    let dm_no_check = !has_dm ? "+" : " ";
+    let dm_yes_check = has_dm ? "+" : " ";
+    let dm_nrl_check = $('.cb_dm_nrl:checked').length > 0 ? "+" : " ";
+    let dm_nrl_ci_check = $('.cb_dm_nrl_ci:checked').length > 0 ? "+" : " ";
+    let dm_nrl_ci_r_check = $('#cb_dm_nrl_ci_r').is(':checked') ? "+" : " ";
+    let dm_nrl_ci_l_check = $('#cb_dm_nrl_ci_l').is(':checked') ? "+" : " ";
+    let dm_nrl_i_check = $('.cb_dm_nrl_i:checked').length > 0 ? "+" : " ";
+    let dm_nrl_i_r_check = $('#cb_dm_nrl_i_r').is(':checked') ? "+" : " ";
+    let dm_nrl_i_l_check = $('#cb_dm_nrl_i_l').is(':checked') ? "+" : " ";
+    let dm_nrl_pa_check = $('#cb_dm_nrl_pa').is(':checked') ? "+" : " ";
+    let dm_nrl_others_check = $('#cb_dm_nrl_others').is(':checked') ? "+" : " ";
+    let txt_dm_nrl_others = $('#txt_dm_nrl_others').val() ? $('#txt_dm_nrl_others').val() : "___";
+    let dm_li_check = $('#cb_dm_li').is(':checked') ? "+" : " ";
+    let dm_ad_check = $('#cb_dm_ad').is(':checked') ? "+" : " ";
+    let dm_lu_check = $('#cb_dm_lu').is(':checked') ? "+" : " ";
+    let dm_bo_check = $('#cb_dm_bo').is(':checked') ? "+" : " ";
+    let dm_others_check = $('#cb_dm_others').is(':checked') ? "+" : " ";
+    let txt_dm_others = $('#txt_dm_others').val() ? $('#txt_dm_others').val() : "___";
+    report += `5. Distant metastasis (In this study)
+  [${dm_no_check}] No or Equivocal
+  [${dm_yes_check}] Yes, if yes:
+    [${dm_nrl_check}] Non-regional lymph nodes
+      [${dm_nrl_ci_check}] Common iliac: [${dm_nrl_ci_r_check}] right  [${dm_nrl_ci_l_check}] left
+      [${dm_nrl_i_check}] Inguinal: [${dm_nrl_i_r_check}] right  [${dm_nrl_i_l_check}] left
+      [${dm_nrl_pa_check}] Paraaortic
+      [${dm_nrl_others_check}] Others: ${txt_dm_nrl_others}
+    [${dm_li_check}] Liver
+    [${dm_ad_check}] Adrenal
+    [${dm_lu_check}] Lung
+    [${dm_bo_check}] Bone
+    [${dm_others_check}] Others: ${txt_dm_others}`;
+    report += "\n\n";
+
+    if (has_dm) {
         if ($('.cb_dm_m1a:checked').length) {
             m_stage.push("1a");
         }
@@ -164,42 +206,16 @@ function generate_report(){
             m_stage.push("1c");
         }
         //console.log(m_stage);
-    } /* else {
-        report += "* No distant metastasis in the scanned range.\n";
-    } */
-    if ($('.cb_dm:not("#cb_dm_others"):not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        report += "* " + join_checkbox_values($('.cb_dm:not("#cb_dm_others"):not(:checked)')) + "\n";
     }
-    report += "\n";
 
     // Other Findings
-    report += "6. Other findings\n";
-    let prsz_w = $('#txt_prsz_w').val() / 10;
-    let prsz_h = $('#txt_prsz_h').val() / 10;
-    let prsz_l = $('#txt_prsz_l').val() / 10;
-    let prsz_v = Math.round(prsz_w * prsz_h * prsz_l * 0.52 * 10) / 10
-    report += `Prostate:\n- Size (cm): ${prsz_w} x ${prsz_h} x ${prsz_l}; volume about ${prsz_v} ml.\n`;
-    report += "- Zonal demarcation: " + $('input[name="zd_radios"]:checked').val() + "\n";
-    if ($('#cb_bph').is(':checked')) {
-        report += "- Enlarged transition zone with heterogeneous nodular signal intensity, suggestive of benign prostatic hyperplasia.\n";
-    }
-    if ($('#cb_trus_bx').is(':checked')) {
-        report += "- Focal T1 hyperintensities at bilateral lobes, probably post-biopsy changes.\n";
-    }
-    if ($('#cb_turp').is(':checked')) {
-        report += "- s/p TURP appearance.\n";
-    }
-    report += "\n";
+    report += "6. Other findings\n\n\n";
 
     // AJCC staging reference text
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_PROSTATE_T[t];
-    let n_str = AJCC8_PROSTATE_N[n];
-    let m_str = AJCC8_PROSTATE_M[m];
-    report += ajcc_template("Prostate Carcinoma", t, t_str, n, n_str, m, m_str);
+    report += ajcc_template_with_parent("Prostate Carcinoma", t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
 
     $('#reportModalLongTitle').html("Prostate Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
