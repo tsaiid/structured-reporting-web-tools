@@ -199,7 +199,7 @@ function generate_report(){
     let dm_lu_check = $('#cb_dm_lu').is(':checked') ? "+" : " ";
     let dm_pl_check = $('#cb_dm_pl').is(':checked') ? "+" : " ";
     let dm_ad_check = $('#cb_dm_ad').is(':checked') ? "+" : " ";
-    let dm_bo_check = $('#cb_dm_bo').is(':checked') ? "+" : " ";
+    let dm_b_check = $('#cb_dm_b').is(':checked') ? "+" : " ";
     let dm_others_check = $('#cb_dm_others').is(':checked') ? "+" : " ";
     let txt_dm_others = $('#txt_dm_others').val() ? $('#txt_dm_others').val() : "___";
     report += `5. Distant metastasis (In this study)
@@ -210,7 +210,7 @@ function generate_report(){
     [${dm_lu_check}] Lung
     [${dm_pl_check}] Pleura
     [${dm_ad_check}] Adrenal
-    [${dm_bo_check}] Bone
+    [${dm_b_check}] Bone
     [${dm_others_check}] Others: ${txt_dm_others}`;
     report += "\n\n";
 
