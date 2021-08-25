@@ -38,7 +38,7 @@ const AJCC8_COLON_M = {
 };
 
 function generate_report(){
-    var t_stage = ["0"];    // at least T1?
+    var t_stage = [];
     var n_stage = ["0"];
     var m_stage = ["0"];
     var report = `1. Imaging modality
@@ -53,6 +53,8 @@ function generate_report(){
     report += "\n\n";
 
     // Tumor location / size
+    let has_ts_nm = $('#cb_ts_nm').is(':checked');
+    let t_length = parseFloat($('#txt_ts_len').val());
     report += `2. Tumor location / size
   - Location:
 `;
@@ -61,12 +63,11 @@ function generate_report(){
         report += `    [${check_or_not}] ` + $(this).val() + "\n";
     });
     report += "  - Size: ";
-    if ($('#cb_ts_nm').is(':checked') || !$('#txt_ts_len').val()) {
+    if (has_ts_nm || !$('#txt_ts_len').val()) {
         report += `
     [+] Non-measurable
     [ ] Measurable: ___ cm (largest diameter)`;
     } else {
-        let t_length = parseFloat($('#txt_ts_len').val());
         report += `
     [ ] Non-measurable
     [+] Measurable: ${t_length} cm (largest diameter)`;
@@ -75,8 +76,9 @@ function generate_report(){
     report += "\n\n";
 
     // Tumor invasion
+    let has_ti_na = $('#cb_ti_na').is(':checked');
     report += "3. Tumor invasion\n";
-    report += "  [" + ($('#cb_ti_na').is(':checked') ? "+" : " ") + "] Not assessable\n";
+    report += "  [" + (has_ti_na ? "+" : " ") + "] Not assessable\n";
     $('.cb_ti:not(.cb_ti_t4b):not(#cb_ti_na)').each(function(){
         report += "  [" + ($(this).is(':checked') ? "+" : " ") + "] " + $(this).val() + "\n";
     });
@@ -85,20 +87,31 @@ function generate_report(){
     } else {
         report += "  [ ] Adjacent organs: ___\n";
     }
-    if ($('.cb_ti:checked').length) {
-        if ($('.cb_ti_t2:checked').length) {
-            t_stage.push("2");
+
+    // Calculate T staging
+    if (has_ti_na) {
+        t_stage.push("x");
+    } else {
+        if (has_ts_nm || t_length === 0) {
+            t_stage.push("0");
+        } else {
+            t_stage.push("1");
         }
-        if ($('.cb_ti_t3:checked').length) {
-            t_stage.push("3");
+        if ($('.cb_ti:checked').length) {
+            if ($('.cb_ti_t2:checked').length) {
+                t_stage.push("2");
+            }
+            if ($('.cb_ti_t3:checked').length) {
+                t_stage.push("3");
+            }
+            if ($('.cb_ti_t4a:checked').length) {
+                t_stage.push("4a");
+            }
+            if ($('.cb_ti_t4b:checked').length) {
+                t_stage.push("4b");
+            }
+            //console.log(t_stage);
         }
-        if ($('.cb_ti_t4a:checked').length) {
-            t_stage.push("4a");
-        }
-        if ($('.cb_ti_t4b:checked').length) {
-            t_stage.push("4b");
-        }
-        //console.log(t_stage);
     }
     report += "\n";
 
