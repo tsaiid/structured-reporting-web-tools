@@ -5,9 +5,9 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc8/urinary_bladder.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
+import {join_checkbox_values, ajcc_template, ajcc_template_with_parent} from './ajcc8_common.js';
 
-const AJCC8_UB_T = {
+const AJCC8_T = {
     'x': 'Primary tumor cannot be assessed',
     '0': 'No evidence of primary tumor',
     'a': 'Non-invasive papillary carcinoma',
@@ -19,14 +19,14 @@ const AJCC8_UB_T = {
     '4a': 'Extravesical tumor directly invades into prostatic stroma, uterus, vagina',
     '4b': 'Extravesical tumor invades pelvic wall, abdominal wall',
 };
-const AJCC8_UB_N = {
+const AJCC8_N = {
     'x': 'Lymph nodes cannot be assessed',
     '0': 'No lymph node metastasis',
     '1': 'Single regional lymph node metastasis in the true pelvis (perivesical, obturator, internal and external iliac, or sacral lymph node)',
     '2': 'Multiple regional lymph node metastases in the true pelvis (perivesical, obturator, internal and external iliac, or sacral lymph node metastasis)',
     '3': 'Lymph node metastasis to the common iliac lymph nodes',
 };
-const AJCC8_UB_M = {
+const AJCC8_M = {
     '0': 'No distant metastasis (in this study)',
     '1': 'Distant metastasis',
     '1a': 'Distant metastasis limited to lymph nodes beyond the common iliacs',
@@ -34,59 +34,92 @@ const AJCC8_UB_M = {
 };
 
 function generate_report(){
-    var t_stage = ["0"];
+    var t_stage = [];
     var n_stage = ["0"];
     var m_stage = ["0"];
-    var report = "1. ";
+    var report = `1. Imaging modality
+  - Imaging by `;
 
     // Protocol
-    if ($('input[name="protocol_radios"]:checked').val() == 'mr') {
-        report += `MR protocol
-Axial and Sagittal T2WI
-Axial T1WI or T1FS: pre- and post-contrast
-Sagittal T1FS: post-contrast
-For lymph node assessment: axial T1FS or axial DWI/ADC
-For other sites of the urinary tract: coronal MRU`;
+    if ($('input[name="protocol_radios"]:checked').val() == 'ct') {
+        report += `[+] CT scan  [ ] MRI`;
     } else {
-        report += `CT protocol
-Slice thickness: 5 mm or less
-Range: kidney to urinary bladder
-Pre-contrast imaging: axial imaging
-Post-contrast imaging: axial imaging
-(excretory phase, at least 5 minutes after contrast medium administration): axial imaging and coronal reformation`;
+        report += `[ ] CT scan  [+] MRI`;
     }
     report += "\n\n";
 
     // Tumor size
-    report += "2. Tumor location / size\n";
-    report += "Tumor number: " + $('input[name="radio_tn"]:checked').val() + "\n";
-    report += "Tumor locations: " + join_checkbox_values($('.cb_tl:checked')) + "\n";
-    report += "Largest tumor size: ";
-    if ($('#cb_ts_nm').is(':checked')) {
-        report += "Non-measurable";
-    } else {
-        let t_dia = parseFloat($('#txt_ts_dia').val());
-        report += "Measurable: " + t_dia + " cm (greatest dimension) at " + join_checkbox_values($('.cb_tl_l:checked')) + "\n";
-    }
-    report += "\n";
+    let has_tl_na = $('#cb_tl_na').is(':checked');
+    let cb_tn_s_check = $('#cb_tn_s').is(':checked') ? "+" : " ";
+    let cb_tn_m_check = $('#cb_tn_m').is(':checked') ? "+" : " ";
+    let cb_tl_na_check = has_tl_na ? "+" : " ";
+    let cb_tl_pwt_check = $('#cb_tl_pwt').is(':checked') ? "+" : " ";
+    let cb_tl_rlw_check = $('#cb_tl_rlw').is(':checked') ? "+" : " ";
+    let cb_tl_llw_check = $('#cb_tl_llw').is(':checked') ? "+" : " ";
+    let cb_tl_aw_check = $('#cb_tl_aw').is(':checked') ? "+" : " ";
+    let cb_tl_dsw_check = $('#cb_tl_dsw').is(':checked') ? "+" : " ";
+    let cb_tl_iwn_check = $('#cb_tl_iwn').is(':checked') ? "+" : " ";
+    let has_ts_nm = $('#cb_ts_nm').is(':checked');
+    let cb_ts_nm_check = has_ts_nm ? "+" : " ";
+    let cb_ts_m_check = !has_ts_nm && t_length ? "+" : " ";
+    let t_length = parseFloat($('#txt_ts_len').val());
+    let txt_ts_len = t_length ? t_length : "___";
+    let cb_tl_l_pwt_check = $('#cb_tl_pwt').is(':checked') ? "+" : " ";
+    let cb_tl_l_rlw_check = $('#cb_tl_rlw').is(':checked') ? "+" : " ";
+    let cb_tl_l_llw_check = $('#cb_tl_llw').is(':checked') ? "+" : " ";
+    let cb_tl_l_aw_check = $('#cb_tl_aw').is(':checked') ? "+" : " ";
+    let cb_tl_l_dsw_check = $('#cb_tl_dsw').is(':checked') ? "+" : " ";
+    let cb_tl_l_iwn_check = $('#cb_tl_iwn').is(':checked') ? "+" : " ";
+    report += `2. Tumor location / size
+    Tumor number: [${cb_tn_s_check}] Solitary   [${cb_tn_m_check}] Multiple
+    Locations at the urinary bladder:
+        [${cb_tl_na_check}] Not assessable
+        At [${cb_tl_pwt_check}] Posterior wall or Trigone  [${cb_tl_rlw_check}] Right lateral wall  [${cb_tl_llw_check}] Left lateral wall
+           [${cb_tl_aw_check}] Anterior wall  [${cb_tl_dsw_check}] Dome or Superior wall  [${cb_tl_iwn_check}] Inferior wall or Neck
+    Largest tumor size:
+        [${cb_ts_nm_check}] Non-measurable
+        [${cb_ts_m_check}] Measurable: ${txt_ts_len} cm (greatest dimension of the largest tumor)
+        At [${cb_tl_l_pwt_check}] Posterior wall or Trigone  [${cb_tl_l_rlw_check}] Right lateral wall  [${cb_tl_l_llw_check}] Left lateral wall
+           [${cb_tl_l_aw_check}] Anterior wall  [${cb_tl_l_dsw_check}] Dome or Superior wall  [${cb_tl_l_iwn_check}] Inferior wall or Neck
+
+`;
 
     // Tumor invasion
-    report += "3. Tumor invasion\n";
-    if ($('.cb_ti:checked').length) {
-        report += "--- Yes:\n";
-        if ($('.cb_ti_t1:checked, .cb_ti_t2:checked, .cb_ti_t3:checked').length) {
-            report += "* " + join_checkbox_values($('.cb_ti_t1:checked, .cb_ti_t2:checked, .cb_ti_t3:checked')) + "\n";
-        }
-        if ($('.cb_ti_t4a:checked').length) {
-            report += "* " + join_checkbox_values($('input[name="radio_gender"]:checked').first().parent().parent().find('.cb_ti:checked')) + "\n";
-        }
-        if ($('.cb_ti_t4b:checked').length) {
-            report += "* " + join_checkbox_values($('.cb_ti_t4b:checked')) + "\n";
-        }
+    let has_ti_na = $('#cb_ti_na').is(':checked');
+    let cb_ti_na_check = has_ti_na ? "+" : " ";
+    let cb_ti_no_check = !$('.cb_ti:checked').length ? "+" : " ";
+    let cb_ti_mp_check = $('#cb_ti_mp').is(':checked') ? "+" : " ";
+    let cb_ti_pvt_check = $('#cb_ti_pvt').is(':checked') ? "+" : " ";
+    let cb_ti_t4_check = $('.cb_ti_t4:checked').length > 0 ? "+" : " ";
+    let cb_ti_p_check = $('#cb_ti_p').is(':checked') ? "+" : " ";
+    let cb_ti_sv_check = $('#cb_ti_sv').is(':checked') ? "+" : " ";
+    let cb_ti_u_check = $('#cb_ti_u').is(':checked') ? "+" : " ";
+    let cb_ti_v_check = $('#cb_ti_v').is(':checked') ? "+" : " ";
+    let cb_ti_pw_check = $('#cb_ti_pw').is(':checked') ? "+" : " ";
+    let cb_ti_aw_check = $('#cb_ti_aw').is(':checked') ? "+" : " ";
+    let ti_others_check = $('#cb_ti_others').is(':checked') ? "+" : " ";
+    let txt_ti_others = $('#txt_ti_others').val() ? $('#txt_ti_others').val() : "___";
+    report += `3. Tumor invasion
+    [${cb_ti_na_check}] Not assessable
+    [${cb_ti_no_check}] No or Equivocal
+    [${cb_ti_mp_check}] Tumor invasion of deep muscle
+    [${cb_ti_pvt_check}] Gross tumor invasion of perivesical tissue
+    [${cb_ti_t4_check}] Tumor invasion to adjacent organs:
+        For male: [${cb_ti_p_check}] Prostate   [${cb_ti_sv_check}] Seminal vesicles
+        For female: [${cb_ti_u_check}] Uterus   [${cb_ti_v_check}] Vagina
+    [${cb_ti_pw_check}] Pelvic wall
+    [${cb_ti_aw_check}] Abdominal wall
+    [${ti_others_check}] Others: ${txt_ti_others}
 
-        if ($('.cb_ti_t1:checked').length) {
-            t_stage.push("1");
-        }
+`;
+    // calculate T stage
+    if (has_tl_na || has_ts_nm) {
+        if (has_ti_na)
+            t_stage.push("x");
+        else
+            t_stage.push("0");
+    } else {
+        t_stage.push("1");
         if ($('.cb_ti_t2:checked').length) {
             t_stage.push("2");
         }
@@ -101,87 +134,88 @@ Post-contrast imaging: axial imaging
         }
         //console.log(t_stage);
     }
-    if ($('.cb_ti:not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        if ($('.cb_ti_t1:not(:checked), .cb_ti_t2:not(:checked), .cb_ti_t3:not(:checked)').length) {
-            report += "* " + join_checkbox_values($('.cb_ti_t1:not(:checked), .cb_ti_t2:not(:checked), .cb_ti_t3:not(:checked)')) + "\n";
-        }
-        if ($('.cb_ti_t4a:not(:checked)').length) {
-            report += "* " + join_checkbox_values($('input[name="radio_gender"]:checked').first().parent().parent().find('.cb_ti:not(:checked)')) + "\n";
-        }
-        if ($('.cb_ti_t4b:not(:checked)').length) {
-            report += "* " + join_checkbox_values($('.cb_ti_t4b:not(:checked)')) + "\n";
-        }
-    }
-    report += "\n";
 
     // Regional nodal metastasis
+    let has_rln = $('.cb_rn:checked').length > 0;
+    let cb_rn_s_check = $('#cb_rn_s').is(':checked') ? "+" : " ";
+    let cb_rn_m_check = $('#cb_rn_m').is(':checked') ? "+" : " ";
     report += "4. Regional nodal metastasis\n";
-    if ($('.cb_rn:checked').length) {
-        report += "--- Yes:\n";
-        report += "* " + join_checkbox_values($('.cb_rn:checked'), "\n* ");
-        report += "\n";
+    report += "    [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
+    report += "    [" + (has_rln ? "+" : " ") + "] Yes, if yes:\n";
+    report += `    Numbers: [${cb_rn_s_check}] single   [${cb_rn_m_check}] multiple\n`;
+    $('.lb_rn').each(function(){
+        let cb_rn = $(this).attr('for');
+        if ($(this).hasClass('has_parts')) {
+            let check_or_not = $('.' + cb_rn + ':checked').length > 0 ? "+" : " ";
+            report += `        [${check_or_not}] ` + $(this).text() + ": ";
+            let parts = $('.' + cb_rn);
+            parts.each(function(i, e){
+                let check_or_not = $(this).is(':checked') ? "+" : " ";
+                report += `[${check_or_not}] ` + $(this).val();
+                if (i !== parts.length - 1) {
+                    report += "  ";
+                }
+            });
+            report += "\n";
+        } else {
+            let check_or_not = $('#' + cb_rn).is(':checked') ? "+" : " ";
+            report += `        [${check_or_not}] ` + $(this).text() + "\n";
+        }
+    });
+    report += "\n";
 
+    // calculate N stage
+    if (has_rln) {
         if ($('.cb_rn_n3:checked').length) {
             n_stage.push("3");
-        } else if ($('.cb_rn:checked').length > 1 || !$('#cb_rn_sln').is(':checked')) {
+        } else if ($('.cb_rn:checked').length > 1 || $('#cb_rn_m').is(':checked')) {
             n_stage.push("2");
         } else {
             n_stage.push("1");
         }
-    } /* else {
-        report += "* No regional lymph node metastasis.\n";
-    } */
-    if ($('.cb_rn:not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        if ($('.cb_rn:not(:checked)').length) {
-            report += "* " + join_checkbox_values($('.cb_rn:not(:checked)')) + "\n";
-        }
     }
-    report += "\n";
 
     // Distant metastasis
+    let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
-    if ($('.cb_dm:checked').length) {
-        report += "--- Yes:\n";
+    report += "    [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
+    report += "    [" + (has_dm ? "+" : " ") + "] Yes, location: ";
+    if (has_dm) {
         if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
-            report += "* " + join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'), "\n* ") + "\n";
+            report += join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'));
         }
         if ($('#cb_dm_others').is(':checked')) {
-            report += "* " + $('#txt_dm_others').val() + "\n";
+            if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
+                report += ', '
+            }
+            report += $('#txt_dm_others').val();
         }
+
         if ($('.cb_dm_m1b:checked').length) {
             m_stage.push("1b");
         } else {
             m_stage.push("1a");
         }
         //console.log(m_stage);
-    } /* else {
-        report += "* No distant metastasis in the scanned range.\n";
-    } */
-    if ($('.cb_dm:not("#cb_dm_others"):not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        report += "* " + join_checkbox_values($('.cb_dm:not("#cb_dm_others"):not(:checked)')) + "\n";
+    } else {
+        report += "___";
     }
-    report += "\n";
+    report += "\n\n";
 
     // Other Findings
-    report += "6. Other findings\n";
-    report += "- Hydronephrosis: ";
-    if ($('.cb_o_hn:checked').length) {
-        report += join_checkbox_values($('.cb_o_hn:checked')) + "\n";
-    } else {
-        report += "no\n";
-    }
+    let cb_o_hn_check = $('.cb_o_hn:checked').length > 0 ? "+" : " ";
+    let cb_o_hn_r_check = $('#cb_o_hn_r').is(':checked') ? "+" : " ";
+    let cb_o_hn_l_check = $('#cb_o_hn_l').is(':checked') ? "+" : " ";
+    report += `6. Other findings
+    [${cb_o_hn_check}] Hydronephrosis: [${cb_o_hn_r_check}] right   [${cb_o_hn_l_check}] left
+
+`;
 
     // AJCC staging reference text
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_UB_T[t];
-    let n_str = AJCC8_UB_N[n];
-    let m_str = AJCC8_UB_M[m];
-    report += ajcc_template("Urinary Bladder Carcinoma", t, t_str, n, n_str, m, m_str);
+    report += ajcc_template_with_parent("Urinary Bladder Carcinoma", t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
 
     $('#reportModalLongTitle').html("Urinary Bladder Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
