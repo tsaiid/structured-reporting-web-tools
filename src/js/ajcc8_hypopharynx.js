@@ -176,7 +176,7 @@ function generate_report(){
         [${rn_ene_check}] Extranodal extension (ENE)
         [${rn_sin_check}] Single lymphadenopathy
 
-`
+`;
 
     // Calculate N stage
     if (has_rln) {
