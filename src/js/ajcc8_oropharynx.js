@@ -5,9 +5,18 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc8/oropharynx.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
+import {join_checkbox_values, ajcc_template_with_parent} from './ajcc8_common.js';
 
-const AJCC8_OROPHARYNX_T = {
+const AJCC8_T_HPV = {
+    'x': 'Primary tumor cannot be assessed',
+    '0': 'No primary identified',
+    'is': 'Carcinoma in situ',
+    '1': 'Tumor 2 cm or smaller in greatest dimension',
+    '2': 'Tumor larger than 2 cm but not larger than 4 cm in greatest dimension',
+    '3': 'Tumor larger than 4 cm in greatest dimension or extension to lingual surface of epiglottis',
+    '4': 'Moderately advanced or very advanced local disease; Tumor invades the larynx, extrinsic muscle of tongue, medial pterygoid, hard palate, or mandible or beyond (* Mucosal extension to lingual surface of epiglottis from primary tumors of the base of the tongue and vallecula does not constitute invasion of the larynx.)',
+};
+const AJCC8_T_NONHPV = {
     'x': 'Primary tumor cannot be assessed',
     '0': 'No primary identified',
     'is': 'Carcinoma in situ',
@@ -18,14 +27,14 @@ const AJCC8_OROPHARYNX_T = {
     '4a': 'Moderately advanced local disease: Tumor invades the larynx, extrinsic muscle of tongue, medial pterygoid, hard palate, or mandible',
     '4b': 'Very advanced local disease: Tumor invades lateral pterygoid muscle, pterygoid plates, lateral nasopharynx, or skull base or encases carotid artery',
 };
-const AJCC8_OROPHARYNX_N_HPV = {
+const AJCC8_N_HPV = {
     'x': 'Regional lymph nodes cannot be assessed',
     '0': 'No regional lymph node metastasis',
     '1': 'One or more ipsilateral lymph nodes, none larger than 6 cm',
     '2': 'Contralateral or bilateral lymph nodes, none larger than 6 cm',
     '3': 'Lymph node(s) larger than 6 cm',
 };
-const AJCC8_OROPHARYNX_N_NONHPV = {
+const AJCC8_N_NONHPV = {
     'x': 'Regional lymph nodes cannot be assessed',
     '0': 'No regional lymph node metastasis',
     '1': 'Metastasis in a single ipsilateral lymph node, 3 cm or smaller in greatest dimension and ENE(−)',
@@ -37,175 +46,229 @@ const AJCC8_OROPHARYNX_N_NONHPV = {
     '3a': 'Metastasis in a lymph node larger than 6 cm in greatest dimension and ENE(−)',
     '3b': 'Metastasis in any node(s) and clinically overt ENE(+)',
 };
-const AJCC8_OROPHARYNX_M = {
+const AJCC8_M = {
     '0': 'No distant metastasis (in this study)',
     '1': 'Distant metastasis',
 };
 
 function generate_report(){
-    var t_stage = ["0"];
+    var t_stage = [];
     var n_stage = ["0"];
     var m_stage = ["0"];
     // Protocol
-    var report = `1. MR protocol
-SEQUENCES:
-- Axial T1WI and T2WI with fat suppression;
-`;
-    if ($('#cb_sp_cemr').is(':checked')) {
-        report += '- Axial, coronal and sagittal post Gd-enhanced T1WI with fat suppression';
+    var report = `1. Imaging modality
+  - Imaging by `;
+
+    // Protocol
+    if ($('input[name="protocol_radios"]:checked').val() == 'ct') {
+        report += `[+] CT scan  [ ] MRI`;
     } else {
-        report += '- Axial, coronal and sagittal T1WI with fat suppression';
+        report += `[ ] CT scan  [+] MRI`;
     }
-    report += '\n\n';
+    report += "\n\n";
 
     // Tumor location
-    report += "2. Tumor location\n";
-    if ($('#cb_ts_nm').is(':checked')) {
-        report += "--- Not assessable";
-    } else if ($('#cb_ts_no').is(':checked')) {
-        report += "--- No evidence of primary tumor";
-    } else if ($('.cb_tl:checked').length) {
-        report += "* " + join_checkbox_values($('.cb_tl:checked'), "\n*") + "\n";
-        report += "Laterality: " + join_checkbox_values($('.cb_tl_lat:checked'));
-    }
-    report += "\n\n";
+    let has_ts_nm = $('#cb_ts_nm').is(':checked');
+    let has_ts_no = $('#cb_ts_no').is(':checked');
+    let t_length = parseFloat($('#txt_ts_len').val());
+    let txt_ts_len = t_length ? t_length : "___";
+    let t_thick = parseFloat($('#txt_ts_thick').val());
+    let txt_ts_thick = t_thick ? t_thick : "___";
+    let has_tl = $('.cb_tl:checked').length ? true : false;
+    let ts_nm_check = has_ts_nm ? "+" : " ";
+    let ts_no_check = has_ts_no ? "+" : " ";
+    let tl_bt_check = $('#cb_tl_bt').is(':checked') ? "+" : " ";
+    let tl_tf_check = $('#cb_tl_tf').is(':checked') ? "+" : " ";
+    let tl_sp_check = $('#cb_tl_sp').is(':checked') ? "+" : " ";
+    let tl_ow_check = $('#cb_tl_ow').is(':checked') ? "+" : " ";
+    let tl_others_check = $('#cb_tl_others').is(':checked') ? "+" : " ";
+    let txt_tl_others = $('#txt_tl_others').val() ? $('#txt_tl_others').val() : "___";
+    let tl_r_check = $('#cb_tl_r').is(':checked') ? "+" : " ";
+    let tl_l_check = $('#cb_tl_l').is(':checked') ? "+" : " ";
+    report += `2. Tumor location / Size
+    [${ts_nm_check}] Not assessable
+    [${ts_no_check}] No evidence of primary tumor
+    Size: ${txt_ts_len} cm (largest diameter)
+    Tumor thickness: ${txt_ts_thick} cm
+    Tumor location:
+        [${tl_r_check}] Right   [${tl_l_check}] Left
+        [${tl_bt_check}] Base of the tongue   [${tl_tf_check}] Tonsillar fossa
+        [${tl_sp_check}] Soft palate   [${tl_ow_check}] Oropharyngeal walls
+        [${tl_others_check}] Others: ${txt_tl_others}
 
-    // Tumor size
-    report += "3. Tumor size\n";
-    if ($('#cb_ts_nm').is(':checked')) {
-        report += "--- Non-measurable";
-        t_stage.push('x');
-    } else if ($('#cb_ts_no').is(':checked')) {
-        report += "--- No evidence of primary tumor";
-    } else {
-        let t_length = parseFloat($('#txt_ts_dia').val());
-        report += "--- Size: " + t_length + " cm (largest diameter)\n";
-        let t_thick = parseFloat($('#txt_ts_thick').val());
-        report += "--- Tumor thickness: " + t_thick + " cm";
-    }
-    report += "\n\n";
+`;
 
     // Tumor invasion
-    report += "4. Tumor invasion\n";
-    if ($('.cb_ti:checked').length) {
-        report += "--- Yes:\n";
-        report += "* " + join_checkbox_values($('.cb_ti:checked'), "\n* ");
-        report += "\n";
+    let has_ti = $('.cb_ti:checked').length > 0 ? true : false;
+    let ti_no_check = !has_ti ? "+" : " ";
+    let ti_else_check = $('#cb_ti_else').is(':checked') ? "+" : " ";
+    let ti_l_check = $('#cb_ti_l').is(':checked') ? "+" : " ";
+    let ti_emt_check = $('#cb_ti_emt').is(':checked') ? "+" : " ";
+    let ti_mpm_check = $('#cb_ti_mpm').is(':checked') ? "+" : " ";
+    let ti_hp_check = $('#cb_ti_hp').is(':checked') ? "+" : " ";
+    let ti_m_check = $('#cb_ti_m').is(':checked') ? "+" : " ";
+    let ti_lpm_check = $('#cb_ti_lpm').is(':checked') ? "+" : " ";
+    let ti_pp_check = $('#cb_ti_pp').is(':checked') ? "+" : " ";
+    let ti_lnp_check = $('#cb_ti_lnp').is(':checked') ? "+" : " ";
+    let ti_sb_check = $('#cb_ti_sb').is(':checked') ? "+" : " ";
+    let ti_eca_check = $('#cb_ti_eca').is(':checked') ? "+" : " ";
+    let ti_others_check = $('#cb_ti_others').is(':checked') ? "+" : " ";
+    let txt_ti_others = $('#txt_ti_others').val() ? $('#txt_ti_others').val() : "___";
+    report += `3. Tumor invasion
+    [${ti_no_check}] No regional invasion
+    [${ti_else_check}] Extension to lingual surface of epiglottis
+    [${ti_l_check}] Larynx   [${ti_emt_check}] Extrinsic muscle of tongue   [${ti_mpm_check}] Medial pterygoid muscle
+    [${ti_hp_check}] Hard palate   [${ti_m_check}] Mandible
+    [${ti_lpm_check}] Lateral pterygoid muscle   [${ti_pp_check}] Pterygoid plates   [${ti_lnp_check}] Lateral nasopharynx
+    [${ti_sb_check}] Skull base   [${ti_eca_check}] Encasement of carotid artery
+    [${ti_others_check}] Others: ${txt_ti_others}
 
+`;
+
+    // calculate T stage
+    let is_hpv = $('#cb_rn_hpv').is(':checked');
+    if (has_ts_nm) {
+        t_stage.push('x');
+    } else if (has_ts_no || !has_tl) {
+        t_stage.push('0');
+    } else {
+        // by invasion
         if ($('.cb_ti_t3:checked').length) {
             t_stage.push("3");
         }
-        if ($('.cb_ti_t4a:checked').length) {
-            t_stage.push("4a");
+        if (is_hpv) {
+            if ($('.cb_ti_t4:checked').length) {
+                t_stage.push("4");
+            }
+        } else {
+            if ($('.cb_ti_t4a:checked').length) {
+                t_stage.push("4a");
+            }
+            if ($('.cb_ti_t4b:checked').length) {
+                t_stage.push("4b");
+            }
         }
-        if ($('.cb_ti_t4b:checked').length) {
-            t_stage.push("4b");
+
+        // by size
+        if (t_length > 4) {
+            t_stage.push("3");
+        } else if (t_length > 2) {
+            t_stage.push("2");
+        } else {
+            t_stage.push("1");
         }
-        //console.log(t_stage);
     }
-    if ($('.cb_ti:not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        var ti_array = [];
-        if ($('.cb_ti_t3:not(:checked)').length) {
-            ti_array.push("* " + join_checkbox_values($('.cb_ti_t3:not(:checked)')));
-        }
-        if ($('.cb_ti_t4a:not(:checked)').length) {
-            ti_array.push("* " + join_checkbox_values($('.cb_ti_t4a:not(:checked)')));
-        }
-        if ($('.cb_ti_t4b:not(:checked)').length) {
-            ti_array.push("* " + join_checkbox_values($('.cb_ti_t4b:not(:checked)')));
-        }
-        report += ti_array.join("\n") + "\n"
-    }
-    report += "\n";
 
     // Regional nodal metastasis
+    let has_rln = $('.cb_rn:checked').length > 0;
     let n_length = parseFloat($('#txt_rn_len').val());
-    report += "5. Regional nodal metastasis\n";
-    if ($('.cb_rn:checked').length) {
-        report += "--- Yes:\n";
-        if ($('.cb_rn_r:checked').length) {
-            report += "* Right neck level: " + join_checkbox_values($('.cb_rn_r:checked')) + "\n";
+    let txt_rn_len = n_length ? n_length : "___";
+    let has_ene = $('#cb_rn_ene').is(':checked');
+    let has_sin = $('#cb_rn_sin').is(':checked');
+    let rn_ene_check = has_ene ? "+" : " ";
+    let rn_hpv_check = is_hpv ? "+" : " ";
+    let rn_sin_check = has_sin ? "+" : " ";
+    report += "4. Regional nodal metastasis\n";
+    report += "    [" + (has_rln ? " " : "+") + "] No regional nodal metastasis\n";
+    report += "    [" + (has_rln ? "+" : " ") + "] Yes, if yes:\n";
+    $('.lb_rn').each(function(){
+        let cb_rn = $(this).attr('for');
+        if ($(this).hasClass('has_parts')) {
+            let check_or_not = $('.' + cb_rn + ':checked').length > 0 ? "+" : " ";
+            report += `        [${check_or_not}] ` + $(this).text() + ":\n            ";
+            let parts = $('.' + cb_rn);
+            parts.each(function(i, e){
+                if (i && !(i % 7)) {
+                    report += "\n            ";
+                }
+                let check_or_not = $(this).is(':checked') ? "+" : " ";
+                report += `[${check_or_not}] ` + $(this).val();
+                if (i !== parts.length - 1) {
+                    report += "  ";
+                }
+            });
+            report += "\n";
+        } else {
+            let check_or_not = $('#' + cb_rn).is(':checked') ? "+" : " ";
+            report += `    [${check_or_not}] ` + $(this).text() + "\n";
         }
-        if ($('.cb_rn_l:checked').length) {
-            report += "* Left neck level: " + join_checkbox_values($('.cb_rn_l:checked')) + "\n";
-        }
-        report += "* Maximum size of the largest positive node: " + n_length + " cm.\n";
-    }
-    if ($('.cb_rn:not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        if ($('.cb_rn_r:not(:checked)').length) {
-            report += "* Right neck level: " + join_checkbox_values($('.cb_rn_r:not(:checked)')) + "\n";
-        }
-        if ($('.cb_rn_l:not(:checked)').length) {
-            report += "* Left neck level: " + join_checkbox_values($('.cb_rn_l:not(:checked)')) + "\n";
-        }
-    }
-    report += "\n";
-    if ($('#cb_rn_hpv').is(':checked')) {
-        if (($('.cb_rn:checked').length && n_length > 6.0)) {
+    });
+    report += `        Maximal size of the largest positive node: ${txt_rn_len} cm (long axis)
+        [${rn_ene_check}] Extranodal extension (ENE)
+        [${rn_hpv_check}] HPV-mediated (p16+)
+        [${rn_sin_check}] Single lymphadenopathy
+
+`;
+
+    // Calculate N stage
+    if (is_hpv) {
+        if ((has_rln && n_length > 6.0)) {
             n_stage.push("3");
-        } else if (($('.cb_rn_r:checked').length && $('.cb_rn_l:checked').length)
-                    || ($('#cb_tl_r').is(':checked') && $('.cb_rn_l:checked').length)
-                    || ($('#cb_tl_l').is(':checked') && $('.cb_rn_r:checked').length)) {
+        } else if ((    $('.cb_rn_r:checked').length && $('.cb_rn_l:checked').length)           // bilateral
+                    || ($('#cb_tl_r').is(':checked') && $('.cb_rn_l:checked').length)       // tumor right, LAP left
+                    || ($('#cb_tl_l').is(':checked') && $('.cb_rn_r:checked').length)) {    // tumor left, LAP right
             n_stage.push("2");
-        } else if (($('#cb_tl_r').is(':checked') && $('.cb_rn_r:checked').length)
-                    || ($('#cb_tl_l').is(':checked') && $('.cb_rn_l:checked').length)) {
+        } else if (($('#cb_tl_r').is(':checked') && $('.cb_rn_r:checked').length)           // tumor right, LAP right
+                    || ($('#cb_tl_l').is(':checked') && $('.cb_rn_l:checked').length)) {    // tumor left, LAP left
             n_stage.push("1");
         }
-    } else {
-        if ($('.cb_rn:checked').length) {
-            if ($('#cb_rn_ene').is(':checked')) {
+    } else {    // non-viral
+        if (has_rln) {
+            if (has_ene) {
                 n_stage.push("3b");
             } else if (n_length > 6.0) {
                 n_stage.push("3a");
-            } else if (($('.cb_rn_r:checked').length && $('.cb_rn_l:checked').length) || ($('#cb_tl_r').is(':checked') && $('.cb_rn_l:checked').length) || ($('#cb_tl_l').is(':checked') && $('.cb_rn_r:checked').length)) {
+            } else if ((    $('.cb_rn_r:checked').length && $('.cb_rn_l:checked').length)       // bilateral
+                        || ($('#cb_tl_r').is(':checked') && $('.cb_rn_l:checked').length)       // tumor right, LAP left
+                        || ($('#cb_tl_l').is(':checked') && $('.cb_rn_r:checked').length)) {    // tumor left, LAP right
                 n_stage.push("2c");
-            } else if (!$('#cb_rn_sin').is(':checked')) {
+            } else if (!has_sin) {          // multiple ipsilateral
                 n_stage.push("2b");
-            } else if (n_length > 3.0) {
+            } else if (n_length > 3.0) {    // single ipsilateral, > 3 cm
                 n_stage.push("2a");
-            } else {
+            } else {                        // single ipsilateral, <= 3 cm
                 n_stage.push("1");
             }
         }
     }
 
     // Distant metastasis
-    report += "6. Distant metastasis (In this study)\n";
-    if ($('.cb_dm:checked').length) {
-        report += "--- Yes:\n";
+    let has_dm = $('.cb_dm:checked').length > 0;
+    report += "5. Distant metastasis (In this study)\n";
+    report += "    [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
+    report += "    [" + (has_dm ? "+" : " ") + "] Yes, location: ";
+    if (has_dm) {
         if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
-            report += "* " + join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'), "\n* ") + "\n";
+            report += join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'));
         }
         if ($('#cb_dm_others').is(':checked')) {
-            report += "* " + $('#txt_dm_others').val() + "\n";
+            if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
+                report += ', '
+            }
+            report += $('#txt_dm_others').val();
         }
+
         m_stage.push("1");
         //console.log(m_stage);
-    } /* else {
-        report += "* No distant metastasis in the scanned range.\n";
-    } */
-    if ($('.cb_dm:not("#cb_dm_others"):not(:checked)').length) {
-        report += "--- No or Equivocal:\n";
-        report += "* " + join_checkbox_values($('.cb_dm:not("#cb_dm_others"):not(:checked)')) + "\n";
+    } else {
+        report += "___";
     }
-    report += "\n";
+    report += "\n\n";
 
     // Other Findings
-    report += "7. Other findings\n\n\n";
+    report += "6. Other findings\n\n\n";
 
     // AJCC staging reference text
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let AJCC8_OROPHARYNX_N = ($('#cb_rn_hpv').is(':checked') ? AJCC8_OROPHARYNX_N_HPV : AJCC8_OROPHARYNX_N_NONHPV);
-    let t_str = AJCC8_OROPHARYNX_T[t];
-    let n_str = AJCC8_OROPHARYNX_N[n];
-    let m_str = AJCC8_OROPHARYNX_M[m];
-    report += ajcc_template("Oropharyngeal Carcinoma", t, t_str, n, n_str, m, m_str);
+    let FORM_TITLE = (is_hpv ? "HPV-Mediated Oropharyngeal Cancer Staging Form" : "Oropharyngeal Cancer (p16-) Staging Form");
+    let AJCC_TITLE = (is_hpv ? "HPV-Mediated Oropharyngeal Carcinoma" : "Oropharyngeal Carcinoma (p16-)");
+    let AJCC8_T = (is_hpv ? AJCC8_T_HPV : AJCC8_T_NONHPV);
+    let AJCC8_N = (is_hpv ? AJCC8_N_HPV : AJCC8_N_NONHPV);
+    report += ajcc_template_with_parent(AJCC_TITLE, t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
 
-    $('#reportModalLongTitle').html("Oropharyngeal Cancer Staging Form");
+    $('#reportModalLongTitle').html(FORM_TITLE);
     $('#reportModalBody pre code').html(report);
     $('#reportModalLong').modal('show');
 }
