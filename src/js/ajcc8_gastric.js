@@ -5,9 +5,9 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc8/gastric.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
+import {join_checkbox_values, ajcc_template, ajcc_template_with_parent} from './ajcc8_common.js';
 
-const AJCC8_GASTRIC_T = {
+const AJCC8_T = {
     'x': 'Primary tumor cannot be assessed',
     '0': 'No evidence of primary tumor',
     'is': 'Carcinoma in situ: intraepithelial tumor without invasion of the lamina propria, high-grade dysplasia',
@@ -20,7 +20,7 @@ const AJCC8_GASTRIC_T = {
     '4a': 'Tumor invades the serosa (visceral peritoneum)',
     '4b': 'Tumor invades adjacent structures/organs',
 };
-const AJCC8_GASTRIC_N = {
+const AJCC8_N = {
     'x': 'Regional lymph node(s) cannot be assessed',
     '0': 'No regional lymph node metastasis',
     '1': 'Metastasis in one or two regional lymph nodes',
@@ -29,7 +29,7 @@ const AJCC8_GASTRIC_N = {
     '3a': 'Metastasis in seven to 15 regional lymph nodes',
     '3b': 'Metastasis in 16 or more regional lymph nodes',
 };
-const AJCC8_GASTRIC_M = {
+const AJCC8_M = {
     '0': 'No distant metastasis (in this study)',
     '1': 'Distant metastasis',
 };
@@ -154,10 +154,7 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_GASTRIC_T[t];
-    let n_str = AJCC8_GASTRIC_N[n];
-    let m_str = AJCC8_GASTRIC_M[m];
-    report += ajcc_template("Gastric Carcinoma", t, t_str, n, n_str, m, m_str);
+    report += ajcc_template_with_parent("Gastric Carcinoma", t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
 
     $('#reportModalLongTitle').html("Gastric Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
