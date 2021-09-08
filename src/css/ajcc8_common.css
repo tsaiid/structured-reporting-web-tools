@@ -9,6 +9,10 @@ pre {
     -ms-flex: 0 0 4em;
     flex: 0 0 4em;
 }
+.t_sidebar_7 {
+    -ms-flex: 0 0 7em;
+    flex: 0 0 7em;
+}
 .n_sidebar{
     -ms-flex: 0 0 5em;
     flex: 0 0 5em;
