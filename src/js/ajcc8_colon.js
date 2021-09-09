@@ -5,9 +5,9 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc8/colon.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
+import {join_checkbox_values, ajcc_template_with_parent} from './ajcc8_common.js';
 
-const AJCC8_COLON_T = {
+const AJCC8_T = {
     'x': 'Primary tumor cannot be assessed',
     '0': 'No evidence of primary tumor',
     'is': 'Carcinoma in situ, intramucosal carcinoma (involvement of lamina propria with no extension through muscularis mucosae)',
@@ -18,7 +18,7 @@ const AJCC8_COLON_T = {
     '4a': 'Tumor invades through the visceral peritoneum (including gross perforation of the bowel through tumor and continuous invasion of tumor through areas of inflammation to the surface of the visceral peritoneum)',
     '4b': 'Tumor directly invades or adheres to adjacent organs or structures',
 };
-const AJCC8_COLON_N = {
+const AJCC8_N = {
     'x': 'Regional lymph nodes cannot be assessed',
     '0': 'No regional lymph node metastasis',
     '1': 'One to three regional lymph nodes are positive (tumor in lymph nodes measuring ≥ 0.2 mm), or any number of tumor deposits are present and all identifiable lymph nodes are negative',
@@ -29,7 +29,7 @@ const AJCC8_COLON_N = {
     '2a': 'Four to six regional lymph nodes are positive',
     '2b': 'Seven or more regional lymph nodes are positive',
 };
-const AJCC8_COLON_M = {
+const AJCC8_M = {
     '0': 'No distant metastasis by imaging, etc.; no evidence of tumor in distant sites or organs (This category is not assigned by pathologists.)',
     '1': 'Metastasis to one or more distant sites or organs or peritoneal metastasis is identified',
     '1a': 'Metastasis to one site or organ is identified without peritoneal metastasis',
@@ -54,39 +54,45 @@ function generate_report(){
 
     // Tumor location / size
     let has_ts_nm = $('#cb_ts_nm').is(':checked');
+    let tl_c_check = $('#cb_tl_c').is(':checked') ? "+" : " ";
+    let tl_ac_check = $('#cb_tl_ac').is(':checked') ? "+" : " ";
+    let tl_hf_check = $('#cb_tl_hf').is(':checked') ? "+" : " ";
+    let tl_tc_check = $('#cb_tl_tc').is(':checked') ? "+" : " ";
+    let tl_sf_check = $('#cb_tl_sf').is(':checked') ? "+" : " ";
+    let tl_dc_check = $('#cb_tl_dc').is(':checked') ? "+" : " ";
+    let tl_sc_check = $('#cb_tl_sc').is(':checked') ? "+" : " ";
+    let tl_rsj_check = $('#cb_tl_rsj').is(':checked') ? "+" : " ";
+    let tl_r_check = $('#cb_tl_r').is(':checked') ? "+" : " ";
+    let ts_nm_check = (has_ts_nm || !$('#txt_ts_len').val()) ? "+" : " ";
+    let ts_m_check = (!has_ts_nm && $('#txt_ts_len').val()) ? "+" : " ";
     let t_length = parseFloat($('#txt_ts_len').val());
-    report += `2. Tumor location / size
+    let txt_ts_len = t_length ? t_length : "___";
+    report += `2. Tumor location / Size
   - Location:
+    [${tl_c_check}] Cecum            [${tl_ac_check}] Ascending    [${tl_hf_check}] Hepatic flexure  [${tl_tc_check}] Transverse
+    [${tl_sf_check}] Splenic flexure  [${tl_sc_check}] Sigmoid      [${tl_r_check}] Rectum
+  - Size:
+    [${ts_nm_check}] Non-measurable
+    [${ts_m_check}] Measurable: ${txt_ts_len} cm (largest diameter)
+
 `;
-    $('.cb_tl').each(function(i){
-        let check_or_not = $(this).is(':checked') ? "+" : " ";
-        report += `    [${check_or_not}] ` + $(this).val() + "\n";
-    });
-    report += "  - Size: ";
-    if (has_ts_nm || !$('#txt_ts_len').val()) {
-        report += `
-    [+] Non-measurable
-    [ ] Measurable: ___ cm (largest diameter)`;
-    } else {
-        report += `
-    [ ] Non-measurable
-    [+] Measurable: ${t_length} cm (largest diameter)`;
-        //console.log(t_stage);
-    }
-    report += "\n\n";
 
     // Tumor invasion
     let has_ti_na = $('#cb_ti_na').is(':checked');
-    report += "3. Tumor invasion\n";
-    report += "  [" + (has_ti_na ? "+" : " ") + "] Not assessable\n";
-    $('.cb_ti:not(.cb_ti_t4b):not(#cb_ti_na)').each(function(){
-        report += "  [" + ($(this).is(':checked') ? "+" : " ") + "] " + $(this).val() + "\n";
-    });
-    if ($('.cb_ti_t4b').is(':checked')) {
-        report += "  [+] Adjacent organs: " + $('#txt_ti_others').val() + "\n";
-    } else {
-        report += "  [ ] Adjacent organs: ___\n";
-    }
+    let ti_na_check = has_ti_na ? "+" : " ";
+    let ti_mp_check = $('#cb_ti_mp').is(':checked') ? "+" : " ";
+    let ti_pt_check = $('#cb_ti_pt').is(':checked') ? "+" : " ";
+    let ti_vp_check = $('#cb_ti_vp').is(':checked') ? "+" : " ";
+    let ti_others_check = $('#cb_ti_others').is(':checked') ? "+" : " ";
+    let txt_ti_others = $('#txt_ti_others').val() ? $('#txt_ti_others').val() : "___";
+    report += `3. Tumor invasion
+    [${ti_na_check}] Tx: Tumor cannot be visualized in this imaging study
+    [${ti_mp_check}] T2: Colonic or rectal wall
+    [${ti_pt_check}] T3: Invades non-peritonealized pericolonic or perirectal tissues
+    [${ti_vp_check}] T4a: Penetrates to the surface of the visceral peritoneum
+    [${ti_others_check}] T4b: Adjacent organs: ${txt_ti_others}
+
+`;
 
     // Calculate T staging
     if (has_ti_na) {
@@ -113,18 +119,32 @@ function generate_report(){
             //console.log(t_stage);
         }
     }
-    report += "\n";
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length && $('#txt_rln_num').val() > 0;
     let rln_num = (has_rln ? parseInt($('#txt_rln_num').val()) : "___");
+    let rn_pc_check = $('#cb_rn_pc').is(':checked') ? "+" : " ";
+    let rn_sr_check = $('#cb_rn_sr').is(':checked') ? "+" : " ";
+    let rn_ic_check = $('#cb_rn_ic').is(':checked') ? "+" : " ";
+    let rn_rc_check = $('#cb_rn_rc').is(':checked') ? "+" : " ";
+    let rn_mc_check = $('#cb_rn_mc').is(':checked') ? "+" : " ";
+    let rn_lc_check = $('#cb_rn_lc').is(':checked') ? "+" : " ";
+    let rn_sma_check = $('#cb_rn_sma').is(':checked') ? "+" : " ";
+    let rn_ima_check = $('#cb_rn_ima').is(':checked') ? "+" : " ";
+    let rn_ril_check = $('#cb_rn_ril').is(':checked') ? "+" : " ";
+    let rn_lil_check = $('#cb_rn_lil').is(':checked') ? "+" : " ";
     report += "4. Regional nodal metastasis\n";
-    report += "  [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
-    report += "  [" + (has_rln ? "+" : " ") + "] Yes, if yes, number of suspicious lymph node: " + rln_num + ", and locations:\n";
-    $('.cb_rn').each(function(){
-        report += "    [" + ($(this).is(':checked') ? "+" : " ") + "] " + $(this).val() + "\n";
-    });
+    report += "    [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
+    report += "    [" + (has_rln ? "+" : " ") + "] Yes, if yes, number of suspicious lymph node: " + rln_num + ", and locations:";
+    report += `
+        [${rn_pc_check}] Pericolic/perirectal         [${rn_sr_check}] Superior rectal          [${rn_ic_check}] Ileocolic
+        [${rn_rc_check}] Right colic                  [${rn_mc_check}] Middle colic             [${rn_lc_check}] Left colic
+        [${rn_sma_check}] Superior mesenteric artery   [${rn_ima_check}] Inferior mesenteric artery
+        [${rn_ril_check}] Right internal iliac         [${rn_lil_check}] Left internal iliac
 
+`;
+
+    // calculate N stage
     if (has_rln) {
         if (rln_num >= 7) {
             n_stage.push("2b");
@@ -139,13 +159,12 @@ function generate_report(){
         }
         //console.log(n_stage);
     }
-    report += "\n";
 
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
-    report += "  [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
-    report += "  [" + (has_dm ? "+" : " ") + "] Yes, location(s): ";
+    report += "    [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
+    report += "    [" + (has_dm ? "+" : " ") + "] Yes, location(s): ";
     if (has_dm) {
         if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
             report += join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'));
@@ -179,10 +198,7 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_COLON_T[t];
-    let n_str = AJCC8_COLON_N[n];
-    let m_str = AJCC8_COLON_M[m];
-    report += ajcc_template("Colorectal Carcinoma", t, t_str, n, n_str, m, m_str);
+    report += ajcc_template_with_parent("Colorectal Carcinoma", t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
 
     $('#reportModalLongTitle').html("Colorectal Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
