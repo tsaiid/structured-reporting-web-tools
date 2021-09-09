@@ -5,9 +5,9 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc8/lung.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
+import {join_checkbox_values, ajcc_template_with_parent} from './ajcc8_common.js';
 
-const AJCC8_LUNG_T = {
+const AJCC8_T = {
     'x': 'Primary tumor cannot be assessed, or tumor proven by the presence of malignant cells in sputum or bronchial washings but not visualized by imaging or bronchoscopy',
     '0': 'No evidence of primary tumor',
     'is': 'Carcinoma in situ; Squamous cell carcinoma in situ (SCIS); Adenocarcinoma in situ (AIS): adenocarcinoma with pure lepidic pattern, ≤3 cm in greatest dimension',
@@ -22,14 +22,14 @@ const AJCC8_LUNG_T = {
     '3': 'Tumor >5 cm but ≤7 cm in greatest dimension or directly invading any of the following: parietal pleura (PL3), chest wall (including superior sulcus tumors), phrenic nerve, parietal pericardium; or separate tumor nodule(s) in the same lobe as the primary',
     '4': 'Tumor >7 cm or tumor of any size invading one or more of the following: diaphragm, mediastinum, heart, great vessels, trachea, recurrent laryngeal nerve, esophagus, vertebral body, or carina; separate tumor nodule(s) in an ipsilateral lobe different from that of the primary',
 };
-const AJCC8_LUNG_N = {
+const AJCC8_N = {
     'x': 'Regional lymph nodes cannot be assessed',
     '0': 'No regional lymph node metastasis',
     '1': 'Metastasis in ipsilateral peribronchial and/or ipsilateral hilar lymph nodes and intrapulmonary nodes, including involvement by direct extension',
     '2': 'Metastasis in ipsilateral mediastinal and/or subcarinal lymph node(s)',
     '3': 'Metastasis in contralateral mediastinal, contralateral hilar, ipsilateral or contralateral scalene, or supraclavicular lymph node(s)',
 };
-const AJCC8_LUNG_M = {
+const AJCC8_M = {
     '0': 'No distant metastasis (in this study)',
     '1': 'Distant metastasis',
     '1a': 'Separate tumor nodule(s) in a contralateral lobe; tumor with pleural or pericardial nodules or malignant pleural or pericardial effusion. Most pleural (pericardial) effusions with lung cancer are a result of the tumor. In a few patients, however, multiple microscopic examinations of pleural (pericardial) fluid are negative for tumor, and the fluid is nonbloody and not an exudate. If these elements and clinical judgment dictate that the effusion is not related to the tumor, the effusion should be excluded as a staging descriptor.',
@@ -77,7 +77,7 @@ function generate_report(){
     report += "\n\n";
 
     // Tumor location
-    report += `2. Tumor location / size
+    report += `2. Tumor location / Size
   - Location:
     `;
     $('.cb_tp_tl:not("#cb_tp_tl_others")').each(function(){
@@ -107,6 +107,59 @@ function generate_report(){
     report += "\n\n";
 
     // Tumor invasion
+    let tmp_t = parseInt(t_stage.sort()[t_stage.length-1]);
+    let t1_inv_check = (tmp_t == 1 ? "+" : " ");
+    let t1_check  = (t_size <= 3 ? "+" : " ");
+    let t1a_check = (t_size <= 1 ? "+" : " ");
+    let t1b_check = (t_size <= 2 && t_size > 1 ? "+" : " ");
+    let t1c_check = (t_size <= 3 && t_size > 2 ? "+" : " ");
+    let t2_check  = (t_size > 3 && t_size <= 5 ? "+" : " ");
+    let t2a_check = (t_size > 3 && t_size <= 4 ? "+" : " ");
+    let t2b_check = (t_size > 4 && t_size <= 5 ? "+" : " ");
+    let t2_mb_check = ($('#cb_tp_ti_mb').is(':checked') ? "+" : " ");
+    let t2_vp_check = ($('#cb_tp_ti_vp').is(':checked') ? "+" : " ");
+    let t2_fa_check = ($('#cb_tp_ti_fa').is(':checked') ? "+" : " ");
+    let t3_check  = (t_size > 5 && t_size <= 7 ? "+" : " ");
+    let t3_pp_check = ($('#cb_tp_ti_pp').is(':checked') ? "+" : " ");
+    let t3_cw_check = ($('#cb_tp_ti_cw').is(':checked') ? "+" : " ");
+    let t3_pn_check = ($('#cb_tp_ti_pn').is(':checked') ? "+" : " ");
+    let t3_pc_check = ($('#cb_tp_ti_pc').is(':checked') ? "+" : " ");
+    let t3_sln_check = ($('#cb_tp_ti_sln').is(':checked') ? "+" : " ");
+    let t4_check  = (t_size > 7 ? "+" : " ");
+    let t4_men_check = ($('#cb_tp_ti_men').is(':checked') ? "+" : " ");
+    let t4_h_check = ($('#cb_tp_ti_h').is(':checked') ? "+" : " ");
+    let t4_gv_check = ($('#cb_tp_ti_gv').is(':checked') ? "+" : " ");
+    let t4_tr_check = ($('#cb_tp_ti_tr').is(':checked') ? "+" : " ");
+    let t4_rln_check = ($('#cb_tp_ti_rln').is(':checked') ? "+" : " ");
+    let t4_eso_check = ($('#cb_tp_ti_eso').is(':checked') ? "+" : " ");
+    let t4_vb_check = ($('#cb_tp_ti_vb').is(':checked') ? "+" : " ");
+    let t4_car_check = ($('#cb_tp_ti_car').is(':checked') ? "+" : " ");
+    let t4_sdn_check = ($('#cb_tp_ti_sdn').is(':checked') ? "+" : " ");
+    report += `3. Tumor invasion
+    T1: [${t1_check}] Tumor <= 3 cm
+            [${t1a_check}] T1a: Tumor <= 1 cm
+            [${t1b_check}] T1b: 1 cm < Tumor <= 2 cm
+            [${t1c_check}] T1c: 2 cm < Tumor <= 3 cm
+        [${t1_inv_check}] Surrounded by lung or visceral pleura
+        [${t1_inv_check}] Not more proximal than lobar bronchus
+    T2: [${t2_check}] 3 cm < Tumor <= 5 cm
+            [${t2a_check}] T2a: 3 cm < Tumor <= 4 cm
+            [${t2b_check}] T2b: 4 cm < Tumor <= 5 cm
+        [${t2_mb_check}] Main bronchus        [${t2_vp_check}] Visceral pleura
+        [${t2_fa_check}] Atelectasis to hilum (focal or total)
+    T3: [${t3_check}] 5 cm < Tumor <= 7 cm
+        [${t3_pp_check}] Parietal pleura      [${t3_cw_check}] Chest wall
+        [${t3_pn_check}] Phrenic nerve        [${t3_pc_check}] Parietal pericardium
+        [${t3_sln_check}] Separate tumor nodule(s) in same lobe
+    T4: [${t4_check}] Tumor > 7 cm
+        [${t4_men_check}] Mediastinum          [${t4_h_check}] Heart                        [${t4_gv_check}] Great vessels
+        [${t4_tr_check}] Trachea              [${t4_rln_check}] Recurrent laryngeal nerve    [${t4_eso_check}] Esophagus
+        [${t4_vb_check}] Vertebral body       [${t4_car_check}] Carina
+        [${t4_sdn_check}] Separate tumor nodule(s) in a different ipsilateral lobe
+
+`;
+
+    // calculate T stage
     if ($('#cb_tp_ts_nm').is(':checked')) {
         t_stage.push("x");
     } else {
@@ -119,76 +172,34 @@ function generate_report(){
             t_stage.push("2");
         }
     }
-    report += "3. Tumor invasion\n";
-    report += "  T1:";
-    let tmp_t = parseInt(t_stage.sort()[t_stage.length-1]);
-    let check_t1_inv = (tmp_t == 1 ? "+" : " ");
-    let check_t1  = (t_size <= 3 ? "+" : " ");
-    let check_t1a = (t_size <= 1 ? "+" : " ");
-    let check_t1b = (t_size <= 2 && t_size > 1 ? "+" : " ");
-    let check_t1c = (t_size <= 3 && t_size > 2 ? "+" : " ");
-    report += `
-    [${check_t1}] Tumor <= 3 cm
-      [${check_t1a}] Tumor <= 1 cm
-      [${check_t1b}] 1 cm < Tumor <= 2 cm
-      [${check_t1c}] 2 cm < Tumor <= 3 cm
-    [${check_t1_inv}] Surrounded by lung or visceral pleura
-    [${check_t1_inv}] Not more proximal than lobar bronchus`;
-    report += "\n";
-    report += "  T2:";
-    let check_t2  = (t_size > 3 && t_size <= 5 ? "+" : " ");
-    let check_t2a = (t_size > 3 && t_size <= 4 ? "+" : " ");
-    let check_t2b = (t_size > 4 && t_size <= 5 ? "+" : " ");
-    report += `
-    [${check_t2}] 3 cm < Tumor <= 5 cm
-      [${check_t2a}] 3 cm < Tumor <= 4 cm
-      [${check_t2b}] 4 cm < Tumor <= 5 cm`;
-    report += "\n";
-    $('.cb_ti_t2').each(function(){
-        let check_or_not = $(this).is(':checked') ? "+" : " ";
-        report += `    [${check_or_not}] ` + $(this).val() + '\n';
-    });
-    report += "  T3:";
-    let check_t3  = (t_size > 5 && t_size <= 7 ? "+" : " ");
-    report += `
-    [${check_t3}] 5 cm < Tumor <= 7 cm`;
-    report += "\n";
-    $('.cb_ti_t3').each(function(){
-        let check_or_not = $(this).is(':checked') ? "+" : " ";
-        report += `    [${check_or_not}] ` + $(this).val() + '\n';
-    });
-    report += "  T4:";
-    let check_t4  = (t_size > 7 ? "+" : " ");
-    report += `
-    [${check_t4}] Tumor > 7 cm`;
-    report += "\n";
-    $('.cb_ti_t4').each(function(){
-        let check_or_not = $(this).is(':checked') ? "+" : " ";
-        report += `    [${check_or_not}] ` + $(this).val() + '\n';
-    });
-    report += "\n";
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length > 0;
-    report += "4. Regional nodal metastasis\n";
-    report += "  [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
-    report += "  [" + (has_rln ? "+" : " ") + "] Yes, location: \n";
-    report += "    N1:\n";
-    $('.cb_rn_n1').each(function(){
-        let check_or_not = $(this).is(':checked') ? "+" : " ";
-        report += `      [${check_or_not}] ` + $(this).val() + '\n';
-    });
-    report += "    N2:\n";
-    $('.cb_rn_n2').each(function(){
-        let check_or_not = $(this).is(':checked') ? "+" : " ";
-        report += `      [${check_or_not}] ` + $(this).val() + '\n';
-    });
-    report += "    N3:\n";
-    $('.cb_rn_n3').each(function(){
-        let check_or_not = $(this).is(':checked') ? "+" : " ";
-        report += `      [${check_or_not}] ` + $(this).val() + '\n';
-    });
-    if ($('.cb_rn:checked').length) {
+    let rn_no_check = !has_rln ? "+" : " ";
+    let rn_yes_check = has_rln ? "+" : " ";
+    let rn_ip_check = $('#cb_rn_ip').is(':checked') ? "+" : " ";
+    let rn_ih_check = $('#cb_rn_ih').is(':checked') ? "+" : " ";
+    let rn_ii_check = $('#cb_rn_ii').is(':checked') ? "+" : " ";
+    let rn_im_check = $('#cb_rn_im').is(':checked') ? "+" : " ";
+    let rn_sbc_check = $('#cb_rn_sbc').is(':checked') ? "+" : " ";
+    let rn_cm_check = $('#cb_rn_cm').is(':checked') ? "+" : " ";
+    let rn_ch_check = $('#cb_rn_ch').is(':checked') ? "+" : " ";
+    let rn_ics_check = $('#cb_rn_ics').is(':checked') ? "+" : " ";
+    let rn_spc_check = $('#cb_rn_spc').is(':checked') ? "+" : " ";
+    report += `4. Regional nodal metastasis
+    [${rn_no_check}] No or Equivocal
+    [${rn_yes_check}] Yes, location:
+        N1: [${rn_ip_check}] Ipsilateral peribronchial                [${rn_ih_check}] Ipsilateral hilar
+            [${rn_ii_check}] Ipsilateral intrapulmonary
+        N2: [${rn_im_check}] Ipsilateral mediastinal                  [${rn_sbc_check}] Subcarinal
+        N3: [${rn_cm_check}] Contralateral mediastinal                [${rn_ch_check}] Contralateral hilar
+            [${rn_ics_check}] Ipsilateral or contralateral scalene
+            [${rn_spc_check}] Ipsilateral or contralateral supraclavicular
+
+`;
+
+    // calculate N stage
+    if (has_rln) {
         if ($('.cb_rn_n1:checked').length) {
             n_stage.push("1");
         }
@@ -200,33 +211,48 @@ function generate_report(){
         }
         //console.log(n_stage);
     }
-    report += "\n";
 
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
-    report += "5. Distant metastasis (In this study)\n";
-    report += "  [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
-    report += "  [" + (has_dm ? "+" : " ") + "] Yes, location:\n";
-    report += "    Thoracic: (M1a)\n";
-    $('.cb_dm_m1a').each(function(){
-        let check_or_not = $(this).is(':checked') ? "+" : " ";
-        report += `      [${check_or_not}] ` + $(this).val() + '\n';
-    });
-    report += "    Extrathoracic: ";
-    if ($('.cb_dm_m1bc:checked').length) {
+    let has_dm_m1bc = $('.cb_dm_m1bc:checked').length > 0;
+    let dm_no_check = !has_dm ? "+" : " ";
+    let dm_yes_check = has_dm ? "+" : " ";
+    let dm_scn_check = $('#cb_dm_scn').is(':checked') ? "+" : " ";
+    let dm_pn_check = $('#cb_dm_pn').is(':checked') ? "+" : " ";
+    let dm_pcn_check = $('#cb_dm_pcn').is(':checked') ? "+" : " ";
+    let dm_pe_check = $('#cb_dm_pe').is(':checked') ? "+" : " ";
+    let dm_pce_check = $('#cb_dm_pce').is(':checked') ? "+" : " ";
+    let txt_dm_et = "";
+    if (has_dm_m1bc) {
         if ($('.cb_dm_m1bc:not("#cb_dm_others"):checked').length) {
-            report += join_checkbox_values($('.cb_dm_m1bc:not("#cb_dm_others"):checked'));
+            txt_dm_et += join_checkbox_values($('.cb_dm_m1bc:not("#cb_dm_others"):checked'));
         }
         if ($('#cb_dm_others').is(':checked')) {
             if ($('.cb_dm_m1bc:not("#cb_dm_others"):checked').length) {
-                report += ', '
+                txt_dm_et += ', '
             }
-            report += $('#txt_dm_others').val();
+            txt_dm_et += $('#txt_dm_others').val();
         }
     } else {
-        report += "___";
+        txt_dm_et += "___";
     }
-    report += "\n";
+    let dm_m1b_check = ($('.cb_dm_m1bc:checked').length == 1 && $('#cb_dm_m1b').is(':checked') ? "+" : " ");
+    let dm_m1c_check = ($('.cb_dm_m1bc:checked').length > 1 || $('.cb_dm_m1bc:checked').length && !$('#cb_dm_m1b').is(':checked') ? "+" : " ");
+
+    report += `5. Distant metastasis (In this study)
+    [${dm_no_check}] No or Equivocal
+    [${dm_yes_check}] Yes, location:
+        Thoracic: (M1a)
+            [${dm_scn_check}] Separate tumor nodule(s) in a contralateral lobe
+            [${dm_pn_check}] Pleural nodules                  [${dm_pcn_check}] Pericardial nodules
+            [${dm_pe_check}] Malignant pleural effusion       [${dm_pce_check}] Malignant pericardial effusion
+        Extrathoracic: ${txt_dm_et}
+        [${dm_m1b_check}] M1b: Single extrathoracic metastasis (Single metastasis in single organ)
+        [${dm_m1c_check}] M1c: Multiple extrathoracic metastases (multiple metastases in single organ or metastases in multiple organs)
+
+`;
+
+    // calculate M stage
     if (has_dm) {
         if ($('.cb_dm_m1a:checked').length) {
             m_stage.push("1a");
@@ -239,11 +265,6 @@ function generate_report(){
         }
         //console.log(m_stage);
     }
-    let check_m1b = ($('.cb_dm_m1bc:checked').length == 1 && $('#cb_dm_m1b').is(':checked') ? "+" : " ");
-    let check_m1c = ($('.cb_dm_m1bc:checked').length > 1 || $('.cb_dm_m1bc:checked').length && !$('#cb_dm_m1b').is(':checked') ? "+" : " ");
-    report += `      M1b: [${check_m1b}] Single extrathoracic metastasis (Single metastasis in single organ)\n`;
-    report += `      M1c: [${check_m1c}] Multiple extrathoracic metastases (multiple metastases in single organ or metastases in multiple organs)\n`;
-    report += "\n";
 
     // Other Findings
     report += "6. Other findings\n\n\n";
@@ -252,10 +273,7 @@ function generate_report(){
     var t = t_stage.sort()[t_stage.length-1];
     var n = n_stage.sort()[n_stage.length-1];
     var m = m_stage.sort()[m_stage.length-1];
-    var t_str = AJCC8_LUNG_T[t];
-    var n_str = AJCC8_LUNG_N[n];
-    var m_str = AJCC8_LUNG_M[m];
-    report += ajcc_template("Lung Carcinoma", t, t_str, n, n_str, m, m_str);
+    report += ajcc_template_with_parent("Lung Carcinoma", t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
 
     $('#reportModalLongTitle').html("Lung Cancer Staging Form");
     $('#reportModalBody pre code').html(report);

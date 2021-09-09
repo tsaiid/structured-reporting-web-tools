@@ -5,7 +5,7 @@ pre {
  white-space: -o-pre-wrap;    /* Opera 7 */
  word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
-.t_sidebar {
+.t_sidebar, .n_sidebar_4 {
     -ms-flex: 0 0 4em;
     flex: 0 0 4em;
 }
