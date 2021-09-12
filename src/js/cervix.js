@@ -7,33 +7,39 @@ if (process.env.NODE_ENV !== 'production') {
 
 import {join_checkbox_values, ajcc_template, ajcc_template_with_parent} from './ajcc_common.js';
 
-const AJCC8_CX_T = {
+const AJCC_T = {
     'x': 'Primary tumor cannot be assessed',
     '0': 'No evidence of primary tumor',
-    '1': 'Cervical carcinoma confined to the uterus (extension to corpus should be disregarded)',
-    '1a': 'Invasive carcinoma diagnosed only by microscopy. Stromal invasion with a maximum depth of 5.0 mm measured from the base of the epithelium and a horizontal spread of 7.0 mm or less. Vascular space involvement, venous or lymphatic, does not affect classification.',
-    '1a1': 'Measured stromal invasion of 3.0 mm or less in depth and 7.0 mm or less in horizontal spread',
-    '1a2': 'Measured stromal invasion of more than 3.0 mm and not more than 5.0 mm, with a horizontal spread of 7.0 mm or less',
-    '1b': 'Clinically visible lesion confined to the cervix or microscopic lesion greater than T1a/IA2. Includes all macroscopically visible lesions, even those with superficial invasion.',
-    '1b1': 'Clinically visible lesion 4.0 cm or less in greatest dimension',
-    '1b2': 'Clinically visible lesion more than 4.0 cm in greatest dimension',
-    '2': 'Cervical carcinoma invading beyond the uterus but not to the pelvic wall or to lower third of vagina',
-    '2a': 'Tumor without parametrial invasion',
-    '2a1': 'Clinically visible lesion 4.0 cm or less in greatest dimension',
-    '2a2': 'Clinically visible lesion more than 4.0 cm in greatest dimension',
-    '2b': 'Tumor with parametrial invasion',
-    '3': 'Tumor extends to pelvic sidewall* and/or involving the lower third of vagina and/or causing hydronephrosis or nonfunctioning kidney',
-    '3a': 'Tumor involves lower third of vagina but not extending to the pelvic wall',
-    '3b': 'Tumor extending to the pelvic wall and/or causing hydronephrosis or nonfunctioning kidney',
-    '4': 'Tumor invading the mucosa of the bladder or rectum and/or extending beyond the true pelvis (bullous edema is not sufficient to classify a tumor as T4)',
+    '1': 'Carcinoma is strictly confined to the cervix (extension to the corpus should be disregarded)',
+    '1a': 'Invasive carcinoma that can be diagnosed only by microscopy with maximum depth of invasion ≤5 mm',
+    '1a1': 'Measured stromal invasion ≤3 mm in depth',
+    '1a2': 'Measured stromal invasion >3 mm and ≤5 mm in depth',
+    '1b': 'Invasive carcinoma with measured deepest invasion >5 mm (greater than stage IA); lesion limited to the cervix uteri with size measured by maximum tumor diameter; note: the involvement of vascular/lymphatic spaces should not change the staging, and the lateral extent of the lesion is no longer considered',
+    '1b1': 'Invasive carcinoma >5 mm depth of stromal invasion and ≤2 cm in greatest dimension',
+    '1b2': 'Invasive carcinoma >2 cm and ≤4 cm in greatest dimension',
+    '1b3': 'Invasive carcinoma >4 cm in greatest dimension',
+    '2': 'Carcinoma invades beyond the uterus but has not extended onto the lower one-third of the vagina or to the pelvic wall',
+    '2a': 'Involvement limited to the upper two-thirds of the vagina without parametrial invasion',
+    '2a1': 'Invasive carcinoma ≤4 cm in greatest dimension',
+    '2a2': 'Invasive carcinoma >4 cm in greatest dimension',
+    '2b': 'With parametrial invasion but not up to the pelvic wall',
+    '3': 'Carcinoma involves the lower one- third of the vagina and/or extends to the pelvic wall and/or causes hydronephrosis or nonfunc-tioning kidney; note: the pelvic wall is defined as the muscle, fascia, neurovascular structures, and skeletal portions of the bony pelvis; cases with no cancer-free space between the tumor and pelvic wall by rectal examination are FIGO stage III',
+    '3a': 'Carcinoma involves the lower one-third of the vagina, with no extension to the pelvic wall',
+    '3b': 'Extension to the pelvic wall and/or hydronephrosis or nonfunctioning kidney (unless known to be due to another cause)',
+    '4': 'Carcinoma has involved (biopsy-proven) the mucosa of the bladder or rectum or has spread to adjacent organs (bullous edema, as such, does not permit a case to be assigned to stage IVA)',
 };
-const AJCC8_CX_N = {
+const AJCC_N = {
     'x': 'Regional lymph node cannot be assessed',
     '0': 'No regional lymph node metastasis',
     '0(i+)': 'Isolated tumor cells in regional lymph node(s) no greater than 0.2 mm',
-    '1': 'Regional lymph node metastasis',
+    '1': 'Regional lymph node metastasis to pelvic lymph nodes only',
+    '1mi': 'Regional lymph node metastasis (>0.2 mm but ≤2.0 mm in greatest dimension) to pelvic lymph nodes',
+    '1a': 'Regional lymph node metastasis (>2.0 mm in greatest dimension) to pelvic lymph nodes',
+    '2': 'Regional lymph node metastasis to para-aortic lymph nodes, with or without positive pelvic lymph nodes',
+    '2mi': 'Regional lymph node metastasis (>0.2 mm but ≤2.0 mm in greatest dimension) to para-aortic lymph nodes, with or without positive pelvic lymph nodes',
+    '2a': 'Regional lymph node metastasis (>2.0 mm in greatest dimension) to para-aortic lymph nodes, with or without positive pelvic lymph nodes',
 };
-const AJCC8_CX_M = {
+const AJCC_M = {
     '0': 'No distant metastasis (in this study)',
     '1': 'Distant metastasis (including peritoneal spread or involvement of the supraclavicular, mediastinal, or distant lymph nodes; lung; liver; or bone)',
 };
@@ -69,31 +75,41 @@ function generate_report(){
     report += "\n\n";
 
     // Tumor invasion
-    report += "3. Tumor invasion\n";
-    $('.lb_ti').each(function(){
-        let cb_ti = $(this).attr('for');
-        if ($(this).hasClass('has_parts')) {
-            let check_or_not = $('.' + cb_ti + ':checked').length > 0 ? "+" : " ";
-            report += `  [${check_or_not}] ` + $(this).text() + ": ";
-            let parts = $('.' + cb_ti);
-            parts.each(function(i, e){
-                let check_or_not = $(this).is(':checked') ? "+" : " ";
-                report += `[${check_or_not}] ` + $(this).val();
-                if (i !== parts.length - 1) {
-                    report += "  ";
-                }
-            });
-            report += "\n";
-        } else {
-            let check_or_not = $('#' + cb_ti).is(':checked') ? "+" : " ";
-            report += `  [${check_or_not}] ` + $(this).text() + "\n";
-        }
-    });
-    let other_check_or_not = $('#cb_ti_others').is(':checked') ? "+" : " ";
-    report += `  [${other_check_or_not}] Others (beyond the true pelvis): `;
-    report += $('#txt_ti_others').val() ? $('#txt_ti_others').val() : "___";
-    report += "\n\n";
+    let has_ti = $('.cb_ti:checked').length > 0 ? true : false;
+    let ti_no_check = !has_ti ? "+" : " ";
+    let ti_yes_check = has_ti ? "+" : " ";
+    let ti_cx_check = $('#cb_ti_cx').is(':checked') ? "+" : " ";
+    let ti_ub_check = $('#cb_ti_ub').is(':checked') ? "+" : " ";
+    let ti_rpm_check = $('#cb_ti_rpm').is(':checked') ? "+" : " ";
+    let ti_lpm_check = $('#cb_ti_lpm').is(':checked') ? "+" : " ";
+    let ti_uv_check = $('#cb_ti_uv').is(':checked') ? "+" : " ";
+    let ti_lv_check = $('#cb_ti_lv').is(':checked') ? "+" : " ";
+    let ti_rpw_check = $('#cb_ti_rpw').is(':checked') ? "+" : " ";
+    let ti_lpw_check = $('#cb_ti_lpw').is(':checked') ? "+" : " ";
+    let ti_rh_check = $('#cb_ti_rh').is(':checked') ? "+" : " ";
+    let ti_lh_check = $('#cb_ti_lh').is(':checked') ? "+" : " ";
+    let ti_a_check = $('#cb_ti_a').is(':checked') ? "+" : " ";
+    let ti_b_check = $('#cb_ti_b').is(':checked') ? "+" : " ";
+    let ti_r_check = $('#cb_ti_r').is(':checked') ? "+" : " ";
+    let ti_sc_check = $('#cb_ti_sc').is(':checked') ? "+" : " ";
+    let ti_others_check = $('#cb_ti_others').is(':checked') ? "+" : " ";
+    let txt_ti_others = $('#txt_ti_others').val() ? $('#txt_ti_others').val() : "___";
+    report += `3. Tumor invasion
+    [${ti_no_check}] No or Equivocal
+    [${ti_yes_check}] Yes, if yes:
+        [${ti_cx_check}] Cervix
+        [${ti_ub_check}] Uterine body
+        Parametrial invasion    [${ti_rpm_check}] Right            [${ti_lpm_check}] Left
+        Vaginal invasion        [${ti_uv_check}] Upper 2/3        [${ti_lv_check}] Lower 1/3
+        Pelvic sidewall         [${ti_rpw_check}] Right            [${ti_lpw_check}] Left
+        Hydronephrosis          [${ti_rh_check}] Right            [${ti_lh_check}] Left
+        Pelvic organs invasion:
+            [${ti_a_check}] Adnexa          [${ti_b_check}] Bladder          [${ti_r_check}] Rectum
+            [${ti_sc_check}] Sigmoid colon   [${ti_others_check}] Others: ${txt_ti_others}
 
+`;
+
+    // calculate T stage
     if ($('.cb_ti_t4:checked').length) {
         t_stage.push("4");
     } else if ($('.cb_ti_t3b:checked').length) {
@@ -118,31 +134,46 @@ function generate_report(){
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length > 0;
-    report += "4. Regional nodal metastasis\n";
-    report += "  [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
-    report += "  [" + (has_rln ? "+" : " ") + "] Yes, if yes:\n";
-    $('.lb_rn').each(function(){
-        let cb_rn = $(this).attr('for');
-        if ($(this).hasClass('has_parts')) {
-            let check_or_not = $('.' + cb_rn + ':checked').length > 0 ? "+" : " ";
-            report += `    [${check_or_not}] ` + $(this).text() + ": ";
-            let parts = $('.' + cb_rn);
-            parts.each(function(i, e){
-                let check_or_not = $(this).is(':checked') ? "+" : " ";
-                report += `[${check_or_not}] ` + $(this).val();
-                if (i !== parts.length - 1) {
-                    report += "  ";
-                }
-            });
-            report += "\n";
-        } else {
-            let check_or_not = $('#' + cb_rn).is(':checked') ? "+" : " ";
-            report += `    [${check_or_not}] ` + $(this).text() + "\n";
-        }
-    });
+    let rn_no_check = !has_rln ? "+" : " ";
+    let rn_yes_check = has_rln ? "+" : " ";
+    let rn_rpc_check = $('#cb_rn_rpc').is(':checked') ? "+" : " ";
+    let rn_lpc_check = $('#cb_rn_lpc').is(':checked') ? "+" : " ";
+    let rn_rpm_check = $('#cb_rn_rpm').is(':checked') ? "+" : " ";
+    let rn_lpm_check = $('#cb_rn_lpm').is(':checked') ? "+" : " ";
+    let rn_ro_check = $('#cb_rn_ro').is(':checked') ? "+" : " ";
+    let rn_lo_check = $('#cb_rn_lo').is(':checked') ? "+" : " ";
+    let rn_ri_check = $('#cb_rn_ri').is(':checked') ? "+" : " ";
+    let rn_li_check = $('#cb_rn_li').is(':checked') ? "+" : " ";
+    let rn_rii_check = $('#cb_rn_rii').is(':checked') ? "+" : " ";
+    let rn_lii_check = $('#cb_rn_lii').is(':checked') ? "+" : " ";
+    let rn_rei_check = $('#cb_rn_rei').is(':checked') ? "+" : " ";
+    let rn_lei_check = $('#cb_rn_lei').is(':checked') ? "+" : " ";
+    let rn_rci_check = $('#cb_rn_rci').is(':checked') ? "+" : " ";
+    let rn_lci_check = $('#cb_rn_lci').is(':checked') ? "+" : " ";
+    let rn_s_check = $('#cb_rn_s').is(':checked') ? "+" : " ";
+    let rn_pa_check = $('#cb_rn_pa').is(':checked') ? "+" : " ";
+    report += `4. Regional nodal metastasis
+    [${rn_no_check}] No or Equivocal
+    [${rn_yes_check}] Yes, if yes:
+        Paracervical:   [${rn_rpc_check}] Right    [${rn_lpc_check}] Left
+        Parametrial:    [${rn_rpm_check}] Right    [${rn_lpm_check}] Left
+        Obturator:      [${rn_ro_check}] Right    [${rn_lo_check}] Left
+        Inguinal:       [${rn_ri_check}] Right    [${rn_li_check}] Left
+        Internal iliac: [${rn_rii_check}] Right    [${rn_lii_check}] Left
+        External iliac: [${rn_rei_check}] Right    [${rn_lei_check}] Left
+        Common iliac:   [${rn_rci_check}] Right    [${rn_lci_check}] Left
+        [${rn_s_check}] Sacral
+        [${rn_pa_check}] Paraaortic
 
+`;
+
+    // calculate N stage
     if (has_rln) {
-        n_stage.push("1");
+        if ($('#cb_rn_pa').is(':checked')) {
+            n_stage.push("2");
+        } else {
+            n_stage.push("1");
+        }
     }
     report += "\n";
 
@@ -176,7 +207,7 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    report += ajcc_template_with_parent("Cervical Carcinoma", t, AJCC8_CX_T, n, AJCC8_CX_N, m, AJCC8_CX_M);
+    report += ajcc_template_with_parent("Cervical Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 9);
 
     $('#reportModalLongTitle').html("Cervical Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
