@@ -1,7 +1,8 @@
-export function ajcc_template(ca_str, t, t_str, n, n_str, m, m_str) {
+export function ajcc_template(ca_str, t, t_str, n, n_str, m, m_str, ver=8) {
     var report = `
 ===================================================
-2016, TNM Staging System for ${ca_str}, 8th edition
+AJCC Cancer Staging System, ${ver}th edition
+For ${ca_str}
 
 (T)  PRIMARY TUMOR:
  T${t} : ${t_str}
@@ -11,21 +12,21 @@ export function ajcc_template(ca_str, t, t_str, n, n_str, m, m_str) {
 
 (M)  DISTANT METASTASIS:
  M${m} : ${m_str}
-
 ===================================================
 
 
 =====================
-AJCC 8th edition Staging status:
+AJCC ${ver}th edition Staging status:
 T${t}N${n}M${m}
 =====================`;
     return report;
 }
 
-export function ajcc_template_with_parent(ca_str, t, t_table, n, n_table, m, m_table) {
+export function ajcc_template_with_parent(ca_str, t, t_table, n, n_table, m, m_table, ver=8) {
     var report = `
 ===================================================
-2016, TNM Staging System for ${ca_str}, 8th edition
+AJCC Cancer Staging System, ${ver}th edition
+For ${ca_str}
 
 `;
     report += "(T)  PRIMARY TUMOR:\n";
@@ -57,7 +58,7 @@ export function ajcc_template_with_parent(ca_str, t, t_table, n, n_table, m, m_t
 
 
 =====================
-AJCC 8th edition Staging status:
+AJCC ${ver}th edition Staging status:
 T${t}N${n}M${m}
 =====================`;
     return report;
