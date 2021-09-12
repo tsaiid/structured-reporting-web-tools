@@ -1,34 +1,34 @@
 import './common.js';
 import '../css/dashboard.css';
-import '../css/ajcc8_common.css';
+import '../css/ajcc_common.css';
 if (process.env.NODE_ENV !== 'production') {
-    require('raw-loader!../html/ajcc8/ccc_dbd.html');
+    require('raw-loader!../html/ajcc/hcc.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
+import {join_checkbox_values, ajcc_template} from './ajcc_common.js';
 
-const AJCC8_CCC_DBD_T = {
+const AJCC8_HCC_T = {
     'x': 'Primary tumor cannot be assessed',
     '0': 'No evidence of primary tumor',
-    'is': 'Carcinoma in situ/high-grade dysplasia',
-    '1': 'Tumor invades the bile duct wall with a depth less than 5 mm',
-    '2': 'Tumor invades the bile duct wall with a depth of 5-12 mm',
-    '3': 'Tumor invades the bile duct wall with a depth greater than 12 mm',
-    '4': 'Tumor involves the celiac axis, superior mesenteric artery, and/or common hepatic artery',
+    '1': 'Solitary tumor ≤2 cm, or >2 cm without vascular invasion',
+    '1a': 'Solitary tumor ≤2 cm',
+    '1b': 'Solitary tumor >2 cm without vascular invasion',
+    '2': 'Solitary tumor >2 cm with vascular invasion, or multiple tumors, none >5 cm',
+    '3': 'Multiple tumors, at least one of which is >5 cm',
+    '4': 'Single tumor or multiple tumors of any size involving a major branch of the portal vein or hepatic vein, or tumor(s) with direct invasion of adjacent organs other than the gallbladder or with perforation of visceral peritoneum',
 };
-const AJCC8_CCC_DBD_N = {
+const AJCC8_HCC_N = {
     'x': 'Regional lymph nodes cannot be assessed',
     '0': 'No regional lymph node metastasis',
-    '1': 'Metastasis in one to three regional lymph nodes',
-    '2': 'Metastasis in four or more regional lymph nodes',
+    '1': 'Regional lymph node metastasis',
 };
-const AJCC8_CCC_DBD_M = {
+const AJCC8_HCC_M = {
     '0': 'No distant metastasis (in this study)',
     '1': 'Distant metastasis',
 };
 
 function generate_report(){
-    var t_stage = [];
+    var t_stage = ["0"];    // at least T1?
     var n_stage = ["0"];
     var m_stage = ["0"];
     var report = `1. Imaging modality
@@ -43,70 +43,79 @@ function generate_report(){
     report += "\n\n";
 
     // Tumor location / size
+    report += `2. Tumor location / size\n`;
+
+    let txt_tl_num = $('#txt_tl_num').val();
+    let tl_num = parseInt(txt_tl_num, 10);
+    if (tl_num > 3 || isNaN(tl_num)) {
+        txt_tl_num = 'multiple';
+    }
+    report += "  - Number (1,2,3 or multiple): " + txt_tl_num + "\n";
+
+    let txt_tl_loc = $('#txt_tl_loc').val();
+    report += "  - Location (segment or lobe): " + txt_tl_loc + "\n";
+
     let t_length = parseFloat($('#txt_ts_len').val());
-    let is_measurable = !$('#cb_ts_nm').is(':checked') && t_length > 0;
-    report += `2. Tumor size\n`;
-    report += "  - Size: ";
-    if (!is_measurable) {
+    report += "  - Size:";
+    if ($('#cb_ts_nm').is(':checked') || !t_length) {
         report += `
     [+] Non-measurable
-    [ ] Measurable: ___ cm (greatest dimension)`;
+    [ ] Measurable: ___ cm (the largest tumor)`;
     } else {
         report += `
     [ ] Non-measurable
-    [+] Measurable: ${t_length} cm (greatest dimension)`;
+    [+] Measurable: ${t_length} cm (the largest tumor)`;
     }
     report += "\n\n";
 
-    let t_depth = parseInt($('#txt_ti_dep').val());
-    let has_inv = !$('#cb_ti_na').is(':checked') && t_depth > 0;
-    report += "3. Tumor invasion\n";
-    report += "  - Tumor invades the bile duct wall with a depth (Maximum tumor thickness): " + (has_inv? t_depth + " mm" : "" ) + "\n";
-    report += "    [" + (has_inv? " " : "+") + "] Difficult to access\n";
-    report += "    [" + (has_inv && t_depth < 5 ? "+" : " ") + "] < 5 mm (T1)\n";
-    report += "    [" + (has_inv && t_depth >= 5 && t_depth <= 12 ? "+" : " ") + "] 5-12 mm (T2)\n";
-    report += "    [" + (has_inv && t_depth > 12 ? "+" : " ") + "] > 12 mm (T3)\n";
-    report += "    Tumor invades (T4)\n    ";
-    $('.cb_ti_t4:not("#cb_ti_others")').each(function(){
+    // Tumor characteristics and associated liver features
+    report += "3. Tumor characteristics and associated liver features\n";
+    $('.cb_tc').each(function(){
         let check_or_not = $(this).is(':checked') ? "+" : " ";
-        report += `[${check_or_not}] ` + $(this).val() + "  ";
+        report += `  [${check_or_not}] ` + $(this).val();
+        if ($(this).hasClass('has_txt')) {
+            report += ", location: ";
+            let loc_txt = $(this).parent().next().children('input:text').val();
+            report += loc_txt ? loc_txt : "___";
+        }
+        report += "\n";
     });
     report += "\n";
-    let has_other_inv = $('#cb_ti_others').is(':checked');
-    report += "    [" + (has_other_inv? "+" : " ") + "] Other adjacent organ: ";
-    report += $('#txt_ti_others').val()? $('#txt_ti_others').val() : "___";
-    report += "\n\n";
 
-    // 似乎無法呈現 T0
-    if (!is_measurable || !has_inv && !$('.cb_ti_t4:checked').length) {
-        t_stage.push('x');
-    } else if ($('.cb_ti_t4:checked').length) {
+    if ($('.cb_tc_t4:checked').length) {
         t_stage.push('4');
-    } else if (t_depth > 12) {
-        t_stage.push('3');
-    } else if (t_depth >= 5) {
-        t_stage.push('2');
-    } else if (t_depth) {
-        t_stage.push('1');
+    } else if (tl_num == 1) {
+        if (t_length > 2) {
+            t_stage.push('1b');
+        } else {
+            t_stage.push('1a');
+        }
+    } else {
+        if (t_length > 5) {
+            t_stage.push('3');
+        } else {
+            t_stage.push('2');
+        }
     }
 
     // Regional nodal metastasis
-    let rln_num = parseInt($('#txt_rln_num').val());
-    let has_rln = rln_num > 0;
-    report += `4. Regional nodal metastasis
-  [` + (has_rln? " " : "+") + `] No regional lymph node metastasis
-  [` + (has_rln && rln_num <= 3 ? "+" : " ") + `] 1-3 positive lymph nodes (N1)
-  [` + (has_rln && rln_num > 3 ? "+" : " ") + `] 4 or more positive lymph nodes (N2)
-  Number: ` + (Number.isInteger(rln_num)? rln_num : "___");
-
-    if (has_rln) {
-        if (rln_num >= 4) {
-            n_stage.push("2");
-        } else if (rln_num >= 1) {
-            n_stage.push("1");
-        }
+    let has_rln = $('.cb_rn:checked').length;
+    report += "4. Regional nodal metastasis\n";
+    report += "  [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
+    report += "  [" + (has_rln ? "+" : " ") + "] Yes, if yes, locations (specified as below):\n";
+    $('.cb_rn:not("#cb_rn_others")').each(function(){
+        let check_or_not = $(this).is(':checked') ? "+" : " ";
+        report += `    [${check_or_not}] ` + $(this).val() + "\n";
+    });
+    if ($('#cb_rn_others').is(':checked')) {
+        report += "    [+] Others: " + $('#txt_rn_others').val();
+    } else {
+        report += "    [ ] Others: ___";
     }
-    report += "\n\n";
+    if ($('.cb_rn:checked').length) {
+        n_stage.push('1');
+    }
+    report += "\n";
 
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
@@ -138,24 +147,15 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_CCC_DBD_T[t];
-    let n_str = AJCC8_CCC_DBD_N[n];
-    let m_str = AJCC8_CCC_DBD_M[m];
-    report += ajcc_template("Cholangiocarcinoma: Distal Bile Duct", t, t_str, n, n_str, m, m_str);
+    let t_str = AJCC8_HCC_T[t];
+    let n_str = AJCC8_HCC_N[n];
+    let m_str = AJCC8_HCC_M[m];
+    report += ajcc_template("Hepatocellular Carcinoma", t, t_str, n, n_str, m, m_str);
 
-    $('#reportModalLongTitle').html("Cholangiocarcinoma: Distal Bile Duct Staging Form");
+    $('#reportModalLongTitle').html("Hepatocellular Carcinoma Staging Form");
     $('#reportModalBody pre code').html(report);
     $('#reportModalLong').modal('show');
 }
-
-$('.cb_rn, input[name="radio_rn"]').change(function() {
-    if ($(this).parent().parent().find('.cb_rn:checked').length) {
-        $(this).parent().parent().find('input[name="radio_rn"]').prop("checked", true);
-    } else {
-        $(this).parent().parent().find('input[name="radio_rn"]').prop("checked", false);
-    }
-    $(this).parent().parent().siblings().find('.cb_rn').prop('checked', false);
-});
 
 $('#cb_tp_ts_nm').change(function() {
     if($("form.was-validated").length) {

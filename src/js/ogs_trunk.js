@@ -1,34 +1,25 @@
 import './common.js';
 import '../css/dashboard.css';
-import '../css/ajcc8_common.css';
+import '../css/ajcc_common.css';
 if (process.env.NODE_ENV !== 'production') {
-    require('raw-loader!../html/ajcc8/ogs_pelvis.html');
+    require('raw-loader!../html/ajcc/ogs_trunk.html');
 }
 
-import {join_checkbox_values, ajcc_template, ajcc_template_with_parent} from './ajcc8_common.js';
+import {join_checkbox_values, ajcc_template} from './ajcc_common.js';
 
-const AJCC8_OGS_PELVIS_T = {
+const AJCC8_OGS_TRUNK_T = {
     'x': 'Primary tumor cannot be assessed',
     '0': 'No evidence of primary tumor',
-    '1': 'Tumor confined to one pelvic segment with no extraosseous extension',
-    '1a': 'Tumor ≤8 cm in greatest dimension',
-    '1b': 'Tumor >8 cm in greatest dimension',
-    '2': 'Tumor confined to one pelvic segment with extraosseous extension or two segments without extraosseous extension',
-    '2a': 'Tumor ≤8 cm in greatest dimension',
-    '2b': 'Tumor >8 cm in greatest dimension',
-    '3': 'Tumor spanning two pelvic segments with extraosseous extension',
-    '3a': 'Tumor ≤8 cm in greatest dimension',
-    '3b': 'Tumor >8 cm in greatest dimension',
-    '4': 'Tumor spanning three pelvic segments or crossing the sacroiliac joint',
-    '4a': 'Tumor involves sacroiliac joint and extends medial to the sacral neuroforamen',
-    '4b': 'Tumor encasement of external iliac vessels or presence of gross tumor thrombus in major pelvic vessels',
+    '1': 'Tumor ≤8 cm in greatest dimension',
+    '2': 'Tumor >8 cm in greatest dimension',
+    '3': 'Discontinuous tumors in the primary bone site',
 };
-const AJCC8_OGS_PELVIS_N = {
+const AJCC8_OGS_TRUNK_N = {
     'x': 'Regional lymph nodes cannot be assessed. Because of the rarity of lymph node involvement in bone sarcomas, the designation NX may not be appropriate, and cases should be considered N0 unless clinical node involvement clearly is evident.',
     '0': 'No regional lymph node metastasis',
     '1': 'Regional lymph node metastasis',
 };
-const AJCC8_OGS_PELVIS_M = {
+const AJCC8_OGS_TRUNK_M = {
     '0': 'No distant metastasis (in this study)',
     '1': 'Distant metastasis',
     '1a': 'Lung',
@@ -70,64 +61,38 @@ Post-contrast imaging: axial imaging, unilateral (lesion side only);
     report += "\n\n";
 
     // Tumor location / size
-    report += "2. Tumor location / size\n";
-    report += "--- Laterality: " + $('input[name="radio_tl"]:checked').val() + "\n";
-    report += "--- Location & Extension: " + join_checkbox_values($('.cb_tl_ps:checked')) + "\n";
+    report += `2. Tumor location / size
+--- Location: ` + $('#txt_tl').val() + "\n";
+    if ($('.cb_tl:checked').length) {
+        report += "* " + join_checkbox_values($('.cb_tl:checked'), "\n* ") + "\n";
+    }
+    if ($('.cb_tl_t3:checked').length) {
+        t_stage.push("3");
+    }
+
     report += "--- Size: ";
-    let t_length = parseFloat($('#txt_ts_len').val());
     if ($('#cb_ts_nm').is(':checked')) {
         report += "Non-measurable";
-        t_stage.push("x");
     } else {
+        let t_length = parseFloat($('#txt_ts_len').val());
         report += "Measurable: " + t_length + " cm (greatest dimension of the largest tumor)\n";
+
+        if (t_length > 8) {
+            t_stage.push("2");
+        } else if (t_length > 0) {
+            t_stage.push("1");
+        }
     }
     report += "\n";
 
     // Tumor invasion
     report += "3. Tumor invasion\n";
-    if ($('.cb_ti:checked').length) {
-        report += "--- Yes:\n";
-        if ($('.cb_ti:checked').length) {
-            report += "* " + join_checkbox_values($('.cb_ti:checked'), "\n* ") + "\n";
-        }
-    }
-    if ($('.cb_ti:not(:checked)').length) {
-        report += "--- No or Equivocal\n";
-        if ($('.cb_ti:not(:checked)').length) {
-            report += "* " + join_checkbox_values($('.cb_ti:not(:checked)'), "\n* ") + "\n";
-        }
-    }
+    $('input[name="radio_ti"]').each(function(){
+        var item_str = ($(this).is(':checked') ? '(+) ' : '(-) ');
+        report += item_str + $(this).next().text();
+        report += "\n";
+    });
     report += "\n";
-
-    if ($('.cb_ti_t4b:checked').length) {
-        t_stage.push("4b");
-    } else if ($('.cb_ti_t4a:checked').length) {
-        t_stage.push("4a");
-    } else if ($('.cb_tl_ps:checked').length >= 3 || ($('#cb_tl_s').is(':checked') && $('#cb_tl_iw').is(':checked'))) {
-        t_stage.push("4");
-    } else if ($('.cb_tl_ps:checked').length == 2 && $('#cb_ti_ee').is(':checked')) {
-        t_stage.push("3");
-        if (t_length > 8) {
-            t_stage.push("3b");
-        } else if (t_length > 0) {
-            t_stage.push("3a");
-        }
-    } else if (($('.cb_tl_ps:checked').length == 1 && $('#cb_ti_ee').is(':checked')) || $('.cb_tl_ps:checked').length == 2 && !$('#cb_ti_ee').is(':checked')) {
-        t_stage.push("2");
-        if (t_length > 8) {
-            t_stage.push("2b");
-        } else if (t_length > 0) {
-            t_stage.push("2a");
-        }
-    } else if ($('.cb_tl_ps:checked').length) {
-        t_stage.push("1");
-        if (t_length > 8) {
-            t_stage.push("1b");
-        } else if (t_length > 0) {
-            t_stage.push("1a");
-        }
-    }
-    //console.log(t_stage);
 
     // Regional nodal metastasis
     report += "4. Regional nodal metastasis\n";
@@ -173,13 +138,12 @@ Post-contrast imaging: axial imaging, unilateral (lesion side only);
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    //let t_str = AJCC8_OGS_PELVIS_T[t];
-    //let n_str = AJCC8_OGS_PELVIS_N[n];
-    //let m_str = AJCC8_OGS_PELVIS_M[m];
-    //report += ajcc_template("OGS of Pelvis", t, t_str, n, n_str, m, m_str);
-    report += ajcc_template_with_parent("OGS of Pelvis", t, AJCC8_OGS_PELVIS_T, n, AJCC8_OGS_PELVIS_N, m, AJCC8_OGS_PELVIS_M);
+    let t_str = AJCC8_OGS_TRUNK_T[t];
+    let n_str = AJCC8_OGS_TRUNK_N[n];
+    let m_str = AJCC8_OGS_TRUNK_M[m];
+    report += ajcc_template("OGS for Appendicular Skeleton, Trunk, Skull and Facial Bones", t, t_str, n, n_str, m, m_str);
 
-    $('#reportModalLongTitle').html("OGS for Pelvis");
+    $('#reportModalLongTitle').html("OGS for Appendicular Skeleton, Trunk, Skull and Facial Bones Staging Form");
     $('#reportModalBody pre code').html(report);
     $('#reportModalLong').modal('show');
 }
@@ -188,11 +152,6 @@ $('#cb_tp_ts_nm').change(function() {
     if($("form.was-validated").length) {
 
     }
-});
-
-// check if any nonadj vb seg
-$('.cb_ti_ss').change(function() {
-    $('#cb_ti_navs').prop('checked', any_nonadjacent_vertebral_segments());
 });
 
 // auto- increase or decrease lymph node numbers

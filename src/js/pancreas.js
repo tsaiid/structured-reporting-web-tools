@@ -1,35 +1,31 @@
 import './common.js';
 import '../css/dashboard.css';
-import '../css/ajcc8_common.css';
+import '../css/ajcc_common.css';
 if (process.env.NODE_ENV !== 'production') {
-    require('raw-loader!../html/ajcc8/gastric.html');
+    require('raw-loader!../html/ajcc/pancreas.html');
 }
 
-import {join_checkbox_values, ajcc_template, ajcc_template_with_parent} from './ajcc8_common.js';
+import {join_checkbox_values, ajcc_template} from './ajcc_common.js';
 
-const AJCC8_T = {
+const AJCC8_PANCREAS_T = {
     'x': 'Primary tumor cannot be assessed',
     '0': 'No evidence of primary tumor',
-    'is': 'Carcinoma in situ: intraepithelial tumor without invasion of the lamina propria, high-grade dysplasia',
-    '1': 'Tumor invades the lamina propria, muscularis mucosae, or submucosa',
-    '1a': 'Tumor invades the lamina propria or muscularis mucosae',
-    '1b': 'Tumor invades the submucosa',
-    '2': 'Tumor invades the muscularis propria',
-    '3': 'Tumor penetrates the subserosal connective tissue without invasion of the visceral peritoneum or adjacent structures',
-    '4': 'Tumor invades the serosa (visceral peritoneum) or adjacent structures',
-    '4a': 'Tumor invades the serosa (visceral peritoneum)',
-    '4b': 'Tumor invades adjacent structures/organs',
+    'is': 'Carcinoma in situ. This includes high-grade pancreatic intraepithelial neoplasia (PanIn-3), intraductal papillary mucinous neoplasm with high-grade dysplasia, intraductal tubulopapillary neoplasm with high-grade dysplasia, and mucinous cystic neoplasm with high-grade dysplasia.',
+    '1': 'Tumor ≤2 cm in greatest dimension',
+    '1a': 'Tumor ≤0.5 cm in greatest dimension',
+    '1b': 'Tumor >0.5 cm and <1 cm in greatest dimension',
+    '1c': 'Tumor 1–2 cm in greatest dimension',
+    '2': 'Tumor >2 cm and ≤4 cm in greatest dimension',
+    '3': 'Tumor >4 cm in greatest dimension',
+    '4': 'Tumor involves celiac axis, superior mesenteric artery, and/or common hepatic artery, regardless of size',
 };
-const AJCC8_N = {
-    'x': 'Regional lymph node(s) cannot be assessed',
+const AJCC8_PANCREAS_N = {
+    'x': 'Regional lymph nodes cannot be assessed',
     '0': 'No regional lymph node metastasis',
-    '1': 'Metastasis in one or two regional lymph nodes',
-    '2': 'Metastasis in three to six regional lymph nodes',
-    '3': 'Metastasis in seven or more regional lymph nodes',
-    '3a': 'Metastasis in seven to 15 regional lymph nodes',
-    '3b': 'Metastasis in 16 or more regional lymph nodes',
+    '1': 'Metastasis in one to three regional lymph nodes',
+    '2': 'Metastasis in four or more regional lymph nodes',
 };
-const AJCC8_M = {
+const AJCC8_PANCREAS_M = {
     '0': 'No distant metastasis (in this study)',
     '1': 'Distant metastasis',
 };
@@ -54,7 +50,8 @@ function generate_report(){
   - Location:
 `;
     $('.cb_tl:not(#cb_tl_others)').each(function(i){
-        report += "    [" + ($(this).is(':checked') ? "+" : " ") + "] " + $(this).val() + "\n";
+        let check_or_not = $(this).is(':checked') ? "+" : " ";
+        report += `    [${check_or_not}] ` + $(this).val() + "\n";
     });
     if ($('#cb_tl_others').is(':checked')) {
         report += "    [+] Others: " + $('#txt_tl_others').val() + "\n";
@@ -71,81 +68,107 @@ function generate_report(){
         let t_length = parseFloat($('#txt_ts_len').val());
         report += `
     [ ] Non-measurable
-    [+] Measurable: ${t_length} cm (greatest diameter)`;
+    [+] Measurable: ${t_length} cm (largest diameter)`;
+        //console.log(t_stage);
+
+        if (t_length > 4) {
+            t_stage.push("3");
+        } else if (t_length > 2) {
+            t_stage.push("2");
+        } else if (t_length >= 1) {
+            t_stage.push("1c");
+        } else if (t_length > 0.5) {
+            t_stage.push("1b");
+        } else {
+            t_stage.push("1a");
+        }
     }
     report += "\n\n";
 
-    // Tumor invasion depth
-    report += "3. Tumor invasion depth\n";
-    $('input[name="radios_tid"]').each(function(){
-        var item_str = ($(this).is(':checked') ? '[+] ' : '[-] ');
-        report += "  " + item_str + $(this).next().text();
-        if ($(this).val() == "4b") {
-            report += ', location: ' + $('#txt_tid_loc').val();
-        }
-        report += "\n";
+    // Tumor invasion or encasement
+    report += "3. Tumor invasion or encasement";
+    let has_inv = $('.cb_ti:checked').length;
+    if (!has_inv) {
+        report += `
+  [+] Tumor limited to the pancreas
+  [ ] Yes, if yes:
+`;
+    } else {
+        report += `
+  [ ] Tumor limited to the pancreas
+  [+] Yes, if yes:
+`;
+    }
+    $('.cb_ti:not(#cb_ti_others)').each(function(){
+        let check_or_not = $(this).is(':checked') ? "+" : " ";
+        report += `    [${check_or_not}] ` + $(this).val() + "\n";
     });
+    if ($('#cb_ti_others').is(':checked')) {
+        report += "    [+] Others: " + $('#txt_ti_others').val() + "\n";
+    } else {
+        report += "    [ ] Others: ___\n";
+    }
+
+    if ($('.cb_ti_t4:checked').length) {
+        t_stage.push("4");
+    }
+    //console.log(t_stage);
     report += "\n";
-    t_stage.push($('input[name="radios_tid"]:checked').val());
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length && $('#txt_rln_num').val() > 0;
     let rln_num = (has_rln ? parseInt($('#txt_rln_num').val()) : "___");
     report += "4. Regional nodal metastasis\n";
     report += "  [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
-    report += "  [" + (has_rln ? "+" : " ") + "] Yes, if yes, number of suspicious lymph node: " + rln_num + ", and locations (specified as below):\n";
-    $('.cb_rn:not("#cb_rn_others")').each(function(){
-        report += "    [" + ($(this).is(':checked') ? "+" : " ") + "] " + $(this).val() + "\n";
-    });
-    if ($('#cb_rn_others').is(':checked')) {
-        report += "    [+] Others: " + $('#txt_rn_others').val();
-    } else {
-        report += "    [ ] Others: ___";
+    report += "  [" + (has_rln ? "+" : " ") + "] Yes, if yes, number: " + rln_num + ", and locations: ";
+
+    var pos_rn = new Set();
+    if ($('.cb_tl_hn:checked').length) {
+        $('.cb_rn_hn:checked').each(function(){
+            pos_rn.add($(this).val());
+        });
     }
+    if ($('.cb_tl_bt:checked').length) {
+        $('.cb_rn_bt:checked').each(function(){
+            pos_rn.add($(this).val());
+        });
+    }
+    var str_rn = has_rln && pos_rn.size ? Array.from(pos_rn).join(", ") : "___";
+    report += str_rn + "\n";
     report += "\n";
 
-    if (has_rln) {
-        if (rln_num >= 16) {
-            n_stage.push("3b");
-        } else if (rln_num >= 7) {
-            n_stage.push("3a");
-        } else if (rln_num >= 3) {
-            n_stage.push("2");
-        } else if (rln_num >= 1) {
-            n_stage.push("1");
-        } else {
-            n_stage.push("0");
-        }
-        //console.log(n_stage);
+    if (rln_num >= 4) {
+        n_stage.push("2");
+    } else if (rln_num >= 1) {
+        n_stage.push("1");
+    } else {
+        n_stage.push("0");
     }
-    report += "\n";
+    //console.log(n_stage);
 
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
     report += "  [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
-    report += "  [" + (has_dm ? "+" : " ") + "] Yes:\n";
-    let has_nrn = $('.cb_dm_nrn:checked').length > 0;
-    report += "    [" + (has_nrn ? "+" : " ") + "] Non-regional lymph nodes:\n      ";
-    $('.cb_dm_nrn').each(function(){
-        report += "[" + ($(this).is(':checked') ? "+" : " ") + "] " + $(this).val() + "  ";
-    });
-    report += "\n";
-    let has_non_nrn_dm = $('.cb_dm:not(.cb_dm_nrn):checked').length > 0;
-    report += "    [" + (has_non_nrn_dm ? "+" : " ") + "] Distant organ: ";
-    report += (has_non_nrn_dm ? join_checkbox_values($('.cb_dm:not(.cb_dm_nrn):checked')) : "___");
-    if ($('#cb_dm_others').is(':checked')) {
-        if ($('.cb_dm:not("#cb_dm_others, .cb_dm_nrn"):checked').length) {
-            report += ', '
-        }
-        report += $('#txt_dm_others').val();
-    }
-    report += "\n\n";
-
+    report += "  [" + (has_dm ? "+" : " ") + "] Yes, location(s): ";
     if (has_dm) {
+        if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
+            report += join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'));
+        }
+        if ($('#cb_dm_others').is(':checked')) {
+            if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
+                report += ', '
+            }
+            report += $('#txt_dm_others').val();
+        }
+        report += "\n";
+
         m_stage.push("1");
         //console.log(m_stage);
+    } else {
+        report += "___";
     }
+    report += "\n";
 
     // Other Findings
     report += "6. Other findings\n\n\n";
@@ -154,9 +177,12 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    report += ajcc_template_with_parent("Gastric Carcinoma", t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
+    let t_str = AJCC8_PANCREAS_T[t];
+    let n_str = AJCC8_PANCREAS_N[n];
+    let m_str = AJCC8_PANCREAS_M[m];
+    report += ajcc_template("Pancreatic Carcinoma", t, t_str, n, n_str, m, m_str);
 
-    $('#reportModalLongTitle').html("Gastric Cancer Staging Form");
+    $('#reportModalLongTitle').html("Pancreatic Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
     $('#reportModalLong').modal('show');
 }

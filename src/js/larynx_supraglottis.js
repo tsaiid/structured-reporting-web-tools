@@ -1,24 +1,23 @@
 import './common.js';
 import '../css/dashboard.css';
-import '../css/ajcc8_common.css';
+import '../css/ajcc_common.css';
 if (process.env.NODE_ENV !== 'production') {
-    require('raw-loader!../html/ajcc8/larynx_glottis.html');
+    require('raw-loader!../html/ajcc/larynx_supraglottis.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
+import {join_checkbox_values, ajcc_template} from './ajcc_common.js';
 
-const AJCC8_LARYNX_GLOTTIS_T = {
+const AJCC8_LARYNX_SUPRAGLOTTIS_T = {
     'x': 'Primary tumor cannot be assessed',
     'is': 'Carcinoma in situ',
-    '1': 'Tumor limited to the vocal cord(s) (may involve anterior or posterior commissure) with normal mobility',
-    '1a': 'Tumor limited to one vocal cord',
-    '1b': 'Tumor involves both vocal cords',
-    '2': 'Tumor extends to supraglottis and/or subglottis, and/or with impaired vocal cord mobility',
-    '3': 'Tumor limited to the larynx with vocal cord fixation and/or invasion of paraglottic space and/or inner cortex of the thyroid cartilage',
-    '4a': 'Moderately advanced local disease: Tumor invades through the thyroid cartilage and /or invades tissues beyond the larynx (e.g., trachea, soft tissues of neck including deep extrinsic muscle of the tongue, strap muscles, thyroid, or esophagus',
+    '1': 'Tumor limited to one subsite of supraglottis with normal vocal cord mobility',
+    '2': 'Tumor invades mucosa of more than one adjacent subsite of supraglottis or glottis or region outside the supraglottis (e.g., mucosa of base of tongue, vallecula, medial wall of pyriform sinus) without fixation of the larynx',
+    '3': 'Tumor limited to larynx with vocal cord fixation and/or invades any of the following: postcricoid area, preepiglottic space, paraglottic space, and/or inner cortex of thyroid cartilage',
+    '4': 'Moderately advanced or very advanced',
+    '4a': 'Moderately advanced local disease: Tumor invades through the outer cortex of the thyroid cartilage and/or invades tissues beyond the larynx (e.g., trachea, soft tissues of neck including deep extrinsic muscle of the tongue, strap muscles, thyroid, or esophagus)',
     '4b': 'Very advanced local disease: Tumor invades prevertebral space, encases carotid artery, or invades mediastinal structures',
 };
-const AJCC8_LARYNX_GLOTTIS_N = {
+const AJCC8_LARYNX_SUPRAGLOTTIS_N = {
     'x': 'Regional lymph nodes cannot be assessed',
     '0': 'No regional lymph node metastasis',
     '1': 'Metastasis in a single ipsilateral lymph node, 3 cm or smaller in greatest dimension and ENE(-)',
@@ -30,7 +29,7 @@ const AJCC8_LARYNX_GLOTTIS_N = {
     '3a': 'Metastasis in a lymph node, larger than 6 cm in greatest dimension and ENE(-)',
     '3b': 'Metastasis in any lymph node(s) with clinically overt ENE(+)',
 };
-const AJCC8_LARYNX_GLOTTIS_M = {
+const AJCC8_LARYNX_SUPRAGLOTTIS_M = {
     '0': 'No distant metastasis (in this study)',
     '1': 'Distant metastasis',
 };
@@ -59,15 +58,12 @@ SEQUENCES:
         report += "--- No evidence of primary tumor";
     } else if ($('.cb_tl:checked').length) {
         report += "* " + join_checkbox_values($('.cb_tl:checked'), "\n* ") + "\n";
-        if ($('.cb_tl_lat:checked').length) {
-            report += "Laterality: " + join_checkbox_values($('.cb_tl_lat:checked'));
-        }
+        report += "Laterality: " + join_checkbox_values($('.cb_tl_lat:checked'));
 
-        t_stage.push("1");
-        if ($('.cb_tl_lat:checked').length > 1) {
-            t_stage.push("1b");
+        if ($('.cb_tl:checked').length > 1) {
+            t_stage.push("2");
         } else {
-            t_stage.push("1a");
+            t_stage.push("1");
         }
     }
     report += "\n\n";
@@ -194,12 +190,12 @@ SEQUENCES:
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_LARYNX_GLOTTIS_T[t];
-    let n_str = AJCC8_LARYNX_GLOTTIS_N[n];
-    let m_str = AJCC8_LARYNX_GLOTTIS_M[m];
-    report += ajcc_template("Laryngeal Carcinoma (Glottis)", t, t_str, n, n_str, m, m_str);
+    let t_str = AJCC8_LARYNX_SUPRAGLOTTIS_T[t];
+    let n_str = AJCC8_LARYNX_SUPRAGLOTTIS_N[n];
+    let m_str = AJCC8_LARYNX_SUPRAGLOTTIS_M[m];
+    report += ajcc_template("Laryngeal Cancer (Supraglottis) Carcinoma", t, t_str, n, n_str, m, m_str);
 
-    $('#reportModalLongTitle').html("Laryngeal Cancer (Glottis) Staging Form");
+    $('#reportModalLongTitle').html("Laryngeal Cancer (Supraglottis) Staging Form");
     $('#reportModalBody pre code').html(report);
     $('#reportModalLong').modal('show');
 }

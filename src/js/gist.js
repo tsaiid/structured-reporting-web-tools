@@ -1,11 +1,11 @@
 import './common.js';
 import '../css/dashboard.css';
-import '../css/ajcc8_common.css';
+import '../css/ajcc_common.css';
 if (process.env.NODE_ENV !== 'production') {
-    require('raw-loader!../html/ajcc8/gist.html');
+    require('raw-loader!../html/ajcc/gist.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc8_common.js';
+import {join_checkbox_values, ajcc_template} from './ajcc_common.js';
 
 const AJCC8_GIST_T = {
     'x': 'Primary tumor cannot be assessed',

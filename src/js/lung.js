@@ -1,11 +1,11 @@
 import './common.js';
 import '../css/dashboard.css';
-import '../css/ajcc8_common.css';
+import '../css/ajcc_common.css';
 if (process.env.NODE_ENV !== 'production') {
-    require('raw-loader!../html/ajcc8/lung.html');
+    require('raw-loader!../html/ajcc/lung.html');
 }
 
-import {join_checkbox_values, ajcc_template_with_parent} from './ajcc8_common.js';
+import {join_checkbox_values, ajcc_template_with_parent} from './ajcc_common.js';
 
 const AJCC8_T = {
     'x': 'Primary tumor cannot be assessed, or tumor proven by the presence of malignant cells in sputum or bronchial washings but not visualized by imaging or bronchoscopy',
