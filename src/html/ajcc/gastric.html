@@ -133,23 +133,27 @@
             <h2 class="h4 mt-4">Tumor Invasion Depth</h2>
             <div class="form-check">
               <input class="form-check-input" type="radio" name="radios_tid" id="radio_tid_na" value="x" checked>
-              <label class="form-check-label" for="radio_tid_na">Not assessable</label>
+              <label class="form-check-label" for="radio_tid_na">Not assessable (Tx)</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="radios_tid" id="radio_tid_gwpll" value="2">
-              <label class="form-check-label" for="radio_tid_gwpll">Tumor confined in the gastric wall and with preservation of lucent line</label>
+              <input class="form-check-input" type="radio" name="radios_tid" id="radio_tid_gwpll" value="1b">
+              <label class="form-check-label" for="radio_tid_gwpll">Tumor confined in the gastric wall and with preservation of lucent line (T1b)</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="radios_tid" id="radio_tid_gwlll" value="3">
-              <label class="form-check-label" for="radio_tid_gwlll">Tumor confined in the gastric wall, but with loss of lucent line</label>
+              <input class="form-check-input" type="radio" name="radios_tid" id="radio_tid_gwlll" value="2">
+              <label class="form-check-label" for="radio_tid_gwlll">Tumor confined in the gastric wall, but with loss of lucent line (T2)</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="radios_tid" id="radio_tid_gwpgm" value="3">
+              <label class="form-check-label" for="radio_tid_gwpgm">Tumor confined in the gastric wall, but with perigastric micronodules or dense, band-like stranding (T3)</label>
             </div>
             <div class="form-check">
               <input class="form-check-input" type="radio" name="radios_tid" id="radio_tid_bgw" value="4a">
-              <label class="form-check-label" for="radio_tid_bgw">Tumor extension beyond the gastric wall but not to adjacent organs or structures</label>
+              <label class="form-check-label" for="radio_tid_bgw">Tumor extension beyond the gastric wall but not to adjacent organs or structures (T4a)</label>
             </div>
             <div class="form-check">
               <input class="form-check-input" type="radio" name="radios_tid" id="radio_tid_ao" value="4b">
-              <label class="form-check-label" for="radio_tid_ao">Tumor invasion to adjacent organs or structure</label>
+              <label class="form-check-label" for="radio_tid_ao">Tumor invasion to adjacent organs or structure (T4b)</label>
               <div class="input-group input-group-sm col-md-6 pl-0 mb-2 mr-sm-2">
                 <div class="input-group-prepend">
                   <span class="input-group-text">Location</span>
@@ -252,15 +256,15 @@
             <h3 class="h5 mt-2">Non-regional lymph nodes</h3>
             <form class="">
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_dm cb_dm_nrn" type="checkbox" id="cb_dm_nrn_rp" value="retropancreatic (13)">
+                <input class="form-check-input cb_dm cb_dm_nrn" type="checkbox" id="cb_dm_nrn_rp" value="Retropancreatic (13)">
                 <label class="form-check-label" for="cb_dm_nrn_rp">Retropancreatic (13)</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_dm cb_dm_nrn" type="checkbox" id="cb_dm_nrn_mr" value="mesenteric root (14)">
+                <input class="form-check-input cb_dm cb_dm_nrn" type="checkbox" id="cb_dm_nrn_mr" value="Mesenteric root (14)">
                 <label class="form-check-label" for="cb_dm_nrn_mr">Mesenteric root (14)</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_dm cb_dm_nrn" type="checkbox" id="cb_dm_nrn_pa" value="para-aortic (16)">
+                <input class="form-check-input cb_dm cb_dm_nrn" type="checkbox" id="cb_dm_nrn_pa" value="Para-aortic (16)">
                 <label class="form-check-label" for="cb_dm_nrn_pa">Para-aortic (16)</label>
               </div>
             </form>
