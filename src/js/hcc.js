@@ -5,9 +5,9 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/hcc.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent} from './ajcc_common.js';
 
-const AJCC8_HCC_T = {
+const AJCC8_T = {
     'x': 'Primary tumor cannot be assessed',
     '0': 'No evidence of primary tumor',
     '1': 'Solitary tumor ≤2 cm, or >2 cm without vascular invasion',
@@ -17,12 +17,12 @@ const AJCC8_HCC_T = {
     '3': 'Multiple tumors, at least one of which is >5 cm',
     '4': 'Single tumor or multiple tumors of any size involving a major branch of the portal vein or hepatic vein, or tumor(s) with direct invasion of adjacent organs other than the gallbladder or with perforation of visceral peritoneum',
 };
-const AJCC8_HCC_N = {
+const AJCC8_N = {
     'x': 'Regional lymph nodes cannot be assessed',
     '0': 'No regional lymph node metastasis',
     '1': 'Regional lymph node metastasis',
 };
-const AJCC8_HCC_M = {
+const AJCC8_M = {
     '0': 'No distant metastasis (in this study)',
     '1': 'Distant metastasis',
 };
@@ -43,36 +43,30 @@ function generate_report(){
     report += "\n\n";
 
     // Tumor location / size
-    report += `2. Tumor location / size\n`;
-
     let txt_tl_num = $('#txt_tl_num').val();
     let tl_num = parseInt(txt_tl_num, 10);
     if (tl_num > 3 || isNaN(tl_num)) {
         txt_tl_num = 'multiple';
     }
-    report += "  - Number (1,2,3 or multiple): " + txt_tl_num + "\n";
-
     let txt_tl_loc = $('#txt_tl_loc').val();
-    report += "  - Location (segment or lobe): " + txt_tl_loc + "\n";
-
+    let ts_nm_check = $('#cb_ts_nm').is(':checked') || !t_length ? "+" : " ";
+    let ts_m_check = !$('#cb_ts_nm').is(':checked') && t_length ? "+" : " ";
     let t_length = parseFloat($('#txt_ts_len').val());
-    report += "  - Size:";
-    if ($('#cb_ts_nm').is(':checked') || !t_length) {
-        report += `
-    [+] Non-measurable
-    [ ] Measurable: ___ cm (the largest tumor)`;
-    } else {
-        report += `
-    [ ] Non-measurable
-    [+] Measurable: ${t_length} cm (the largest tumor)`;
-    }
-    report += "\n\n";
+    let txt_ts_len = t_length ? t_length : "___";
+    report += `2. Tumor location / size
+  - Number (1,2,3 or multiple): ${txt_tl_num}
+  - Location (segment or lobe): ${txt_tl_loc}
+  - Size:
+    [${ts_nm_check}] Non-measurable
+    [${ts_m_check}] Measurable: ${txt_ts_len} cm (the largest tumor)
+
+`;
 
     // Tumor characteristics and associated liver features
     report += "3. Tumor characteristics and associated liver features\n";
     $('.cb_tc').each(function(){
         let check_or_not = $(this).is(':checked') ? "+" : " ";
-        report += `  [${check_or_not}] ` + $(this).val();
+        report += `    [${check_or_not}] ` + $(this).val();
         if ($(this).hasClass('has_txt')) {
             report += ", location: ";
             let loc_txt = $(this).parent().next().children('input:text').val();
@@ -100,28 +94,32 @@ function generate_report(){
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length;
-    report += "4. Regional nodal metastasis\n";
-    report += "  [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
-    report += "  [" + (has_rln ? "+" : " ") + "] Yes, if yes, locations (specified as below):\n";
-    $('.cb_rn:not("#cb_rn_others")').each(function(){
-        let check_or_not = $(this).is(':checked') ? "+" : " ";
-        report += `    [${check_or_not}] ` + $(this).val() + "\n";
-    });
-    if ($('#cb_rn_others').is(':checked')) {
-        report += "    [+] Others: " + $('#txt_rn_others').val();
-    } else {
-        report += "    [ ] Others: ___";
-    }
+    let rn_no_check = !has_rln ? "+" : " ";
+    let rn_yes_check = has_rln ? "+" : " ";
+    let rn_hh_check = $('#cb_rn_hh').is(':checked') ? "+" : " ";
+    let rn_hl_check = $('#cb_rn_hl').is(':checked') ? "+" : " ";
+    let rn_ip_check = $('#cb_rn_ip').is(':checked') ? "+" : " ";
+    let rn_c_check = $('#cb_rn_c').is(':checked') ? "+" : " ";
+    let rn_others_check = $('#cb_rn_other').is(':checked') ? "+" : " ";
+    let txt_rn_others = $('#txt_rn_others').val() ? $('#txt_rn_others').val() : "___";
+    report += `4. Regional nodal metastasis
+    [${rn_no_check}] No or Equivocal
+    [${rn_yes_check}] Yes, if yes, location (specified as below):
+        [${rn_hh_check}] Hepatic hilum    [${rn_hl_check}] Hepatoduodenal ligament  [${rn_ip_check}] Inferior phrenic
+        [${rn_c_check}] Caval            [${rn_others_check}] Others: ${txt_rn_others}
+
+`;
+
+    // calculate N stage
     if ($('.cb_rn:checked').length) {
         n_stage.push('1');
     }
-    report += "\n";
 
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
-    report += "  [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
-    report += "  [" + (has_dm ? "+" : " ") + "] Yes, location: ";
+    report += "    [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
+    report += "    [" + (has_dm ? "+" : " ") + "] Yes, location: ";
     if (has_dm) {
         if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
             report += join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'));
@@ -147,10 +145,7 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_HCC_T[t];
-    let n_str = AJCC8_HCC_N[n];
-    let m_str = AJCC8_HCC_M[m];
-    report += ajcc_template("Hepatocellular Carcinoma", t, t_str, n, n_str, m, m_str);
+    report += ajcc_template_with_parent("Hepatocellular Carcinoma", t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
 
     $('#reportModalLongTitle').html("Hepatocellular Carcinoma Staging Form");
     $('#reportModalBody pre code').html(report);
