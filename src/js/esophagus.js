@@ -5,9 +5,9 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/esophagus.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent} from './ajcc_common.js';
 
-const AJCC8_ESO_T = {
+const AJCC8_T = {
     'x': 'Primary tumor cannot be assessed',
     '0': 'No evidence of primary tumor',
     '1': 'Tumor invades the lamina propria, muscularis mucosae, or submucosa',
@@ -19,14 +19,14 @@ const AJCC8_ESO_T = {
     '4a': 'Tumor invades the pleura, pericardium, azygos vein, diaphragm, or peritoneum',
     '4b': 'Tumor invades other adjacent structures, such as the aorta, vertebral body, or airway',
 };
-const AJCC8_ESO_N = {
+const AJCC8_N = {
     'x': 'Regional lymph nodes cannot be assessed',
     '0': 'No regional lymph node metastasis',
     '1': 'Metastasis in one or two regional lymph nodes',
     '2': 'Metastasis in three to six regional lymph nodes',
     '3': 'Metastasis in seven or more regional lymph nodes',
 };
-const AJCC8_ESO_M = {
+const AJCC8_M = {
     '0': 'No distant metastasis (in this study)',
     '1': 'Distant metastasis',
 };
@@ -71,14 +71,35 @@ function generate_report(){
     report += "\n\n";
 
     // Tumor invasion
-    report += "3. Tumor invasion\n";
     let has_inv = $('.cb_ti:checked').length > 0;
-    report += "  [" + (!has_inv ? "+" : " ") + "] No or Equivocal\n";
-    report += "  [" + (has_inv ? "+" : " ") + "] Yes, if yes:\n";
-    $('.cb_ti').each(function(){
-        report += "    [" + ($(this).is(':checked') ? "+" : " ") + "] " + $(this).val() + "\n";
-    });
+    let ti_no_check = !has_inv ? "+" : " ";
+    let ti_yes_check = has_inv ? "+" : " ";
+    let ti_mp_check = $('#cb_ti_mp').is(':checked') ? "+" : " ";
+    let ti_ad_check = $('#cb_ti_ad').is(':checked') ? "+" : " ";
+    let ti_pl_check = $('#cb_ti_pl').is(':checked') ? "+" : " ";
+    let ti_pc_check = $('#cb_ti_pc').is(':checked') ? "+" : " ";
+    let ti_av_check = $('#cb_ti_av').is(':checked') ? "+" : " ";
+    let ti_di_check = $('#cb_ti_di').is(':checked') ? "+" : " ";
+    let ti_pt_check = $('#cb_ti_pt').is(':checked') ? "+" : " ";
+    let ti_aw_check = $('#cb_ti_aw').is(':checked') ? "+" : " ";
+    let ti_car_check = $('#cb_ti_car').is(':checked') ? "+" : " ";
+    let ti_law_check = $('#cb_ti_law').is(':checked') ? "+" : " ";
+    let ti_vb_check = $('#cb_ti_vb').is(':checked') ? "+" : " ";
+    let ti_pwot_check = $('#cb_ti_pwot').is(':checked') ? "+" : " ";
+    let ti_pwomb_check = $('#cb_ti_pwomb').is(':checked') ? "+" : " ";
+    let ti_s_check = $('#cb_ti_s').is(':checked') ? "+" : " ";
+    report += `3. Tumor invasion
+    [${ti_no_check}] No or Equivocal
+    [${ti_yes_check}] Yes, if yes:
+        [${ti_mp_check}] Esophageal muscularis propria    [${ti_ad_check}] Esophageal adventitia    [${ti_pl_check}] Pleura
+        [${ti_pc_check}] Pericardium                      [${ti_av_check}] Azygos vein              [${ti_di_check}] Diaphragm
+        [${ti_pt_check}] Peritoneum                       [${ti_aw_check}] Aortic wall              [${ti_car_check}] Carina
+        [${ti_law_check}] Left atrial wall                 [${ti_vb_check}] Vertebral body           [${ti_pwot_check}] Posterior wall of trachea
+        [${ti_pwomb_check}] Posterior wall of main bronchus  [${ti_s_check}] Stomach
 
+`;
+
+    // calculate T stage
     if (!has_inv) {
         if (has_no_measurable_tumor) {
             t_stage.push("x");
@@ -99,21 +120,47 @@ function generate_report(){
             t_stage.push("4b");
         }
     }
-    console.log(t_stage);
-    report += "\n";
+    //console.log(t_stage);
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length && $('#txt_rln_num').val() > 0;
     let rln_num = (has_rln ? parseInt($('#txt_rln_num').val()) : "___");
     report += "4. Regional nodal metastasis\n";
-    report += "  [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
-    report += "  [" + (has_rln ? "+" : " ") + "] Yes, if yes, number of suspicious lymph node: " + rln_num + ", and locations:\n";
-    $('.cb_rn:not("#cb_rn_others")').each(function(){
-        report += "    [" + ($(this).is(':checked') ? "+" : " ") + "] " + $(this).val() + "\n";
-    });
-    if ($('#cb_rn_others').is(':checked')) {
-        report += "    [+] " + $('#txt_rn_others').val() + "\n";
-    }
+    report += "    [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
+    report += "    [" + (has_rln ? "+" : " ") + "] Yes, if yes, number of suspicious lymph node: " + rln_num + ", and locations:";
+
+    let rn_rlc_check = $('#cb_rn_rlc').is(':checked') ? "+" : " ";
+    let rn_llc_check = $('#cb_rn_llc').is(':checked') ? "+" : " ";
+    let rn_rup_check = $('#cb_rn_rup').is(':checked') ? "+" : " ";
+    let rn_lup_check = $('#cb_rn_lup').is(':checked') ? "+" : " ";
+    let rn_rlp_check = $('#cb_rn_rlp').is(':checked') ? "+" : " ";
+    let rn_llp_check = $('#cb_rn_llp').is(':checked') ? "+" : " ";
+    let rn_utpe_check = $('#cb_rn_utpe').is(':checked') ? "+" : " ";
+    let rn_mtpe_check = $('#cb_rn_mtpe').is(':checked') ? "+" : " ";
+    let rn_ltpe_check = $('#cb_rn_ltpe').is(':checked') ? "+" : " ";
+    let rn_rpl_check = $('#cb_rn_rpl').is(':checked') ? "+" : " ";
+    let rn_lpl_check = $('#cb_rn_lpl').is(':checked') ? "+" : " ";
+    let rn_sca_check = $('#cb_rn_sca').is(':checked') ? "+" : " ";
+    let rn_di_check = $('#cb_rn_di').is(':checked') ? "+" : " ";
+    let rn_pc_check = $('#cb_rn_pc').is(':checked') ? "+" : " ";
+    let rn_lga_check = $('#cb_rn_lga').is(':checked') ? "+" : " ";
+    let rn_cha_check = $('#cb_rn_cha').is(':checked') ? "+" : " ";
+    let rn_sa_check = $('#cb_rn_sa').is(':checked') ? "+" : " ";
+    let rn_c_check = $('#cb_rn_c').is(':checked') ? "+" : " ";
+    let rn_others_check = $('#cb_rn_other').is(':checked') ? "+" : " ";
+    let txt_rn_others = $('#txt_rn_others').val() ? $('#txt_rn_others').val() : "___";
+    report += `
+        Lower cervical          [${rn_rlc_check}] Right    [${rn_llc_check}] Left
+        Upper paratracheal      [${rn_rup_check}] Right    [${rn_lup_check}] Left
+        Lower paratracheal      [${rn_rlp_check}] Right    [${rn_llp_check}] Left
+        Thoracic paraesophageal [${rn_utpe_check}] Upper    [${rn_mtpe_check}] Middle   [${rn_ltpe_check}] Lower
+        Pulmonary ligament      [${rn_rpl_check}] Right    [${rn_lpl_check}] Left
+        [${rn_sca_check}] Subcarinal       [${rn_di_check}] Diaphragmatic    [${rn_pc_check}] Paracardial  [${rn_lga_check}] Left gastric
+        [${rn_cha_check}] Common hepatic   [${rn_sa_check}] Splenic          [${rn_c_check}] Celiac       [${rn_others_check}] Others: ${txt_rn_others}
+
+`;
+
+    // calculate N stage
     if (has_rln) {
         if (rln_num >= 7) {
             n_stage.push("3");
@@ -126,13 +173,12 @@ function generate_report(){
         }
         //console.log(n_stage);
     }
-    report += "\n";
 
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
-    report += "  [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
-    report += "  [" + (has_dm ? "+" : " ") + "] Yes, location(s): ";
+    report += "    [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
+    report += "    [" + (has_dm ? "+" : " ") + "] Yes, location(s): ";
     if (has_dm) {
         if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
             report += join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'));
@@ -158,10 +204,7 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_ESO_T[t];
-    let n_str = AJCC8_ESO_N[n];
-    let m_str = AJCC8_ESO_M[m];
-    report += ajcc_template("Esophageal Carcinoma", t, t_str, n, n_str, m, m_str);
+    report += ajcc_template_with_parent("Esophageal Carcinoma", t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
 
     $('#reportModalLongTitle').html("Esophageal Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
