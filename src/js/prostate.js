@@ -100,9 +100,9 @@ function generate_report(){
             [${ti_loh_check}] One-half of one lobe or less
             [${ti_moh_check}] More than one-half of one lobe but not both lobes
             [${ti_bl_check}] Involves both lobes
-        Extracapsular extension [${ti_ecr_check}] right  [${ti_ecl_check}] left
-        Seminal vesicle invasion [${ti_svr_check}] right  [${ti_svl_check}] left
-        Pelvic sidewall [${ti_psr_check}] right  [${ti_psl_check}] left
+        Extracapsular extension     [${ti_ecr_check}] Right  [${ti_ecl_check}] Left
+        Seminal vesicle invasion    [${ti_svr_check}] Right  [${ti_svl_check}] Left
+        Pelvic sidewall             [${ti_psr_check}] Right  [${ti_psl_check}] Left
         Pelvic organs invasion
             [${ti_ub_check}] Bladder   [${ti_rec_check}] Rectum   [${ti_es_check}] External sphincter   [${ti_lm_check}] Levator muscles
             [${ti_others_check}] Others ${txt_ti_others}
