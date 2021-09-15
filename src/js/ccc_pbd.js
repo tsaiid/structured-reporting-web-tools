@@ -67,18 +67,28 @@ function generate_report(){
     report += "\n\n";
 
     // Tumor characteristics and associated liver features
-    report += "3. Tumor invasion\n";
-    $('.cb_ti:not(".cb_ti_t4")').each(function(){
-        let check_or_not = $(this).is(':checked') ? "+" : " ";
-        report += `  [${check_or_not}] ` + $(this).val() + "\n";
-    });
-    report += "  Tumor invades the following structures, including:\n";
-    $('.cb_ti_t4').each(function(){
-        let check_or_not = $(this).is(':checked') ? "+" : " ";
-        report += `  [${check_or_not}] ` + $(this).val() + "\n";
-    });
-    report += "\n";
+    let ti_t0_check = $('#cb_ti_t0').is(':checked') ? "+" : " ";
+    let ti_t1_check = $('#cb_ti_t1').is(':checked') ? "+" : " ";
+    let ti_t2a_check = $('#cb_ti_t2a').is(':checked') ? "+" : " ";
+    let ti_t2b_check = $('#cb_ti_t2b').is(':checked') ? "+" : " ";
+    let ti_t3_check = $('#cb_ti_t3').is(':checked') ? "+" : " ";
+    let ti_t4_mpv_check = $('#cb_ti_t4_mpv').is(':checked') ? "+" : " ";
+    let ti_t4_cha_check = $('#cb_ti_t4_cha').is(':checked') ? "+" : " ";
+    let ti_t4_u2bd_check = $('#cb_ti_t4_u2bd').is(':checked') ? "+" : " ";
 
+    report += `3. Tumor invasion
+    T0:  [${ti_t0_check}] No evidence of primary tumor
+    T1:  [${ti_t1_check}] Tumor confines in the bile duct
+    T2a: [${ti_t2a_check}] Tumor invades beyond the wall of the bile duct to surrounding adipose tissue
+    T2b: [${ti_t2b_check}] Tumor invades adjacent hepatic parenchyma
+    T3:  [${ti_t3_check}] Unilateral branches of the portal vein or hepatic artery
+    T4:  [${ti_t4_mpv_check}] Main portal vein or portal branches bilaterally
+         [${ti_t4_cha_check}] Common hepatic artery
+         [${ti_t4_u2bd_check}] Unilateral 2nd-order branch bile duct and contralateral portal vein or hepatic artery
+
+`;
+
+    // calculate T stage
     if ($('.cb_ti_t0:checked').length) {
         t_stage.push('0');
     } else if ($('#cb_ts_nm').is(':checked') || !t_length) {
@@ -101,10 +111,10 @@ function generate_report(){
     let rln_num = parseInt($('#txt_rln_num').val());
     let has_rln = rln_num > 0;
     report += `4. Regional nodal metastasis
-  [` + (has_rln? " " : "+") + `] No regional lymph node metastasis
-  [` + (has_rln && rln_num <= 3 ? "+" : " ") + `] 1-3 positive lymph nodes (N1)
-  [` + (has_rln && rln_num > 3 ? "+" : " ") + `] 4 or more positive lymph nodes (N2)
-  Number: ` + (Number.isInteger(rln_num)? rln_num : "___");
+    [` + (has_rln? " " : "+") + `] No regional lymph node metastasis
+    [` + (has_rln && rln_num <= 3 ? "+" : " ") + `] 1-3 positive lymph nodes (N1)
+    [` + (has_rln && rln_num > 3 ? "+" : " ") + `] 4 or more positive lymph nodes (N2)
+    Number: ` + (Number.isInteger(rln_num)? rln_num : "___");
 
     if (has_rln) {
         if (rln_num >= 4) {
@@ -118,8 +128,8 @@ function generate_report(){
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
-    report += "  [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
-    report += "  [" + (has_dm ? "+" : " ") + "] Yes, location: ";
+    report += "    [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
+    report += "    [" + (has_dm ? "+" : " ") + "] Yes, location: ";
     if (has_dm) {
         if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
             report += join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'));
