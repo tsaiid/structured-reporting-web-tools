@@ -66,7 +66,7 @@ function generate_report(){
     report += "    [" + (has_inv && t_depth < 5 ? "+" : " ") + "] < 5 mm (T1)\n";
     report += "    [" + (has_inv && t_depth >= 5 && t_depth <= 12 ? "+" : " ") + "] 5-12 mm (T2)\n";
     report += "    [" + (has_inv && t_depth > 12 ? "+" : " ") + "] > 12 mm (T3)\n";
-    report += "    Tumor invades (T4)\n    ";
+    report += "  - Tumor invades (T4)\n    ";
     $('.cb_ti_t4:not("#cb_ti_others")').each(function(){
         let check_or_not = $(this).is(':checked') ? "+" : " ";
         report += `[${check_or_not}] ` + $(this).val() + "  ";
@@ -94,10 +94,10 @@ function generate_report(){
     let rln_num = parseInt($('#txt_rln_num').val());
     let has_rln = rln_num > 0;
     report += `4. Regional nodal metastasis
-  [` + (has_rln? " " : "+") + `] No regional lymph node metastasis
-  [` + (has_rln && rln_num <= 3 ? "+" : " ") + `] 1-3 positive lymph nodes (N1)
-  [` + (has_rln && rln_num > 3 ? "+" : " ") + `] 4 or more positive lymph nodes (N2)
-  Number: ` + (Number.isInteger(rln_num)? rln_num : "___");
+    [` + (has_rln? " " : "+") + `] No regional lymph node metastasis
+    [` + (has_rln && rln_num <= 3 ? "+" : " ") + `] 1-3 positive lymph nodes (N1)
+    [` + (has_rln && rln_num > 3 ? "+" : " ") + `] 4 or more positive lymph nodes (N2)
+    Number: ` + (Number.isInteger(rln_num)? rln_num : "___");
 
     if (has_rln) {
         if (rln_num >= 4) {
@@ -111,8 +111,8 @@ function generate_report(){
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
-    report += "  [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
-    report += "  [" + (has_dm ? "+" : " ") + "] Yes, location: ";
+    report += "    [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
+    report += "    [" + (has_dm ? "+" : " ") + "] Yes, location: ";
     if (has_dm) {
         if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
             report += join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'));
