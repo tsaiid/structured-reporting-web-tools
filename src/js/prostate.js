@@ -66,11 +66,11 @@ function generate_report(){
     let tl_r_check = !has_tl_na && $('#cb_tl_r').is(':checked') ? "+" : " ";
     let tl_l_check = !has_tl_na && $('#cb_tl_l').is(':checked') ? "+" : " ";
     report += `2. Tumor location / size
-  [${tl_na_check}] Not assessable
-  [${tl_no_check}] No or Equivocal
-  [${tl_yes_check}] Yes, if yes:
-    [${tl_r_check}] Right lobe   [${tl_l_check}] Left lobe
-       Size ${txt_ts_len} cm (largest diameter of the biggest tumor)
+    [${tl_na_check}] Not assessable
+    [${tl_no_check}] No or Equivocal
+    [${tl_yes_check}] Yes, if yes:
+        [${tl_r_check}] Right lobe   [${tl_l_check}] Left lobe
+        Size ${txt_ts_len} cm (largest diameter of the biggest tumor)
 
 `;
 
@@ -94,18 +94,18 @@ function generate_report(){
     let ti_others_check = $('#cb_ti_others').is(':checked') ? "+" : " ";
     let txt_ti_others = $('#txt_ti_others').val() ? $('#txt_ti_others').val() : "___";
     report += `3. Tumor invasion
-  [${ti_no_check}] No or Equivocal
-  [${ti_yes_check}] Yes, if yes:
-    Prostate
-      [${ti_loh_check}] One-half of one lobe or less
-      [${ti_moh_check}] More than one-half of one lobe but not both lobes
-      [${ti_bl_check}] Involves both lobes
-    Extracapsular extension [${ti_ecr_check}] right  [${ti_ecl_check}] left
-    Seminal vesicle invasion [${ti_svr_check}] right  [${ti_svl_check}] left
-    Pelvic sidewall [${ti_psr_check}] right  [${ti_psl_check}] left
-    Pelvic organs invasion
-      [${ti_ub_check}] Bladder   [${ti_rec_check}] Rectum   [${ti_es_check}] External sphincter   [${ti_lm_check}] Levator muscles
-      [${ti_others_check}] Others ${txt_ti_others}
+    [${ti_no_check}] No or Equivocal
+    [${ti_yes_check}] Yes, if yes:
+        Prostate
+            [${ti_loh_check}] One-half of one lobe or less
+            [${ti_moh_check}] More than one-half of one lobe but not both lobes
+            [${ti_bl_check}] Involves both lobes
+        Extracapsular extension [${ti_ecr_check}] right  [${ti_ecl_check}] left
+        Seminal vesicle invasion [${ti_svr_check}] right  [${ti_svl_check}] left
+        Pelvic sidewall [${ti_psr_check}] right  [${ti_psl_check}] left
+        Pelvic organs invasion
+            [${ti_ub_check}] Bladder   [${ti_rec_check}] Rectum   [${ti_es_check}] External sphincter   [${ti_lm_check}] Levator muscles
+            [${ti_others_check}] Others ${txt_ti_others}
 
 `;
     // Calculate T staging
@@ -132,30 +132,25 @@ function generate_report(){
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length > 0;
+    let rn_ro_check = $('#cb_rn_ro').is(':checked') ? "+" : " ";
+    let rn_lo_check = $('#cb_rn_lo').is(':checked') ? "+" : " ";
+    let rn_rii_check = $('#cb_rn_rii').is(':checked') ? "+" : " ";
+    let rn_lii_check = $('#cb_rn_lii').is(':checked') ? "+" : " ";
+    let rn_rei_check = $('#cb_rn_rei').is(':checked') ? "+" : " ";
+    let rn_lei_check = $('#cb_rn_lei').is(':checked') ? "+" : " ";
+    let rn_s_check = $('#cb_rn_s').is(':checked') ? "+" : " ";
     report += "4. Regional nodal metastasis\n";
-    report += "  [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
-    report += "  [" + (has_rln ? "+" : " ") + "] Yes, if yes:\n";
-    $('.lb_rn').each(function(){
-        let cb_rn = $(this).attr('for');
-        if ($(this).hasClass('has_parts')) {
-            let check_or_not = $('.' + cb_rn + ':checked').length > 0 ? "+" : " ";
-            report += `    [${check_or_not}] ` + $(this).text() + ": ";
-            let parts = $('.' + cb_rn);
-            parts.each(function(i, e){
-                let check_or_not = $(this).is(':checked') ? "+" : " ";
-                report += `[${check_or_not}] ` + $(this).val();
-                if (i !== parts.length - 1) {
-                    report += "  ";
-                }
-            });
-            report += "\n";
-        } else {
-            let check_or_not = $('#' + cb_rn).is(':checked') ? "+" : " ";
-            report += `    [${check_or_not}] ` + $(this).text() + "\n";
-        }
-    });
-    report += "\n";
+    report += "    [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
+    report += "    [" + (has_rln ? "+" : " ") + "] Yes, if yes:";
+    report += `
+        Obturator:      [${rn_ro_check}] Right    [${rn_lo_check}] Left
+        Internal iliac: [${rn_rii_check}] Right    [${rn_lii_check}] Left
+        External iliac: [${rn_rei_check}] Right    [${rn_lei_check}] Left
+        [${rn_s_check}] Sacral
 
+`;
+
+    // calculate N stage
     if (has_rln) {
         n_stage.push("1");
     }
@@ -181,19 +176,17 @@ function generate_report(){
     let dm_others_check = $('#cb_dm_others').is(':checked') ? "+" : " ";
     let txt_dm_others = $('#txt_dm_others').val() ? $('#txt_dm_others').val() : "___";
     report += `5. Distant metastasis (In this study)
-  [${dm_no_check}] No or Equivocal
-  [${dm_yes_check}] Yes, if yes:
-    [${dm_nrl_check}] Non-regional lymph nodes
-      [${dm_nrl_ci_check}] Common iliac: [${dm_nrl_ci_r_check}] right  [${dm_nrl_ci_l_check}] left
-      [${dm_nrl_i_check}] Inguinal: [${dm_nrl_i_r_check}] right  [${dm_nrl_i_l_check}] left
-      [${dm_nrl_pa_check}] Paraaortic
-      [${dm_nrl_others_check}] Others: ${txt_dm_nrl_others}
-    [${dm_li_check}] Liver
-    [${dm_ad_check}] Adrenal
-    [${dm_lu_check}] Lung
-    [${dm_b_check}] Bone
-    [${dm_others_check}] Others: ${txt_dm_others}`;
-    report += "\n\n";
+    [${dm_no_check}] No or Equivocal
+    [${dm_yes_check}] Yes, if yes:
+        [${dm_nrl_check}] Non-regional lymph nodes
+            [${dm_nrl_ci_check}] Common iliac: [${dm_nrl_ci_r_check}] Right  [${dm_nrl_ci_l_check}] Left
+            [${dm_nrl_i_check}] Inguinal:     [${dm_nrl_i_r_check}] Right  [${dm_nrl_i_l_check}] Left
+            [${dm_nrl_pa_check}] Paraaortic
+            [${dm_nrl_others_check}] Others: ${txt_dm_nrl_others}
+        [${dm_li_check}] Liver  [${dm_ad_check}] Adrenal    [${dm_lu_check}] Lung   [${dm_b_check}] Bone
+        [${dm_others_check}] Others: ${txt_dm_others}
+
+`;
 
     if (has_dm) {
         if ($('.cb_dm_m1a:checked').length) {
