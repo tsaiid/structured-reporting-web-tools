@@ -91,12 +91,13 @@ function generate_report(){
     report += `3. Tumor invasion
     [${ti_no_check}] No or Equivocal
     [${ti_yes_check}] Yes, if yes:
-        T1: [${ti_np_check}] Nasopharynx  [${ti_op_check}] Oropharynx  [${ti_nc_check}] Nasal cavity
-        T2: [${ti_pps_check}] Parapharyngeal space  [${ti_mpt_check}] Medial pterygoid  [${ti_lpt_check}] Lateral pterygoid
+        T1: [${ti_np_check}] Nasopharynx               [${ti_op_check}] Oropharynx         [${ti_nc_check}] Nasal cavity
+        T2: [${ti_pps_check}] Parapharyngeal space      [${ti_mpt_check}] Medial pterygoid   [${ti_lpt_check}] Lateral pterygoid
             [${ti_pvm_check}] Preverebral muscles
         T3: [${ti_sb_check}] Skull base bone invasion  [${ti_cv_check}] Cervical vertebra  [${ti_pb_check}] Pterygoid structures
-            [${ti_pns_check}] Paranasal sinus ([${ti_pns_e_check}] Ethmoid   [${ti_pns_m_check}] Maxillary   [${ti_pns_f_check}] Frontal   [${ti_pns_s_check}] Sphenoid)
-        T4: [${ti_ic_check}] Intracranial   [${ti_cn_check}] Cranial nerves  [${ti_hp_check}] Hypopharynx  [${ti_ob_check}] Orbit  [${ti_p_check}] Parotid gland
+            [${ti_pns_check}] Paranasal sinus ([${ti_pns_e_check}] Ethmoid    [${ti_pns_m_check}] Maxillary    [${ti_pns_f_check}] Frontal    [${ti_pns_s_check}] Sphenoid)
+        T4: [${ti_ic_check}] Intracranial              [${ti_cn_check}] Cranial nerves     [${ti_hp_check}] Hypopharynx
+            [${ti_ob_check}] Orbit                     [${ti_p_check}] Parotid gland
             [${ti_blp_check}] Infiltration beyond the lateral surface of the lateral pterygoid muscle
             [${ti_others_check}] Others: ${txt_ti_others}
 
@@ -165,8 +166,8 @@ function generate_report(){
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
-    report += "  [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
-    report += "  [" + (has_dm ? "+" : " ") + "] Yes, location: ";
+    report += "    [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
+    report += "    [" + (has_dm ? "+" : " ") + "] Yes, location: ";
     if (has_dm) {
         if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
             report += join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'));
