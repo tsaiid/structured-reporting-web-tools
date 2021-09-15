@@ -82,7 +82,7 @@ function generate_report(){
         let check_or_not = $(this).is(':checked') ? "+" : " ";
         report += `(${check_or_not}) ` + $(this).val() + '  ';
     });
-    report += "\n";
+    report += "\n\n";
 
     // Tumor invasion
     let has_ti = $('.cb_ti:checked').length > 0;
@@ -111,17 +111,18 @@ function generate_report(){
     let ti_t3_more_2cm_check = $('.cb_ti_t3:checked').length > 0 && $('#cb_ti_t3_2cm').is(':checked') ? "+" : " ";
     let ti_a_check = $('#cb_ti_a').is(':checked') ? "+" : " ";
     report += `3. Tumor invasion
-  [${ti_lo_check}] Limited to ovary
-  [${ti_t2_check}] Visible tumor implant or peritoneal thickening below pelvic brim
-    If yes, involving
-      [${ti_t2_u_check}] Uterus  [${ti_t2_ft_check}] Fallopian tube  [${ti_t2_lb_check}] Large bowel
-      [${ti_t2_ub_check}] Urinary bladder  [${ti_t2_sb_check}] Small bowel  [${ti_t2_o_check}] Omentum
-  [${ti_t3_check}] Visible tumor implant or peritoneal thickening outside pelvis
-    If yes, [${ti_t3_less_2cm_check}] <2cm  [${ti_t3_more_2cm_check}] >2cm; involving
-      [${ti_t3_lb_check}] Large bowel  [${ti_t3_sb_check}] Small bowel  [${ti_t3_s_check}] Spleen  [${ti_t3_lvs_check}] Liver surface
-      [${ti_t3_sps_check}] Subphrenic space  [${ti_t3_o_check}] Omentum  [${ti_t3_ph_check}] Porta hepatic  [${ti_t3_ls_check}] Lesser sac
-      [${ti_t3_ghl_check}] Gastrohepatic ligament  [${ti_t3_fl_check}] Falciform ligament  [${ti_others_check}] Others ${txt_ti_others}
-  [${ti_a_check}] Ascites
+    [${ti_lo_check}] Limited to ovary
+    [${ti_t2_check}] Visible tumor implant or peritoneal thickening below pelvic brim
+        If yes, involving
+            [${ti_t2_u_check}] Uterus             [${ti_t2_ft_check}] Fallopian tube   [${ti_t2_lb_check}] Large bowel
+            [${ti_t2_ub_check}] Urinary bladder    [${ti_t2_sb_check}] Small bowel      [${ti_t2_o_check}] Omentum
+    [${ti_t3_check}] Visible tumor implant or peritoneal thickening outside pelvis
+        If yes, [${ti_t3_less_2cm_check}] <2cm  [${ti_t3_more_2cm_check}] >2cm; involving
+            [${ti_t3_lb_check}] Large bowel        [${ti_t3_sb_check}] Small bowel      [${ti_t3_s_check}] Spleen              [${ti_t3_lvs_check}] Liver surface
+            [${ti_t3_sps_check}] Subphrenic space   [${ti_t3_o_check}] Omentum          [${ti_t3_ph_check}] Porta hepatic       [${ti_t3_ls_check}] Lesser sac
+            [${ti_t3_ghl_check}] Gastrohepatic ligament                  [${ti_t3_fl_check}] Falciform ligament
+            [${ti_others_check}] Others ${txt_ti_others}
+    [${ti_a_check}] Ascites
     `;
 
     // calculate stage
@@ -161,30 +162,38 @@ function generate_report(){
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length > 0;
-    report += "4. Regional nodal metastasis\n";
-    report += "  [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
-    report += "  [" + (has_rln ? "+" : " ") + "] Yes, if yes:\n";
-    $('.lb_rn').each(function(){
-        let cb_rn = $(this).attr('for');
-        if ($(this).hasClass('has_parts')) {
-            let check_or_not = $('.' + cb_rn + ':checked').length > 0 ? "+" : " ";
-            report += `    [${check_or_not}] ` + $(this).text() + ": ";
-            let parts = $('.' + cb_rn);
-            parts.each(function(i, e){
-                let check_or_not = $(this).is(':checked') ? "+" : " ";
-                report += `[${check_or_not}] ` + $(this).val();
-                if (i !== parts.length - 1) {
-                    report += "  ";
-                }
-            });
-            report += "\n";
-        } else {
-            let check_or_not = $('#' + cb_rn).is(':checked') ? "+" : " ";
-            report += `    [${check_or_not}] ` + $(this).text() + "\n";
-        }
-    });
-    report += "\n";
+    let rn_no_check = !has_rln ? "+" : " ";
+    let rn_yes_check = has_rln ? "+" : " ";
+    let rn_rei_check = $('#cb_rn_rei').is(':checked') ? "+" : " ";
+    let rn_lei_check = $('#cb_rn_lei').is(':checked') ? "+" : " ";
+    let rn_rpc_check = $('#cb_rn_rpc').is(':checked') ? "+" : " ";
+    let rn_lpc_check = $('#cb_rn_lpc').is(':checked') ? "+" : " ";
+    let rn_rpm_check = $('#cb_rn_rpm').is(':checked') ? "+" : " ";
+    let rn_lpm_check = $('#cb_rn_lpm').is(':checked') ? "+" : " ";
+    let rn_ro_check = $('#cb_rn_ro').is(':checked') ? "+" : " ";
+    let rn_lo_check = $('#cb_rn_lo').is(':checked') ? "+" : " ";
+    let rn_ri_check = $('#cb_rn_ri').is(':checked') ? "+" : " ";
+    let rn_li_check = $('#cb_rn_li').is(':checked') ? "+" : " ";
+    let rn_rii_check = $('#cb_rn_rii').is(':checked') ? "+" : " ";
+    let rn_lii_check = $('#cb_rn_lii').is(':checked') ? "+" : " ";
+    let rn_rci_check = $('#cb_rn_rci').is(':checked') ? "+" : " ";
+    let rn_lci_check = $('#cb_rn_lci').is(':checked') ? "+" : " ";
+    let rn_paim_check = $('#cb_rn_paim').is(':checked') ? "+" : " ";
+    let rn_pair_check = $('#cb_rn_pair').is(':checked') ? "+" : " ";
+    let rn_pasr_check = $('#cb_rn_pasr').is(':checked') ? "+" : " ";
+    report += `4. Regional nodal metastasis
+    [${rn_no_check}] No or Equivocal
+    [${rn_yes_check}] Yes, if yes:
+        External iliac: [${rn_rei_check}] Right            [${rn_lei_check}] Left
+        Internal iliac: [${rn_rii_check}] Right            [${rn_lii_check}] Left
+        Obturator:      [${rn_ro_check}] Right            [${rn_lo_check}] Left
+        Common iliac:   [${rn_rci_check}] Right            [${rn_lci_check}] Left
+        Inguinal:       [${rn_ri_check}] Right            [${rn_li_check}] Left
+        Paraaortic:     [${rn_paim_check}] Inframesenteric  [${rn_pair_check}] Infrarenal  [${rn_pasr_check}] Suprarenal
 
+`;
+
+    // calculate N stage
     if (has_rln) {
         t_stage.push("3");
         n_stage.push("1");
@@ -203,16 +212,13 @@ function generate_report(){
     let dm_others_check = $('#cb_dm_others').is(':checked') ? "+" : " ";
     let txt_dm_others = $('#txt_dm_others').val() ? $('#txt_dm_others').val() : "___";
     report += `5. Distant metastasis (In this study)
-  [${dm_no_check}] No or Equivocal
-  [${dm_yes_check}] Yes, if yes:
-    [${dm_nrl_check}] Non-regional lymph nodes
-    [${dm_li_check}] Liver
-    [${dm_lu_check}] Lung
-    [${dm_pl_check}] Pleura
-    [${dm_ad_check}] Adrenal
-    [${dm_b_check}] Bone
-    [${dm_others_check}] Others: ${txt_dm_others}`;
-    report += "\n\n";
+    [${dm_no_check}] No or Equivocal
+    [${dm_yes_check}] Yes, if yes:
+        [${dm_nrl_check}] Non-regional lymph nodes    [${dm_li_check}] Liver            [${dm_lu_check}] Lung
+        [${dm_pl_check}] Pleura                      [${dm_ad_check}] Adrenal          [${dm_b_check}] Bone
+        [${dm_others_check}] Others: ${txt_dm_others}
+
+`;
 
     if (has_dm) {
         m_stage.push("1");
