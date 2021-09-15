@@ -83,19 +83,19 @@ function generate_report(){
     let txt_ti_others = $('#txt_ti_others').val() ? $('#txt_ti_others').val() : "___";
 
     report += `3. Tumor invasion
-  [${ti_na_check}] Not assessable
-  [${ti_no_check}] No or Equivocal
-  [${ti_yes_check}] Yes, if yes:
-    [${ti_uc_check}] Tumor in uterine corpus
-      [${ti_lhm_check}] Tumor limited to endometrium or invades less than one half of the myometrium
-      [${ti_mhm_check}] Tumor invades more than one half of the myometrium
-    [${ti_cx_check}] Tumor invades stromal connective tissue of the cervix but does not extend beyond uterus
-    [${ti_sa_check}] Tumor invades serosa &/or adnexa
-    [${ti_pm_check}] Parametrial involvement
-    [${ti_va_check}] Vaginal involvement
-    [${ti_bd_check}] Tumor invades bladder (mucosa)
-    [${ti_bw_check}] Tumor invades bowel (mucosa)
-    [${ti_others_check}] Others: ${txt_ti_others}`;
+    [${ti_na_check}] Not assessable
+    [${ti_no_check}] No or Equivocal
+    [${ti_yes_check}] Yes, if yes:
+        [${ti_uc_check}] Tumor in uterine corpus
+            [${ti_lhm_check}] Tumor limited to endometrium or invades less than one half of the myometrium
+            [${ti_mhm_check}] Tumor invades more than one half of the myometrium
+        [${ti_cx_check}] Tumor invades stromal connective tissue of the cervix but does not extend beyond uterus
+        [${ti_sa_check}] Tumor invades serosa &/or adnexa
+        [${ti_pm_check}] Parametrial involvement
+        [${ti_va_check}] Vaginal involvement
+        [${ti_bd_check}] Tumor invades bladder (mucosa)
+        [${ti_bw_check}] Tumor invades bowel (mucosa)
+        [${ti_others_check}] Others: ${txt_ti_others}`;
     report += "\n\n";
 
     if (has_ti_na && !has_ti) {
@@ -118,30 +118,33 @@ function generate_report(){
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length > 0;
+    let rn_rpm_check = $('#cb_rn_rpm').is(':checked') ? "+" : " ";
+    let rn_lpm_check = $('#cb_rn_lpm').is(':checked') ? "+" : " ";
+    let rn_rii_check = $('#cb_rn_rii').is(':checked') ? "+" : " ";
+    let rn_lii_check = $('#cb_rn_lii').is(':checked') ? "+" : " ";
+    let rn_rei_check = $('#cb_rn_rei').is(':checked') ? "+" : " ";
+    let rn_lei_check = $('#cb_rn_lei').is(':checked') ? "+" : " ";
+    let rn_ro_check = $('#cb_rn_ro').is(':checked') ? "+" : " ";
+    let rn_lo_check = $('#cb_rn_lo').is(':checked') ? "+" : " ";
+    let rn_rci_check = $('#cb_rn_rci').is(':checked') ? "+" : " ";
+    let rn_lci_check = $('#cb_rn_lci').is(':checked') ? "+" : " ";
+    let rn_paim_check = $('#cb_rn_paim').is(':checked') ? "+" : " ";
+    let rn_pair_check = $('#cb_rn_pair').is(':checked') ? "+" : " ";
+    let rn_pasr_check = $('#cb_rn_pasr').is(':checked') ? "+" : " ";
     report += "4. Regional nodal metastasis\n";
-    report += "  [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
-    report += "  [" + (has_rln ? "+" : " ") + "] Yes, if yes:\n";
-    $('.lb_rn').each(function(){
-        let cb_rn = $(this).attr('for');
-        if ($(this).hasClass('has_parts')) {
-            let check_or_not = $('.' + cb_rn + ':checked').length > 0 ? "+" : " ";
-            report += `    [${check_or_not}] ` + $(this).text() + ": ";
-            let parts = $('.' + cb_rn);
-            parts.each(function(i, e){
-                let check_or_not = $(this).is(':checked') ? "+" : " ";
-                report += `[${check_or_not}] ` + $(this).val();
-                if (i !== parts.length - 1) {
-                    report += "  ";
-                }
-            });
-            report += "\n";
-        } else {
-            let check_or_not = $('#' + cb_rn).is(':checked') ? "+" : " ";
-            report += `    [${check_or_not}] ` + $(this).text() + "\n";
-        }
-    });
-    report += "\n";
+    report += "    [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
+    report += "    [" + (has_rln ? "+" : " ") + "] Yes, if yes:";
+    report += `
+        Parametrial:    [${rn_rpm_check}] Right  [${rn_lpm_check}] Left
+        Internal iliac: [${rn_rii_check}] Right  [${rn_lii_check}] Left
+        External iliac: [${rn_rei_check}] Right  [${rn_lei_check}] Left
+        Obturator:      [${rn_ro_check}] Right  [${rn_lo_check}] Left
+        Common iliac:   [${rn_rci_check}] Right  [${rn_lci_check}] Left
+        Paraaortic:     [${rn_paim_check}] Inframesenteric  [${rn_pair_check}] Infrarenal  [${rn_pasr_check}] Suprarenal
 
+`;
+
+    // calculate N stage
     if ($('.cb_rn_n2:checked').length) {
         n_stage.push("2");
     } else if ($('.cb_rn:checked').length) {
@@ -166,18 +169,15 @@ function generate_report(){
     let dm_others_check = $('#cb_dm_others').is(':checked') ? "+" : " ";
     let txt_dm_others = $('#txt_dm_others').val() ? $('#txt_dm_others').val() : "___";
     report += `5. Distant metastasis (In this study)
-  [${dm_no_check}] No or Equivocal
-  [${dm_yes_check}] Yes, if yes:
-    [${dm_nrl_check}] Non-regional lymph nodes
-      [${dm_nrl_i_check}] Inguinal nodes: [${dm_nrl_i_r_check}] right  [${dm_nrl_i_l_check}] left
-      [${dm_nrl_others_check}] Others: ${txt_dm_nrl_others}
-    [${dm_pc_check}] Peritoneal cavity
-    [${dm_lu_check}] Lung
-    [${dm_li_check}] Liver
-    [${dm_ad_check}] Adrenal
-    [${dm_b_check}] Bone
-    [${dm_others_check}] Others: ${txt_dm_others}`;
-    report += "\n\n";
+    [${dm_no_check}] No or Equivocal
+    [${dm_yes_check}] Yes, if yes:
+        [${dm_nrl_check}] Non-regional lymph nodes
+            [${dm_nrl_i_check}] Inguinal nodes: [${dm_nrl_i_r_check}] Right  [${dm_nrl_i_l_check}] Left
+            [${dm_nrl_others_check}] Others: ${txt_dm_nrl_others}
+        [${dm_pc_check}] Peritoneal cavity   [${dm_lu_check}] Lung   [${dm_li_check}] Liver
+        [${dm_ad_check}] Adrenal             [${dm_b_check}] Bone   [${dm_others_check}] Others: ${txt_dm_others}
+
+`;
 
     if (has_dm) {
         m_stage.push("1");
