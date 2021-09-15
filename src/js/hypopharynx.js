@@ -75,8 +75,8 @@ function generate_report(){
     Size: ${txt_ts_len} cm (largest diameter)
     Tumor thickness: ${txt_ts_thick} cm
     Tumor location (subsites):
-        [${tl_rps_check}] Right pyriform sinus   [${tl_lps_check}] Left pyriform sinus
-        [${tl_rpcr_check}] Right postcricoid region   [${tl_lpcr_check}] Left postcricoid region
+        [${tl_rps_check}] Right pyriform sinus              [${tl_lps_check}] Left pyriform sinus
+        [${tl_rpcr_check}] Right postcricoid region          [${tl_lpcr_check}] Left postcricoid region
         [${tl_rppw_check}] Right posterior pharyngeal wall   [${tl_lppw_check}] Left posterior pharyngeal wall
         [${tl_others_check}] Others: ${txt_tl_others}
 
@@ -100,12 +100,12 @@ function generate_report(){
     let txt_ti_others = $('#txt_ti_others').val() ? $('#txt_ti_others').val() : "___";
     report += `3. Tumor invasion
     [${ti_no_check}] No regional invasion
-    [${ti_foh_check}] Fixation of hemilarynx   [${ti_eoem_check}] Extension to esophageal mucosa
-    [${ti_tc_check}] Thyroid cartilage   [${ti_cc_check}] Cricoid cartilage   [${ti_hb_check}] Hyoid bone
-    [${ti_tg_check}] Thyroid gland   [${ti_em_check}] Esophageal muscle
-    [${ti_ccst_check}] Central compartment soft tissue (prelaryngeal strap muscles and subcutaneous fat)
-    [${ti_pvf_check}] Prevertebral fascia   [${ti_eca_check}] Encasement of carotid artery   [${ti_ms_check}] Mediastinal structures
-    [${ti_others_check}] Others: ${txt_ti_others}
+    T3:  [${ti_foh_check}] Fixation of hemilarynx   [${ti_eoem_check}] Extension to esophageal mucosa
+    T4a: [${ti_tc_check}] Thyroid cartilage        [${ti_cc_check}] Cricoid cartilage       [${ti_hb_check}] Hyoid bone
+         [${ti_tg_check}] Thyroid gland            [${ti_em_check}] Esophageal muscle
+         [${ti_ccst_check}] Central compartment soft tissue (prelaryngeal strap muscles and subcutaneous fat)
+    T4b: [${ti_pvf_check}] Prevertebral fascia      [${ti_eca_check}] Encasement of carotid artery
+         [${ti_ms_check}] Mediastinal structures   [${ti_others_check}] Others: ${txt_ti_others}
 
 `;
 
