@@ -180,8 +180,8 @@ function generate_report(){
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
-    report += "  [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
-    report += "  [" + (has_dm ? "+" : " ") + "] Yes, location: ";
+    report += "    [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
+    report += "    [" + (has_dm ? "+" : " ") + "] Yes, location: ";
     if (has_dm) {
         if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
             report += join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'));
