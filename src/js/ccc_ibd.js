@@ -72,18 +72,21 @@ function generate_report(){
     report += "\n\n";
 
     // Tumor characteristics and associated liver features
-    report += "3. Tumor invasion\n";
-    $('.cb_ti').each(function(){
-        let check_or_not = $(this).is(':checked') ? "+" : " ";
-        report += `  [${check_or_not}] ` + $(this).val();
-        if ($(this).hasClass('cb_ti_t4')) {
-            let loc_txt = $('#txt_ti_ehs').val() ? $('#txt_ti_ehs').val() : "___";
-            report += `, location: ${loc_txt}`;
-        }
-        report += "\n";
-    });
-    report += "\n";
+    let ti_t0_check = $('#cb_ti_t0').is(':checked') ? "+" : " ";
+    let ti_t2_check = $('#cb_ti_t2').is(':checked') ? "+" : " ";
+    let ti_t3_check = $('#cb_ti_t3').is(':checked') ? "+" : " ";
+    let ti_t4_check = $('#cb_ti_t4').is(':checked') ? "+" : " ";
+    let txt_ti_t4 = $('#txt_ti_t4').val() ? $('#txt_ti_t4').val() : "___";
 
+    report += `3. Tumor invasion
+    T0: [${ti_t0_check}] No evidence of primary tumor
+    T2: [${ti_t2_check}] Intrahepatic vascular invasion
+    T3: [${ti_t3_check}] Tumor perforating the visceral peritoneum
+    T4: [${ti_t4_check}] Tumor involving local extrahepatic structures by direct invasion, location: ${txt_ti_t4}
+
+`;
+
+    // calculate T stage
     if ($('.cb_ti_t0:checked').length) {
         t_stage.push('0');
     } else if ($('#cb_ts_nm').is(':checked') || !t_length) {
@@ -105,24 +108,28 @@ function generate_report(){
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length;
+    let rn_r_ip_check = $('#cb_rn_r_ip').is(':checked') ? "+" : " ";
+    let rn_r_h_check = $('#cb_rn_r_h').is(':checked') ? "+" : " ";
+    let rn_r_gh_check = $('#cb_rn_r_gh').is(':checked') ? "+" : " ";
+    let rn_l_pd_check = $('#cb_rn_l_pd').is(':checked') ? "+" : " ";
+    let rn_l_pp_check = $('#cb_rn_l_pp').is(':checked') ? "+" : " ";
     report += `4. Regional nodal metastasis
-  [` + (has_rln? " " : "+") + `] No regional lymph node metastasis
-  [` + (has_rln? "+" : " ") + `] Yes, locations:
+    [` + (has_rln? " " : "+") + `] No regional lymph node metastasis
+    [` + (has_rln? "+" : " ") + `] Yes, locations:
+        [${rn_r_ip_check}] Inferior phrenic     [${rn_r_h_check}] Hilar            [${rn_r_gh_check}] Gastrohepatic
+        [${rn_l_pd_check}] Periduodenal         [${rn_l_pp_check}] Peripancreatic
+
 `;
-    $('.cb_rn').each(function(){
-        let check_or_not = $(this).is(':checked') ? "+" : " ";
-        report += `    [${check_or_not}] ` + $(this).val() + "\n";
-    });
+
     if (has_rln) {
         n_stage.push('1');
     }
-    report += "\n";
 
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
-    report += "  [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
-    report += "  [" + (has_dm ? "+" : " ") + "] Yes, location: ";
+    report += "    [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
+    report += "    [" + (has_dm ? "+" : " ") + "] Yes, location: ";
     if (has_dm) {
         if ($('.cb_dm:not("#cb_dm_others"):checked').length) {
             report += join_checkbox_values($('.cb_dm:not("#cb_dm_others"):checked'));
