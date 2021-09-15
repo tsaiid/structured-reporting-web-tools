@@ -75,7 +75,7 @@
             <!-- Tumor Size -->
             <h2 class="h4 mt-4">Tumor Size</h2>
             <form class="form-inline needs-validation" id="form_tumor_size" novalidate>
-              <div class="input-group input-group-sm col-md-6 pl-0 mb-2 mr-sm-2">
+              <div class="input-group input-group-sm col-md-7 pl-0 mb-2 mr-sm-2">
                 <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" step="0.1" class="form-control"
                   aria-label="Greatest dimension of tumor in cm" id="txt_ts_len"
                   placeholder="The largest tumor" required>
@@ -98,7 +98,7 @@
             <!-- Tumor Invasion -->
             <h2 class="h4 mt-4">Tumor Invasion</h2>
             <form class="form-inline needs-validation" id="form_tumor_depth" novalidate>
-              <div class="input-group input-group-sm col-md-6 pl-0 mb-0 mr-sm-2">
+              <div class="input-group input-group-sm col-md-7 pl-0 mb-0 mr-sm-2">
                 <input type="number" pattern="[0-9]+" step="1" class="form-control"
                   aria-label="Maximum depth of tumor invasion in mm" id="txt_ti_dep"
                   placeholder="Maximum depth of bile duct wall invasion" required>
@@ -122,10 +122,13 @@
                 &lt; 5 mm (T1), 5–12 mm (T2), &gt; 12 mm (T3)
               </small>
             </div>
-            <form class="" id="">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label" for="">Tumor involves: (T4)</label>
+
+            <div class="row pt-2">
+              <div class="col t_sidebar">
+                T4
               </div>
+              <div class="col">
+            <form class="" id="">
               <div class="form-check mb-2 mr-sm-2">
                 <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_ca" value="celiac axis">
                 <label class="form-check-label" for="cb_ti_ca">Celiac axis</label>
@@ -150,6 +153,8 @@
                   id="txt_ti_others">
               </div>
             </form>
+              </div>
+            </div>
           </div>
 
           <!-- second column -->
