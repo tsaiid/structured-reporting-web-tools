@@ -160,10 +160,8 @@ function generate_report(){
     let dm_no_check = !has_dm ? "+" : " ";
     let dm_yes_check = has_dm ? "+" : " ";
     let dm_nrl_check = $('.cb_dm_nrl:checked').length > 0 ? "+" : " ";
-    let dm_nrl_ci_check = $('.cb_dm_nrl_ci:checked').length > 0 ? "+" : " ";
     let dm_nrl_ci_r_check = $('#cb_dm_nrl_ci_r').is(':checked') ? "+" : " ";
     let dm_nrl_ci_l_check = $('#cb_dm_nrl_ci_l').is(':checked') ? "+" : " ";
-    let dm_nrl_i_check = $('.cb_dm_nrl_i:checked').length > 0 ? "+" : " ";
     let dm_nrl_i_r_check = $('#cb_dm_nrl_i_r').is(':checked') ? "+" : " ";
     let dm_nrl_i_l_check = $('#cb_dm_nrl_i_l').is(':checked') ? "+" : " ";
     let dm_nrl_pa_check = $('#cb_dm_nrl_pa').is(':checked') ? "+" : " ";
@@ -179,11 +177,11 @@ function generate_report(){
     [${dm_no_check}] No or Equivocal
     [${dm_yes_check}] Yes, if yes:
         [${dm_nrl_check}] Non-regional lymph nodes
-            [${dm_nrl_ci_check}] Common iliac: [${dm_nrl_ci_r_check}] Right  [${dm_nrl_ci_l_check}] Left
-            [${dm_nrl_i_check}] Inguinal:     [${dm_nrl_i_r_check}] Right  [${dm_nrl_i_l_check}] Left
+            Common iliac: [${dm_nrl_ci_r_check}] Right  [${dm_nrl_ci_l_check}] Left
+            Inguinal:     [${dm_nrl_i_r_check}] Right  [${dm_nrl_i_l_check}] Left
             [${dm_nrl_pa_check}] Paraaortic
             [${dm_nrl_others_check}] Others: ${txt_dm_nrl_others}
-        [${dm_li_check}] Liver  [${dm_ad_check}] Adrenal    [${dm_lu_check}] Lung   [${dm_b_check}] Bone
+        [${dm_li_check}] Liver   [${dm_ad_check}] Adrenal   [${dm_lu_check}] Lung   [${dm_b_check}] Bone
         [${dm_others_check}] Others: ${txt_dm_others}
 
 `;
