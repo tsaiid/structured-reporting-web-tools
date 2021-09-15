@@ -91,8 +91,9 @@ function generate_report(){
     Size: ${txt_ts_len} cm (largest diameter)
     Laterality: [${tl_l_check}] Left   [${tl_r_check}] Right   [${tl_b_check}] Bilateral
     Tumor location:
-        [${tl_ul_check}] Upper Lip   [${tl_ll_check}] Lower Lip   [${tl_ugm_check}] Upper gingivobuccal mucosa   [${tl_lgm_check}] Lower gingivobuccal mucosa
-        [${tl_hp_check}] Hard palate   [${tl_ot_check}] Oral tongue   [${tl_mf_check}] Mouth floor   [${tl_rt_check}] Retromolar trigone
+        [${tl_ul_check}] Upper Lip                    [${tl_ll_check}] Lower Lip           [${tl_ugm_check}] Upper gingivobuccal mucosa
+        [${tl_lgm_check}] Lower gingivobuccal mucosa   [${tl_hp_check}] Hard palate         [${tl_ot_check}] Oral tongue
+        [${tl_mf_check}] Mouth floor                  [${tl_rt_check}] Retromolar trigone
         [${tl_others_check}] Others: ${txt_tl_others}
 
 `;
@@ -118,11 +119,11 @@ function generate_report(){
     report += `3. Tumor invasion
     [${ti_no_check}] No regional invasion
     T4a (lip): [${ti_ltcb_check}] Through cortical bone   [${ti_lian_check}] Inferior alveolar nerve
-               [${ti_lfom_check}] Floor of mouth   [${ti_lsof_check}] Skin of face
-    T4a (oral cavity): [${ti_otcb_check}] Through cortical bone [mandible or maxilla]   [${ti_oemt_check}] Extrinsic muscle of tongue
-                       [${ti_oms_check}] Maxillary sinus   [${ti_osof_check}] Skin of face
-    T4b: [${ti_ms_check}] Masticator space   [${ti_pp_check}] Pterygoid plates   [${ti_sb_check}] Skull base
-         [${ti_eca_check}] Encase internal carotid artery   [${ti_others_check}] Others: ${txt_ti_others}
+               [${ti_lfom_check}] Floor of mouth          [${ti_lsof_check}] Skin of face
+    T4a (oral cavity): [${ti_otcb_check}] Through cortical bone [mandible or maxilla]
+                       [${ti_oemt_check}] Extrinsic muscle of tongue   [${ti_oms_check}] Maxillary sinus   [${ti_osof_check}] Skin of face
+    T4b: [${ti_ms_check}] Masticator space   [${ti_pp_check}] Pterygoid plates    [${ti_sb_check}] Skull base
+         [${ti_eca_check}] Encase internal carotid artery             [${ti_others_check}] Others: ${txt_ti_others}
 
 `;
 
