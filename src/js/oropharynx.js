@@ -91,9 +91,9 @@ function generate_report(){
     Size: ${txt_ts_len} cm (largest diameter)
     Tumor thickness: ${txt_ts_thick} cm
     Tumor location:
-        [${tl_r_check}] Right   [${tl_l_check}] Left
+        [${tl_r_check}] Right                [${tl_l_check}] Left
         [${tl_bt_check}] Base of the tongue   [${tl_tf_check}] Tonsillar fossa
-        [${tl_sp_check}] Soft palate   [${tl_ow_check}] Oropharyngeal walls
+        [${tl_sp_check}] Soft palate          [${tl_ow_check}] Oropharyngeal walls
         [${tl_others_check}] Others: ${txt_tl_others}
 
 `;
@@ -116,12 +116,12 @@ function generate_report(){
     let txt_ti_others = $('#txt_ti_others').val() ? $('#txt_ti_others').val() : "___";
     report += `3. Tumor invasion
     [${ti_no_check}] No regional invasion
-    [${ti_else_check}] Extension to lingual surface of epiglottis
-    [${ti_l_check}] Larynx   [${ti_emt_check}] Extrinsic muscle of tongue   [${ti_mpm_check}] Medial pterygoid muscle
-    [${ti_hp_check}] Hard palate   [${ti_m_check}] Mandible
-    [${ti_lpm_check}] Lateral pterygoid muscle   [${ti_pp_check}] Pterygoid plates   [${ti_lnp_check}] Lateral nasopharynx
-    [${ti_sb_check}] Skull base   [${ti_eca_check}] Encasement of carotid artery
-    [${ti_others_check}] Others: ${txt_ti_others}
+    T3:  [${ti_else_check}] Extension to lingual surface of epiglottis
+    T4a: [${ti_l_check}] Larynx        [${ti_emt_check}] Extrinsic muscle of tongue   [${ti_mpm_check}] Medial pterygoid muscle
+         [${ti_hp_check}] Hard palate   [${ti_m_check}] Mandible
+    T4b: [${ti_lpm_check}] Lateral pterygoid muscle   [${ti_pp_check}] Pterygoid plates   [${ti_lnp_check}] Lateral nasopharynx
+         [${ti_sb_check}] Skull base                 [${ti_eca_check}] Encasement of carotid artery
+         [${ti_others_check}] Others: ${txt_ti_others}
 
 `;
 
