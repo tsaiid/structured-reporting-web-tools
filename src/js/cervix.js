@@ -5,44 +5,44 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/cervix.html');
 }
 
-import {join_checkbox_values, ajcc_template, ajcc_template_with_parent} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC_T = {
-    'x': 'Primary tumor cannot be assessed',
-    '0': 'No evidence of primary tumor',
-    '1': 'Carcinoma is strictly confined to the cervix (extension to the corpus should be disregarded)',
-    '1a': 'Invasive carcinoma that can be diagnosed only by microscopy with maximum depth of invasion ≤5 mm',
-    '1a1': 'Measured stromal invasion ≤3 mm in depth',
-    '1a2': 'Measured stromal invasion >3 mm and ≤5 mm in depth',
-    '1b': 'Invasive carcinoma with measured deepest invasion >5 mm (greater than stage IA); lesion limited to the cervix uteri with size measured by maximum tumor diameter; note: the involvement of vascular/lymphatic spaces should not change the staging, and the lateral extent of the lesion is no longer considered',
-    '1b1': 'Invasive carcinoma >5 mm depth of stromal invasion and ≤2 cm in greatest dimension',
-    '1b2': 'Invasive carcinoma >2 cm and ≤4 cm in greatest dimension',
-    '1b3': 'Invasive carcinoma >4 cm in greatest dimension',
-    '2': 'Carcinoma invades beyond the uterus but has not extended onto the lower one-third of the vagina or to the pelvic wall',
-    '2a': 'Involvement limited to the upper two-thirds of the vagina without parametrial invasion',
-    '2a1': 'Invasive carcinoma ≤4 cm in greatest dimension',
-    '2a2': 'Invasive carcinoma >4 cm in greatest dimension',
-    '2b': 'With parametrial invasion but not up to the pelvic wall',
-    '3': 'Carcinoma involves the lower one- third of the vagina and/or extends to the pelvic wall and/or causes hydronephrosis or nonfunc-tioning kidney; note: the pelvic wall is defined as the muscle, fascia, neurovascular structures, and skeletal portions of the bony pelvis; cases with no cancer-free space between the tumor and pelvic wall by rectal examination are FIGO stage III',
-    '3a': 'Carcinoma involves the lower one-third of the vagina, with no extension to the pelvic wall',
-    '3b': 'Extension to the pelvic wall and/or hydronephrosis or nonfunctioning kidney (unless known to be due to another cause)',
-    '4': 'Carcinoma has involved (biopsy-proven) the mucosa of the bladder or rectum or has spread to adjacent organs (bullous edema, as such, does not permit a case to be assigned to stage IVA)',
-};
-const AJCC_N = {
-    'x': 'Regional lymph node cannot be assessed',
-    '0': 'No regional lymph node metastasis',
-    '0(i+)': 'Isolated tumor cells in regional lymph node(s) no greater than 0.2 mm',
-    '1': 'Regional lymph node metastasis to pelvic lymph nodes only',
-    '1mi': 'Regional lymph node metastasis (>0.2 mm but ≤2.0 mm in greatest dimension) to pelvic lymph nodes',
-    '1a': 'Regional lymph node metastasis (>2.0 mm in greatest dimension) to pelvic lymph nodes',
-    '2': 'Regional lymph node metastasis to para-aortic lymph nodes, with or without positive pelvic lymph nodes',
-    '2mi': 'Regional lymph node metastasis (>0.2 mm but ≤2.0 mm in greatest dimension) to para-aortic lymph nodes, with or without positive pelvic lymph nodes',
-    '2a': 'Regional lymph node metastasis (>2.0 mm in greatest dimension) to para-aortic lymph nodes, with or without positive pelvic lymph nodes',
-};
-const AJCC_M = {
-    '0': 'No distant metastasis (in this study)',
-    '1': 'Distant metastasis (including peritoneal spread or involvement of the supraclavicular, mediastinal, or distant lymph nodes; lung; liver; or bone)',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed'],
+    ['0', 'No evidence of primary tumor'],
+    ['1', 'Carcinoma is strictly confined to the cervix (extension to the corpus should be disregarded)'],
+    ['1a', 'Invasive carcinoma that can be diagnosed only by microscopy with maximum depth of invasion ≤5 mm'],
+    ['1a1', 'Measured stromal invasion ≤3 mm in depth'],
+    ['1a2', 'Measured stromal invasion >3 mm and ≤5 mm in depth'],
+    ['1b', 'Invasive carcinoma with measured deepest invasion >5 mm (greater than stage IA); lesion limited to the cervix uteri with size measured by maximum tumor diameter; note: the involvement of vascular/lymphatic spaces should not change the staging, and the lateral extent of the lesion is no longer considered'],
+    ['1b1', 'Invasive carcinoma >5 mm depth of stromal invasion and ≤2 cm in greatest dimension'],
+    ['1b2', 'Invasive carcinoma >2 cm and ≤4 cm in greatest dimension'],
+    ['1b3', 'Invasive carcinoma >4 cm in greatest dimension'],
+    ['2', 'Carcinoma invades beyond the uterus but has not extended onto the lower one-third of the vagina or to the pelvic wall'],
+    ['2a', 'Involvement limited to the upper two-thirds of the vagina without parametrial invasion'],
+    ['2a1', 'Invasive carcinoma ≤4 cm in greatest dimension'],
+    ['2a2', 'Invasive carcinoma >4 cm in greatest dimension'],
+    ['2b', 'With parametrial invasion but not up to the pelvic wall'],
+    ['3', 'Carcinoma involves the lower one- third of the vagina and/or extends to the pelvic wall and/or causes hydronephrosis or nonfunc-tioning kidney; note: the pelvic wall is defined as the muscle, fascia, neurovascular structures, and skeletal portions of the bony pelvis; cases with no cancer-free space between the tumor and pelvic wall by rectal examination are FIGO stage III'],
+    ['3a', 'Carcinoma involves the lower one-third of the vagina, with no extension to the pelvic wall'],
+    ['3b', 'Extension to the pelvic wall and/or hydronephrosis or nonfunctioning kidney (unless known to be due to another cause)'],
+    ['4', 'Carcinoma has involved (biopsy-proven) the mucosa of the bladder or rectum or has spread to adjacent organs (bullous edema, as such, does not permit a case to be assigned to stage IVA)'],
+]);
+const AJCC_N = new Map([
+    ['x', 'Regional lymph node cannot be assessed'],
+    ['0', 'No regional lymph node metastasis'],
+    ['0(i+)', 'Isolated tumor cells in regional lymph node(s) no greater than 0.2 mm'],
+    ['1', 'Regional lymph node metastasis to pelvic lymph nodes only'],
+    ['1mi', 'Regional lymph node metastasis (>0.2 mm but ≤2.0 mm in greatest dimension) to pelvic lymph nodes'],
+    ['1a', 'Regional lymph node metastasis (>2.0 mm in greatest dimension) to pelvic lymph nodes'],
+    ['2', 'Regional lymph node metastasis to para-aortic lymph nodes, with or without positive pelvic lymph nodes'],
+    ['2mi', 'Regional lymph node metastasis (>0.2 mm but ≤2.0 mm in greatest dimension) to para-aortic lymph nodes, with or without positive pelvic lymph nodes'],
+    ['2a', 'Regional lymph node metastasis (>2.0 mm in greatest dimension) to para-aortic lymph nodes, with or without positive pelvic lymph nodes'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis (in this study)'],
+    ['1', 'Distant metastasis (including peritoneal spread or involvement of the supraclavicular, mediastinal, or distant lymph nodes; lung; liver; or bone)'],
+]);
 
 function generate_report(){
     var t_stage = [];
@@ -251,7 +251,17 @@ new ClipboardJS('#btn_copy', {
     }
 });
 
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
 
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for Cervical Cancer");
+    $('#ajccModalBody').html(ajcc_table);
+});
 /*
 var clipboard = new ClipboardJS('#btn_copy');
 clipboard.on('success', function(e) {
