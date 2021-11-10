@@ -60,16 +60,16 @@ function generate_report(){
     let cb_tl_dsw_check = $('#cb_tl_dsw').is(':checked') ? "+" : " ";
     let cb_tl_iwn_check = $('#cb_tl_iwn').is(':checked') ? "+" : " ";
     let has_ts_nm = $('#cb_ts_nm').is(':checked');
+    let t_length = parseFloat($('#txt_ts_len').val());
     let cb_ts_nm_check = has_ts_nm ? "+" : " ";
     let cb_ts_m_check = !has_ts_nm && t_length ? "+" : " ";
-    let t_length = parseFloat($('#txt_ts_len').val());
     let txt_ts_len = t_length ? t_length : "___";
-    let cb_tl_l_pwt_check = $('#cb_tl_pwt').is(':checked') ? "+" : " ";
-    let cb_tl_l_rlw_check = $('#cb_tl_rlw').is(':checked') ? "+" : " ";
-    let cb_tl_l_llw_check = $('#cb_tl_llw').is(':checked') ? "+" : " ";
-    let cb_tl_l_aw_check = $('#cb_tl_aw').is(':checked') ? "+" : " ";
-    let cb_tl_l_dsw_check = $('#cb_tl_dsw').is(':checked') ? "+" : " ";
-    let cb_tl_l_iwn_check = $('#cb_tl_iwn').is(':checked') ? "+" : " ";
+    let cb_tl_l_pwt_check = $('#cb_tl_l_pwt').is(':checked') ? "+" : " ";
+    let cb_tl_l_rlw_check = $('#cb_tl_l_rlw').is(':checked') ? "+" : " ";
+    let cb_tl_l_llw_check = $('#cb_tl_l_llw').is(':checked') ? "+" : " ";
+    let cb_tl_l_aw_check = $('#cb_tl_l_aw').is(':checked') ? "+" : " ";
+    let cb_tl_l_dsw_check = $('#cb_tl_l_dsw').is(':checked') ? "+" : " ";
+    let cb_tl_l_iwn_check = $('#cb_tl_l_iwn').is(':checked') ? "+" : " ";
     report += `2. Tumor location / size
     Tumor number: [${cb_tn_s_check}] Solitary   [${cb_tn_m_check}] Multiple
     Locations at the urinary bladder:
