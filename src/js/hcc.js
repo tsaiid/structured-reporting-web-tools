@@ -49,9 +49,9 @@ function generate_report(){
         txt_tl_num = 'multiple';
     }
     let txt_tl_loc = $('#txt_tl_loc').val();
+    let t_length = parseFloat($('#txt_ts_len').val());
     let ts_nm_check = $('#cb_ts_nm').is(':checked') || !t_length ? "+" : " ";
     let ts_m_check = !$('#cb_ts_nm').is(':checked') && t_length ? "+" : " ";
-    let t_length = parseFloat($('#txt_ts_len').val());
     let txt_ts_len = t_length ? t_length : "___";
     report += `2. Tumor location / size
   - Number (1,2,3 or multiple): ${txt_tl_num}
