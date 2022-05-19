@@ -69,8 +69,9 @@ function generate_report(){
     let txt_ts_len = t_length ? t_length : "___";
     report += `2. Tumor location / Size
   - Location:
-    [${tl_c_check}] Cecum            [${tl_ac_check}] Ascending    [${tl_hf_check}] Hepatic flexure  [${tl_tc_check}] Transverse
-    [${tl_sf_check}] Splenic flexure  [${tl_sc_check}] Sigmoid      [${tl_r_check}] Rectum
+    [${tl_c_check}] Cecum            [${tl_ac_check}] Ascending                [${tl_hf_check}] Hepatic flexure
+    [${tl_tc_check}] Transverse       [${tl_sf_check}] Splenic flexure          [${tl_dc_check}] Descending
+    [${tl_sc_check}] Sigmoid          [${tl_rsj_check}] Rectosigmoid junction    [${tl_r_check}] Rectum
   - Size:
     [${ts_nm_check}] Non-measurable
     [${ts_m_check}] Measurable: ${txt_ts_len} cm (largest diameter)
