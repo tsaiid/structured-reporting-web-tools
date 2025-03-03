@@ -59,7 +59,9 @@ module.exports = {
   // https://webpack.js.org/configuration/dev-server/
   devServer: {
     port: 8080,
-    contentBase: './dist',
+    static: {
+      directory: path.resolve(__dirname, 'dist'),
+    },
     hot: true,
   },
 
