@@ -4,7 +4,7 @@ Capfile
 .capistrano
 config/
 node_modules/
-_site/
+_site
 bower_components/
 dist/*
 
