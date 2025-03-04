@@ -5,37 +5,41 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/lung.html');
 }
 
-import {join_checkbox_values, ajcc_template_with_parent} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC8_T = {
-    'x': 'Primary tumor cannot be assessed, or tumor proven by the presence of malignant cells in sputum or bronchial washings but not visualized by imaging or bronchoscopy',
-    '0': 'No evidence of primary tumor',
-    'is': 'Carcinoma in situ; Squamous cell carcinoma in situ (SCIS); Adenocarcinoma in situ (AIS): adenocarcinoma with pure lepidic pattern, ≤3 cm in greatest dimension',
-    '1': 'Tumor ≤3 cm in greatest dimension, surrounded by lung or visceral pleura, without bronchoscopic evidence of invasion more proximal than the lobar bronchus (i.e., not in the main bronchus)',
-    '1mi': 'Minimally invasive adenocarcinoma: adenocarcinoma (≤3 cm in greatest dimension) with a predominantly lepidic pattern and ≤5 mm invasion in greatest dimension',
-    '1a': 'Tumor ≤1 cm in greatest dimension. A superficial, spreading tumor of any size whose invasive component is limited to the bronchial wall and may extend proximal to the main bronchus also is classified as T1a, but these tumors are uncommon',
-    '1b': 'Tumor >1 cm but ≤2 cm in greatest dimension',
-    '1c': 'Tumor >2 cm but ≤3 cm in greatest dimension',
-    '2': 'Tumor >3 cm but ≤5 cm or having any of the following features: Involves the main bronchus regardless of distance to the carina, but without involvement of the carina; Invades visceral pleura (PL1 or PL2); Associated with atelectasis or obstructive pneumonitis that extends to the hilar region, involving part or all of the lung; T2 tumors with these features are classified as T2a if ≤4 cm or if the size cannot be determined and T2b if >4 cm but ≤5 cm.',
-    '2a': 'Tumor >3 cm but ≤4 cm in greatest dimension',
-    '2b': 'Tumor >4 cm but ≤5 cm in greatest dimension',
-    '3': 'Tumor >5 cm but ≤7 cm in greatest dimension or directly invading any of the following: parietal pleura (PL3), chest wall (including superior sulcus tumors), phrenic nerve, parietal pericardium; or separate tumor nodule(s) in the same lobe as the primary',
-    '4': 'Tumor >7 cm or tumor of any size invading one or more of the following: diaphragm, mediastinum, heart, great vessels, trachea, recurrent laryngeal nerve, esophagus, vertebral body, or carina; separate tumor nodule(s) in an ipsilateral lobe different from that of the primary',
-};
-const AJCC8_N = {
-    'x': 'Regional lymph nodes cannot be assessed',
-    '0': 'No regional lymph node metastasis',
-    '1': 'Metastasis in ipsilateral peribronchial and/or ipsilateral hilar lymph nodes and intrapulmonary nodes, including involvement by direct extension',
-    '2': 'Metastasis in ipsilateral mediastinal and/or subcarinal lymph node(s)',
-    '3': 'Metastasis in contralateral mediastinal, contralateral hilar, ipsilateral or contralateral scalene, or supraclavicular lymph node(s)',
-};
-const AJCC8_M = {
-    '0': 'No distant metastasis (in this study)',
-    '1': 'Distant metastasis',
-    '1a': 'Separate tumor nodule(s) in a contralateral lobe; tumor with pleural or pericardial nodules or malignant pleural or pericardial effusion. Most pleural (pericardial) effusions with lung cancer are a result of the tumor. In a few patients, however, multiple microscopic examinations of pleural (pericardial) fluid are negative for tumor, and the fluid is nonbloody and not an exudate. If these elements and clinical judgment dictate that the effusion is not related to the tumor, the effusion should be excluded as a staging descriptor.',
-    '1b': 'Single extrathoracic metastasis in a single organ (including involvement of a single nonregional node)',
-    '1c': 'Multiple extrathoracic metastases in a single organ or in multiple organs',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed, or tumor proven by the presence of malignant cells in sputum or bronchial washings but not visualized by imaging or bronchoscopy'],
+    ['0', 'No evidence of primary tumor'],
+    ['is', 'Carcinoma in situ; Squamous cell carcinoma in situ (SCIS); Adenocarcinoma in situ (AIS): adenocarcinoma with pure lepidic pattern, ≤3 cm in greatest dimension'],
+    ['1', 'Tumor ≤3 cm in greatest dimension, surrounded by lung or visceral pleura, without bronchoscopic evidence of invasion more proximal than the lobar bronchus (i.e., not in the main bronchus)'],
+    ['1mi', 'Minimally invasive adenocarcinoma: adenocarcinoma (≤3 cm in greatest dimension) with a predominantly lepidic pattern and ≤5 mm invasion in greatest dimension'],
+    ['1a', 'Tumor ≤1 cm in greatest dimension. A superficial, spreading tumor of any size whose invasive component is limited to the bronchial wall and may extend proximal to the main bronchus also is classified as T1a, but these tumors are uncommon'],
+    ['1b', 'Tumor >1 cm but ≤2 cm in greatest dimension'],
+    ['1c', 'Tumor >2 cm but ≤3 cm in greatest dimension'],
+    ['2', 'Tumor >3 cm but ≤5 cm or having any of the following features: Involves the main bronchus regardless of distance to the carina, but without involvement of the carina; Invades visceral pleura (PL1 or PL2); Associated with atelectasis or obstructive pneumonitis that extends to the hilar region, involving part or all of the lung; T2 tumors with these features are classified as T2a if ≤4 cm or if the size cannot be determined and T2b if >4 cm but ≤5 cm.'],
+    ['2a', 'Tumor >3 cm but ≤4 cm in greatest dimension'],
+    ['2b', 'Tumor >4 cm but ≤5 cm in greatest dimension'],
+    ['3', 'Tumor >5 cm but ≤7 cm in greatest dimension or directly invading any of the following: parietal pleura (PL3), chest wall (including superior sulcus tumors), phrenic nerve, parietal pericardium; or separate tumor nodule(s) in the same lobe as the primary'],
+    ['4', 'Tumor >7 cm or tumor of any size invading one or more of the following: diaphragm, mediastinum, heart, great vessels, trachea, recurrent laryngeal nerve, esophagus, vertebral body, or carina; separate tumor nodule(s) in an ipsilateral lobe different from that of the primary'],
+]);
+const AJCC_N = new Map([
+    ['x', 'Regional lymph nodes cannot be assessed'],
+    ['0', 'No regional lymph node metastasis'],
+    ['1', 'Metastasis in ipsilateral peribronchial and/or ipsilateral hilar lymph nodes and intrapulmonary nodes, including involvement by direct extension'],
+    ['2', 'Metastasis in ipsilateral mediastinal and/or subcarinal lymph node(s)'],
+    ['2a', 'Single N2 station involvement'],
+    ['2b', 'Multiple N2 station involvement'],
+    ['3', 'Metastasis in contralateral mediastinal, contralateral hilar, ipsilateral or contralateral scalene, or supraclavicular lymph node(s)'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis (in this study)'],
+    ['1', 'Distant metastasis'],
+    ['1a', 'Separate tumor nodule(s) in a contralateral lobe; tumor with pleural or pericardial nodules or malignant pleural or pericardial effusion. Most pleural (pericardial) effusions with lung cancer are a result of the tumor. In a few patients, however, multiple microscopic examinations of pleural (pericardial) fluid are negative for tumor, and the fluid is nonbloody and not an exudate. If these elements and clinical judgment dictate that the effusion is not related to the tumor, the effusion should be excluded as a staging descriptor.'],
+    ['1b', 'Single extrathoracic metastasis in a single organ (including involvement of a single nonregional node)'],
+    ['1c', 'Multiple extrathoracic metastases'],
+    ['1c1', 'Multiple extrathoracic metastases in a single organ system'],
+    ['1c2', 'Multiple extrathoracic metastases in multiple organ systems'],
+]);
 
 function get_t_stage_by_size(t_size) {
     var t_stage;
@@ -182,6 +186,8 @@ function generate_report(){
     let rn_ii_check = $('#cb_rn_ii').is(':checked') ? "+" : " ";
     let rn_im_check = $('#cb_rn_im').is(':checked') ? "+" : " ";
     let rn_sbc_check = $('#cb_rn_sbc').is(':checked') ? "+" : " ";
+    let rn_n2a_check = $('.cb_rn_n2:checked').length && $('#radio_n2a').is(':checked') ? "+" : " ";
+    let rn_n2b_check = $('.cb_rn_n2:checked').length && $('#radio_n2b').is(':checked') ? "+" : " ";
     let rn_cm_check = $('#cb_rn_cm').is(':checked') ? "+" : " ";
     let rn_ch_check = $('#cb_rn_ch').is(':checked') ? "+" : " ";
     let rn_ics_check = $('#cb_rn_ics').is(':checked') ? "+" : " ";
@@ -192,6 +198,8 @@ function generate_report(){
         N1: [${rn_ip_check}] Ipsilateral peribronchial                [${rn_ih_check}] Ipsilateral hilar
             [${rn_ii_check}] Ipsilateral intrapulmonary
         N2: [${rn_im_check}] Ipsilateral mediastinal                  [${rn_sbc_check}] Subcarinal
+            (${rn_n2a_check}) N2a: Single N2 station involvement
+            (${rn_n2b_check}) N2b: Multiple N2 station involvement
         N3: [${rn_cm_check}] Contralateral mediastinal                [${rn_ch_check}] Contralateral hilar
             [${rn_ics_check}] Ipsilateral or contralateral scalene
             [${rn_spc_check}] Ipsilateral or contralateral supraclavicular
@@ -205,6 +213,8 @@ function generate_report(){
         }
         if ($('.cb_rn_n2:checked').length) {
             n_stage.push("2");
+            let rn_n2a_val = $('input[name="radio_n2"]:checked').val();
+            n_stage.push(rn_n2a_val);
         }
         if ($('.cb_rn_n3:checked').length) {
             n_stage.push("3");
@@ -237,7 +247,11 @@ function generate_report(){
         txt_dm_et += "___";
     }
     let dm_m1b_check = ($('.cb_dm_m1bc:checked').length == 1 && $('#cb_dm_m1b').is(':checked') ? "+" : " ");
-    let dm_m1c_check = ($('.cb_dm_m1bc:checked').length > 1 || $('.cb_dm_m1bc:checked').length && !$('#cb_dm_m1b').is(':checked') ? "+" : " ");
+    let is_dm_m1c = $('.cb_dm_m1bc:checked').length > 1 || $('.cb_dm_m1bc:checked').length && !$('#cb_dm_m1b').is(':checked');
+    let dm_m1c_check = (is_dm_m1c ? "+" : " ");
+    let dm_m1c12_val = $('input[name="radio_m1c"]:checked').val();
+    let dm_m1c1_check = is_dm_m1c && (dm_m1c12_val === '1c1' || $('.cb_dm_m1bc:checked').length == 1) ? "+" : " ";
+    let dm_m1c2_check = is_dm_m1c && $('.cb_dm_m1bc:checked').length > 1 && dm_m1c12_val === '1c2' ? "+" : " ";
 
     report += `5. Distant metastasis (In this study)
     [${dm_no_check}] No or Equivocal
@@ -248,7 +262,9 @@ function generate_report(){
             [${dm_pe_check}] Malignant pleural effusion       [${dm_pce_check}] Malignant pericardial effusion
         Extrathoracic: ${txt_dm_et}
         [${dm_m1b_check}] M1b: Single extrathoracic metastasis (Single metastasis in single organ)
-        [${dm_m1c_check}] M1c: Multiple extrathoracic metastases (multiple metastases in single organ or metastases in multiple organs)
+        [${dm_m1c_check}] M1c: Multiple extrathoracic metastases
+           (${dm_m1c1_check}) M1c1: Multiple extrathoracic metastases in a single organ system
+           (${dm_m1c2_check}) M1c2: Multiple extrathoracic metastases in multiple organ systems
 
 `;
 
@@ -262,6 +278,9 @@ function generate_report(){
         }
         if ($('.cb_dm_m1bc:checked').length > 1 || $('.cb_dm_m1bc:checked').length && !$('#cb_dm_m1b').is(':checked')) {
             m_stage.push("1c");
+            if (dm_m1c12_val) {
+                m_stage.push(dm_m1c12_val);
+            }
         }
         //console.log(m_stage);
     }
@@ -273,7 +292,7 @@ function generate_report(){
     var t = t_stage.sort()[t_stage.length-1];
     var n = n_stage.sort()[n_stage.length-1];
     var m = m_stage.sort()[m_stage.length-1];
-    report += ajcc_template_with_parent("Lung Carcinoma", t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
+    report += ajcc_template_with_parent("Lung Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 9);
 
     $('#reportModalLongTitle').html("Lung Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
@@ -317,6 +336,17 @@ new ClipboardJS('#btn_copy', {
     }
 });
 
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for Lung Cancer");
+    $('#ajccModalBody').html(ajcc_table);
+});
 
 /*
 var clipboard = new ClipboardJS('#btn_copy');

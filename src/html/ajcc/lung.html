@@ -264,6 +264,16 @@
                 <label class="form-check-label" for="cb_rn_sbc">subcarinal</label>
               </div>
             </form>
+            <form class="">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input" type="radio" name="radio_n2" id="radio_n2a" value="2a">
+                <label class="form-check-label" for="radio_n2a">N2a: Single N2 station involvement</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input" type="radio" name="radio_n2" id="radio_n2b" value="2b">
+                <label class="form-check-label" for="radio_n2b">N2b: Multiple N2 station involvement</label>
+              </div>
+            </form>
               </div>
             </div>
             <div class="row">
@@ -363,11 +373,24 @@
                   (M1b)</label>
               </div>
             </form>
+            <form class="">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input" type="radio" name="radio_m1c" id="radio_m1c1" value="1c1">
+                <label class="form-check-label" for="radio_m1c1">Multiple extrathoracic metastases in a single organ system (M1c1)</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input" type="radio" name="radio_m1c" id="radio_m1c2" value="1c2">
+                <label class="form-check-label" for="radio_m1c2">Multiple extrathoracic metastases in multiple organ systems (M1c2)</label>
+              </div>
+            </form>
           </div>
         </div>
       </main>
     </div>
   </div>
+
+  <!-- AJCC Definitions Modal -->
+<%= require('html-loader!../partials/ajcc_modal.html').default %>
 
   <!-- Report Modal -->
 <%= require('html-loader!../partials/report_modal.html').default %>
