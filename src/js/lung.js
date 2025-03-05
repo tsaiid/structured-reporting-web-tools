@@ -117,17 +117,20 @@ function generate_report(){
     let t1a_check = (t_size <= 1 ? "+" : " ");
     let t1b_check = (t_size <= 2 && t_size > 1 ? "+" : " ");
     let t1c_check = (t_size <= 3 && t_size > 2 ? "+" : " ");
-    let t2_check  = (t_size > 3 && t_size <= 5 ? "+" : " ");
-    let t2a_check = (t_size > 3 && t_size <= 4 ? "+" : " ");
+    let t2_check  = (t_size > 3 && t_size) || ($('.cb_ti_t2a:checked').length > 0) ? "+" : " ";
+    let t2a_check = (t_size > 3 && t_size <= 4) || ($('.cb_ti_t2a:checked').length > 0) ? "+" : " ";
     let t2b_check = (t_size > 4 && t_size <= 5 ? "+" : " ");
-    let t2_mb_check = ($('#cb_tp_ti_mb').is(':checked') ? "+" : " ");
-    let t2_vp_check = ($('#cb_tp_ti_vp').is(':checked') ? "+" : " ");
-    let t2_fa_check = ($('#cb_tp_ti_fa').is(':checked') ? "+" : " ");
+    let t2a_mb_check = ($('#cb_tp_ti_mb').is(':checked') ? "+" : " ");
+    let t2a_vp_check = ($('#cb_tp_ti_vp').is(':checked') ? "+" : " ");
+    let t2a_al_check = ($('#cb_tp_ti_al').is(':checked') ? "+" : " ");
+    let t2a_fa_check = ($('#cb_tp_ti_fa').is(':checked') ? "+" : " ");
     let t3_check  = (t_size > 5 && t_size <= 7 ? "+" : " ");
     let t3_pp_check = ($('#cb_tp_ti_pp').is(':checked') ? "+" : " ");
     let t3_cw_check = ($('#cb_tp_ti_cw').is(':checked') ? "+" : " ");
-    let t3_pn_check = ($('#cb_tp_ti_pn').is(':checked') ? "+" : " ");
     let t3_pc_check = ($('#cb_tp_ti_pc').is(':checked') ? "+" : " ");
+    let t3_pn_check = ($('#cb_tp_ti_pn').is(':checked') ? "+" : " ");
+    let t3_av_check = ($('#cb_tp_ti_av').is(':checked') ? "+" : " ");
+    let t3_tnr_check = ($('#cb_tp_ti_tnr').is(':checked') ? "+" : " ");
     let t3_sln_check = ($('#cb_tp_ti_sln').is(':checked') ? "+" : " ");
     let t4_check  = (t_size > 7 ? "+" : " ");
     let t4_men_check = ($('#cb_tp_ti_men').is(':checked') ? "+" : " ");
@@ -138,6 +141,16 @@ function generate_report(){
     let t4_eso_check = ($('#cb_tp_ti_eso').is(':checked') ? "+" : " ");
     let t4_vb_check = ($('#cb_tp_ti_vb').is(':checked') ? "+" : " ");
     let t4_car_check = ($('#cb_tp_ti_car').is(':checked') ? "+" : " ");
+    let t4_thy_check = ($('#cb_tp_ti_thy').is(':checked') ? "+" : " ");
+    let t4_vn_check = ($('#cb_tp_ti_vn').is(':checked') ? "+" : " ");
+    let t4_dia_check = ($('#cb_tp_ti_dia').is(':checked') ? "+" : " ");
+    let t4_saa_check = ($('#cb_tp_ti_saa').is(':checked') ? "+" : " ");
+    let t4_bcv_check = ($('#cb_tp_ti_bcv').is(':checked') ? "+" : " ");
+    let t4_scv_check = ($('#cb_tp_ti_scv').is(':checked') ? "+" : " ");
+    let t4_l_check = ($('#cb_tp_ti_l').is(':checked') ? "+" : " ");
+    let t4_sc_check = ($('#cb_tp_ti_sc').is(':checked') ? "+" : " ");
+    let t4_cnr_check = ($('#cb_tp_ti_cnr').is(':checked') ? "+" : " ");
+    let t4_bp_check = ($('#cb_tp_ti_bp').is(':checked') ? "+" : " ");
     let t4_sdn_check = ($('#cb_tp_ti_sdn').is(':checked') ? "+" : " ");
     report += `3. Tumor invasion
     T1: [${t1_check}] Tumor <= 3 cm
@@ -148,17 +161,21 @@ function generate_report(){
         [${t1_inv_check}] Not more proximal than lobar bronchus
     T2: [${t2_check}] 3 cm < Tumor <= 5 cm
             [${t2a_check}] T2a: 3 cm < Tumor <= 4 cm
+                [${t2a_mb_check}] Main bronchus        [${t2a_vp_check}] Visceral pleura
+                [${t2a_al_check}] Adjacent lobe        [${t2a_fa_check}] Atelectasis to hilum (focal or total)
             [${t2b_check}] T2b: 4 cm < Tumor <= 5 cm
-        [${t2_mb_check}] Main bronchus        [${t2_vp_check}] Visceral pleura
-        [${t2_fa_check}] Atelectasis to hilum (focal or total)
     T3: [${t3_check}] 5 cm < Tumor <= 7 cm
-        [${t3_pp_check}] Parietal pleura      [${t3_cw_check}] Chest wall
-        [${t3_pn_check}] Phrenic nerve        [${t3_pc_check}] Parietal pericardium
+        [${t3_pp_check}] Parietal pleura      [${t3_cw_check}] Chest wall     [${t3_pc_check}] Pericardium
+        [${t3_pn_check}] Phrenic nerve        [${t3_av_check}] Pericardium
+        [${t3_tnr_check}] Thoracic nerve roots or stellate ganglion
         [${t3_sln_check}] Separate tumor nodule(s) in same lobe
     T4: [${t4_check}] Tumor > 7 cm
-        [${t4_men_check}] Mediastinum          [${t4_h_check}] Heart                        [${t4_gv_check}] Great vessels
-        [${t4_tr_check}] Trachea              [${t4_rln_check}] Recurrent laryngeal nerve    [${t4_eso_check}] Esophagus
-        [${t4_vb_check}] Vertebral body       [${t4_car_check}] Carina
+        [${t4_men_check}] Mediastinum          [${t4_thy_check}] Thymus                       [${t4_tr_check}] Trachea
+        [${t4_car_check}] Carina               [${t4_rln_check}] Recurrent laryngeal nerve    [${t4_vn_check}] Vagus nerve
+        [${t4_eso_check}] Esophagus            [${t4_dia_check}] Diaphragm                    [${t4_h_check}] Heart
+        [${t4_gv_check}] Great vessels        [${t4_saa_check}] Supra-aortic arteries        [${t4_bcv_check}] Brachiocephalic vein
+        [${t4_scv_check}] Subclavian vessels   [${t4_vb_check}] Vertebral body               [${t4_l_check}] Lamina
+        [${t4_sc_check}] Spinal canal         [${t4_cnr_check}] Cervical nerve roots         [${t4_bp_check}] Brachial plexus
         [${t4_sdn_check}] Separate tumor nodule(s) in a different ipsilateral lobe
 
 `;

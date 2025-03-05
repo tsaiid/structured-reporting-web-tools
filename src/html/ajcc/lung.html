@@ -116,20 +116,24 @@
             <h2 class="h4 mt-4">Tumor Invasion</h2>
             <div class="row">
               <div class="col t_sidebar">
-                T2
+                T2a
               </div>
               <div class="col">
             <form class="">
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t2" type="checkbox" id="cb_tp_ti_mb" value="main bronchus">
+                <input class="form-check-input cb_ti cb_ti_t2a" type="checkbox" id="cb_tp_ti_mb" value="main bronchus">
                 <label class="form-check-label" for="cb_tp_ti_mb">Main bronchus</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t2" type="checkbox" id="cb_tp_ti_vp" value="visceral pleura">
+                <input class="form-check-input cb_ti cb_ti_t2a" type="checkbox" id="cb_tp_ti_vp" value="visceral pleura">
                 <label class="form-check-label" for="cb_tp_ti_vp">Visceral pleura</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t2" type="checkbox" id="cb_tp_ti_fa"
+                <input class="form-check-input cb_ti cb_ti_t2a" type="checkbox" id="cb_tp_ti_al" value="adjacent lobe">
+                <label class="form-check-label" for="cb_tp_ti_al">Adjacent lobe</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_ti cb_ti_t2a" type="checkbox" id="cb_tp_ti_fa"
                   value="atelectasis to hilum (focal or total)">
                 <label class="form-check-label" for="cb_tp_ti_fa">Atelectasis to hilum (focal or total)</label>
               </div>
@@ -153,13 +157,21 @@
                   tumors)</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_ti cb_ti_t3" type="checkbox" id="cb_tp_ti_pc"
+                  value="pericardium">
+                <label class="form-check-label" for="cb_tp_ti_pc">Pericardium</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
                 <input class="form-check-input cb_ti cb_ti_t3" type="checkbox" id="cb_tp_ti_pn" value="phrenic nerve">
                 <label class="form-check-label" for="cb_tp_ti_pn">Phrenic nerve</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t3" type="checkbox" id="cb_tp_ti_pc"
-                  value="parietal pericardium">
-                <label class="form-check-label" for="cb_tp_ti_pc">Parietal pericardium</label>
+                <input class="form-check-input cb_ti cb_ti_t3" type="checkbox" id="cb_tp_ti_av" value="azygos vein">
+                <label class="form-check-label" for="cb_tp_ti_av">Azygos vein</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_ti cb_ti_t3" type="checkbox" id="cb_tp_ti_tnr" value="thoracic nerve root">
+                <label class="form-check-label" for="cb_tp_ti_tnr">Thoracic nerve roots or stellate ganglion</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
                 <input class="form-check-input cb_ti cb_ti_t3" type="checkbox" id="cb_tp_ti_sln"
@@ -182,6 +194,35 @@
                 <label class="form-check-label" for="cb_tp_ti_men">Mediastinum</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_thy" value="thymus">
+                <label class="form-check-label" for="cb_tp_ti_thy">Thymus</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_tr" value="trachea">
+                <label class="form-check-label" for="cb_tp_ti_tr">Trachea</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_car" value="carina">
+                <label class="form-check-label" for="cb_tp_ti_car">Carina</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_rln"
+                  value="recurrent laryngeal nerve">
+                <label class="form-check-label" for="cb_tp_ti_rln">Recurrent laryngeal nerve</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_vn" value="vagus nerve">
+                <label class="form-check-label" for="cb_tp_ti_vn">Vagus nerve</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_eso" value="esophagus">
+                <label class="form-check-label" for="cb_tp_ti_eso">Esophagus</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_dia" value="diaphragm">
+                <label class="form-check-label" for="cb_tp_ti_dia">Diaphragm</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
                 <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_h" value="heart">
                 <label class="form-check-label" for="cb_tp_ti_h">Heart</label>
               </div>
@@ -190,25 +231,36 @@
                 <label class="form-check-label" for="cb_tp_ti_gv">Great vessels</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_tr" value="trachea">
-                <label class="form-check-label" for="cb_tp_ti_tr">Trachea</label>
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_saa" value="supra-aortic arteries">
+                <label class="form-check-label" for="cb_tp_ti_saa">Supra-aortic arteries</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_rln"
-                  value="recurrent laryngeal nerve">
-                <label class="form-check-label" for="cb_tp_ti_rln">Recurrent laryngeal nerve</label>
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_bcv" value="brachiocephalic vein">
+                <label class="form-check-label" for="cb_tp_ti_bcv">Brachiocephalic vein</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_eso" value="esophagus">
-                <label class="form-check-label" for="cb_tp_ti_eso">Esophagus</label>
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_scv" value="subclavian vessels">
+                <label class="form-check-label" for="cb_tp_ti_scv">Subclavian vessels</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
                 <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_vb" value="vertebral body">
                 <label class="form-check-label" for="cb_tp_ti_vb">Vertebral body</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_car" value="carina">
-                <label class="form-check-label" for="cb_tp_ti_car">Carina</label>
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_l" value="lamina">
+                <label class="form-check-label" for="cb_tp_ti_l">Lamina</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_sc" value="spinal canal">
+                <label class="form-check-label" for="cb_tp_ti_sc">Spinal canal</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_cnr" value="cervical nerve roots">
+                <label class="form-check-label" for="cb_tp_ti_cnr">Cervical nerve roots</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_bp" value="brachial plexus">
+                <label class="form-check-label" for="cb_tp_ti_bp">Brachial plexus</label>
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
                 <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_sdn"
