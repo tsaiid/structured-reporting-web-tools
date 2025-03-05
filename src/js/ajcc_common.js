@@ -129,7 +129,7 @@ export function generate_ajcc_table(t, n, m){
     });
 
     let ajcc_table = `
-<table class="table table-sm">
+<table class="table table-sm" id="ajcc_t">
   <thead>
     <tr>
       <th scope="col">T Category</th>
@@ -141,7 +141,7 @@ export function generate_ajcc_table(t, n, m){
   </tbody>
 </table>
 
-<table class="table">
+<table class="table table-sm" id="ajcc_n">
   <thead>
     <tr>
       <th scope="col">N Category</th>
@@ -153,7 +153,7 @@ export function generate_ajcc_table(t, n, m){
   </tbody>
 </table>
 
-<table class="table">
+<table class="table table-sm" id="ajcc_m">
   <thead>
     <tr>
       <th scope="col">M Category</th>

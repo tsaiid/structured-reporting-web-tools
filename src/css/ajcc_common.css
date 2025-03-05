@@ -17,3 +17,7 @@ pre {
     -ms-flex: 0 0 5em;
     flex: 0 0 5em;
 }
+
+#ajccModalBody table tr th:nth-child(1) {
+    width: 120px;
+}
