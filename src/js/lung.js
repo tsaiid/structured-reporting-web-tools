@@ -322,6 +322,41 @@ $('#cb_tp_ts_nm').change(function() {
     }
 });
 
+// auto check N2a/N2b radio button
+$('.cb_rn_n2').change(function(){
+    let cb_n2_num = $('.cb_rn_n2:checked').length;
+    if (cb_n2_num) {
+        if ($("input[name='radio_n2']:checked").length == 0) {
+            $("#radio_n2a").prop("checked", true);
+        }
+    } else {
+        $("input[name='radio_n2']").prop("checked", false);
+    }
+});
+
+// auto check M1c1/M1c2 radio button
+$('.cb_dm_m1bc').change(function(){
+    let cb_dm_num = $('.cb_dm_m1bc:checked').length;
+    if (cb_dm_num) {
+        const radio_dm_val = $("input[name='radio_m1bc']:checked").val();
+        if ($("input[name='radio_m1bc']:checked").length == 0) {
+            $("#radio_m1c1").prop("checked", true);
+        }
+        if (cb_dm_num == 1) {
+            if (radio_dm_val != "1c1") {
+                $("#radio_m1c1").prop("checked", true);
+            }
+        }
+        if (cb_dm_num > 1) {
+            if (radio_dm_val != "1c2") {
+                $("#radio_m1c2").prop("checked", true);
+            }
+        }
+    } else {
+        $("input[name='radio_m1bc']").prop("checked", false);
+    }
+});
+
 $('#btn_copy').on('click', function(event) {
     event.preventDefault(); // To prevent following the link (optional)
 
