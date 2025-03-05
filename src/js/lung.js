@@ -65,6 +65,13 @@ function get_t_stage_by_size(t_size) {
     return t_stage;
 }
 
+function getMaxStageNumber(arr) {
+    return arr
+        .filter(item => /^\d/.test(item)) // 只保留第一個字元是數字的
+        .map(item => parseInt(item, 10))  // 轉換為純數字
+        .reduce((max, num) => Math.max(max, num), -Infinity); // 取最大值
+}
+
 function generate_report(){
     var t_stage = [];
     var n_stage = ["0"];
@@ -110,21 +117,34 @@ function generate_report(){
     }
     report += "\n\n";
 
+    // calculate T stage
+    if ($('#cb_tp_ts_nm').is(':checked')) {
+        t_stage.push("x");
+    } else {
+        t_stage.push(get_t_stage_by_size(t_size));
+        if ($('.cb_ti_t4:checked').length) {
+            t_stage.push("4");
+        } else if ($('.cb_ti_t3:checked').length) {
+            t_stage.push("3");
+        } else if ($('.cb_ti_t2a:checked').length) {
+            t_stage.push("2");
+        }
+    }
+
     // Tumor invasion
-    let tmp_t = parseInt(t_stage.sort()[t_stage.length-1]);
-    let t1_inv_check = (tmp_t == 1 ? "+" : " ");
-    let t1_check  = (t_size <= 3 ? "+" : " ");
+    let t1_check  = getMaxStageNumber(t_stage) == 1 ? "+" : " ";
     let t1a_check = (t_size <= 1 ? "+" : " ");
     let t1b_check = (t_size <= 2 && t_size > 1 ? "+" : " ");
     let t1c_check = (t_size <= 3 && t_size > 2 ? "+" : " ");
-    let t2_check  = (t_size > 3 && t_size) || ($('.cb_ti_t2a:checked').length > 0) ? "+" : " ";
-    let t2a_check = (t_size > 3 && t_size <= 4) || ($('.cb_ti_t2a:checked').length > 0) ? "+" : " ";
-    let t2b_check = (t_size > 4 && t_size <= 5 ? "+" : " ");
+    let t2_check  = getMaxStageNumber(t_stage) == 2 ? "+" : " ";
+    let t2a_sz_check = (t_size > 3 && t_size <= 4 ? "+" : " ");
+    let t2b_sz_check = (t_size > 4 && t_size <= 5 ? "+" : " ");
     let t2a_mb_check = ($('#cb_tp_ti_mb').is(':checked') ? "+" : " ");
     let t2a_vp_check = ($('#cb_tp_ti_vp').is(':checked') ? "+" : " ");
     let t2a_al_check = ($('#cb_tp_ti_al').is(':checked') ? "+" : " ");
     let t2a_fa_check = ($('#cb_tp_ti_fa').is(':checked') ? "+" : " ");
-    let t3_check  = (t_size > 5 && t_size <= 7 ? "+" : " ");
+    let t3_check  = getMaxStageNumber(t_stage) == 3 ? "+" : " ";
+    let t3_sz_check = (t_size > 5 && t_size <= 7 ? "+" : " ");
     let t3_pp_check = ($('#cb_tp_ti_pp').is(':checked') ? "+" : " ");
     let t3_cw_check = ($('#cb_tp_ti_cw').is(':checked') ? "+" : " ");
     let t3_pc_check = ($('#cb_tp_ti_pc').is(':checked') ? "+" : " ");
@@ -132,7 +152,8 @@ function generate_report(){
     let t3_av_check = ($('#cb_tp_ti_av').is(':checked') ? "+" : " ");
     let t3_tnr_check = ($('#cb_tp_ti_tnr').is(':checked') ? "+" : " ");
     let t3_sln_check = ($('#cb_tp_ti_sln').is(':checked') ? "+" : " ");
-    let t4_check  = (t_size > 7 ? "+" : " ");
+    let t4_check  = getMaxStageNumber(t_stage) == 4 ? "+" : " ";
+    let t4_sz_check = (t_size > 7 ? "+" : " ");
     let t4_men_check = ($('#cb_tp_ti_men').is(':checked') ? "+" : " ");
     let t4_h_check = ($('#cb_tp_ti_h').is(':checked') ? "+" : " ");
     let t4_gv_check = ($('#cb_tp_ti_gv').is(':checked') ? "+" : " ");
@@ -153,23 +174,23 @@ function generate_report(){
     let t4_bp_check = ($('#cb_tp_ti_bp').is(':checked') ? "+" : " ");
     let t4_sdn_check = ($('#cb_tp_ti_sdn').is(':checked') ? "+" : " ");
     report += `3. Tumor invasion
-    T1: [${t1_check}] Tumor <= 3 cm
-            [${t1a_check}] T1a: Tumor <= 1 cm
-            [${t1b_check}] T1b: 1 cm < Tumor <= 2 cm
-            [${t1c_check}] T1c: 2 cm < Tumor <= 3 cm
-        [${t1_inv_check}] Surrounded by lung or visceral pleura
-        [${t1_inv_check}] Not more proximal than lobar bronchus
-    T2: [${t2_check}] 3 cm < Tumor <= 5 cm
-            [${t2a_check}] T2a: 3 cm < Tumor <= 4 cm
-                [${t2a_mb_check}] Main bronchus        [${t2a_vp_check}] Visceral pleura
-                [${t2a_al_check}] Adjacent lobe        [${t2a_fa_check}] Atelectasis to hilum (focal or total)
-            [${t2b_check}] T2b: 4 cm < Tumor <= 5 cm
-    T3: [${t3_check}] 5 cm < Tumor <= 7 cm
+    (${t1_check}) T1: Tumor surrounded by lung or visceral pleura, or in a lobar or more peripheral bronchus
+        [${t1a_check}] T1a: Tumor <= 1 cm
+        [${t1b_check}] T1b: 1 cm < Tumor <= 2 cm
+        [${t1c_check}] T1c: 2 cm < Tumor <= 3 cm
+    (${t2_check}) T2:
+        [${t2a_mb_check}] T2a: Main bronchus        [${t2a_vp_check}] T2a: Visceral pleura
+        [${t2a_al_check}] T2a: Adjacent lobe        [${t2a_fa_check}] T2a: Atelectasis to hilum (focal or total)
+        [${t2a_sz_check}] T2a: 3 cm < Tumor <= 4 cm
+        [${t2b_sz_check}] T2b: 4 cm < Tumor <= 5 cm
+    (${t3_check}) T3:
+        [${t3_sz_check}] 5 cm < Tumor <= 7 cm
         [${t3_pp_check}] Parietal pleura      [${t3_cw_check}] Chest wall     [${t3_pc_check}] Pericardium
         [${t3_pn_check}] Phrenic nerve        [${t3_av_check}] Pericardium
         [${t3_tnr_check}] Thoracic nerve roots or stellate ganglion
         [${t3_sln_check}] Separate tumor nodule(s) in same lobe
-    T4: [${t4_check}] Tumor > 7 cm
+    (${t4_check}) T4:
+        [${t4_sz_check}] Tumor > 7 cm
         [${t4_men_check}] Mediastinum          [${t4_thy_check}] Thymus                       [${t4_tr_check}] Trachea
         [${t4_car_check}] Carina               [${t4_rln_check}] Recurrent laryngeal nerve    [${t4_vn_check}] Vagus nerve
         [${t4_eso_check}] Esophagus            [${t4_dia_check}] Diaphragm                    [${t4_h_check}] Heart
@@ -179,20 +200,6 @@ function generate_report(){
         [${t4_sdn_check}] Separate tumor nodule(s) in a different ipsilateral lobe
 
 `;
-
-    // calculate T stage
-    if ($('#cb_tp_ts_nm').is(':checked')) {
-        t_stage.push("x");
-    } else {
-        t_stage.push(get_t_stage_by_size(t_size));
-        if ($('.cb_ti_t4:checked').length) {
-            t_stage.push("4");
-        } else if ($('.cb_ti_t3:checked').length) {
-            t_stage.push("3");
-        } else if ($('.cb_ti_t2:checked').length) {
-            t_stage.push("2");
-        }
-    }
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length > 0;
@@ -263,12 +270,12 @@ function generate_report(){
     } else {
         txt_dm_et += "___";
     }
-    let dm_m1b_check = ($('.cb_dm_m1bc:checked').length == 1 && $('#cb_dm_m1b').is(':checked') ? "+" : " ");
-    let is_dm_m1c = $('.cb_dm_m1bc:checked').length > 1 || $('.cb_dm_m1bc:checked').length && !$('#cb_dm_m1b').is(':checked');
+    const radio_dm_val = $("input[name='radio_m1bc']:checked").val();
+    let dm_m1b_check = ($('.cb_dm_m1bc:checked').length == 1 && radio_dm_val == "1b" ? "+" : " ");
+    let is_dm_m1c = $('.cb_dm_m1bc:checked').length && radio_dm_val != "1b";
     let dm_m1c_check = (is_dm_m1c ? "+" : " ");
-    let dm_m1c12_val = $('input[name="radio_m1c"]:checked').val();
-    let dm_m1c1_check = is_dm_m1c && (dm_m1c12_val === '1c1' || $('.cb_dm_m1bc:checked').length == 1) ? "+" : " ";
-    let dm_m1c2_check = is_dm_m1c && $('.cb_dm_m1bc:checked').length > 1 && dm_m1c12_val === '1c2' ? "+" : " ";
+    let dm_m1c1_check = is_dm_m1c && radio_dm_val === '1c1' ? "+" : " ";
+    let dm_m1c2_check = is_dm_m1c && radio_dm_val === '1c2' ? "+" : " ";
 
     report += `5. Distant metastasis (In this study)
     [${dm_no_check}] No or Equivocal
@@ -290,13 +297,9 @@ function generate_report(){
         if ($('.cb_dm_m1a:checked').length) {
             m_stage.push("1a");
         }
-        if ($('.cb_dm_m1bc:checked').length == 1 && $('#cb_dm_m1b').is(':checked')) {
-            m_stage.push("1b");
-        }
-        if ($('.cb_dm_m1bc:checked').length > 1 || $('.cb_dm_m1bc:checked').length && !$('#cb_dm_m1b').is(':checked')) {
-            m_stage.push("1c");
-            if (dm_m1c12_val) {
-                m_stage.push(dm_m1c12_val);
+        if ($('.cb_dm_m1bc:checked').length) {
+            if (radio_dm_val) {
+                m_stage.push(radio_dm_val);
             }
         }
         //console.log(m_stage);
@@ -343,11 +346,17 @@ $('.cb_dm_m1bc').change(function(){
             $("#radio_m1c1").prop("checked", true);
         }
         if (cb_dm_num == 1) {
+            if ($("#radio_m1b").prop("disabled")) {
+                $("#radio_m1b").prop("disabled", false)
+            }
             if (radio_dm_val != "1c1") {
                 $("#radio_m1c1").prop("checked", true);
             }
         }
         if (cb_dm_num > 1) {
+            if (!$("#radio_m1b").prop("disabled")) {
+                $("#radio_m1b").prop("disabled", true)
+            }
             if (radio_dm_val != "1c2") {
                 $("#radio_m1c2").prop("checked", true);
             }
