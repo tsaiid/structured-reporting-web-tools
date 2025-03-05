@@ -8,19 +8,19 @@ if (process.env.NODE_ENV !== 'production') {
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
 const AJCC_T = new Map([
-    ['x', 'Primary tumor cannot be assessed, or tumor proven by the presence of malignant cells in sputum or bronchial washings but not visualized by imaging or bronchoscopy'],
+    ['x', 'Primary tumor cannot be assessed'],
     ['0', 'No evidence of primary tumor'],
-    ['is', 'Carcinoma in situ; Squamous cell carcinoma in situ (SCIS); Adenocarcinoma in situ (AIS): adenocarcinoma with pure lepidic pattern, ≤3 cm in greatest dimension'],
-    ['1', 'Tumor ≤3 cm in greatest dimension, surrounded by lung or visceral pleura, without bronchoscopic evidence of invasion more proximal than the lobar bronchus (i.e., not in the main bronchus)'],
-    ['1mi', 'Minimally invasive adenocarcinoma: adenocarcinoma (≤3 cm in greatest dimension) with a predominantly lepidic pattern and ≤5 mm invasion in greatest dimension'],
-    ['1a', 'Tumor ≤1 cm in greatest dimension. A superficial, spreading tumor of any size whose invasive component is limited to the bronchial wall and may extend proximal to the main bronchus also is classified as T1a, but these tumors are uncommon'],
+    ['is', 'Carcinoma in situ'],
+    ['1', 'Tumor surrounded by lung or visceral pleura, or in a lobar or more peripheral bronchus'],
+    ['1mi', 'Minimally invasive adenocarcinoma'],
+    ['1a', 'Tumor ≤1 cm in greatest dimension'],
     ['1b', 'Tumor >1 cm but ≤2 cm in greatest dimension'],
     ['1c', 'Tumor >2 cm but ≤3 cm in greatest dimension'],
-    ['2', 'Tumor >3 cm but ≤5 cm or having any of the following features: Involves the main bronchus regardless of distance to the carina, but without involvement of the carina; Invades visceral pleura (PL1 or PL2); Associated with atelectasis or obstructive pneumonitis that extends to the hilar region, involving part or all of the lung; T2 tumors with these features are classified as T2a if ≤4 cm or if the size cannot be determined and T2b if >4 cm but ≤5 cm.'],
-    ['2a', 'Tumor >3 cm but ≤4 cm in greatest dimension'],
+    ['2', 'Tumor with any of the following features:'],
+    ['2a', 'tumor >3 cm but ≤4 cm in greatest dimension; invades visceral pleura; invades an adjacent lobe; involves main bronchus (up to but not including the carina) or is associated with atelectasis or obstructive pneumonitis extending to the hilar region, involving either part of or the entire lung'],
     ['2b', 'Tumor >4 cm but ≤5 cm in greatest dimension'],
-    ['3', 'Tumor >5 cm but ≤7 cm in greatest dimension or directly invading any of the following: parietal pleura (PL3), chest wall (including superior sulcus tumors), phrenic nerve, parietal pericardium; or separate tumor nodule(s) in the same lobe as the primary'],
-    ['4', 'Tumor >7 cm or tumor of any size invading one or more of the following: diaphragm, mediastinum, heart, great vessels, trachea, recurrent laryngeal nerve, esophagus, vertebral body, or carina; separate tumor nodule(s) in an ipsilateral lobe different from that of the primary'],
+    ['3', 'Tumor with any of the following features: tumor >5 cm but ≤7 cm in greatest dimension; invades parietal pleura or chest wall; invades pericardium, phrenic nerve, or azygos vein; invades thoracic nerve roots (i.e. T1, T2) or stellate ganglion; separate tumor nodule(s) in the same lobe as the primary'],
+    ['4', 'Tumor with any of the following features: tumor >7 cm in greatest dimension; invades mediastinum, thymus, trachea, carina, recurrent laryngeal nerve, vagus nerve, esophagus or diaphragm; invades heart, great vessels (aorta, superior/inferior vena cava, intrapericardial pulmonary arteries/veins), supra-aortic arteries, or brachiocephalic veins; invades subclavian vessels, vertebral body, lamina, spinal canal, cervical nerve roots, or brachial plexus (i.e. trunks, divisions, cords, or terminal nerves); separate tumor nodule(s) in a diffeerent ipsilateral lobe than that of the primary'],
 ]);
 const AJCC_N = new Map([
     ['x', 'Regional lymph nodes cannot be assessed'],
@@ -32,10 +32,10 @@ const AJCC_N = new Map([
     ['3', 'Metastasis in contralateral mediastinal, contralateral hilar, ipsilateral or contralateral scalene, or supraclavicular lymph node(s)'],
 ]);
 const AJCC_M = new Map([
-    ['0', 'No distant metastasis (in this study)'],
+    ['0', 'No distant metastasis'],
     ['1', 'Distant metastasis'],
-    ['1a', 'Separate tumor nodule(s) in a contralateral lobe; tumor with pleural or pericardial nodules or malignant pleural or pericardial effusion. Most pleural (pericardial) effusions with lung cancer are a result of the tumor. In a few patients, however, multiple microscopic examinations of pleural (pericardial) fluid are negative for tumor, and the fluid is nonbloody and not an exudate. If these elements and clinical judgment dictate that the effusion is not related to the tumor, the effusion should be excluded as a staging descriptor.'],
-    ['1b', 'Single extrathoracic metastasis in a single organ (including involvement of a single nonregional node)'],
+    ['1a', 'Tumor with pleural or pericardial nodules or malignant pleural or pericardial effusions, separate tumor nodule(s) in a contralateral lobe'],
+    ['1b', 'Single extrathoracic metastasis in a single organ system'],
     ['1c', 'Multiple extrathoracic metastases'],
     ['1c1', 'Multiple extrathoracic metastases in a single organ system'],
     ['1c2', 'Multiple extrathoracic metastases in multiple organ systems'],
