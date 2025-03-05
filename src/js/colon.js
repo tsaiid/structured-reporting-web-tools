@@ -5,37 +5,37 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/colon.html');
 }
 
-import {join_checkbox_values, ajcc_template_with_parent} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC8_T = {
-    'x': 'Primary tumor cannot be assessed',
-    '0': 'No evidence of primary tumor',
-    'is': 'Carcinoma in situ, intramucosal carcinoma (involvement of lamina propria with no extension through muscularis mucosae)',
-    '1': 'Tumor invades the submucosa (through the muscularis mucosa but not into the muscularis propria)',
-    '2': 'Tumor invades the muscularis propria',
-    '3': 'Tumor invades through the muscularis propria into pericolorectal tissues',
-    '4': 'Tumor invades the visceral peritoneum or invades or adheres to adjacent organ or structure',
-    '4a': 'Tumor invades through the visceral peritoneum (including gross perforation of the bowel through tumor and continuous invasion of tumor through areas of inflammation to the surface of the visceral peritoneum)',
-    '4b': 'Tumor directly invades or adheres to adjacent organs or structures',
-};
-const AJCC8_N = {
-    'x': 'Regional lymph nodes cannot be assessed',
-    '0': 'No regional lymph node metastasis',
-    '1': 'One to three regional lymph nodes are positive (tumor in lymph nodes measuring ≥ 0.2 mm), or any number of tumor deposits are present and all identifiable lymph nodes are negative',
-    '1a': 'One regional lymph node is positive',
-    '1b': 'Two or three regional lymph nodes are positive',
-    '1c': 'No regional lymph nodes are positive, but there are tumor deposits in the subserosa, mesentery or nonperitonealized pericolic, or perirectal/mesorectal tissues',
-    '2': 'Four or more regional nodes are positive',
-    '2a': 'Four to six regional lymph nodes are positive',
-    '2b': 'Seven or more regional lymph nodes are positive',
-};
-const AJCC8_M = {
-    '0': 'No distant metastasis by imaging, etc.; no evidence of tumor in distant sites or organs (This category is not assigned by pathologists.)',
-    '1': 'Metastasis to one or more distant sites or organs or peritoneal metastasis is identified',
-    '1a': 'Metastasis to one site or organ is identified without peritoneal metastasis',
-    '1b': 'Metastasis to two or more sites or organs is identified without peritoneal metastasis',
-    '1c': 'Metastasis to the peritoneal surface is identified alone or with other site or organ metastases',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed'],
+    ['0', 'No evidence of primary tumor'],
+    ['is', 'Carcinoma in situ, intramucosal carcinoma (involvement of lamina propria with no extension through muscularis mucosae)'],
+    ['1', 'Tumor invades the submucosa (through the muscularis mucosa but not into the muscularis propria)'],
+    ['2', 'Tumor invades the muscularis propria'],
+    ['3', 'Tumor invades through the muscularis propria into pericolorectal tissues'],
+    ['4', 'Tumor invades the visceral peritoneum or invades or adheres to adjacent organ or structure'],
+    ['4a', 'Tumor invades through the visceral peritoneum (including gross perforation of the bowel through tumor and continuous invasion of tumor through areas of inflammation to the surface of the visceral peritoneum)'],
+    ['4b', 'Tumor directly invades or adheres to adjacent organs or structures'],
+]);
+const AJCC_N = new Map([
+    ['x', 'Regional lymph nodes cannot be assessed'],
+    ['0', 'No regional lymph node metastasis'],
+    ['1', 'One to three regional lymph nodes are positive (tumor in lymph nodes measuring ≥ 0.2 mm), or any number of tumor deposits are present and all identifiable lymph nodes are negative'],
+    ['1a', 'One regional lymph node is positive'],
+    ['1b', 'Two or three regional lymph nodes are positive'],
+    ['1c', 'No regional lymph nodes are positive, but there are tumor deposits in the subserosa, mesentery or nonperitonealized pericolic, or perirectal/mesorectal tissues'],
+    ['2', 'Four or more regional nodes are positive'],
+    ['2a', 'Four to six regional lymph nodes are positive'],
+    ['2b', 'Seven or more regional lymph nodes are positive'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis by imaging, etc.; no evidence of tumor in distant sites or organs (This category is not assigned by pathologists.)'],
+    ['1', 'Metastasis to one or more distant sites or organs or peritoneal metastasis is identified'],
+    ['1a', 'Metastasis to one site or organ is identified without peritoneal metastasis'],
+    ['1b', 'Metastasis to two or more sites or organs is identified without peritoneal metastasis'],
+    ['1c', 'Metastasis to the peritoneal surface is identified alone or with other site or organ metastases'],
+]);
 
 function generate_report(){
     var t_stage = [];
@@ -199,7 +199,7 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    report += ajcc_template_with_parent("Colorectal Carcinoma", t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
+    report += ajcc_template_with_parent("Colorectal Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Colorectal Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
@@ -253,6 +253,18 @@ new ClipboardJS('#btn_copy', {
         let report_body = $("#reportModalBody pre code").text();
         return report_title + "\n\n" + report_body;
     }
+});
+
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for Colorectal Carcinoma");
+    $('#ajccModalBody').html(ajcc_table);
 });
 
 

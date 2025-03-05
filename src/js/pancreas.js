@@ -5,30 +5,30 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/pancreas.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC8_PANCREAS_T = {
-    'x': 'Primary tumor cannot be assessed',
-    '0': 'No evidence of primary tumor',
-    'is': 'Carcinoma in situ. This includes high-grade pancreatic intraepithelial neoplasia (PanIn-3), intraductal papillary mucinous neoplasm with high-grade dysplasia, intraductal tubulopapillary neoplasm with high-grade dysplasia, and mucinous cystic neoplasm with high-grade dysplasia.',
-    '1': 'Tumor ≤2 cm in greatest dimension',
-    '1a': 'Tumor ≤0.5 cm in greatest dimension',
-    '1b': 'Tumor >0.5 cm and <1 cm in greatest dimension',
-    '1c': 'Tumor 1–2 cm in greatest dimension',
-    '2': 'Tumor >2 cm and ≤4 cm in greatest dimension',
-    '3': 'Tumor >4 cm in greatest dimension',
-    '4': 'Tumor involves celiac axis, superior mesenteric artery, and/or common hepatic artery, regardless of size',
-};
-const AJCC8_PANCREAS_N = {
-    'x': 'Regional lymph nodes cannot be assessed',
-    '0': 'No regional lymph node metastasis',
-    '1': 'Metastasis in one to three regional lymph nodes',
-    '2': 'Metastasis in four or more regional lymph nodes',
-};
-const AJCC8_PANCREAS_M = {
-    '0': 'No distant metastasis (in this study)',
-    '1': 'Distant metastasis',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed'],
+    ['0', 'No evidence of primary tumor'],
+    ['is', 'Carcinoma in situ. This includes high-grade pancreatic intraepithelial neoplasia (PanIn-3), intraductal papillary mucinous neoplasm with high-grade dysplasia, intraductal tubulopapillary neoplasm with high-grade dysplasia, and mucinous cystic neoplasm with high-grade dysplasia.'],
+    ['1', 'Tumor ≤2 cm in greatest dimension'],
+    ['1a', 'Tumor ≤0.5 cm in greatest dimension'],
+    ['1b', 'Tumor >0.5 cm and <1 cm in greatest dimension'],
+    ['1c', 'Tumor 1–2 cm in greatest dimension'],
+    ['2', 'Tumor >2 cm and ≤4 cm in greatest dimension'],
+    ['3', 'Tumor >4 cm in greatest dimension'],
+    ['4', 'Tumor involves celiac axis, superior mesenteric artery, and/or common hepatic artery, regardless of size'],
+]);
+const AJCC_N = new Map([
+    ['x', 'Regional lymph nodes cannot be assessed'],
+    ['0', 'No regional lymph node metastasis'],
+    ['1', 'Metastasis in one to three regional lymph nodes'],
+    ['2', 'Metastasis in four or more regional lymph nodes'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis (in this study)'],
+    ['1', 'Distant metastasis'],
+]);
 
 function generate_report(){
     var t_stage = ["0"];
@@ -177,10 +177,7 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_PANCREAS_T[t];
-    let n_str = AJCC8_PANCREAS_N[n];
-    let m_str = AJCC8_PANCREAS_M[m];
-    report += ajcc_template("Pancreatic Carcinoma", t, t_str, n, n_str, m, m_str);
+    report += ajcc_template_with_parent("Pancreatic Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Pancreatic Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
@@ -236,6 +233,17 @@ new ClipboardJS('#btn_copy', {
     }
 });
 
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for Pancreatic Carcinoma");
+    $('#ajccModalBody').html(ajcc_table);
+});
 
 /*
 var clipboard = new ClipboardJS('#btn_copy');

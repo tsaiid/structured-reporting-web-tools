@@ -5,35 +5,35 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/ogs_pelvis.html');
 }
 
-import {join_checkbox_values, ajcc_template, ajcc_template_with_parent} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC8_OGS_PELVIS_T = {
-    'x': 'Primary tumor cannot be assessed',
-    '0': 'No evidence of primary tumor',
-    '1': 'Tumor confined to one pelvic segment with no extraosseous extension',
-    '1a': 'Tumor ≤8 cm in greatest dimension',
-    '1b': 'Tumor >8 cm in greatest dimension',
-    '2': 'Tumor confined to one pelvic segment with extraosseous extension or two segments without extraosseous extension',
-    '2a': 'Tumor ≤8 cm in greatest dimension',
-    '2b': 'Tumor >8 cm in greatest dimension',
-    '3': 'Tumor spanning two pelvic segments with extraosseous extension',
-    '3a': 'Tumor ≤8 cm in greatest dimension',
-    '3b': 'Tumor >8 cm in greatest dimension',
-    '4': 'Tumor spanning three pelvic segments or crossing the sacroiliac joint',
-    '4a': 'Tumor involves sacroiliac joint and extends medial to the sacral neuroforamen',
-    '4b': 'Tumor encasement of external iliac vessels or presence of gross tumor thrombus in major pelvic vessels',
-};
-const AJCC8_OGS_PELVIS_N = {
-    'x': 'Regional lymph nodes cannot be assessed. Because of the rarity of lymph node involvement in bone sarcomas, the designation NX may not be appropriate, and cases should be considered N0 unless clinical node involvement clearly is evident.',
-    '0': 'No regional lymph node metastasis',
-    '1': 'Regional lymph node metastasis',
-};
-const AJCC8_OGS_PELVIS_M = {
-    '0': 'No distant metastasis (in this study)',
-    '1': 'Distant metastasis',
-    '1a': 'Lung',
-    '1b': 'Bone or other distant sites',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed'],
+    ['0', 'No evidence of primary tumor'],
+    ['1', 'Tumor confined to one pelvic segment with no extraosseous extension'],
+    ['1a', 'Tumor ≤8 cm in greatest dimension'],
+    ['1b', 'Tumor >8 cm in greatest dimension'],
+    ['2', 'Tumor confined to one pelvic segment with extraosseous extension or two segments without extraosseous extension'],
+    ['2a', 'Tumor ≤8 cm in greatest dimension'],
+    ['2b', 'Tumor >8 cm in greatest dimension'],
+    ['3', 'Tumor spanning two pelvic segments with extraosseous extension'],
+    ['3a', 'Tumor ≤8 cm in greatest dimension'],
+    ['3b', 'Tumor >8 cm in greatest dimension'],
+    ['4', 'Tumor spanning three pelvic segments or crossing the sacroiliac joint'],
+    ['4a', 'Tumor involves sacroiliac joint and extends medial to the sacral neuroforamen'],
+    ['4b', 'Tumor encasement of external iliac vessels or presence of gross tumor thrombus in major pelvic vessels'],
+]);
+const AJCC_N = new Map([
+    ['x', 'Regional lymph nodes cannot be assessed. Because of the rarity of lymph node involvement in bone sarcomas, the designation NX may not be appropriate, and cases should be considered N0 unless clinical node involvement clearly is evident.'],
+    ['0', 'No regional lymph node metastasis'],
+    ['1', 'Regional lymph node metastasis'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis (in this study)'],
+    ['1', 'Distant metastasis'],
+    ['1a', 'Lung'],
+    ['1b', 'Bone or other distant sites'],
+]);
 
 function generate_report(){
     var t_stage = ["0"];
@@ -177,7 +177,7 @@ Post-contrast imaging: axial imaging, unilateral (lesion side only);
     //let n_str = AJCC8_OGS_PELVIS_N[n];
     //let m_str = AJCC8_OGS_PELVIS_M[m];
     //report += ajcc_template("OGS of Pelvis", t, t_str, n, n_str, m, m_str);
-    report += ajcc_template_with_parent("OGS of Pelvis", t, AJCC8_OGS_PELVIS_T, n, AJCC8_OGS_PELVIS_N, m, AJCC8_OGS_PELVIS_M);
+    report += ajcc_template_with_parent("OGS of Pelvis", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("OGS for Pelvis");
     $('#reportModalBody pre code').html(report);
@@ -238,6 +238,17 @@ new ClipboardJS('#btn_copy', {
     }
 });
 
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for OGS of Pelvis");
+    $('#ajccModalBody').html(ajcc_table);
+});
 
 /*
 var clipboard = new ClipboardJS('#btn_copy');

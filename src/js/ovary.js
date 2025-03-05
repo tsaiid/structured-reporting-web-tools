@@ -5,40 +5,40 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/ovary.html');
 }
 
-import {join_checkbox_values, ajcc_template, ajcc_template_with_parent} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC8_T = {
-    'x': 'Primary tumor cannot be assessed',
-    '0': 'No evidence of primary tumor',
-    '1': 'Tumor limited to ovaries (one or both) or fallopian tube(s)',
-    '1a': 'Tumor limited to one ovary (capsule intact) or fallopian tube, no tumor on ovarian or fallopian tube surface; no malignant cells in ascites or peritoneal washings',
-    '1b': 'Tumor limited to both ovaries (capsules intact) or fallopian tubes; no tumor on ovarian or fallopian tube surface; no malignant cells in ascites or peritoneal washings',
-    '1c': 'Tumor limited to one or both ovaries or fallopian tubes, with any of the following:',
-    '1c1': 'Surgical spill',
-    '1c2': 'Capsule ruptured before surgery, or tumor on ovarian surface or fallopian tube surface',
-    '1c3': 'Malignant cells in ascites or peritoneal washings',
-    '2': 'Tumor involves 1 or both ovaries or fallopian tubes with pelvic extension below pelvic brim or primary peritoneal cancer',
-    '2a': 'Extension &/or implants on the uterus &/or fallopian tube(s)&/or ovaries',
-    '2b': 'Extension to &/or implants on other pelvic tissues',
-    '3': 'Tumor involves 1 or both ovaries or fallopian tubes, or primary peritoneal cancer, with microscopically confirmed peritoneal metastasis outside the pelvis&/or metastasis to the retroperitoneal (pelvic &/or para-aortic) lymph nodes',
-    '3a': 'Microscopic extrapelvic (above the pelvic brim) peritoneal involvement with or without positive retroperitoneal lymph nodes',
-    '3b': 'Macroscopic peritoneal metastasis beyond pelvis 2 cm or less in greatest dimension with or without metastasis to the retroperitoneal lymph nodes',
-    '3c': 'Macroscopic peritoneal metastasis beyond the pelvis more than 2 cm in greatest dimension with or without metastasis to the retroperitoneal lymph nodes (includes extension of tumor to capsule of liver and spleen without parenchymal involvement of either organ)',
-};
-const AJCC8_N = {
-    'x': 'Regional lymph node cannot be assessed',
-    '0': 'No regional lymph node metastasis',
-    '0(i+)': 'Isolated tumor cells in regional lymph node(s) no greater than 0.2 mm',
-    '1': 'Positive retroperitoneal lymph nodes only (histologically confirmed)',
-    '1a': 'Metastasis up to 10 mm in greatest dimension',
-    '1b': 'Metastasis more than 10 mm in greatest dimension',
-};
-const AJCC8_M = {
-    '0': 'No distant metastasis (in this study)',
-    '1': 'Distant metastasis, including pleural effusion with positive cytology; liver or splenic parenchymal metastasis; metastasis to extra-abdominal organs (including inguinal lymph nodes and lymph nodes outside the abdominal cavity); and transmural involvement of intestine',
-    '1a': 'Pleural effusion with positive cytology',
-    '1b': 'Liver or splenic parenchymal metastasis; metastasis to extra-abdominal organs (including inguinal lymph nodes and lymph nodes outside the abdominal cavity); transmural involvement of intestine',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed'],
+    ['0', 'No evidence of primary tumor'],
+    ['1', 'Tumor limited to ovaries (one or both) or fallopian tube(s)'],
+    ['1a', 'Tumor limited to one ovary (capsule intact) or fallopian tube, no tumor on ovarian or fallopian tube surface; no malignant cells in ascites or peritoneal washings'],
+    ['1b', 'Tumor limited to both ovaries (capsules intact) or fallopian tubes; no tumor on ovarian or fallopian tube surface; no malignant cells in ascites or peritoneal washings'],
+    ['1c', 'Tumor limited to one or both ovaries or fallopian tubes, with any of the following:'],
+    ['1c1', 'Surgical spill'],
+    ['1c2', 'Capsule ruptured before surgery, or tumor on ovarian surface or fallopian tube surface'],
+    ['1c3', 'Malignant cells in ascites or peritoneal washings'],
+    ['2', 'Tumor involves 1 or both ovaries or fallopian tubes with pelvic extension below pelvic brim or primary peritoneal cancer'],
+    ['2a', 'Extension &/or implants on the uterus &/or fallopian tube(s)&/or ovaries'],
+    ['2b', 'Extension to &/or implants on other pelvic tissues'],
+    ['3', 'Tumor involves 1 or both ovaries or fallopian tubes, or primary peritoneal cancer, with microscopically confirmed peritoneal metastasis outside the pelvis&/or metastasis to the retroperitoneal (pelvic &/or para-aortic) lymph nodes'],
+    ['3a', 'Microscopic extrapelvic (above the pelvic brim) peritoneal involvement with or without positive retroperitoneal lymph nodes'],
+    ['3b', 'Macroscopic peritoneal metastasis beyond pelvis 2 cm or less in greatest dimension with or without metastasis to the retroperitoneal lymph nodes'],
+    ['3c', 'Macroscopic peritoneal metastasis beyond the pelvis more than 2 cm in greatest dimension with or without metastasis to the retroperitoneal lymph nodes (includes extension of tumor to capsule of liver and spleen without parenchymal involvement of either organ)'],
+]);
+const AJCC_N = new Map([
+    ['x', 'Regional lymph node cannot be assessed'],
+    ['0', 'No regional lymph node metastasis'],
+    ['0(i+)', 'Isolated tumor cells in regional lymph node(s) no greater than 0.2 mm'],
+    ['1', 'Positive retroperitoneal lymph nodes only (histologically confirmed)'],
+    ['1a', 'Metastasis up to 10 mm in greatest dimension'],
+    ['1b', 'Metastasis more than 10 mm in greatest dimension'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis (in this study)'],
+    ['1', 'Distant metastasis, including pleural effusion with positive cytology; liver or splenic parenchymal metastasis; metastasis to extra-abdominal organs (including inguinal lymph nodes and lymph nodes outside the abdominal cavity); and transmural involvement of intestine'],
+    ['1a', 'Pleural effusion with positive cytology'],
+    ['1b', 'Liver or splenic parenchymal metastasis; metastasis to extra-abdominal organs (including inguinal lymph nodes and lymph nodes outside the abdominal cavity); transmural involvement of intestine'],
+]);
 
 function generate_report(){
     var t_stage = [];
@@ -232,7 +232,7 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    report += ajcc_template_with_parent("Ovarian Carcinoma", t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
+    report += ajcc_template_with_parent("Ovarian Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Ovarian Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
@@ -276,6 +276,17 @@ new ClipboardJS('#btn_copy', {
     }
 });
 
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for Ovarian Carcinoma");
+    $('#ajccModalBody').html(ajcc_table);
+});
 
 /*
 var clipboard = new ClipboardJS('#btn_copy');

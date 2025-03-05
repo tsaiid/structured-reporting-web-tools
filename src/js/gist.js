@@ -5,24 +5,24 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/gist.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC8_GIST_T = {
-    'x': 'Primary tumor cannot be assessed',
-    '0': 'No evidence of primary tumor',
-    '1': 'Tumor 2 cm or less',
-    '2': 'Tumor more than 2 cm but not more than 5 cm',
-    '3': 'Tumor more than 5 cm but not more than 10 cm',
-    '4': 'Tumor more than 10 cm in greatest dimension',
-};
-const AJCC8_GIST_N = {
-    '0': 'No regional lymph node metastasis or unknown lymph node status',
-    '1': 'Regional lymph node metastasis',
-};
-const AJCC8_GIST_M = {
-    '0': 'No distant metastasis (in this study)',
-    '1': 'Distant metastasis',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed'],
+    ['0', 'No evidence of primary tumor'],
+    ['1', 'Tumor 2 cm or less'],
+    ['2', 'Tumor more than 2 cm but not more than 5 cm'],
+    ['3', 'Tumor more than 5 cm but not more than 10 cm'],
+    ['4', 'Tumor more than 10 cm in greatest dimension'],
+]);
+const AJCC_N = new Map([
+    ['0', 'No regional lymph node metastasis or unknown lymph node status'],
+    ['1', 'Regional lymph node metastasis'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis (in this study)'],
+    ['1', 'Distant metastasis'],
+]);
 
 function generate_report(){
     var t_stage = ["0"];
@@ -140,7 +140,7 @@ Dynamic contrast–enhanced axial imaging at arterial phase, venous phase
     let t_str = AJCC8_GIST_T[t];
     let n_str = AJCC8_GIST_N[n];
     let m_str = AJCC8_GIST_M[m];
-    report += ajcc_template("Gastrointestinal Stromal Tumor", t, t_str, n, n_str, m, m_str);
+    report += ajcc_template_with_parent("Gastrointestinal Stromal Tumor", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Gastrointestinal Stromal Tumor Staging Form");
     $('#reportModalBody pre code').html(report);
@@ -194,6 +194,18 @@ new ClipboardJS('#btn_copy', {
         let report_body = $("#reportModalBody pre code").text();
         return report_title + "\n\n" + report_body;
     }
+});
+
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for Gastrointestinal Stromal Tumor");
+    $('#ajccModalBody').html(ajcc_table);
 });
 
 

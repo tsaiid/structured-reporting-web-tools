@@ -5,27 +5,27 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/hcc.html');
 }
 
-import {join_checkbox_values, ajcc_template_with_parent} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC8_T = {
-    'x': 'Primary tumor cannot be assessed',
-    '0': 'No evidence of primary tumor',
-    '1': 'Solitary tumor ≤2 cm, or >2 cm without vascular invasion',
-    '1a': 'Solitary tumor ≤2 cm',
-    '1b': 'Solitary tumor >2 cm without vascular invasion',
-    '2': 'Solitary tumor >2 cm with vascular invasion, or multiple tumors, none >5 cm',
-    '3': 'Multiple tumors, at least one of which is >5 cm',
-    '4': 'Single tumor or multiple tumors of any size involving a major branch of the portal vein or hepatic vein, or tumor(s) with direct invasion of adjacent organs other than the gallbladder or with perforation of visceral peritoneum',
-};
-const AJCC8_N = {
-    'x': 'Regional lymph nodes cannot be assessed',
-    '0': 'No regional lymph node metastasis',
-    '1': 'Regional lymph node metastasis',
-};
-const AJCC8_M = {
-    '0': 'No distant metastasis (in this study)',
-    '1': 'Distant metastasis',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed'],
+    ['0', 'No evidence of primary tumor'],
+    ['1', 'Solitary tumor ≤2 cm, or >2 cm without vascular invasion'],
+    ['1a', 'Solitary tumor ≤2 cm'],
+    ['1b', 'Solitary tumor >2 cm without vascular invasion'],
+    ['2', 'Solitary tumor >2 cm with vascular invasion, or multiple tumors, none >5 cm'],
+    ['3', 'Multiple tumors, at least one of which is >5 cm'],
+    ['4', 'Single tumor or multiple tumors of any size involving a major branch of the portal vein or hepatic vein, or tumor(s) with direct invasion of adjacent organs other than the gallbladder or with perforation of visceral peritoneum'],
+]);
+const AJCC_N = new Map([
+    ['x', 'Regional lymph nodes cannot be assessed'],
+    ['0', 'No regional lymph node metastasis'],
+    ['1', 'Regional lymph node metastasis'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis (in this study)'],
+    ['1', 'Distant metastasis'],
+]);
 
 function generate_report(){
     var t_stage = ["0"];    // at least T1?
@@ -199,6 +199,18 @@ new ClipboardJS('#btn_copy', {
         let report_body = $("#reportModalBody pre code").text();
         return report_title + "\n\n" + report_body;
     }
+});
+
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for Hepatocellular Carcinoma");
+    $('#ajccModalBody').html(ajcc_table);
 });
 
 

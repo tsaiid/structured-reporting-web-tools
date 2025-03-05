@@ -7,27 +7,27 @@ if (process.env.NODE_ENV !== 'production') {
 
 import {join_checkbox_values, ajcc_template} from './ajcc_common.js';
 
-const AJCC8_CCC_PBD_T = {
-    'x': 'Primary tumor cannot be assessed',
-    '0': 'No evidence of primary tumor',
-    'is': 'Carcinoma in situ/high-grade dysplasia',
-    '1': 'Tumor confined to the bile duct, with extension up to the muscle layer or fibrous tissue',
-    '2': 'Tumor invades beyond the wall of the bile duct to surrounding adipose tissue, or tumor invades adjacent hepatic parenchyma',
-    '2a': 'Tumor invades beyond the wall of the bile duct to surrounding adipose tissue',
-    '2b': 'Tumor invades adjacent hepatic parenchyma',
-    '3': 'Tumor invades unilateral branches of the portal vein or hepatic artery',
-    '4': 'Tumor invades the main portal vein or its branches bilaterally, or the common hepatic artery; or unilateral second-order biliary radicals with contralateral portal vein or hepatic artery involvement',
-};
-const AJCC8_CCC_PBD_N = {
-    'x': 'Regional lymph nodes cannot be assessed',
-    '0': 'No regional lymph node metastasis',
-    '1': 'One to three positive lymph nodes typically involving the hilar, cystic duct, common bile duct, hepatic artery, posterior pancreatoduodenal, and portal vein lymph nodes',
-    '2': 'Four or more positive lymph nodes from the sites described for N1',
-};
-const AJCC8_CCC_PBD_M = {
-    '0': 'No distant metastasis (in this study)',
-    '1': 'Distant metastasis',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed'],
+    ['0', 'No evidence of primary tumor'],
+    ['is', 'Carcinoma in situ/high-grade dysplasia'],
+    ['1', 'Tumor confined to the bile duct, with extension up to the muscle layer or fibrous tissue'],
+    ['2', 'Tumor invades beyond the wall of the bile duct to surrounding adipose tissue, or tumor invades adjacent hepatic parenchyma'],
+    ['2a', 'Tumor invades beyond the wall of the bile duct to surrounding adipose tissue'],
+    ['2b', 'Tumor invades adjacent hepatic parenchyma'],
+    ['3', 'Tumor invades unilateral branches of the portal vein or hepatic artery'],
+    ['4', 'Tumor invades the main portal vein or its branches bilaterally, or the common hepatic artery; or unilateral second-order biliary radicals with contralateral portal vein or hepatic artery involvement'],
+]);
+const AJCC_N = new Map([
+    ['x', 'Regional lymph nodes cannot be assessed'],
+    ['0', 'No regional lymph node metastasis'],
+    ['1', 'One to three positive lymph nodes typically involving the hilar, cystic duct, common bile duct, hepatic artery, posterior pancreatoduodenal, and portal vein lymph nodes'],
+    ['2', 'Four or more positive lymph nodes from the sites described for N1'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis (in this study)'],
+    ['1', 'Distant metastasis'],
+]);
 
 function generate_report(){
     var t_stage = [];
@@ -158,7 +158,7 @@ function generate_report(){
     let t_str = AJCC8_CCC_PBD_T[t];
     let n_str = AJCC8_CCC_PBD_N[n];
     let m_str = AJCC8_CCC_PBD_M[m];
-    report += ajcc_template("Cholangiocarcinoma: Perihilar Bile Duct", t, t_str, n, n_str, m, m_str);
+    report += ajcc_template_with_parent("Cholangiocarcinoma: Perihilar Bile Duct", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Cholangiocarcinoma: Perihilar Bile Duct Staging Form");
     $('#reportModalBody pre code').html(report);
@@ -221,6 +221,18 @@ new ClipboardJS('#btn_copy', {
         let report_body = $("#reportModalBody pre code").text();
         return report_title + "\n\n" + report_body;
     }
+});
+
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for Cholangiocarcinoma: Intrahepatic Bile Duct");
+    $('#ajccModalBody').html(ajcc_table);
 });
 
 

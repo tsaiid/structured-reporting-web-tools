@@ -5,35 +5,35 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/hypopharynx.html');
 }
 
-import {join_checkbox_values, ajcc_template, ajcc_template_with_parent} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC8_T = {
-    'x': 'Primary tumor cannot be assessed',
-    '0': 'No evidence of primary tumor',
-    'is': 'Carcinoma in situ',
-    '1': 'Tumor limited to one subsite of hypopharynx and/or 2 cm or smaller in greatest dimension',
-    '2': 'Tumor invades more than one subsite of hypopharynx or an adjacent site, or measures larger than 2 cm but not larger than 4 cm in greatest dimension without fixation of hemilarynx',
-    '3': 'Tumor larger than 4 cm in greatest dimension or with fixation of hemilarynx or extension to esophageal mucosa',
-    '4': 'Moderately advanced and very advanced local disease',
-    '4a': 'Moderately advanced local disease: Tumor invades thyroid/cricoid cartilage, hyoid bone, thyroid gland, or central compartment soft tissue',
-    '4b': 'Very advanced local disease: Tumor invades prevertebral fascia, encases carotid artery, or involves mediastinal structures',
-};
-const AJCC8_N = {
-    'x': 'Regional lymph nodes cannot be assessed',
-    '0': 'No regional lymph node metastasis',
-    '1': 'Metastasis in a single ipsilateral lymph node, 3 cm or smaller in greatest dimension and ENE(-)',
-    '2': 'Metastasis in a single ipsilateral node, larger than 3 cm but not larger than 6 cm in greatest dimension and ENE(-); or metastases in multiple ipsilateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(-); or metastasis in bilateral or contralateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(-)',
-    '2a': 'Metastasis in a single ipsilateral node, larger than 3 cm but not larger than 6 cm in greatest dimension and ENE(-)',
-    '2b': 'Metastases in multiple ipsilateral nodes, none larger than 6 cm in greatest dimension and ENE(-)',
-    '2c': 'Metastases in bilateral or contralateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(-)',
-    '3': 'Metastasis in a lymph node, larger than 6 cm in greatest dimension and ENE(-); or metastasis in any lymph node(s) with clinically overt ENE(+)',
-    '3a': 'Metastasis in a lymph node, larger than 6 cm in greatest dimension and ENE(-)',
-    '3b': 'Metastasis in any lymph node(s) with clinically overt ENE(+)',
-};
-const AJCC8_M = {
-    '0': 'No distant metastasis (in this study)',
-    '1': 'Distant metastasis',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed'],
+    ['0', 'No evidence of primary tumor'],
+    ['is', 'Carcinoma in situ'],
+    ['1', 'Tumor limited to one subsite of hypopharynx and/or 2 cm or smaller in greatest dimension'],
+    ['2', 'Tumor invades more than one subsite of hypopharynx or an adjacent site, or measures larger than 2 cm but not larger than 4 cm in greatest dimension without fixation of hemilarynx'],
+    ['3', 'Tumor larger than 4 cm in greatest dimension or with fixation of hemilarynx or extension to esophageal mucosa'],
+    ['4', 'Moderately advanced and very advanced local disease'],
+    ['4a', 'Moderately advanced local disease: Tumor invades thyroid/cricoid cartilage, hyoid bone, thyroid gland, or central compartment soft tissue'],
+    ['4b', 'Very advanced local disease: Tumor invades prevertebral fascia, encases carotid artery, or involves mediastinal structures'],
+]);
+const AJCC_N = new Map([
+    ['x', 'Regional lymph nodes cannot be assessed'],
+    ['0', 'No regional lymph node metastasis'],
+    ['1', 'Metastasis in a single ipsilateral lymph node, 3 cm or smaller in greatest dimension and ENE(-)'],
+    ['2', 'Metastasis in a single ipsilateral node, larger than 3 cm but not larger than 6 cm in greatest dimension and ENE(-); or metastases in multiple ipsilateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(-); or metastasis in bilateral or contralateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(-)'],
+    ['2a', 'Metastasis in a single ipsilateral node, larger than 3 cm but not larger than 6 cm in greatest dimension and ENE(-)'],
+    ['2b', 'Metastases in multiple ipsilateral nodes, none larger than 6 cm in greatest dimension and ENE(-)'],
+    ['2c', 'Metastases in bilateral or contralateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(-)'],
+    ['3', 'Metastasis in a lymph node, larger than 6 cm in greatest dimension and ENE(-); or metastasis in any lymph node(s) with clinically overt ENE(+)'],
+    ['3a', 'Metastasis in a lymph node, larger than 6 cm in greatest dimension and ENE(-)'],
+    ['3b', 'Metastasis in any lymph node(s) with clinically overt ENE(+)'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis (in this study)'],
+    ['1', 'Distant metastasis'],
+]);
 
 function generate_report(){
     var t_stage = [];
@@ -227,7 +227,7 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    report += ajcc_template_with_parent("Hypopharynx Carcinoma", t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
+    report += ajcc_template_with_parent("Hypopharynx Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Hypopharyngeal Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
@@ -281,6 +281,18 @@ new ClipboardJS('#btn_copy', {
         let report_body = $("#reportModalBody pre code").text();
         return report_title + "\n\n" + report_body;
     }
+});
+
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for Cholangiocarcinoma: Intrahepatic Bile Duct");
+    $('#ajccModalBody').html(ajcc_table);
 });
 
 

@@ -5,33 +5,33 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/urinary_bladder.html');
 }
 
-import {join_checkbox_values, ajcc_template, ajcc_template_with_parent} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC8_T = {
-    'x': 'Primary tumor cannot be assessed',
-    '0': 'No evidence of primary tumor',
-    'a': 'Non-invasive papillary carcinoma',
-    'is': 'Urothelial carcinoma in situ: "flat tumor"',
-    '1': 'Tumor invades lamina propria (subepithelial connective tissue)',
-    '2': 'Tumor invades muscularis propria',
-    '3': 'Tumor invades perivesical soft tissue',
-    '4': 'Extravesical tumor directly invades any of the following: prostatic stroma, seminal vesicles, uterus, vagina, pelvic wall, abdominal wall',
-    '4a': 'Extravesical tumor directly invades into prostatic stroma, uterus, vagina',
-    '4b': 'Extravesical tumor invades pelvic wall, abdominal wall',
-};
-const AJCC8_N = {
-    'x': 'Lymph nodes cannot be assessed',
-    '0': 'No lymph node metastasis',
-    '1': 'Single regional lymph node metastasis in the true pelvis (perivesical, obturator, internal and external iliac, or sacral lymph node)',
-    '2': 'Multiple regional lymph node metastases in the true pelvis (perivesical, obturator, internal and external iliac, or sacral lymph node metastasis)',
-    '3': 'Lymph node metastasis to the common iliac lymph nodes',
-};
-const AJCC8_M = {
-    '0': 'No distant metastasis (in this study)',
-    '1': 'Distant metastasis',
-    '1a': 'Distant metastasis limited to lymph nodes beyond the common iliacs',
-    '1b': 'Non-lymph-node distant metastases',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed'],
+    ['0', 'No evidence of primary tumor'],
+    ['a', 'Non-invasive papillary carcinoma'],
+    ['is', 'Urothelial carcinoma in situ: "flat tumor"'],
+    ['1', 'Tumor invades lamina propria (subepithelial connective tissue)'],
+    ['2', 'Tumor invades muscularis propria'],
+    ['3', 'Tumor invades perivesical soft tissue'],
+    ['4', 'Extravesical tumor directly invades any of the following: prostatic stroma, seminal vesicles, uterus, vagina, pelvic wall, abdominal wall'],
+    ['4a', 'Extravesical tumor directly invades into prostatic stroma, uterus, vagina'],
+    ['4b', 'Extravesical tumor invades pelvic wall, abdominal wall'],
+]);
+const AJCC_N = new Map([
+    ['x', 'Lymph nodes cannot be assessed'],
+    ['0', 'No lymph node metastasis'],
+    ['1', 'Single regional lymph node metastasis in the true pelvis (perivesical, obturator, internal and external iliac, or sacral lymph node)'],
+    ['2', 'Multiple regional lymph node metastases in the true pelvis (perivesical, obturator, internal and external iliac, or sacral lymph node metastasis)'],
+    ['3', 'Lymph node metastasis to the common iliac lymph nodes'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis (in this study)'],
+    ['1', 'Distant metastasis'],
+    ['1a', 'Distant metastasis limited to lymph nodes beyond the common iliacs'],
+    ['1b', 'Non-lymph-node distant metastases'],
+]);
 
 function generate_report(){
     var t_stage = [];
@@ -215,7 +215,7 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    report += ajcc_template_with_parent("Urinary Bladder Carcinoma", t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
+    report += ajcc_template_with_parent("Urinary Bladder Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Urinary Bladder Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
@@ -264,6 +264,17 @@ new ClipboardJS('#btn_copy', {
     }
 });
 
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for Urinary Bladder Carcinoma");
+    $('#ajccModalBody').html(ajcc_table);
+});
 
 /*
 var clipboard = new ClipboardJS('#btn_copy');

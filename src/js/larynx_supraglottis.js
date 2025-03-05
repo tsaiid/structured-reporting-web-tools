@@ -5,34 +5,34 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/larynx_supraglottis.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC8_LARYNX_SUPRAGLOTTIS_T = {
-    'x': 'Primary tumor cannot be assessed',
-    'is': 'Carcinoma in situ',
-    '1': 'Tumor limited to one subsite of supraglottis with normal vocal cord mobility',
-    '2': 'Tumor invades mucosa of more than one adjacent subsite of supraglottis or glottis or region outside the supraglottis (e.g., mucosa of base of tongue, vallecula, medial wall of pyriform sinus) without fixation of the larynx',
-    '3': 'Tumor limited to larynx with vocal cord fixation and/or invades any of the following: postcricoid area, preepiglottic space, paraglottic space, and/or inner cortex of thyroid cartilage',
-    '4': 'Moderately advanced or very advanced',
-    '4a': 'Moderately advanced local disease: Tumor invades through the outer cortex of the thyroid cartilage and/or invades tissues beyond the larynx (e.g., trachea, soft tissues of neck including deep extrinsic muscle of the tongue, strap muscles, thyroid, or esophagus)',
-    '4b': 'Very advanced local disease: Tumor invades prevertebral space, encases carotid artery, or invades mediastinal structures',
-};
-const AJCC8_LARYNX_SUPRAGLOTTIS_N = {
-    'x': 'Regional lymph nodes cannot be assessed',
-    '0': 'No regional lymph node metastasis',
-    '1': 'Metastasis in a single ipsilateral lymph node, 3 cm or smaller in greatest dimension and ENE(-)',
-    '2': 'Metastasis in a single ipsilateral node, larger than 3 cm but not larger than 6 cm in greatest dimension and ENE(-); or metastases in multiple ipsilateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(-); or metastasis in bilateral or contralateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(-)',
-    '2a': 'Metastasis in a single ipsilateral node, larger than 3 cm but not larger than 6 cm in greatest dimension and ENE(-)',
-    '2b': 'Metastases in multiple ipsilateral nodes, none larger than 6 cm in greatest dimension and ENE(-)',
-    '2c': 'Metastases in bilateral or contralateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(-)',
-    '3': 'Metastasis in a lymph node, larger than 6 cm in greatest dimension and ENE(-); or metastasis in any lymph node(s) with clinically overt ENE(+)',
-    '3a': 'Metastasis in a lymph node, larger than 6 cm in greatest dimension and ENE(-)',
-    '3b': 'Metastasis in any lymph node(s) with clinically overt ENE(+)',
-};
-const AJCC8_LARYNX_SUPRAGLOTTIS_M = {
-    '0': 'No distant metastasis (in this study)',
-    '1': 'Distant metastasis',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed'],
+    ['is', 'Carcinoma in situ'],
+    ['1', 'Tumor limited to one subsite of supraglottis with normal vocal cord mobility'],
+    ['2', 'Tumor invades mucosa of more than one adjacent subsite of supraglottis or glottis or region outside the supraglottis (e.g., mucosa of base of tongue, vallecula, medial wall of pyriform sinus) without fixation of the larynx'],
+    ['3', 'Tumor limited to larynx with vocal cord fixation and/or invades any of the following: postcricoid area, preepiglottic space, paraglottic space, and/or inner cortex of thyroid cartilage'],
+    ['4', 'Moderately advanced or very advanced'],
+    ['4a', 'Moderately advanced local disease: Tumor invades through the outer cortex of the thyroid cartilage and/or invades tissues beyond the larynx (e.g., trachea, soft tissues of neck including deep extrinsic muscle of the tongue, strap muscles, thyroid, or esophagus)'],
+    ['4b', 'Very advanced local disease: Tumor invades prevertebral space, encases carotid artery, or invades mediastinal structures'],
+]);
+const AJCC_N = new Map([
+    ['x', 'Regional lymph nodes cannot be assessed'],
+    ['0', 'No regional lymph node metastasis'],
+    ['1', 'Metastasis in a single ipsilateral lymph node, 3 cm or smaller in greatest dimension and ENE(-)'],
+    ['2', 'Metastasis in a single ipsilateral node, larger than 3 cm but not larger than 6 cm in greatest dimension and ENE(-); or metastases in multiple ipsilateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(-); or metastasis in bilateral or contralateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(-)'],
+    ['2a', 'Metastasis in a single ipsilateral node, larger than 3 cm but not larger than 6 cm in greatest dimension and ENE(-)'],
+    ['2b', 'Metastases in multiple ipsilateral nodes, none larger than 6 cm in greatest dimension and ENE(-)'],
+    ['2c', 'Metastases in bilateral or contralateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(-)'],
+    ['3', 'Metastasis in a lymph node, larger than 6 cm in greatest dimension and ENE(-); or metastasis in any lymph node(s) with clinically overt ENE(+)'],
+    ['3a', 'Metastasis in a lymph node, larger than 6 cm in greatest dimension and ENE(-)'],
+    ['3b', 'Metastasis in any lymph node(s) with clinically overt ENE(+)'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis (in this study)'],
+    ['1', 'Distant metastasis'],
+]);
 
 function generate_report(){
     var t_stage = ["0"];
@@ -190,10 +190,7 @@ SEQUENCES:
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_LARYNX_SUPRAGLOTTIS_T[t];
-    let n_str = AJCC8_LARYNX_SUPRAGLOTTIS_N[n];
-    let m_str = AJCC8_LARYNX_SUPRAGLOTTIS_M[m];
-    report += ajcc_template("Laryngeal Cancer (Supraglottis) Carcinoma", t, t_str, n, n_str, m, m_str);
+    report += ajcc_template_with_parent("Laryngeal Cancer (Supraglottis) Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Laryngeal Cancer (Supraglottis) Staging Form");
     $('#reportModalBody pre code').html(report);
@@ -249,6 +246,17 @@ new ClipboardJS('#btn_copy', {
     }
 });
 
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for Laryngeal Cancer (Supraglottis) Carcinoma");
+    $('#ajccModalBody').html(ajcc_table);
+});
 
 /*
 var clipboard = new ClipboardJS('#btn_copy');

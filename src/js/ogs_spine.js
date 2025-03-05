@@ -5,29 +5,29 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/ogs_spine.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC8_OGS_SPINE_T = {
-    'x': 'Primary tumor cannot be assessed',
-    '0': 'No evidence of primary tumor',
-    '1': 'Tumor confined to one vertebral segment or two adjacent vertebral segments',
-    '2': 'Tumor confined to three adjacent vertebral segments',
-    '3': 'Tumor confined to four or more adjacent vertebral segments, or any nonadjacent vertebral segments',
-    '4': 'Extension into the spinal canal or great vessels',
-    '4a': 'Extension into the spinal canal',
-    '4b': 'Evidence of gross vascular invasion or tumor thrombus in the great vessels',
-};
-const AJCC8_OGS_SPINE_N = {
-    'x': 'Regional lymph nodes cannot be assessed. Because of the rarity of lymph node involvement in bone sarcomas, the designation NX may not be appropriate, and cases should be considered N0 unless clinical node involvement clearly is evident.',
-    '0': 'No regional lymph node metastasis',
-    '1': 'Regional lymph node metastasis',
-};
-const AJCC8_OGS_SPINE_M = {
-    '0': 'No distant metastasis (in this study)',
-    '1': 'Distant metastasis',
-    '1a': 'Lung',
-    '1b': 'Bone or other distant sites',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed'],
+    ['0', 'No evidence of primary tumor'],
+    ['1', 'Tumor confined to one vertebral segment or two adjacent vertebral segments'],
+    ['2', 'Tumor confined to three adjacent vertebral segments'],
+    ['3', 'Tumor confined to four or more adjacent vertebral segments, or any nonadjacent vertebral segments'],
+    ['4', 'Extension into the spinal canal or great vessels'],
+    ['4a', 'Extension into the spinal canal'],
+    ['4b', 'Evidence of gross vascular invasion or tumor thrombus in the great vessels'],
+]);
+const AJCC_N = new Map([
+    ['x', 'Regional lymph nodes cannot be assessed. Because of the rarity of lymph node involvement in bone sarcomas, the designation NX may not be appropriate, and cases should be considered N0 unless clinical node involvement clearly is evident.'],
+    ['0', 'No regional lymph node metastasis'],
+    ['1', 'Regional lymph node metastasis'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis (in this study)'],
+    ['1', 'Distant metastasis'],
+    ['1a', 'Lung'],
+    ['1b', 'Bone or other distant sites'],
+]);
 
 function any_nonadjacent_vertebral_segments() {
     /*
@@ -203,10 +203,7 @@ Post-contrast imaging: axial imaging, unilateral (lesion side only);
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_OGS_SPINE_T[t];
-    let n_str = AJCC8_OGS_SPINE_N[n];
-    let m_str = AJCC8_OGS_SPINE_M[m];
-    report += ajcc_template("OGS for Spine", t, t_str, n, n_str, m, m_str);
+    report += ajcc_template_with_parent("OGS for Spine", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("OGS for Spine");
     $('#reportModalBody pre code').html(report);
@@ -267,6 +264,17 @@ new ClipboardJS('#btn_copy', {
     }
 });
 
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for OGS for Spine");
+    $('#ajccModalBody').html(ajcc_table);
+});
 
 /*
 var clipboard = new ClipboardJS('#btn_copy');

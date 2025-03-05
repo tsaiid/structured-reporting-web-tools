@@ -5,28 +5,28 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/ccc_ibd.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC8_CCC_IBD_T = {
-    'x': 'Primary tumor cannot be assessed',
-    '0': 'No evidence of primary tumor',
-    'is': 'Carcinoma in situ (intraductal tumor)',
-    '1': 'Solitary tumor without vascular invasion, ≤5 cm or >5 cm',
-    '1a': 'Solitary tumor ≤5 cm without vascular invasion',
-    '1b': 'Solitary tumor >5 cm without vascular invasion',
-    '2': 'Solitary tumor with intrahepatic vascular invasion or multiple tumors, with or without vascular invasion',
-    '3': 'Tumor perforating the visceral peritoneum',
-    '4': 'Tumor involving local extrahepatic structures by direct invasion',
-};
-const AJCC8_CCC_IBD_N = {
-    'x': 'Regional lymph nodes cannot be assessed',
-    '0': 'No regional lymph node metastasis',
-    '1': 'Regional lymph node metastasis',
-};
-const AJCC8_CCC_IBD_M = {
-    '0': 'No distant metastasis (in this study)',
-    '1': 'Distant metastasis',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed'],
+    ['0', 'No evidence of primary tumor'],
+    ['is', 'Carcinoma in situ (intraductal tumor)'],
+    ['1', 'Solitary tumor without vascular invasion, ≤5 cm or >5 cm'],
+    ['1a', 'Solitary tumor ≤5 cm without vascular invasion'],
+    ['1b', 'Solitary tumor >5 cm without vascular invasion'],
+    ['2', 'Solitary tumor with intrahepatic vascular invasion or multiple tumors, with or without vascular invasion'],
+    ['3', 'Tumor perforating the visceral peritoneum'],
+    ['4', 'Tumor involving local extrahepatic structures by direct invasion'],
+]);
+const AJCC_N = new Map([
+    ['x', 'Regional lymph nodes cannot be assessed'],
+    ['0', 'No regional lymph node metastasis'],
+    ['1', 'Regional lymph node metastasis'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis (in this study)'],
+    ['1', 'Distant metastasis'],
+]);
 
 function generate_report(){
     var t_stage = [];
@@ -155,10 +155,7 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_CCC_IBD_T[t];
-    let n_str = AJCC8_CCC_IBD_N[n];
-    let m_str = AJCC8_CCC_IBD_M[m];
-    report += ajcc_template("Cholangiocarcinoma: Intrahepatic Bile Duct", t, t_str, n, n_str, m, m_str);
+    report += ajcc_template_with_parent("Cholangiocarcinoma: Intrahepatic Bile Duct", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Cholangiocarcinoma: Intrahepatic Bile Duct Staging Form");
     $('#reportModalBody pre code').html(report);
@@ -223,6 +220,18 @@ new ClipboardJS('#btn_copy', {
         let report_body = $("#reportModalBody pre code").text();
         return report_title + "\n\n" + report_body;
     }
+});
+
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for Cholangiocarcinoma: Intrahepatic Bile Duct");
+    $('#ajccModalBody').html(ajcc_table);
 });
 
 

@@ -7,33 +7,33 @@ if (process.env.NODE_ENV !== 'production') {
 
 import {join_checkbox_values, ajcc_template, ajcc_template_with_parent} from './ajcc_common.js';
 
-const AJCC8_T = {
-    'x': 'Primary tumor cannot be assessed',
-    '0': 'No evidence of primary tumor',
-    '1': 'Tumor confined to the corpus uteri, including endocervical glandular involvement',
-    '1a': 'Tumor limited to the endometrium or invading less than half the myometrium',
-    '1b': 'Tumor invading one half or more of the myometrium',
-    '2': 'Tumor invading the stromal connective tissue of the cervix but not extending beyond the uterus. Does NOT include endocervical glandular involvement.',
-    '3': 'Tumor involving serosa, adnexa, vagina, or parametrium',
-    '3a': 'Tumor involving the serosa and/or adnexa (direct extension or metastasis)',
-    '3b': 'Vaginal involvement (direct extension or metastasis) or parametrial involvement',
-    '4': 'Tumor invading the bladder mucosa and/or bowel mucosa (bullous edema is not sufficient to classify a tumor as T4)',
-};
-const AJCC8_N = {
-    'x': 'Regional lymph node cannot be assessed',
-    '0': 'No regional lymph node metastasis',
-    '0(i+)': 'Isolated tumor cells in regional lymph node(s) no greater than 0.2 mm',
-    '1': 'Regional lymph node metastasis to pelvic lymph nodes',
-    '1mi': 'Regional lymph node metastasis (greater than 0.2 mm but not greater than 2.0 mm in diameter) to pelvic lymph nodes',
-    '1a': 'Regional lymph node metastasis (greater than 2.0 mm in diameter) to pelvic lymph nodes',
-    '2': 'Regional lymph node metastasis to para-aortic lymph nodes, with or without positive pelvic lymph nodes',
-    '2mi': 'Regional lymph node metastasis (greater than 0.2 mm but not greater than 2.0 mm in diameter) to para-aortic lymph nodes, with or without positive pelvic lymph nodes',
-    '2a': 'Regional lymph node metastasis (greater than 2.0 mm in diameter) to para-aortic lymph nodes, with or without positive pelvic lymph nodes',
-};
-const AJCC8_M = {
-    '0': 'No distant metastasis (in this study)',
-    '1': 'Distant metastasis (includes metastasis to inguinal lymph nodes intraperitoneal disease, lung, liver, or bone). (It excludes metastasis to pelvic or para-aortic lymph nodes, vagina, uterine serosa, or adnexa).',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed'],
+    ['0', 'No evidence of primary tumor'],
+    ['1', 'Tumor confined to the corpus uteri, including endocervical glandular involvement'],
+    ['1a', 'Tumor limited to the endometrium or invading less than half the myometrium'],
+    ['1b', 'Tumor invading one half or more of the myometrium'],
+    ['2', 'Tumor invading the stromal connective tissue of the cervix but not extending beyond the uterus. Does NOT include endocervical glandular involvement.'],
+    ['3', 'Tumor involving serosa, adnexa, vagina, or parametrium'],
+    ['3a', 'Tumor involving the serosa and/or adnexa (direct extension or metastasis)'],
+    ['3b', 'Vaginal involvement (direct extension or metastasis) or parametrial involvement'],
+    ['4', 'Tumor invading the bladder mucosa and/or bowel mucosa (bullous edema is not sufficient to classify a tumor as T4)'],
+]);
+const AJCC_N = new Map([
+    ['x', 'Regional lymph node cannot be assessed'],
+    ['0', 'No regional lymph node metastasis'],
+    ['0(i+)', 'Isolated tumor cells in regional lymph node(s) no greater than 0.2 mm'],
+    ['1', 'Regional lymph node metastasis to pelvic lymph nodes'],
+    ['1mi', 'Regional lymph node metastasis (greater than 0.2 mm but not greater than 2.0 mm in diameter) to pelvic lymph nodes'],
+    ['1a', 'Regional lymph node metastasis (greater than 2.0 mm in diameter) to pelvic lymph nodes'],
+    ['2', 'Regional lymph node metastasis to para-aortic lymph nodes, with or without positive pelvic lymph nodes'],
+    ['2mi', 'Regional lymph node metastasis (greater than 0.2 mm but not greater than 2.0 mm in diameter) to para-aortic lymph nodes, with or without positive pelvic lymph nodes'],
+    ['2a', 'Regional lymph node metastasis (greater than 2.0 mm in diameter) to para-aortic lymph nodes, with or without positive pelvic lymph nodes'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis (in this study)'],
+    ['1', 'Distant metastasis (includes metastasis to inguinal lymph nodes intraperitoneal disease, lung, liver, or bone). (It excludes metastasis to pelvic or para-aortic lymph nodes, vagina, uterine serosa, or adnexa).'],
+]);
 
 function generate_report(){
     var t_stage = [];
@@ -190,7 +190,7 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    report += ajcc_template_with_parent("Cervical Carcinoma", t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
+    report += ajcc_template_with_parent("Endometrial Cancer", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Endometrial Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
@@ -232,6 +232,18 @@ new ClipboardJS('#btn_copy', {
         let report_body = $("#reportModalBody pre code").text();
         return report_title + "\n\n" + report_body;
     }
+});
+
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for Endometrial Cancer");
+    $('#ajccModalBody').html(ajcc_table);
 });
 
 

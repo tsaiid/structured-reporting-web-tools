@@ -5,36 +5,36 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/prostate.html');
 }
 
-import {join_checkbox_values, ajcc_template, ajcc_template_with_parent} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC8_T = {
-    'x': 'Primary tumor cannot be assessed',
-    '0': 'No evidence of primary tumor',
-    '1': 'Clinically inapparent tumor that is not palpable',
-    '1a': 'Tumor incidental histologic finding in 5% or less of tissue resected',
-    '1b': 'Tumor incidental histologic finding in more than 5% of tissue resected',
-    '1c': 'Tumor identified by needle biopsy found in one or both sides, but not palpable',
-    '2': 'Tumor is palpable and confined within prostate',
-    '2a': 'Tumor involves one-half of one lobe or less',
-    '2b': 'Tumor involves more than one-half of one lobe but not both lobes',
-    '2c': 'Tumor involves both lobes',
-    '3': 'Extraprostatic tumor that is not fixed or does not invade adjacent structures',
-    '3a': 'Extracapsular extension (unilateral or bilateral)',
-    '3b': 'Tumor invades seminal vesicle(s)',
-    '4': 'Tumor is fixed or invades adjacent structures other than seminal vesicles such as external sphincter, rectum, bladder, levator muscles, and/or pelvic wall',
-};
-const AJCC8_N = {
-    'x': 'Regional lymph nodes cannot be assessed',
-    '0': 'No positive regional nodes',
-    '1': 'Metastasis in regional node(s)',
-};
-const AJCC8_M = {
-    '0': 'No distant metastasis (in this study)',
-    '1': 'Distant metastasis',
-    '1a': 'Nonregional lymph node(s)',
-    '1b': 'Bone(s)',
-    '1c': 'Other site(s) with or without bone disease',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed'],
+    ['0', 'No evidence of primary tumor'],
+    ['1', 'Clinically inapparent tumor that is not palpable'],
+    ['1a', 'Tumor incidental histologic finding in 5% or less of tissue resected'],
+    ['1b', 'Tumor incidental histologic finding in more than 5% of tissue resected'],
+    ['1c', 'Tumor identified by needle biopsy found in one or both sides, but not palpable'],
+    ['2', 'Tumor is palpable and confined within prostate'],
+    ['2a', 'Tumor involves one-half of one lobe or less'],
+    ['2b', 'Tumor involves more than one-half of one lobe but not both lobes'],
+    ['2c', 'Tumor involves both lobes'],
+    ['3', 'Extraprostatic tumor that is not fixed or does not invade adjacent structures'],
+    ['3a', 'Extracapsular extension (unilateral or bilateral)'],
+    ['3b', 'Tumor invades seminal vesicle(s)'],
+    ['4', 'Tumor is fixed or invades adjacent structures other than seminal vesicles such as external sphincter, rectum, bladder, levator muscles, and/or pelvic wall'],
+]);
+const AJCC_N = new Map([
+    ['x', 'Regional lymph nodes cannot be assessed'],
+    ['0', 'No positive regional nodes'],
+    ['1', 'Metastasis in regional node(s)'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis (in this study)'],
+    ['1', 'Distant metastasis'],
+    ['1a', 'Nonregional lymph node(s)'],
+    ['1b', 'Bone(s)'],
+    ['1c', 'Other site(s) with or without bone disease'],
+]);
 const map_prostate_invasion = {
     'One-half of one lobe or less': '2a',
     'More than one-half of one lobe but not both lobes': '2b',
@@ -206,7 +206,7 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    report += ajcc_template_with_parent("Prostate Carcinoma", t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
+    report += ajcc_template_with_parent("Prostate Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Prostate Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
@@ -250,6 +250,17 @@ new ClipboardJS('#btn_copy', {
     }
 });
 
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for Prostate Carcinoma");
+    $('#ajccModalBody').html(ajcc_table);
+});
 
 /*
 var clipboard = new ClipboardJS('#btn_copy');

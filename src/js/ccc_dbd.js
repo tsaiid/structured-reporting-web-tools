@@ -5,27 +5,27 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/ccc_dbd.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC8_CCC_DBD_T = {
-    'x': 'Primary tumor cannot be assessed',
-    '0': 'No evidence of primary tumor',
-    'is': 'Carcinoma in situ/high-grade dysplasia',
-    '1': 'Tumor invades the bile duct wall with a depth less than 5 mm',
-    '2': 'Tumor invades the bile duct wall with a depth of 5-12 mm',
-    '3': 'Tumor invades the bile duct wall with a depth greater than 12 mm',
-    '4': 'Tumor involves the celiac axis, superior mesenteric artery, and/or common hepatic artery',
-};
-const AJCC8_CCC_DBD_N = {
-    'x': 'Regional lymph nodes cannot be assessed',
-    '0': 'No regional lymph node metastasis',
-    '1': 'Metastasis in one to three regional lymph nodes',
-    '2': 'Metastasis in four or more regional lymph nodes',
-};
-const AJCC8_CCC_DBD_M = {
-    '0': 'No distant metastasis (in this study)',
-    '1': 'Distant metastasis',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed'],
+    ['0', 'No evidence of primary tumor'],
+    ['is', 'Carcinoma in situ/high-grade dysplasia'],
+    ['1', 'Tumor invades the bile duct wall with a depth less than 5 mm'],
+    ['2', 'Tumor invades the bile duct wall with a depth of 5-12 mm'],
+    ['3', 'Tumor invades the bile duct wall with a depth greater than 12 mm'],
+    ['4', 'Tumor involves the celiac axis, superior mesenteric artery, and/or common hepatic artery'],
+]);
+const AJCC_N = new Map([
+    ['x', 'Regional lymph nodes cannot be assessed'],
+    ['0', 'No regional lymph node metastasis'],
+    ['1', 'Metastasis in one to three regional lymph nodes'],
+    ['2', 'Metastasis in four or more regional lymph nodes'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis (in this study)'],
+    ['1', 'Distant metastasis'],
+]);
 
 function generate_report(){
     var t_stage = [];
@@ -204,6 +204,18 @@ new ClipboardJS('#btn_copy', {
         let report_body = $("#reportModalBody pre code").text();
         return report_title + "\n\n" + report_body;
     }
+});
+
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for Cholangiocarcinoma: Distal Bile Duct");
+    $('#ajccModalBody').html(ajcc_table);
 });
 
 

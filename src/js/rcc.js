@@ -5,32 +5,32 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/rcc.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC8_RCC_T = {
-    'x': 'Primary tumor cannot be assessed',
-    '0': 'No evidence of primary tumor',
-    '1': 'Tumor ≤7 cm in greatest dimension, limited to the kidney',
-    '1a': 'Tumor ≤4 cm in greatest dimension, limited to the kidney',
-    '1b': 'Tumor >4 cm but ≤7 cm in greatest dimension limited to the kidney',
-    '2': 'Tumor >7 cm in greatest dimension, limited to the kidney',
-    '2a': 'Tumor >7 cm but ≤10 cm in greatest dimension, limited to the kidney',
-    '2b': 'Tumor >10 cm, limited to the kidney',
-    '3': 'Tumor extends into major veins or perinephric tissues, but not into the ipsilateral adrenal gland and not beyond Gerota’s fascia',
-    '3a': 'Tumor extends into the renal vein or its segmental branches, or invades the pelvicalyceal system, or invades perirenal and/or renal sinus fat but not beyond Gerota’s fascia',
-    '3b': 'Tumor extends into the vena cava below the diaphragm',
-    '3c': 'Tumor extends into the vena cava above the diaphragm or invades the wall of the vena cava',
-    '4': 'Tumor invades beyond Gerota’s fascia (including contiguous extension into the ipsilateral adrenal gland)',
-};
-const AJCC8_RCC_N = {
-    'x': 'Regional lymph nodes cannot be assessed',
-    '0': 'No regional lymph node metastasis',
-    '1': 'Metastasis in regional node(s)',
-};
-const AJCC8_RCC_M = {
-    '0': 'No distant metastasis (in this study)',
-    '1': 'Distant metastasis',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed'],
+    ['0', 'No evidence of primary tumor'],
+    ['1', 'Tumor ≤7 cm in greatest dimension, limited to the kidney'],
+    ['1a', 'Tumor ≤4 cm in greatest dimension, limited to the kidney'],
+    ['1b', 'Tumor >4 cm but ≤7 cm in greatest dimension limited to the kidney'],
+    ['2', 'Tumor >7 cm in greatest dimension, limited to the kidney'],
+    ['2a', 'Tumor >7 cm but ≤10 cm in greatest dimension, limited to the kidney'],
+    ['2b', 'Tumor >10 cm, limited to the kidney'],
+    ['3', 'Tumor extends into major veins or perinephric tissues, but not into the ipsilateral adrenal gland and not beyond Gerota’s fascia'],
+    ['3a', 'Tumor extends into the renal vein or its segmental branches, or invades the pelvicalyceal system, or invades perirenal and/or renal sinus fat but not beyond Gerota’s fascia'],
+    ['3b', 'Tumor extends into the vena cava below the diaphragm'],
+    ['3c', 'Tumor extends into the vena cava above the diaphragm or invades the wall of the vena cava'],
+    ['4', 'Tumor invades beyond Gerota’s fascia (including contiguous extension into the ipsilateral adrenal gland)'],
+]);
+const AJCC_N = new Map([
+    ['x', 'Regional lymph nodes cannot be assessed'],
+    ['0', 'No regional lymph node metastasis'],
+    ['1', 'Metastasis in regional node(s)'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis (in this study)'],
+    ['1', 'Distant metastasis'],
+]);
 
 function generate_report(){
     var t_stage = ["0"];
@@ -168,10 +168,7 @@ Range: diaphragm to the pelvis cavity`;
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_RCC_T[t];
-    let n_str = AJCC8_RCC_N[n];
-    let m_str = AJCC8_RCC_M[m];
-    report += ajcc_template("Renal Cell Carcinoma", t, t_str, n, n_str, m, m_str);
+    report += ajcc_template_with_parent("Renal Cell Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Renal Cell Carcinoma Staging Form");
     $('#reportModalBody pre code').html(report);
@@ -215,6 +212,17 @@ new ClipboardJS('#btn_copy', {
     }
 });
 
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for Renal Cell Carcinoma");
+    $('#ajccModalBody').html(ajcc_table);
+});
 
 /*
 var clipboard = new ClipboardJS('#btn_copy');

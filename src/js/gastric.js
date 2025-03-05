@@ -5,34 +5,34 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/gastric.html');
 }
 
-import {join_checkbox_values, ajcc_template_with_parent} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC8_T = {
-    'x': 'Primary tumor cannot be assessed',
-    '0': 'No evidence of primary tumor',
-    'is': 'Carcinoma in situ: intraepithelial tumor without invasion of the lamina propria, high-grade dysplasia',
-    '1': 'Tumor invades the lamina propria, muscularis mucosae, or submucosa',
-    '1a': 'Tumor invades the lamina propria or muscularis mucosae',
-    '1b': 'Tumor invades the submucosa',
-    '2': 'Tumor invades the muscularis propria',
-    '3': 'Tumor penetrates the subserosal connective tissue without invasion of the visceral peritoneum or adjacent structures',
-    '4': 'Tumor invades the serosa (visceral peritoneum) or adjacent structures',
-    '4a': 'Tumor invades the serosa (visceral peritoneum)',
-    '4b': 'Tumor invades adjacent structures/organs',
-};
-const AJCC8_N = {
-    'x': 'Regional lymph node(s) cannot be assessed',
-    '0': 'No regional lymph node metastasis',
-    '1': 'Metastasis in one or two regional lymph nodes',
-    '2': 'Metastasis in three to six regional lymph nodes',
-    '3': 'Metastasis in seven or more regional lymph nodes',
-    '3a': 'Metastasis in seven to 15 regional lymph nodes',
-    '3b': 'Metastasis in 16 or more regional lymph nodes',
-};
-const AJCC8_M = {
-    '0': 'No distant metastasis (in this study)',
-    '1': 'Distant metastasis',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed'],
+    ['0', 'No evidence of primary tumor'],
+    ['is', 'Carcinoma in situ: intraepithelial tumor without invasion of the lamina propria, high-grade dysplasia'],
+    ['1', 'Tumor invades the lamina propria, muscularis mucosae, or submucosa'],
+    ['1a', 'Tumor invades the lamina propria or muscularis mucosae'],
+    ['1b', 'Tumor invades the submucosa'],
+    ['2', 'Tumor invades the muscularis propria'],
+    ['3', 'Tumor penetrates the subserosal connective tissue without invasion of the visceral peritoneum or adjacent structures'],
+    ['4', 'Tumor invades the serosa (visceral peritoneum) or adjacent structures'],
+    ['4a', 'Tumor invades the serosa (visceral peritoneum)'],
+    ['4b', 'Tumor invades adjacent structures/organs'],
+]);
+const AJCC_N = new Map([
+    ['x', 'Regional lymph node(s) cannot be assessed'],
+    ['0', 'No regional lymph node metastasis'],
+    ['1', 'Metastasis in one or two regional lymph nodes'],
+    ['2', 'Metastasis in three to six regional lymph nodes'],
+    ['3', 'Metastasis in seven or more regional lymph nodes'],
+    ['3a', 'Metastasis in seven to 15 regional lymph nodes'],
+    ['3b', 'Metastasis in 16 or more regional lymph nodes'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis (in this study)'],
+    ['1', 'Distant metastasis'],
+]);
 
 function generate_report(){
     var t_stage = ["0"];
@@ -169,7 +169,7 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    report += ajcc_template_with_parent("Gastric Carcinoma", t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
+    report += ajcc_template_with_parent("Gastric Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Gastric Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
@@ -223,6 +223,18 @@ new ClipboardJS('#btn_copy', {
         let report_body = $("#reportModalBody pre code").text();
         return report_title + "\n\n" + report_body;
     }
+});
+
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for Gastric Carcinoma");
+    $('#ajccModalBody').html(ajcc_table);
 });
 
 

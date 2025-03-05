@@ -5,31 +5,31 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/esophagus.html');
 }
 
-import {join_checkbox_values, ajcc_template_with_parent} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC8_T = {
-    'x': 'Primary tumor cannot be assessed',
-    '0': 'No evidence of primary tumor',
-    '1': 'Tumor invades the lamina propria, muscularis mucosae, or submucosa',
-    '1a': 'Tumor invades the lamina propria or muscularis mucosae',
-    '1b': 'Tumor invades the submucosa',
-    '2': 'Tumor invades the muscularis propria',
-    '3': 'Tumor invades adventitia',
-    '4': 'Tumor invades adjacent structures',
-    '4a': 'Tumor invades the pleura, pericardium, azygos vein, diaphragm, or peritoneum',
-    '4b': 'Tumor invades other adjacent structures, such as the aorta, vertebral body, or airway',
-};
-const AJCC8_N = {
-    'x': 'Regional lymph nodes cannot be assessed',
-    '0': 'No regional lymph node metastasis',
-    '1': 'Metastasis in one or two regional lymph nodes',
-    '2': 'Metastasis in three to six regional lymph nodes',
-    '3': 'Metastasis in seven or more regional lymph nodes',
-};
-const AJCC8_M = {
-    '0': 'No distant metastasis (in this study)',
-    '1': 'Distant metastasis',
-};
+const AJCC_T = new Map([
+    ['x', 'Primary tumor cannot be assessed'],
+    ['0', 'No evidence of primary tumor'],
+    ['1', 'Tumor invades the lamina propria, muscularis mucosae, or submucosa'],
+    ['1a', 'Tumor invades the lamina propria or muscularis mucosae'],
+    ['1b', 'Tumor invades the submucosa'],
+    ['2', 'Tumor invades the muscularis propria'],
+    ['3', 'Tumor invades adventitia'],
+    ['4', 'Tumor invades adjacent structures'],
+    ['4a', 'Tumor invades the pleura, pericardium, azygos vein, diaphragm, or peritoneum'],
+    ['4b', 'Tumor invades other adjacent structures, such as the aorta, vertebral body, or airway'],
+]);
+const AJCC_N = new Map([
+    ['x', 'Regional lymph nodes cannot be assessed'],
+    ['0', 'No regional lymph node metastasis'],
+    ['1', 'Metastasis in one or two regional lymph nodes'],
+    ['2', 'Metastasis in three to six regional lymph nodes'],
+    ['3', 'Metastasis in seven or more regional lymph nodes'],
+]);
+const AJCC_M = new Map([
+    ['0', 'No distant metastasis (in this study)'],
+    ['1', 'Distant metastasis'],
+]);
 
 function generate_report(){
     var t_stage = [];
@@ -204,7 +204,7 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    report += ajcc_template_with_parent("Esophageal Carcinoma", t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
+    report += ajcc_template_with_parent("Esophageal Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Esophageal Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
@@ -258,6 +258,18 @@ new ClipboardJS('#btn_copy', {
         let report_body = $("#reportModalBody pre code").text();
         return report_title + "\n\n" + report_body;
     }
+});
+
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for Esophageal Carcinoma");
+    $('#ajccModalBody').html(ajcc_table);
 });
 
 
