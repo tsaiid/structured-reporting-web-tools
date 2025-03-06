@@ -5,9 +5,9 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/oropharynx.html');
 }
 
-import {join_checkbox_values, ajcc_template_with_parent} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC8_T_HPV = {
+const AJCC_T_HPV = new Map([
     ['x', 'Primary tumor cannot be assessed'],
     ['0', 'No primary identified'],
     ['is', 'Carcinoma in situ'],
@@ -15,8 +15,8 @@ const AJCC8_T_HPV = {
     ['2', 'Tumor larger than 2 cm but not larger than 4 cm in greatest dimension'],
     ['3', 'Tumor larger than 4 cm in greatest dimension or extension to lingual surface of epiglottis'],
     ['4', 'Moderately advanced or very advanced local disease; Tumor invades the larynx, extrinsic muscle of tongue, medial pterygoid, hard palate, or mandible or beyond (* Mucosal extension to lingual surface of epiglottis from primary tumors of the base of the tongue and vallecula does not constitute invasion of the larynx.)'],
-};
-const AJCC8_T_NONHPV = {
+]);
+const AJCC_T_NONHPV = new Map([
     ['x', 'Primary tumor cannot be assessed'],
     ['0', 'No primary identified'],
     ['is', 'Carcinoma in situ'],
@@ -26,15 +26,15 @@ const AJCC8_T_NONHPV = {
     ['4', 'Moderately advanced or very advanced local disease'],
     ['4a', 'Moderately advanced local disease: Tumor invades the larynx, extrinsic muscle of tongue, medial pterygoid, hard palate, or mandible'],
     ['4b', 'Very advanced local disease: Tumor invades lateral pterygoid muscle, pterygoid plates, lateral nasopharynx, or skull base or encases carotid artery'],
-};
-const AJCC8_N_HPV = {
+]);
+const AJCC_N_HPV = new Map([
     ['x', 'Regional lymph nodes cannot be assessed'],
     ['0', 'No regional lymph node metastasis'],
     ['1', 'One or more ipsilateral lymph nodes, none larger than 6 cm'],
     ['2', 'Contralateral or bilateral lymph nodes, none larger than 6 cm'],
     ['3', 'Lymph node(s) larger than 6 cm'],
-};
-const AJCC8_N_NONHPV = {
+]);
+const AJCC_N_NONHPV = new Map([
     ['x', 'Regional lymph nodes cannot be assessed'],
     ['0', 'No regional lymph node metastasis'],
     ['1', 'Metastasis in a single ipsilateral lymph node, 3 cm or smaller in greatest dimension and ENE(−)'],
@@ -45,11 +45,11 @@ const AJCC8_N_NONHPV = {
     ['3', 'Metastasis in a lymph node larger than 6 cm in greatest dimension and ENE(−); or metastasis in any node(s) and clinically overt ENE(+)'],
     ['3a', 'Metastasis in a lymph node larger than 6 cm in greatest dimension and ENE(−)'],
     ['3b', 'Metastasis in any node(s) and clinically overt ENE(+)'],
-};
-const AJCC8_M = {
+]);
+const AJCC_M = new Map([
     ['0', 'No distant metastasis (in this study)'],
     ['1', 'Distant metastasis'],
-};
+]);
 
 function generate_report(){
     var t_stage = [];
@@ -264,9 +264,9 @@ function generate_report(){
     let m = m_stage.sort()[m_stage.length-1];
     let FORM_TITLE = (is_hpv ? "HPV-Mediated Oropharyngeal Cancer Staging Form" : "Oropharyngeal Cancer (p16-) Staging Form");
     let AJCC_TITLE = (is_hpv ? "HPV-Mediated Oropharyngeal Carcinoma" : "Oropharyngeal Carcinoma (p16-)");
-    let AJCC8_T = (is_hpv ? AJCC8_T_HPV : AJCC8_T_NONHPV);
-    let AJCC8_N = (is_hpv ? AJCC8_N_HPV : AJCC8_N_NONHPV);
-    report += ajcc_template_with_parent(AJCC_TITLE, t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
+    let AJCC_T = (is_hpv ? AJCC_T_HPV : AJCC_T_NONHPV);
+    let AJCC_N = (is_hpv ? AJCC_N_HPV : AJCC_N_NONHPV);
+    report += ajcc_template_with_parent(AJCC_TITLE, t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html(FORM_TITLE);
     $('#reportModalBody pre code').html(report);
@@ -322,6 +322,29 @@ new ClipboardJS('#btn_copy', {
     }
 });
 
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$('#ajccModalLong').on('show.bs.modal', function () {
+    $('body > *:not(#ajccModalLong)').attr('inert', 'true'); // 禁用背景內容
+});
+
+$('#ajccModalLong').on('hidden.bs.modal', function () {
+    $('body > *:not(#ajccModalLong)').removeAttr('inert'); // 恢復互動
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let is_hpv = $('#cb_rn_hpv').is(':checked');
+    let AJCC_TITLE = (is_hpv ? "HPV-Mediated Oropharyngeal Carcinoma" : "Oropharyngeal Carcinoma (p16-)");
+    let AJCC_T = (is_hpv ? AJCC_T_HPV : AJCC_T_NONHPV);
+    let AJCC_N = (is_hpv ? AJCC_N_HPV : AJCC_N_NONHPV);
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html(`AJCC Definitions for ${AJCC_TITLE}`);
+    $('#ajccModalBody').html(ajcc_table);
+});
 
 /*
 var clipboard = new ClipboardJS('#btn_copy');

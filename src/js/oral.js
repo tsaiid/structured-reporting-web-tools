@@ -5,9 +5,9 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/oral.html');
 }
 
-import {join_checkbox_values, ajcc_template_with_parent} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
-const AJCC8_T_LIP = {
+const AJCC_T_LIP = new Map([
     ['x', 'Primary tumor cannot be assessed.'],
     ['0', 'No evidence of primary tumor.'],
     ['is', 'Tumor in situ.'],
@@ -17,8 +17,8 @@ const AJCC8_T_LIP = {
     ['4', 'Moderately advanced local disease.'],
     ['4a', 'Tumor invades through cortical bone or involves the inferior alveolar nerve, floor of mouth, or skin of face (i.e., chin or nose).'],
     ['4b', 'Very advanced local disease: Tumor invades lateral pterygoid muscle, pterygoid plates, lateral nasopharynx, or skull base or encases carotid artery.'],
-};
-const AJCC8_T_ORAL = {
+]);
+const AJCC_T_ORAL = new Map([
     ['x', 'Primary tumor cannot be assessed.'],
     ['0', 'No evidence of primary tumor.'],
     ['is', 'Tumor in situ.'],
@@ -28,8 +28,8 @@ const AJCC8_T_ORAL = {
     ['4', 'Moderately advanced local disease.'],
     ['4a', 'Tumor invades adjacent structures only (e.g., through cortical bone [mandible or maxilla] into deep [extrinsic] muscle of tongue [genioglossus, hyoglossus, palatoglossus, and styloglossus], maxillary sinus, skin of face).'],
     ['4b', 'Very advanced local disease: Tumor invades lateral pterygoid muscle, pterygoid plates, lateral nasopharynx, or skull base or encases carotid artery.'],
-};
-const AJCC8_N = {
+]);
+const AJCC_N = new Map([
     ['x', 'Regional lymph nodes cannot be assessed.'],
     ['0', 'No regional lymph node metastasis.'],
     ['1', 'Metastasis in a single ipsilateral lymph node, ≤ 3 cm in greatest dimension and ENE(-).'],
@@ -40,11 +40,11 @@ const AJCC8_N = {
     ['3', 'Metastasis in a lymph node > 6 cm in greatest dimension and ENE(-) or metastasis in any node(s) and clinically overt ENE(+).'],
     ['3a', 'Metastasis in a lymph node >6 cm in greatest dimension and ENE(-).'],
     ['3b', 'Metastasis in any node(s) and clinically overt ENE(+).'],
-};
-const AJCC8_M = {
+]);
+const AJCC_M = new Map([
     ['0', 'No distant metastasis (in this study).'],
     ['1', 'Distant metastasis.'],
-};
+]);
 
 function generate_report(){
     var t_stage = [];
@@ -244,8 +244,8 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let AJCC8_T = (has_lip ? AJCC8_T_LIP : AJCC8_T_ORAL );
-    report += ajcc_template_with_parent("Oral Cavity Carcinoma", t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
+    let AJCC_T = (has_lip ? AJCC_T_LIP : AJCC_T_ORAL );
+    report += ajcc_template_with_parent("Oral Cavity Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Oral Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
@@ -301,6 +301,19 @@ new ClipboardJS('#btn_copy', {
     }
 });
 
+$('#btn_ajcc').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    $('#ajccModalLong').modal('show');
+});
+
+$( document ).ready(function() {
+    console.log( "document loaded" );
+    let has_lip = $('.cb_tl_l:checked').length > 0;
+    let AJCC_T = (has_lip ? AJCC_T_LIP : AJCC_T_ORAL );
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html("AJCC Definitions for Oral Cavity Carcinoma");
+    $('#ajccModalBody').html(ajcc_table);
+});
 
 /*
 var clipboard = new ClipboardJS('#btn_copy');
