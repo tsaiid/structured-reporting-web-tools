@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/endometrium.html');
 }
 
-import {join_checkbox_values, ajcc_template, ajcc_template_with_parent} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
 const AJCC_T = new Map([
     ['x', 'Primary tumor cannot be assessed'],

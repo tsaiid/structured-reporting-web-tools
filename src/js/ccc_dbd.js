@@ -138,10 +138,7 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_CCC_DBD_T[t];
-    let n_str = AJCC8_CCC_DBD_N[n];
-    let m_str = AJCC8_CCC_DBD_M[m];
-    report += ajcc_template("Cholangiocarcinoma: Distal Bile Duct", t, t_str, n, n_str, m, m_str);
+    report += ajcc_template_with_parent("Cholangiocarcinoma: Distal Bile Duct", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Cholangiocarcinoma: Distal Bile Duct Staging Form");
     $('#reportModalBody pre code').html(report);

@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/ccc_pbd.html');
 }
 
-import {join_checkbox_values, ajcc_template} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
 
 const AJCC_T = new Map([
     ['x', 'Primary tumor cannot be assessed'],
@@ -155,9 +155,6 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_CCC_PBD_T[t];
-    let n_str = AJCC8_CCC_PBD_N[n];
-    let m_str = AJCC8_CCC_PBD_M[m];
     report += ajcc_template_with_parent("Cholangiocarcinoma: Perihilar Bile Duct", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Cholangiocarcinoma: Perihilar Bile Duct Staging Form");

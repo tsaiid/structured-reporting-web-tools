@@ -145,7 +145,7 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    report += ajcc_template_with_parent("Hepatocellular Carcinoma", t, AJCC8_T, n, AJCC8_N, m, AJCC8_M);
+    report += ajcc_template_with_parent("Hepatocellular Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M);
 
     $('#reportModalLongTitle').html("Hepatocellular Carcinoma Staging Form");
     $('#reportModalBody pre code').html(report);

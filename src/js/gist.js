@@ -137,9 +137,9 @@ Dynamic contrast–enhanced axial imaging at arterial phase, venous phase
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let t_str = AJCC8_GIST_T[t];
-    let n_str = AJCC8_GIST_N[n];
-    let m_str = AJCC8_GIST_M[m];
+    let t_str = AJCC_T[t];
+    let n_str = AJCC_N[n];
+    let m_str = AJCC_M[m];
     report += ajcc_template_with_parent("Gastrointestinal Stromal Tumor", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Gastrointestinal Stromal Tumor Staging Form");

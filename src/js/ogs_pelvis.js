@@ -173,10 +173,6 @@ Post-contrast imaging: axial imaging, unilateral (lesion side only);
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    //let t_str = AJCC8_OGS_PELVIS_T[t];
-    //let n_str = AJCC8_OGS_PELVIS_N[n];
-    //let m_str = AJCC8_OGS_PELVIS_M[m];
-    //report += ajcc_template("OGS of Pelvis", t, t_str, n, n_str, m, m_str);
     report += ajcc_template_with_parent("OGS of Pelvis", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("OGS for Pelvis");
