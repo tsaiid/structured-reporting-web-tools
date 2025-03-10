@@ -168,7 +168,7 @@ function generate_report(){
     } else {
         report += "___";
     }
-    report += "\n";
+    report += "\n\n";
 
     // Other Findings
     report += "6. Other findings\n\n\n";
