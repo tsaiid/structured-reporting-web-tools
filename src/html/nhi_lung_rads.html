@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lung-RADS v2022 報告產生器</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <style>
+        /* 2. 客製化樣式 */
+        body {
+            padding-bottom: 100px; /* 避免內容被固定按鈕遮擋 */
+        }
+
+        /* 固定的頁尾，用於放置 "複製" 按鈕 */
+        .sticky-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--card-background-color);
+            border-top: 1px solid var(--card-border-color);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            z-index: 100;
+        }
+
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1152px; /* Pico 的 --container-max-width */
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* 巢狀結構的縮排 */
+        .nested-section {
+            padding-left: 1.5rem;
+            border-left: 3px solid var(--primary);
+            margin-top: 1rem;
+        }
+
+        /* 用於動態顯示/隱藏的 class */
+        .hidden {
+            display: none;
+        }
+
+        /* 讓一行內有多個輸入框 */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        /* 讓 checkbox 和 label 在一行 */
+        fieldset label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        fieldset span {
+            display: inline-block;
+            margin-right: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        <header>
+            <h1>Lung-RADS v2022 報告產生器</h1>
+            <p>填寫以下欄位，點擊「複製報告」按鈕即可產生純文字報告並複製到剪貼簿。</p>
+        </header>
+
+        <article>
+            <section>
+                <fieldset>
+                    <legend>LDCT Quality</legend>
+                    <span><label><input type="radio" name="quality" value="Good" checked> Good</label></span>
+                    <span><label><input type="radio" name="quality" value="Acceptable"> Acceptable</label></span>
+                    <span><label><input type="radio" name="quality" value="Not Acceptable"> Not Acceptable</label></span>
+                </fieldset>
+
+                <div class="grid-2">
+                    <label>CTDIvol: <input type="text" id="ctdi" placeholder="mGy"></label>
+                    <label>Total DLP: <input type="text" id="dlp" placeholder="mGy*cm"></label>
+                </div>
+
+                <div class="grid-2">
+                    <label>Prior CT Date (Y/M/D): <input type="text" id="prior_date" placeholder="YYYY/MM/DD"></label>
+                    <label><input type="checkbox" id="no_prior"> No prior chest CT available</label>
+                </div>
+            </section>
+
+            <hr>
+
+            <section>
+                <h3>Lung nodule findings related to cancer screening</h3>
+                <p><small>詳細規範請參閱 Lung-RADS v2022</small></p>
+
+                <fieldset>
+                    <label><input type="checkbox" id="no_nodule"> No lung nodule</label>
+                    <label><input type="checkbox" id="benign_features"> Nodule with benign features.</label>
+                    <label><input type="checkbox" id="nodule_lt6"> Lung nodule(s) (&lt;6mm) (選填 SE: <input type="text" id="lt6_se" style="width: 50px;">, IM: <input type="text" id="lt6_im" style="width: 50px;">)</label>
+                    <label><input type="checkbox" id="juxtapleural"> Juxtapleural nodule.</label>
+                    <label>
+                        <input type="checkbox" id="nodule_gte6" onchange="toggleSection('nodule_details', this.checked)">
+                        Lung nodule(s) (≧6mm or enlarging&gt;1.5mm or new≧4mm)
+                    </label>
+                </fieldset>
+
+                <div id="nodule_details" class="nested-section hidden">
+                    <fieldset>
+                        <legend>Total number</legend>
+                        <span><label><input type="radio" name="total_nodules" value="1"> 1</label></span>
+                        <span><label><input type="radio" name="total_nodules" value="2"> 2</label></span>
+                        <span><label><input type="radio" name="total_nodules" value="3"> 3</label></span>
+                        <span><label><input type="radio" name="total_nodules" value=">=4"> ≥4</label></span>
+                    </fieldset>
+                    <p>請依序描述最懷疑之肺結節(至多 3 個)</p>
+
+                    <article>
+                        <label><input type="checkbox" id="n1_enable"> <b>Lung nodule 1</b></label>
+                        <div class="grid-2">
+                            <label>Entire Nodule: <input type="text" id="n1_size" placeholder="mm"></label>
+                            <label>Density:
+                                <select id="n1_density" onchange="toggleSolidPart('n1_solid_part', this.value)">
+                                    <option value="" selected disabled>Select density</option>
+                                    <option value="non-solid">non-solid</option>
+                                    <option value="part-solid">part-solid</option>
+                                    <option value="solid">solid</option>
+                                </select>
+                            </label>
+                        </div>
+                        <input type="text" id="n1_solid_part" class="hidden" placeholder="solid part: ___ mm">
+                        <div class="grid-3">
+                            <label>Lobe (SE: <input type="text" id="n1_se" style="width: 50px;">, IM: <input type="text" id="n1_im" style="width: 50px;">)</label>
+                            <fieldset>
+                                <span><label><input type="radio" name="n1_lobe" value="RUL"> RUL</label></span>
+                                <span><label><input type="radio" name="n1_lobe" value="RML"> RML</label></span>
+                                <span><label><input type="radio" name="n1_lobe" value="RLL"> RLL</label></span>
+                                <span><label><input type="radio" name="n1_lobe" value="LUL"> LUL</label></span>
+                                <span><label><input type="radio" name="n1_lobe" value="LLL"> LLL</label></span>
+                            </fieldset>
+                        </div>
+                        <fieldset>
+                            <legend>Status</legend>
+                            <span><label><input type="radio" name="n1_status" value="unchanged"> unchanged</label></span>
+                            <span><label><input type="radio" name="n1_status" value="enlarging"> enlarging (&gt;1.5 mm)</label></span>
+                            <span><label><input type="radio" name="n1_status" value="newly found"> newly found (≧4 mm)</label></span>
+                            <span><label><input type="radio" name="n1_status" value="no prior"> No prior chest CT comparison</label></span>
+                        </fieldset>
+                    </article>
+
+                    <article>
+                        <label><input type="checkbox" id="n2_enable"> <b>Lung nodule 2</b></label>
+                        <div class="grid-2">
+                            <label>Entire Nodule: <input type="text" id="n2_size" placeholder="mm"></label>
+                            <label>Density:
+                                <select id="n2_density" onchange="toggleSolidPart('n2_solid_part', this.value)">
+                                    <option value="" selected disabled>Select density</option>
+                                    <option value="non-solid">non-solid</option>
+                                    <option value="part-solid">part-solid</option>
+                                    <option value="solid">solid</option>
+                                </select>
+                            </label>
+                        </div>
+                        <input type="text" id="n2_solid_part" class="hidden" placeholder="solid part: ___ mm">
+                        <div class="grid-3">
+                            <label>Lobe (SE: <input type="text" id="n2_se" style="width: 50px;">, IM: <input type="text" id="n2_im" style="width: 50px;">)</label>
+                            <fieldset>
+                                <span><label><input type="radio" name="n2_lobe" value="RUL"> RUL</label></span>
+                                <span><label><input type="radio" name="n2_lobe" value="RML"> RML</label></span>
+                                <span><label><input type="radio" name="n2_lobe" value="RLL"> RLL</label></span>
+                                <span><label><input type="radio" name="n2_lobe" value="LUL"> LUL</label></span>
+                                <span><label><input type="radio" name="n2_lobe" value="LLL"> LLL</label></span>
+                            </fieldset>
+                        </div>
+                        <fieldset>
+                            <legend>Status</legend>
+                            <span><label><input type="radio" name="n2_status" value="unchanged"> unchanged</label></span>
+                            <span><label><input type="radio" name="n2_status" value="enlarging"> enlarging (&gt;1.5 mm)</label></span>
+                            <span><label><input type="radio" name="n2_status" value="newly found"> newly found (≧4 mm)</label></span>
+                            <span><label><input type="radio" name="n2_status" value="no prior"> No prior chest CT comparison</label></span>
+                        </fieldset>
+                    </article>
+
+                    <article>
+                        <label><input type="checkbox" id="n3_enable"> <b>Lung nodule 3</b></label>
+                        <div class="grid-2">
+                            <label>Entire Nodule: <input type="text" id="n3_size" placeholder="mm"></label>
+                            <label>Density:
+                                <select id="n3_density" onchange="toggleSolidPart('n3_solid_part', this.value)">
+                                    <option value="" selected disabled>Select density</option>
+                                    <option value="non-solid">non-solid</option>
+                                    <option value="part-solid">part-solid</option>
+                                    <option value="solid">solid</option>
+                                </select>
+                            </label>
+                        </div>
+                        <input type="text" id="n3_solid_part" class="hidden" placeholder="solid part: ___ mm">
+                        <div class="grid-3">
+                            <label>Lobe (SE: <input type="text" id="n3_se" style="width: 50px;">, IM: <input type="text" id="n3_im" style="width: 50px;">)</label>
+                            <fieldset>
+                                <span><label><input type="radio" name="n3_lobe" value="RUL"> RUL</label></span>
+                                <span><label><input type="radio" name="n3_lobe" value="RML"> RML</label></span>
+                                <span><label><input type="radio" name="n3_lobe" value="RLL"> RLL</label></span>
+                                <span><label><input type="radio" name="n3_lobe" value="LUL"> LUL</label></span>
+                                <span><label><input type="radio" name="n3_lobe" value="LLL"> LLL</label></span>
+                            </fieldset>
+                        </div>
+                        <fieldset>
+                            <legend>Status</legend>
+                            <span><label><input type="radio" name="n3_status" value="unchanged"> unchanged</label></span>
+                            <span><label><input type="radio" name="n3_status" value="enlarging"> enlarging (&gt;1.5 mm)</label></span>
+                            <span><label><input type="radio" name="n3_status" value="newly found"> newly found (≧4 mm)</label></span>
+                            <span><label><input type="radio" name="n3_status" value="no prior"> No prior chest CT comparison</label></span>
+                        </fieldset>
+                    </article>
+
+                    <article>
+                        <label><input type="checkbox" id="else_enable"> Lung nodules else</label>
+                        <fieldset>
+                            <span><label><input type="checkbox" id="else_rul"> RUL</label></span>
+                            <span><label><input type="checkbox" id="else_rml"> RML</label></span>
+                            <span><label><input type="checkbox" id="else_rll"> RLL</label></span>
+                            <span><label><input type="checkbox" id="else_lul"> LUL</label></span>
+                            <span><label><input type="checkbox" id="else_lll"> LLL</label></span>
+                        </fieldset>
+                        <div class="grid-2">
+                            <label>SE: <input type="text" id="else_se"></label>
+                            <label>IM: <input type="text" id="else_im"></label>
+                        </div>
+                    </article>
+                </div> </section>
+
+            <section>
+                <fieldset>
+                    <legend>Airway nodule</legend>
+                    <label><input type="checkbox" id="airway_subsegmental"> Subsegmental (Category 2)</label>
+                    <label><input type="checkbox" id="airway_proximal" onchange="toggleSection('airway_proximal_details', this.checked)"> Segmental or more proximal</label>
+                    <div id="airway_proximal_details" class="nested-section hidden">
+                        <label><input type="radio" name="airway_proximal_type" value="secretions"> Favors secretions (Category 2)</label>
+                        <label><input type="radio" name="airway_proximal_type" value="baseline"> At baseline (Category 4A)</label>
+                        <label><input type="radio" name="airway_proximal_type" value="stable"> Stable or growing (Category 4B)</label>
+                    </div>
+                </fieldset>
+            </section>
+
+            <section>
+                <fieldset>
+                    <legend>Atypical pulmonary cyst</legend>
+                    <label><input type="checkbox" id="cyst_3"> Category 3. Lobe: (SE: <input type="text" id="cyst_3_se" style="width: 50px;">, IM: <input type="text" id="cyst_3_im" style="width: 50px;">)
+                        <span><label><input type="checkbox" id="cyst_3_rul"> RUL</label></span>
+                        <span><label><input type="checkbox" id="cyst_3_rml"> RML</label></span>
+                        <span><label><input type="checkbox" id="cyst_3_rll"> RLL</label></span>
+                        <span><label><input type="checkbox" id="cyst_3_lul"> LUL</label></span>
+                        <span><label><input type="checkbox" id="cyst_3_lll"> LLL</label></span>
+                    </label>
+                    <label><input type="checkbox" id="cyst_4a"> Category 4A. Lobe: (SE: <input type="text" id="cyst_4a_se" style="width: 50px;">, IM: <input type="text" id="cyst_4a_im" style="width: 50px;">)
+                        <span><label><input type="checkbox" id="cyst_4a_rul"> RUL</label></span>
+                        <span><label><input type="checkbox" id="cyst_4a_rml"> RML</label></span>
+                        <span><label><input type="checkbox" id="cyst_4a_rll"> RLL</label></span>
+                        <span><label><input type="checkbox" id="cyst_4a_lul"> LUL</label></span>
+                        <span><label><input type="checkbox" id="cyst_4a_lll"> LLL</label></span>
+                    </label>
+                    <label><input type="checkbox" id="cyst_4b"> Category 4B. Lobe: (SE: <input type="text" id="cyst_4b_se" style="width: 50px;">, IM: <input type="text" id="cyst_4b_im" style="width: 50px;">)
+                        <span><label><input type="checkbox" id="cyst_4b_rul"> RUL</label></span>
+                        <span><label><input type="checkbox" id="cyst_4b_rml"> RML</label></span>
+                        <span><label><input type="checkbox" id="cyst_4b_rll"> RLL</label></span>
+                        <span><label><input type="checkbox" id="cyst_4b_lul"> LUL</label></span>
+                        <span><label><input type="checkbox" id="cyst_4b_lll"> LLL</label></span>
+                    </label>
+                </fieldset>
+            </section>
+
+            <label><input type="checkbox" id="metastases"> The pattern of lung nodules has a higher probability of metastases</label>
+
+            <hr>
+
+            <section>
+                <h3>Other Lung Findings (選填)</h3>
+                <fieldset>
+                    <span><label><input type="checkbox" id="other_emphysema"> Emphysema</label></span>
+                    <span><label><input type="checkbox" id="other_bronchiectasis"> Bronchiectasis</label></span>
+                    <span><label><input type="checkbox" id="other_bronchitis"> Bronchitis/bronchiolitis</label></span>
+                    <span><label><input type="checkbox" id="other_treeinbud"> Tree-in-bud pattern</label></span>
+                    <span><label><input type="checkbox" id="other_centrilobular"> Centrilobular nodules</label></span>
+                    <span><label><input type="checkbox" id="other_tb"> Old pulmonary TB</label></span>
+                    <span><label><input type="checkbox" id="other_ild"> Interstitial lung disease (ILD)</label></span>
+                    <label><input type="checkbox" id="other_other_lung_check"> Other <input type="text" id="other_other_lung_text" placeholder="..."></label>
+                </fieldset>
+            </section>
+
+            <section>
+                <h3>Other Findings (選填)</h3>
+                <label>Enlarged lymph nodes, location <input type="text" id="other_lymph"></label>
+                <label>Coronary artery calcification <input type="text" id="other_coronary"></label>
+                <label>Other significant abnormal chest findings <input type="text" id="other_chest"></label>
+                <label>Other significant abnormal abdominal or neck findings <input type="text" id="other_abnormal"></label>
+            </section>
+
+            <hr>
+
+            <section>
+                <h3>Overall recommendation</h3>
+                <fieldset>
+                    <legend>Lung-RADS v2022 Category Descriptor</legend>
+
+                    <label><input type="radio" name="category" value="0" onchange="toggleSection('cat_0_details', this.checked); toggleSection('cat_other_details', !this.checked);"> Category 0: Incomplete.</label>
+                    <div id="cat_0_details" class="nested-section hidden">
+                        <label><input type="checkbox" id="cat_0_prior"> Prior chest CT examination being located for comparison.</label>
+                        <label><input type="checkbox" id="cat_0_unevaluated"> Part or all of lungs cannot be evaluated.</label>
+                        <label><input type="checkbox" id="cat_0_inflammatory"> Findings suggestive of an inflammatory or infectious process.</label>
+                    </div>
+
+                    <div id="cat_other_details">
+                        <label><input type="radio" name="category" value="1" onchange="toggleSection('cat_0_details', false)"> Category 1: Negative.</label>
+                        <label><input type="radio" name="category" value="2" onchange="toggleSection('cat_0_details', false)"> Category 2: Benign - Based on imaging features or indolent behavior.</label>
+                        <label><input type="radio" name="category" value="3" onchange="toggleSection('cat_0_details', false)"> Category 3: Probably Benign - Based on imaging features or behavior.</label>
+                        <label><input type="radio" name="category" value="4A" onchange="toggleSection('cat_0_details', false)"> Category 4A: Suspicious.</label>
+                        <label><input type="radio" name="category" value="4B" onchange="toggleSection('cat_0_details', false)"> Category 4B: Very suspicious.</label>
+                        <label><input type="radio" name="category" value="4X" onchange="toggleSection('cat_0_details', false)"> Category 4X: Category 3 or 4 nodules with additional features or imaging findings that increase suspicion for lung cancer.</label>
+                    </div>
+                </fieldset>
+            </section>
+
+            <hr>
+
+            <section>
+                <h3>(選填)</h3>
+                <label><input type="checkbox" id="modifier_s"> Modifier S: May add to category 0-4 for clinically significant or potentially clinically significant findings unrelated to lung cancer.</label>
+                <label><input type="checkbox" id="refer_opd"> 請至門診就診</label>
+            </section>
+        </article>
+    </main>
+
+    <footer class="sticky-footer">
+        <div class="footer-container">
+            <strong>準備好後點擊複製</strong>
+            <button id="copy_button" onclick="generateAndCopy()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 4px;">
+                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zM-1 1.5A1.5 1.5 0 0 1 .5 0h3A1.5 1.5 0 0 1 5 1.5v1A1.5 1.5 0 0 1 3.5 4h-3A1.5 1.5 0 0 1-1 2.5v-1zM10 .5a.5.5 0 0 0-.5.5V3h-3V1A1 1 0 0 1 7 0h2a1 1 0 0 1 1 1v2h-3V1.5a.5.5 0 0 0-.5-.5H7z"/>
+                </svg>
+                複製報告
+            </button>
+        </div>
+    </footer>
+
+    <script>
+        // --- A. 輔助函數 ---
+        const $ = id => document.getElementById(id);
+        const getValue = id => $(id).value.trim();
+        const isChecked = id => $(id).checked;
+        const getRadio = name => document.querySelector(`input[name="${name}"]:checked`)?.value || "";
+
+        // 純文字 checkbox
+        const cb = (id, text) => `${isChecked(id) ? '[+]' : '[]'} ${text}\n`;
+        // 純文字 radio
+        const rb = (name, value, text) => `${getRadio(name) === value ? '[+]' : '[]'} ${text}\n`;
+        // 純文字 text input
+        const txt = (id, prefix = '', suffix = '') => {
+            const val = getValue(id);
+            return `${prefix}${val || '_'}${suffix}`;
+        };
+        // 帶有 SE/IM 的 checkbox
+        const cb_se_im = (id_check, text, id_se, id_im) => {
+            if (isChecked(id_check)) {
+                const se = getValue(id_se) ? ` SE: ${getValue(id_se)}` : '';
+                const im = getValue(id_im) ? `, IM: ${getValue(id_im)}` : '';
+                return `[+] ${text} (${se}${im})\n`;
+            }
+            return `[] ${text} (選填 SE: , IM:  )\n`;
+        };
+
+        // --- B. 動態 UI 邏輯 ---
+        function toggleSection(elementId, show) {
+            $(elementId).style.display = show ? 'block' : 'none';
+        }
+
+        function toggleSolidPart(elementId, densityValue) {
+            toggleSection(elementId, densityValue === 'part-solid');
+        }
+
+        // --- C. 主要的報告產生函數 ---
+        function generateAndCopy() {
+            let report = "";
+
+            // LDCT Quality
+            report += `LDCT Quality: ${rb('quality', 'Good', 'Good')}`;
+            report = report.trimEnd() + ` ${rb('quality', 'Acceptable', 'Acceptable')}`;
+            report = report.trimEnd() + ` ${rb('quality', 'Not Acceptable', 'Not Acceptable')}`;
+            report += `CTDIvol: ${txt('ctdi')} mGy Total DLP: ${txt('dlp')} mGy*cm\n`;
+            report += `In comparison with the prior CT, Date (Y/M/D) ${txt('prior_date')} ${cb('no_prior', 'No prior chest CT available')}`;
+
+            report += "\nLung nodule findings related to cancer screening\n";
+            report += "詳細規範請參閱 Lung-RADS v2022\n\n";
+
+            report += cb('no_nodule', 'No lung nodule');
+            report += cb('benign_features', 'Nodule with benign features.');
+            report += cb_se_im('nodule_lt6', 'Lung nodule(s) (<6mm)', 'lt6_se', 'lt6_im');
+            report += cb('juxtapleural', 'Juxtapleural nodule.');
+
+            // Lung nodule(s) (≧6mm...)
+            if (isChecked('nodule_gte6')) {
+                report += "[+] Lung nodule(s) (≧6mm or enlarging>1.5mm or new≧4mm): total number ";
+                report += `${rb('total_nodules', '1', '1')}`;
+                report = report.trimEnd() + ` ${rb('total_nodules', '2', '2')}`;
+                report = report.trimEnd() + ` ${rb('total_nodules', '3', '3')}`;
+                report = report.trimEnd() + ` ${rb('total_nodules', '>=4', '≥4')}`;
+                report += "  請依序描述最懷疑之肺結節(至多 3 個) (Describe the most suspicious 3 nodules in order)\n\n";
+
+                // Nodule 1
+                if (isChecked('n1_enable')) {
+                    report += `  [+] Lung nodule 1 (size, character and location)\n`;
+                    report += `  \tEntire Nodule: ${txt('n1_size', '', 'mm')}\n`;
+                    const n1_density = getValue('n1_density');
+                    report += `  \tDensity: ${n1_density === 'non-solid' ? '[+]' : '[]'} non-solid `;
+                    if (n1_density === 'part-solid') {
+                        report += `[+] part-solid (solid part: ${txt('n1_solid_part', '', ' mm')}) `;
+                    } else {
+                        report += `[] part-solid (solid part: ___ mm) `;
+                    }
+                    report += `${n1_density === 'solid' ? '[+]' : '[]'} solid\n`;
+                    report += `  \tLobe: (SE:${txt('n1_se')}, IM:${txt('n1_im')}) `;
+                    report += `${rb('n1_lobe', 'RUL', 'RUL')}`;
+                    report = report.trimEnd() + ` ${rb('n1_lobe', 'RML', 'RML')}`;
+                    report = report.trimEnd() + ` ${rb('n1_lobe', 'RLL', 'RLL')}`;
+                    report = report.trimEnd() + ` ${rb('n1_lobe', 'LUL', 'LUL')}`;
+                    report = report.trimEnd() + ` ${rb('n1_lobe', 'LLL', 'LLL')}`;
+                    report += `  \tThe nodule is ${rb('n1_status', 'unchanged', 'unchanged')}`;
+                    report = report.trimEnd() + ` ${rb('n1_status', 'enlarging', 'enlarging (>1.5 mm)')}`;
+                    report = report.trimEnd() + ` ${rb('n1_status', 'newly found', 'newly found (≧4 mm)')}`;
+                    report = report.trimEnd() + ` ${rb('n1_status', 'no prior', 'No prior chest CT comparison')}\n`;
+                } else {
+                    report += `  [] Lung nodule 1 (size, character and location)\n`;
+                }
+
+                // Nodule 2
+                if (isChecked('n2_enable')) {
+                    report += `  [+] Lung nodule 2 (size, character and location)\n`;
+                    report += `  \tEntire Nodule: ${txt('n2_size', '', 'mm')}\n`;
+                    const n2_density = getValue('n2_density');
+                    report += `  \tDensity: ${n2_density === 'non-solid' ? '[+]' : '[]'} non-solid `;
+                    if (n2_density === 'part-solid') {
+                        report += `[+] part-solid (solid part: ${txt('n2_solid_part', '', ' mm')}) `;
+                    } else {
+                        report += `[] part-solid (solid part: ___ mm) `;
+                    }
+                    report += `${n2_density === 'solid' ? '[+]' : '[]'} solid\n`;
+                    report += `  \tLobe: (SE:${txt('n2_se')}, IM:${txt('n2_im')}) `;
+                    report += `${rb('n2_lobe', 'RUL', 'RUL')}`;
+                    report = report.trimEnd() + ` ${rb('n2_lobe', 'RML', 'RML')}`;
+                    report = report.trimEnd() + ` ${rb('n2_lobe', 'RLL', 'RLL')}`;
+                    report = report.trimEnd() + ` ${rb('n2_lobe', 'LUL', 'LUL')}`;
+                    report = report.trimEnd() + ` ${rb('n2_lobe', 'LLL', 'LLL')}`;
+                    report += `  \tThe nodule is ${rb('n2_status', 'unchanged', 'unchanged')}`;
+                    report = report.trimEnd() + ` ${rb('n2_status', 'enlarging', 'enlarging (>1.5 mm)')}`;
+                    report = report.trimEnd() + ` ${rb('n2_status', 'newly found', 'newly found (≧4 mm)')}`;
+                    report = report.trimEnd() + ` ${rb('n2_status', 'no prior', 'No prior chest CT comparison')}\n`;
+                } else {
+                    report += `  [] Lung nodule 2 (size, character and location)\n`;
+                }
+
+                // Nodule 3
+                if (isChecked('n3_enable')) {
+                    report += `  [+] Lung nodule 3 (size, character and location)\n`;
+                    report += `  \tEntire Nodule: ${txt('n3_size', '', 'mm')}\n`;
+                    const n3_density = getValue('n3_density');
+                    report += `  \tDensity: ${n3_density === 'non-solid' ? '[+]' : '[]'} non-solid `;
+                    if (n3_density === 'part-solid') {
+                        report += `[+] part-solid (solid part: ${txt('n3_solid_part', '', ' mm')}) `;
+                    } else {
+                        report += `[] part-solid (solid part: ___ mm) `;
+                    }
+                    report += `${n3_density === 'solid' ? '[+]' : '[]'} solid\n`;
+                    report += `  \tLobe: (SE:${txt('n3_se')}, IM:${txt('n3_im')}) `;
+                    report += `${rb('n3_lobe', 'RUL', 'RUL')}`;
+                    report = report.trimEnd() + ` ${rb('n3_lobe', 'RML', 'RML')}`;
+                    report = report.trimEnd() + ` ${rb('n3_lobe', 'RLL', 'RLL')}`;
+                    report = report.trimEnd() + ` ${rb('n3_lobe', 'LUL', 'LUL')}`;
+                    report = report.trimEnd() + ` ${rb('n3_lobe', 'LLL', 'LLL')}`;
+                    report += `  \tThe nodule is ${rb('n3_status', 'unchanged', 'unchanged')}`;
+                    report = report.trimEnd() + ` ${rb('n3_status', 'enlarging', 'enlarging (>1.5 mm)')}`;
+                    report = report.trimEnd() + ` ${rb('n3_status', 'newly found', 'newly found (≧4 mm)')}`;
+                    report = report.trimEnd() + ` ${rb('n3_status', 'no prior', 'No prior chest CT comparison')}\n`;
+                } else {
+                    report += `  [] Lung nodule 3 (size, character and location)\n`;
+                }
+
+                // Else
+                if (isChecked('else_enable')) {
+                    report += `  [+] Lung nodules else `;
+                    if (isChecked('else_rul')) report += `[+] RUL `;
+                    if (isChecked('else_rml')) report += `[+] RML `;
+                    if (isChecked('else_rll')) report += `[+] RLL `;
+                    if (isChecked('else_lul')) report += `[+] LUL `;
+                    if (isChecked('else_lll')) report += `[+] LLL `;
+                    report += `(SE:${txt('else_se')}, IM:${txt('else_im')})\n`;
+                } else {
+                    report += `  [] Lung nodules else [] RUL [] RML [] RLL [] LUL [] LLL (SE:____________, IM:____________)\n`;
+                }
+
+            } else {
+                report += "[] Lung nodule(s) (≧6mm or enlarging>1.5mm or new≧4mm): total number []1 []2 []3 []≥4, and described as followings:\n";
+                report += "  [] Lung nodule 1 (size, character and location)\n";
+                report += "  [] Lung nodule 2 (size, character and location)\n";
+                report += "  [] Lung nodule 3 (size, character and location)\n";
+                report += "  [] Lung nodules else [] RUL [] RML [] RLL [] LUL [] LLL (SE:____________, IM:____________)\n";
+            }
+            report += "\n";
+
+            // Airway nodule
+            report += cb('airway_subsegmental', 'Airway nodule\n  [] Subsegmental (Category 2)'); // Workaround for indentation
+            if(isChecked('airway_subsegmental')) report = report.replace('[] Airway nodule', '[+] Airway nodule');
+
+            if (isChecked('airway_proximal')) {
+                report += (isChecked('airway_subsegmental') ? '  ' : '') + '[+] Segmental or more proximal\n';
+                report += `  \t${rb('airway_proximal_type', 'secretions', 'Favors secretions (Category 2)')}`;
+                report += `  \t${rb('airway_proximal_type', 'baseline', 'At baseline (Category 4A)')}`;
+                report += `  \t${rb('airway_proximal_type', 'stable', 'Stable or growing (Category 4B)')}`;
+            } else {
+                report += (isChecked('airway_subsegmental') ? '  ' : '') + '[] Segmental or more proximal\n';
+            }
+            report += "\n";
+
+            // Atypical pulmonary cyst
+            const getCystString = (cat, id_se, id_im) => {
+                let str = `Category ${cat}. Lobe: (SE: ${txt(id_se)}, IM: ${txt(id_im)}) `;
+                if(isChecked(`cyst_${cat.toLowerCase()}_rul`)) str += '[+] RUL ';
+                if(isChecked(`cyst_${cat.toLowerCase()}_rml`)) str += '[+] RML ';
+                if(isChecked(`cyst_${cat.toLowerCase()}_rll`)) str += '[+] RLL ';
+                if(isChecked(`cyst_${cat.toLowerCase()}_lul`)) str += '[+] LUL ';
+                if(isChecked(`cyst_${cat.toLowerCase()}_lll`)) str += '[+] LLL ';
+                return str.trimEnd();
+            };
+            report += isChecked('cyst_3') ? `[+] Atypical pulmonary cyst\n  [+] ${getCystString('3', 'cyst_3_se', 'cyst_3_im')}\n` : `[] Atypical pulmonary cyst\n  [] Category 3. Lobe: (SE: , IM: ) [] RUL [] RML [] RLL [] LUL [] LLL\n`;
+            if(!isChecked('cyst_3')) report = report.replace('[] Atypical pulmonary cyst', ' '); // Avoid repeating header
+            report += isChecked('cyst_4a') ? `  [+] ${getCystString('4A', 'cyst_4a_se', 'cyst_4a_im')}\n` : `  [] Category 4A. Lobe: (SE: , IM: ) [] RUL [] RML [] RLL [] LUL [] LLL\n`;
+            report += isChecked('cyst_4b') ? `  [+] ${getCystString('4B', 'cyst_4b_se', 'cyst_4b_im')}\n` : `  [] Category 4B. Lobe: (SE: , IM: ) [] RUL [] RML [] RLL [] LUL [] LLL\n`;
+            report = report.replace(' [] Atypical pulmonary cyst', '[] Atypical pulmonary cyst'); // Fix spacing
+            report += "\n";
+
+            report += cb('metastases', 'The pattern of lung nodules has a higher probability of metastases');
+
+            report += "\n----\nOther Lung Findings (選填)\n";
+            report += isChecked('other_emphysema') ? '[+] Emphysema ' : '';
+            report += isChecked('other_bronchiectasis') ? '[+] Bronchiectasis ' : '';
+            report += isChecked('other_bronchitis') ? '[+] Bronchitis/bronchiolitis ' : '';
+            report += isChecked('other_treeinbud') ? '[+] Tree-in-bud pattern\n' : '\n';
+            report += isChecked('other_centrilobular') ? '[+] Centrilobular nodules ' : '';
+            report += isChecked('other_tb') ? '[+] Old pulmonary TB ' : '';
+            report += isChecked('other_ild') ? '[+] Interstitial lung disease (ILD) ' : '';
+            report += isChecked('other_other_lung_check') ? `[+] Other ${txt('other_other_lung_text')}\n` : '\n';
+
+            report += "\nOther Findings (選填)\n";
+            report += `[] Enlarged lymph nodes, location ${txt('other_lymph')}\n`;
+            report += `[] Coronary artery calcification ${txt('other_coronary')}\n`;
+            report += `[] Other significant abnormal chest findings ${txt('other_chest')}\n`;
+            report += `[] Other significant abnormal abdominal or neck findings in this chest CT scan ${txt('other_abnormal')}\n`;
+
+            report += "\n----\nOverall recommendation\n";
+            report += "Lung-RADS v2022 Category Descriptor\n";
+
+            const category = getRadio('category');
+            if (category === '0') {
+                report += "  [+] Category 0: Incomplete.\n";
+                report += `  \t${cb('cat_0_prior', 'Prior chest CT examination being located for comparison.')}`;
+                report += `  \t${cb('cat_0_unevaluated', 'Part or all of lungs cannot be evaluated.')}`;
+                report += `  \t${cb('cat_0_inflammatory', 'Findings suggestive of an inflammatory or infectious process.')}`;
+            } else {
+                report += "  [] Category 0: Incomplete.\n";
+            }
+
+            report += `  ${rb('category', '1', 'Category 1: Negative.')}`;
+            report += `  ${rb('category', '2', 'Category 2: Benign - Based on imaging features or indolent behavior.')}`;
+            report += `  ${rb('category', '3', 'Category 3: Probably Benign - Based on imaging features or behavior.')}`;
+            report += `  ${rb('category', '4A', 'Category 4A: Suspicious.')}`;
+            report += `  ${rb('category', '4B', 'Category 4B: Very suspicious.')}`;
+            report += `  ${rb('category', '4X', 'Category 4X: Category 3 or 4 nodules with additional features or imaging findings that increase suspicion for lung cancer.')}`;
+
+            report += "\n----\n(選填)\n";
+            report += cb('modifier_s', 'Modifier S: May add to category 0-4 for clinically significant or potentially clinically significant findings unrelated to lung cancer.');
+            report += cb('refer_opd', '請至門診就診');
+
+            // --- D. 複製到剪貼簿 ---
+            navigator.clipboard.writeText(report).then(() => {
+                const btn = $('copy_button');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = "✓ 已複製！";
+                btn.disabled = true;
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 2000);
+            }).catch(err => {
+                console.error('複製失敗: ', err);
+                alert('複製失敗。請檢查您的瀏覽器權限設定。');
+            });
+        }
+    </script>
+
+</body>
+</html>
