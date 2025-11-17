@@ -3,21 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lung-RADS v2022 報告產生器 (v3)</title>
+    <title>Lung-RADS v2022 報告產生器 (v4)</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
     <style>
         /* 2. 客製化樣式 */
         body {
-            padding-bottom: 100px; /* 避免內容被固定按鈕遮擋 */
+            padding-bottom: 100px;
         }
 
-        /* (Update v3) 固定的頁尾 - 完全不透明 */
+        /* (Update v4) 固定的頁尾 - 強制不透明 */
         .sticky-footer {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            background-color: var(--card-background-color); /* 改用不透明的卡片背景 */
+            /* * 修正：使用 --background-color (頁面底色)，
+             * 而非 --card-background-color (在暗色模式下是透明的)
+             * 這樣能保證 100% 不透明。
+             */
+            background-color: var(--background-color);
             border-top: 1px solid var(--primary);
             box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.15);
             padding: 1rem;
@@ -33,7 +37,6 @@
             padding: 0 1rem;
         }
 
-        /* 巢狀結構的縮排 */
         .nested-section {
             padding-left: 1.5rem;
             border-left: 3px solid var(--primary);
@@ -53,20 +56,47 @@
             gap: 1rem;
         }
 
-        /* (Update v3) 縮小 input 高度，使其更美觀 */
+        /* (Update v4) 縮小 input 高度並垂直置中，解決行高不一的問題 */
         input[type="text"],
         input[type="number"],
         select {
-            height: calc(var(--pico-font-size) * 1.5 + var(--pico-form-element-padding-vertical) * 2 + 2px);
-            padding-top: var(--pico-form-element-padding-vertical);
-            padding-bottom: var(--pico-form-element-padding-vertical);
-            font-size: var(--pico-font-size);
-            margin-bottom: 0; /* 減少間距 */
+            font-size: 0.9em; /* 讓 input 內的字體稍小 */
+            padding: 0.2rem 0.4rem; /* 大幅減少垂直 padding */
+            height: auto; /* 高度由 padding 決定 */
+            vertical-align: middle; /* 關鍵：垂直置中對齊 */
+            margin: 0 0.25em; /* 增加一點點水平間距 */
+            width: auto; /* 預設寬度自動 */
         }
 
-        /* 讓小 input 垂直置中 */
+        /* (Update v4) 將小 input 設為 inline-block */
         input[type="text"][style*="width"] {
+            display: inline-block;
+        }
+
+        /* (Update v4) Placeholder 字體縮小 */
+        input::placeholder {
+            font-size: 0.9em;
+            color: var(--muted-color);
+        }
+
+        /* (Update v4) 確保 Checkbox 和 Radio 也垂直置中 */
+        input[type="checkbox"],
+        input[type="radio"] {
             vertical-align: middle;
+        }
+
+        /* (Update v4) 強制 input 緊跟 title 的 CSS */
+        .inline-label-group {
+            display: flex;
+            flex-wrap: wrap; /* 在小螢幕上換行 */
+            gap: 1.5rem; /* 項目間距 */
+            align-items: center;
+            margin-bottom: var(--pico-spacing);
+        }
+        .inline-label-group span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem; /* title 和 input 之間的間距 */
         }
 
         fieldset label {
@@ -81,25 +111,22 @@
         .inline-inputs label { display: block; }
         .inline-inputs label input[type="text"] {
             display: inline-block;
-            width: auto;
             min-width: 200px;
             vertical-align: middle;
         }
 
-        /* Modal 內的 pre 標籤 */
         #modal_output {
             white-space: pre-wrap;
             word-wrap: break-word;
             background-color: var(--muted-background-color);
             padding: 1rem;
             border-radius: var(--border-radius);
-            font-family: var(--pico-font-family-monospace); /* 使用等寬字體 */
+            font-family: var(--pico-font-family-monospace); /* 等寬字體 */
         }
 
-        /* (Update v3) Modal 寬度調整 */
         dialog article {
             width: 90vw;
-            max-width: 1000px; /* 增加最大寬度 */
+            max-width: 1000px;
         }
     </style>
 </head>
@@ -120,14 +147,14 @@
                     <span><label><input type="radio" name="quality" value="Not Acceptable"> Not Acceptable</label></span>
                 </fieldset>
 
-                <div class="grid-2">
-                    <label>CTDIvol: <input type="text" id="ctdi" placeholder="mGy"></label>
-                    <label>Total DLP: <input type="text" id="dlp" placeholder="mGy*cm"></label>
+                <div class="inline-label-group">
+                    <span>CTDIvol: <input type="text" id="ctdi" placeholder="mGy" style="width: 80px;"></span>
+                    <span>Total DLP: <input type="text" id="dlp" placeholder="mGy*cm" style="width: 100px;"></span>
                 </div>
 
-                <div class="grid-2">
-                    <label>Prior CT Date (Y/M/D): <input type="text" id="prior_date" placeholder="YYYY/MM/DD"></label>
-                    <label><input type="checkbox" id="no_prior"> No prior chest CT available</label>
+                <div class="inline-label-group">
+                    <span>Prior CT Date (Y/M/D): <input type="text" id="prior_date" placeholder="YYYY/MM/DD" style="width: 120px;"></span>
+                    <span><label><input type="checkbox" id="no_prior"> No prior chest CT available</label></span>
                 </div>
             </section>
 
@@ -140,7 +167,7 @@
                 <fieldset>
                     <label><input type="checkbox" id="no_nodule"> No lung nodule</label>
                     <label><input type="checkbox" id="benign_features"> Nodule with benign features.</label>
-                    <label><input type="checkbox" id="nodule_lt6"> Lung nodule(s) (&lt;6mm) (選填 SE: <input type="text" id="lt6_se" style="width: 80px;">, IM: <input type="text" id="lt6_im" style="width: 100px;">)</label>
+                    <label><input type="checkbox" id="nodule_lt6"> Lung nodule(s) (&lt;6mm) (選填 SE: <input type="text" id="lt6_se" style="width: 60px;">, IM: <input type="text" id="lt6_im" style="width: 80px;">)</label>
                     <label><input type="checkbox" id="juxtapleural"> Juxtapleural nodule.</label>
                     <label>
                         <input type="checkbox" id="nodule_gte6" onchange="toggleSection('nodule_details', this.checked)">
@@ -347,19 +374,19 @@
                 <fieldset>
                     <legend>Lung-RADS v2022 Category Descriptor</legend>
 
-                    <label><input type="radio" name="category" value="0"> Category 0: Incomplete.</label>
+                    <label><input type="radio" name="category" value="0" onchange="handleCategoryChange()"> Category 0: Incomplete.</label>
                     <div id="cat_0_details" class="nested-section">
-                        <label><input type="checkbox" id="cat_0_prior"> Prior chest CT examination being located for comparison.</label>
-                        <label><input type="checkbox" id="cat_0_unevaluated"> Part or all of lungs cannot be evaluated.</label>
-                        <label><input type="checkbox" id="cat_0_inflammatory"> Findings suggestive of an inflammatory or infectious process.</label>
+                        <label><input type="checkbox" id="cat_0_prior" onchange="updateCat0Radio()"> Prior chest CT examination being located for comparison.</label>
+                        <label><input type="checkbox" id="cat_0_unevaluated" onchange="updateCat0Radio()"> Part or all of lungs cannot be evaluated.</label>
+                        <label><input type="checkbox" id="cat_0_inflammatory" onchange="updateCat0Radio()"> Findings suggestive of an inflammatory or infectious process.</label>
                     </div>
 
-                    <label><input type="radio" name="category" value="1"> Category 1: Negative.</label>
-                    <label><input type="radio" name="category" value="2"> Category 2: Benign - Based on imaging features or indolent behavior.</label>
-                    <label><input type="radio" name="category" value="3"> Category 3: Probably Benign - Based on imaging features or behavior.</label>
-                    <label><input type="radio" name="category" value="4A"> Category 4A: Suspicious.</label>
-                    <label><input type="radio" name="category" value="4B"> Category 4B: Very suspicious.</label>
-                    <label><input type="radio" name="category" value="4X"> Category 4X: Category 3 or 4 nodules with additional features or imaging findings that increase suspicion for lung cancer.</label>
+                    <label><input type="radio" name="category" value="1" onchange="handleCategoryChange()"> Category 1: Negative.</label>
+                    <label><input type="radio" name="category" value="2" onchange="handleCategoryChange()"> Category 2: Benign - Based on imaging features or indolent behavior.</label>
+                    <label><input type="radio" name="category" value="3" onchange="handleCategoryChange()"> Category 3: Probably Benign - Based on imaging features or behavior.</label>
+                    <label><input type="radio" name="category" value="4A" onchange="handleCategoryChange()"> Category 4A: Suspicious.</label>
+                    <label><input type="radio" name="category" value="4B" onchange="handleCategoryChange()"> Category 4B: Very suspicious.</label>
+                    <label><input type="radio" name="category" value="4X" onchange="handleCategoryChange()"> Category 4X: Category 3 or 4 nodules with additional features or imaging findings that increase suspicion for lung cancer.</label>
                 </fieldset>
             </section>
 
@@ -439,7 +466,7 @@
             toggleSection(elementId, densityValue === 'part-solid');
         }
 
-        // (Update v3) Airway Nodule 連動邏輯
+        // Airway Nodule 連動邏輯
         function updateAirwayParent() {
             const anyChecked = isChecked('airway_secretions') || isChecked('airway_baseline') || isChecked('airway_stable');
             $('airway_proximal').checked = anyChecked;
@@ -453,6 +480,24 @@
             }
         }
 
+        // (Update v4) Category 0 連動邏輯
+        function handleCategoryChange() {
+            const category = getRadio('category');
+            if (category !== '0') {
+                // If Cat 1, 2, 3... is selected, clear Cat 0's children
+                $('cat_0_prior').checked = false;
+                $('cat_0_unevaluated').checked = false;
+                $('cat_0_inflammatory').checked = false;
+            }
+        }
+
+        function updateCat0Radio() {
+            // If any child is checked, force the 'category' radio to '0'
+            if (isChecked('cat_0_prior') || isChecked('cat_0_unevaluated') || isChecked('cat_0_inflammatory')) {
+                document.querySelector('input[name="category"][value="0"]').checked = true;
+            }
+        }
+
         // Modal 輔助函數
         const openModal = (target) => $(target)?.showModal();
         const closeModal = (target) => $(target)?.close();
@@ -463,10 +508,8 @@
             modal.open ? closeModal(modalId) : openModal(modalId);
         };
 
-
         // --- C. 主要的報告產生函數 ---
 
-        // (Update v3) Nodule 產生器 (helper function)
         function generateNoduleText(n) {
             let text = `  ${cb(`n${n}_enable`, `Lung nodule ${n} (size, character and location)`)}`;
             text = text.trimEnd(); // 移除 cb 結尾的 \n
@@ -522,7 +565,6 @@
                 report = report.trimEnd() + ` ${rb('total_nodules', '>=4', '≥4')}`;
                 report += "  請依序描述最懷疑之肺結節(至多 3 個) (Describe the most suspicious 3 nodules in order)\n\n";
 
-                // (Update v3) Nodule 1, 2, 3 - Always generate text
                 report += generateNoduleText(1);
                 report += generateNoduleText(2);
                 report += generateNoduleText(3);
@@ -542,7 +584,6 @@
 
             } else {
                 report += "[ ] Lung nodule(s) (≧6mm or enlarging>1.5mm or new≧4mm): total number [ ]1 [ ]2 [ ]3 [ ]≥4, and described as followings:\n";
-                // (Update v3) Also generate text structure here
                 report += generateNoduleText(1);
                 report += generateNoduleText(2);
                 report += generateNoduleText(3);
@@ -550,7 +591,7 @@
             }
             report += "\n";
 
-            // (Update v3) Airway nodule - changed to checkbox logic
+            // Airway nodule
             let airwayChecked = isChecked('airway_subsegmental') || isChecked('airway_proximal');
             report += `${airwayChecked ? '[+]' : '[ ]'} Airway nodule\n`;
             report += `  ${cb('airway_subsegmental', 'Subsegmental (Category 2)')}`;
@@ -600,7 +641,6 @@
             report += "\n----\nOverall recommendation\n";
             report += "Lung-RADS v2022 Category Descriptor\n";
 
-            // (Update v3) Category 0 - always show sub-items in text
             report += `  ${rb('category', '0', 'Category 0: Incomplete.')}`;
             report += `  \t${cb('cat_0_prior', 'Prior chest CT examination being located for comparison.')}`;
             report += `  \t${cb('cat_0_unevaluated', 'Part or all of lungs cannot be evaluated.')}`;
