@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lung-RADS v2022 報告產生器 (v6)</title>
+    <title>Lung-RADS v2022 報告產生器 (v7)</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
     <style>
         /* 2. 客製化樣式 */
@@ -11,13 +11,12 @@
             padding-bottom: 100px;
         }
 
-        /* 固定的頁尾 - 滾動到底部顯示 */
         .sticky-footer {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            background-color: var(--background-color); /* 100% 不透明 */
+            background-color: var(--background-color);
             border-top: 1px solid var(--primary);
             box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.15);
             padding: 1rem;
@@ -48,17 +47,17 @@
             margin-bottom: 0;
         }
 
+        /* (Update v7) 減少 nested-section 的上間距 */
         .nested-section {
             padding-left: 1.5rem;
             border-left: 3px solid var(--primary);
-            margin-top: 1rem;
+            margin-top: 0.5rem; /* 從 1rem 減少 */
         }
 
         .hidden { display: none; }
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
         .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
 
-        /* 縮小 input 高度並垂直置中 */
         input[type="text"],
         input[type="number"],
         select {
@@ -73,31 +72,30 @@
         input::placeholder { font-size: 0.9em; color: var(--muted-color); }
         input[type="checkbox"], input[type="radio"] { vertical-align: middle; }
 
-        /* 強制 input/radio 緊跟 title */
         .inline-label-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 1rem; /* 調整 title 和選項的間距 */
-            align-items: center;
+            gap: 1rem;
+            /* (Update v7) 改為 baseline 對齊，修正垂直不一致問題 */
+            align-items: baseline;
             margin-bottom: var(--pico-spacing);
         }
         .inline-label-group span {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem; /* 調整 radio/checkbox 和其文字的間距 */
-            margin-right: 0.5rem; /* 調整選項之間的間距 */
+            gap: 0.5rem;
+            margin-right: 0.5rem;
         }
-        /* (Update v6) 讓第一個 span (標題) 和後面的選項分開 */
         .inline-label-group span:first-child {
             margin-right: 0.5rem;
-            font-weight: normal; /* 確保不是粗體 */
+            font-weight: normal;
         }
 
         fieldset {
             margin-bottom: var(--pico-spacing);
         }
         fieldset legend {
-            font-weight: bold; /* 保持 fieldset 的 legend 粗體 */
+            font-weight: bold;
         }
         fieldset label {
             display: block;
@@ -106,6 +104,12 @@
         fieldset span {
             display: inline-block;
             margin-right: 1.5rem;
+        }
+
+        /* (Update v7) 新增 class 用於 Lobe checkbox 間距 */
+        .lobe-checkbox-container {
+            display: inline-block;
+            margin-left: 1rem; /* 在 ) 和 RUL 之間增加間距 */
         }
 
         .inline-inputs label { display: block; }
@@ -308,34 +312,46 @@
                     </div>
                 </fieldset>
             </section>
+
             <section>
                 <fieldset>
                     <legend>Atypical pulmonary cyst</legend>
-                    <label><input type="checkbox" id="cyst_3"> Category 3. Lobe: (SE: <input type="text" id="cyst_3_se" style="width: 50px;">, IM: <input type="text" id="cyst_3_im" style="width: 50px;">)
-                        <span><label><input type="checkbox" id="cyst_3_rul"> RUL</label></span>
-                        <span><label><input type="checkbox" id="cyst_3_rml"> RML</label></span>
-                        <span><label><input type="checkbox" id="cyst_3_rll"> RLL</label></span>
-                        <span><label><input type="checkbox" id="cyst_3_lul"> LUL</label></span>
-                        <span><label><input type="checkbox" id="cyst_3_lll"> LLL</label></span>
+                    <label>
+                        <input type="checkbox" id="cyst_3"> Category 3. Lobe: (SE: <input type="text" id="cyst_3_se" style="width: 50px;">, IM: <input type="text" id="cyst_3_im" style="width: 50px;">)
+                        <span class="lobe-checkbox-container">
+                            <span><label><input type="checkbox" id="cyst_3_rul"> RUL</label></span>
+                            <span><label><input type="checkbox" id="cyst_3_rml"> RML</label></span>
+                            <span><label><input type="checkbox" id="cyst_3_rll"> RLL</label></span>
+                            <span><label><input type="checkbox" id="cyst_3_lul"> LUL</label></span>
+                            <span><label><input type="checkbox" id="cyst_3_lll"> LLL</label></span>
+                        </span>
                     </label>
-                    <label><input type="checkbox" id="cyst_4a"> Category 4A. Lobe: (SE: <input type="text" id="cyst_4a_se" style="width: 50px;">, IM: <input type="text" id="cyst_4a_im" style="width: 50px;">)
-                        <span><label><input type="checkbox" id="cyst_4a_rul"> RUL</label></span>
-                        <span><label><input type="checkbox" id="cyst_4a_rml"> RML</label></span>
-                        <span><label><input type="checkbox" id="cyst_4a_rll"> RLL</label></span>
-                        <span><label><input type="checkbox" id="cyst_4a_lul"> LUL</label></span>
-                        <span><label><input type="checkbox" id="cyst_4a_lll"> LLL</label></span>
+                    <label>
+                        <input type="checkbox" id="cyst_4a"> Category 4A. Lobe: (SE: <input type="text" id="cyst_4a_se" style="width: 50px;">, IM: <input type="text" id="cyst_4a_im" style="width: 50px;">)
+                        <span class="lobe-checkbox-container">
+                            <span><label><input type="checkbox" id="cyst_4a_rul"> RUL</label></span>
+                            <span><label><input type="checkbox" id="cyst_4a_rml"> RML</label></span>
+                            <span><label><input type="checkbox" id="cyst_4a_rll"> RLL</label></span>
+                            <span><label><input type="checkbox" id="cyst_4a_lul"> LUL</label></span>
+                            <span><label><input type="checkbox" id="cyst_4a_lll"> LLL</label></span>
+                        </span>
                     </label>
-                    <label><input type="checkbox" id="cyst_4b"> Category 4B. Lobe: (SE: <input type="text" id="cyst_4b_se" style="width: 50px;">, IM: <input type="text" id="cyst_4b_im" style="width: 50px;">)
-                        <span><label><input type="checkbox" id="cyst_4b_rul"> RUL</label></span>
-                        <span><label><input type="checkbox" id="cyst_4b_rml"> RML</label></span>
-                        <span><label><input type="checkbox" id="cyst_4b_rll"> RLL</label></span>
-                        <span><label><input type="checkbox" id="cyst_4b_lul"> LUL</label></span>
-                        <span><label><input type="checkbox" id="cyst_4b_lll"> LLL</label></span>
+                    <label>
+                        <input type="checkbox" id="cyst_4b"> Category 4B. Lobe: (SE: <input type="text" id="cyst_4b_se" style="width: 50px;">, IM: <input type="text" id="cyst_4b_im" style="width: 50px;">)
+                        <span class="lobe-checkbox-container">
+                            <span><label><input type="checkbox" id="cyst_4b_rul"> RUL</label></span>
+                            <span><label><input type="checkbox" id="cyst_4b_rml"> RML</label></span>
+                            <span><label><input type="checkbox" id="cyst_4b_rll"> RLL</label></span>
+                            <span><label><input type="checkbox" id="cyst_4b_lul"> LUL</label></span>
+                            <span><label><input type="checkbox" id="cyst_4b_lll"> LLL</label></span>
+                        </span>
                     </label>
                 </fieldset>
             </section>
+
             <label><input type="checkbox" id="metastases"> The pattern of lung nodules has a higher probability of metastases</label>
             <hr>
+
             <section>
                 <h3>Other Lung Findings (選填)</h3>
                 <fieldset>
@@ -515,7 +531,6 @@
 
         // --- C. 報告產生核心 ---
 
-        // (Update v6) Nodule 產生器 (Density 改為 radio)
         function generateNoduleText(n, isSimple) {
             if (isSimple && !isChecked(`n${n}_enable`)) {
                 return "";
@@ -525,7 +540,6 @@
             text = text.trimEnd();
             text += `\n    Entire Nodule: ${txt(`n${n}_size`, '', 'mm')}\n`;
 
-            // (Update v6) 讀取 radio
             const density = getRadio(`n${n}_density`);
             text += `    Density: ${density === 'non-solid' ? '[+]' : '[ ]'} non-solid `;
 
@@ -553,7 +567,6 @@
             return text;
         }
 
-        // 核心報告生成邏輯
         function generateReportText(isSimple = false) {
             let report = "";
             const add = (text) => { report += text; };
@@ -591,7 +604,6 @@
                 add(generateNoduleText(2, isSimple));
                 add(generateNoduleText(3, isSimple));
 
-                // (Update v6) 'Lung nodules else' logic
                 const elseLobesChecked = isChecked('else_rul') || isChecked('else_rml') || isChecked('else_rll') || isChecked('else_lul') || isChecked('else_lll');
                 if (!isSimple || elseLobesChecked) {
                     report += `  ${elseLobesChecked ? '[+]' : '[ ]'} Lung nodules else `;
@@ -616,7 +628,6 @@
             let airwayChecked = isChecked('airway_subsegmental') || isChecked('airway_proximal');
             if (!isSimple || airwayChecked) {
                 report += `${airwayChecked ? '[+]' : '[ ]'} Airway nodule\n`;
-                // (Update v6) 修正 indentation
                 addLine(true, () => `  ${cb('airway_subsegmental', 'Subsegmental (Category 2)')}`);
                 addLine(true, () => `  ${cb('airway_proximal', 'Segmental or more proximal')}`);
                 addLine(true, () => `    ${cb('airway_secretions', 'Favors secretions (Category 2)')}`);
@@ -659,7 +670,7 @@
                 if (!isSimple || isChecked('other_treeinbud')) line1 += `${cb_inline('other_treeinbud', 'Tree-in-bud pattern')}`;
 
                 if (!isSimple || isChecked('other_centrilobular')) line2 += `${cb_inline('other_centrilobular', 'Centrilobular nodules')} `;
-                if (!isSimple || isChecked('other_tb')) line2 += `${cb_inline('other_tb', 'Old pulmonary TB')} `;
+                if (!isSimple || isCodeChecked('other_tb')) line2 += `${cb_inline('other_tb', 'Old pulmonary TB')} `;
                 if (!isSimple || isChecked('other_ild')) line2 += `${cb_inline('other_ild', 'Interstitial lung disease (ILD)')} `;
                 if (!isSimple || isChecked('other_other_lung_check')) line2 += `${cb_inline('other_other_lung_check', `Other ${txt('other_other_lung_text')}`)}`;
 
@@ -682,7 +693,6 @@
             report += "Lung-RADS v2022 Category Descriptor\n";
 
             report += `  ${rb('category', '0', 'Category 0: Incomplete.')}`;
-            // (Update v6) 修正 indentation
             report += `    ${cb('cat_0_prior', 'Prior chest CT examination being located for comparison.')}`;
             report += `    ${cb('cat_0_unevaluated', 'Part or all of lungs cannot be evaluated.')}`;
             report += `    ${cb('cat_0_inflammatory', 'Findings suggestive of an inflammatory or infectious process.')}`;
