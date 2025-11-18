@@ -219,10 +219,36 @@ module.exports = {
       chunks: ['ogs_pelvis'],
     }),
     new HtmlWebpackPlugin({
+      template: './src/html/nhi_lung_rads.html',
+      filename: 'nhi-lung-rads/index.html',
+      chunks: [],
+    }),
+    new HtmlWebpackPlugin({
       template: './src/html/ajcc/index.html',
       filename: 'index.html',
       chunks: ['index'],
     }),
-    new FaviconsWebpackPlugin('./src/image/favicon.png'),
+    new FaviconsWebpackPlugin({
+      logo: './src/image/favicon.png',
+      favicons: {
+        appName: null,
+        appDescription: null,
+        developerName: null,
+        developerURL: null,
+        background: '#fff',
+        theme_color: '#fff',
+        manifest: {}, // 不產生 manifest
+        icons: {
+          android: false, // 關閉 Android
+          appleIcon: false, // 關閉 apple-touch-icon
+          appleStartup: false, // 關閉 apple-touch-startup-image
+          coast: false,
+          favicons: true, // 只保留這個
+          firefox: false,
+          windows: false,
+          yandex: false,
+        },
+      },
+    }),
   ],
 };
