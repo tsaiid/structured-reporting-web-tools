@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lung-RADS v2022 報告產生器 (v7)</title>
+    <title>Lung-RADS v2022 報告產生器 (v9)</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
     <style>
         /* 2. 客製化樣式 */
@@ -47,11 +47,10 @@
             margin-bottom: 0;
         }
 
-        /* (Update v7) 減少 nested-section 的上間距 */
         .nested-section {
             padding-left: 1.5rem;
             border-left: 3px solid var(--primary);
-            margin-top: 0.5rem; /* 從 1rem 減少 */
+            margin-top: 0.5rem;
         }
 
         .hidden { display: none; }
@@ -76,7 +75,6 @@
             display: flex;
             flex-wrap: wrap;
             gap: 1rem;
-            /* (Update v7) 改為 baseline 對齊，修正垂直不一致問題 */
             align-items: baseline;
             margin-bottom: var(--pico-spacing);
         }
@@ -106,10 +104,9 @@
             margin-right: 1.5rem;
         }
 
-        /* (Update v7) 新增 class 用於 Lobe checkbox 間距 */
         .lobe-checkbox-container {
             display: inline-block;
-            margin-left: 1rem; /* 在 ) 和 RUL 之間增加間距 */
+            margin-left: 1rem;
         }
 
         .inline-inputs label { display: block; }
@@ -170,7 +167,7 @@
                 <fieldset>
                     <label><input type="checkbox" id="no_nodule"> No lung nodule</label>
                     <label><input type="checkbox" id="benign_features"> Nodule with benign features.</label>
-                    <label><input type="checkbox" id="nodule_lt6"> Lung nodule(s) (&lt;6mm) (選填 SE: <input type="text" id="lt6_se" style="width: 60px;">, IM: <input type="text" id="lt6_im" style="width: 80px;">)</label>
+                    <label><input type="checkbox" id="nodule_lt6"> Lung nodule(s) (&lt;6mm) (選填 SE: <input type="text" id="lt6_se" style="width: 60px;">, IM: <input type="text" id="lt6_im" style="width: 350px; max-width: 80vw;">)</label>
                     <label><input type="checkbox" id="juxtapleural"> Juxtapleural nodule.</label>
                     <label>
                         <input type="checkbox" id="nodule_gte6" onchange="toggleSection('nodule_details', this.checked)">
@@ -670,7 +667,8 @@
                 if (!isSimple || isChecked('other_treeinbud')) line1 += `${cb_inline('other_treeinbud', 'Tree-in-bud pattern')}`;
 
                 if (!isSimple || isChecked('other_centrilobular')) line2 += `${cb_inline('other_centrilobular', 'Centrilobular nodules')} `;
-                if (!isSimple || isCodeChecked('other_tb')) line2 += `${cb_inline('other_tb', 'Old pulmonary TB')} `;
+                // (Update v8) Fixed bug: isCodeChecked -> isChecked
+                if (!isSimple || isChecked('other_tb')) line2 += `${cb_inline('other_tb', 'Old pulmonary TB')} `;
                 if (!isSimple || isChecked('other_ild')) line2 += `${cb_inline('other_ild', 'Interstitial lung disease (ILD)')} `;
                 if (!isSimple || isChecked('other_other_lung_check')) line2 += `${cb_inline('other_other_lung_check', `Other ${txt('other_other_lung_text')}`)}`;
 
@@ -682,10 +680,20 @@
             let otherFindingsChecked = getValue('other_lymph') || getValue('other_coronary') || getValue('other_chest') || getValue('other_abnormal');
             if (!isSimple || otherFindingsChecked) {
                 report += "\nOther Findings (選填)\n";
-                addLine(true, () => `[ ] Enlarged lymph nodes, location ${txt('other_lymph')}\n`);
-                addLine(true, () => `[ ] Coronary artery calcification ${txt('other_coronary')}\n`);
-                addLine(true, () => `[ ] Other significant abnormal chest findings ${txt('other_chest')}\n`);
-                addLine(true, () => `[ ] Other significant abnormal abdominal or neck findings in this chest CT scan ${txt('other_abnormal')}\n`);
+
+                // (Update v8) Revised logic for Other Findings
+                const addOtherFinding = (id, text) => {
+                    const val = getValue(id);
+                    if (isSimple && !val) return;
+                    const mark = val ? '[+]' : '[ ]';
+                    const content = val ? `: ${val}` : '';
+                    report += `${mark} ${text}${content}\n`;
+                }
+
+                addOtherFinding('other_lymph', 'Enlarged lymph nodes, location');
+                addOtherFinding('other_coronary', 'Coronary artery calcification');
+                addOtherFinding('other_chest', 'Other significant abnormal chest findings');
+                addOtherFinding('other_abnormal', 'Other significant abnormal abdominal or neck findings in this chest CT scan');
             }
 
             // --- 簡易報告例外：此區塊一律完整顯示 ---
