@@ -369,17 +369,27 @@
             </div>
             <div class="row">
               <div class="col-8">
-            <div class="input-group input-group-sm mb-2 mr-sm-2">
-              <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" step="0.1" class="form-control"
-                aria-label="Maximum size of the largest positive node" id="txt_rn_len"
-                placeholder="Maximum size of the largest positive node" required>
-              <div class="input-group-append">
-                <span class="input-group-text">cm</span>
-              </div>
-              <div class="invalid-tooltip">
-                Please enter a number.
+                <div class="input-group input-group-sm mb-2 mr-sm-2">
+                  <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" step="0.1" class="form-control"
+                    aria-label="Maximum size of the largest positive node" id="txt_rn_len"
+                    placeholder="Maximum size of the largest positive node" required>
+                  <div class="input-group-append">
+                    <span class="input-group-text">cm</span>
+                  </div>
+                  <div class="invalid-tooltip">
+                    Please enter a number.
+                  </div>
+                </div>
               </div>
             </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-check mb-2">
+                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_ene" value="rENE">
+                <label class="form-check-label text-danger" for="cb_rn_ene">
+                    Advanced radiologic extranodal extension (involvement of muscles, skin, and/or neurovascular bundle)
+                </label>
+                </div>
               </div>
             </div>
 
@@ -404,6 +414,18 @@
                 </div>
                 <input type="text" class="form-control"
                   aria-label="Text input with checkbox for other distant metastasis" id="txt_dm_others">
+              </div>
+
+              <div class="mt-2 pl-4 border-left" id="dm_quantification_area">
+                  <span class="text-muted d-block mb-1">Number of metastatic lesions:</span>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="dm_count" id="radio_dm_m1a" value="m1a">
+                    <label class="form-check-label" for="radio_dm_m1a">&le; 3 lesions (M1a)</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="dm_count" id="radio_dm_m1b" value="m1b">
+                    <label class="form-check-label" for="radio_dm_m1b">&gt; 3 lesions (M1b)</label>
+                  </div>
               </div>
             </form>
 
