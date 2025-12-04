@@ -188,3 +188,11 @@ html[data-theme="dark"] hr {
 html[data-theme="dark"] pre {
     color: var(--text-color);
 }
+
+html[data-theme="dark"] a {
+    color: #66b0ff;
+}
+
+html[data-theme="dark"] a:hover {
+    color: #8cc5ff;
+}
