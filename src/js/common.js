@@ -58,3 +58,15 @@ $(document).ready(function() {
         localStorage.setItem('theme', newTheme);
     });
 });
+
+// Remove loader when page is fully loaded
+$(window).on('load', function() {
+    const loader = $('#global-loader');
+    // Small delay to ensure everything is painted
+    setTimeout(() => {
+        loader.css('opacity', '0');
+        setTimeout(() => {
+            loader.remove();
+        }, 300); // Matches transition duration
+    }, 100);
+});
