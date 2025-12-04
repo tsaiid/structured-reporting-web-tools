@@ -1,5 +1,30 @@
+:root {
+  --bg-color: #ffffff;
+  --text-color: #212529;
+  --sidebar-bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --border-color: #dee2e6;
+  --input-bg: #ffffff;
+  --input-text: #495057;
+  --modal-content-bg: #ffffff;
+}
+
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --sidebar-bg: #1e1e1e;
+  --card-bg: #2c2c2c;
+  --border-color: #444;
+  --input-bg: #3a3a3a;
+  --input-text: #e0e0e0;
+  --modal-content-bg: #2c2c2c;
+}
+
 body {
   font-size: .875rem;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .feather {
@@ -20,6 +45,8 @@ body {
   z-index: 100; /* Behind the navbar */
   padding: 48px 0 0; /* Height of navbar */
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+  background-color: var(--sidebar-bg) !important; /* Override .bg-light */
+  transition: background-color 0.3s;
 }
 
 .sidebar-sticky {
@@ -44,6 +71,10 @@ body {
   padding: .2rem 1rem;
 }
 
+[data-theme="dark"] .sidebar .nav-link {
+  color: #b0b0b0;
+}
+
 .sidebar .nav-link .feather {
   margin-right: 4px;
   color: #999;
@@ -51,6 +82,14 @@ body {
 
 .sidebar .nav-link.active {
   color: #007bff;
+}
+
+[data-theme="dark"] .sidebar .nav-link.active {
+  color: #3794ff;
+}
+
+[data-theme="dark"] .sidebar .nav-link:hover {
+  color: #fff;
 }
 
 .sidebar .nav-link:hover .feather,
@@ -104,4 +143,48 @@ body {
 .form-control-dark:focus {
   border-color: transparent;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+
+/* Dark Mode Extras */
+
+[data-theme="dark"] .card,
+[data-theme="dark"] .modal-content {
+  background-color: var(--modal-content-bg);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+[data-theme="dark"] .table {
+  color: var(--text-color);
+}
+
+[data-theme="dark"] .table th,
+[data-theme="dark"] .table td,
+[data-theme="dark"] .table thead th {
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-control:focus {
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .modal-header,
+[data-theme="dark"] .modal-footer {
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .close {
+    color: var(--text-color);
+    text-shadow: none;
+}
+
+[data-theme="dark"] hr {
+    border-top-color: var(--border-color);
+}
+
+[data-theme="dark"] pre {
+    color: var(--text-color);
 }
