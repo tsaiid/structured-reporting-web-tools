@@ -15,7 +15,7 @@ const ajccPages = [
 
 // 動態產生 entry points
 const entries = ajccPages.reduce((acc, page) => {
-  acc[page] = `./src/js/${page}.js`;
+  acc[page] = `./src/js/${page}.js`; // Entry key remains the same, but output path will change via filename
   return acc;
 }, {});
 
@@ -23,7 +23,7 @@ const entries = ajccPages.reduce((acc, page) => {
 const htmlPlugins = ajccPages.map(page => {
   return new HtmlWebpackPlugin({
     template: `./src/html/ajcc/${page}.html`,
-    filename: `${page}.html`,
+    filename: `ajcc/${page}.html`, // Output to dist/ajcc/
     chunks: [page],
   });
 });
@@ -34,8 +34,14 @@ module.exports = {
   entry: entries,
 
   output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, 'dist')
+    // Update JS output path to match the folder structure
+    // If chunk name corresponds to an ajcc page, put it in ajcc/ folder
+    filename: (pathData) => {
+        return ajccPages.includes(pathData.chunk.name) ? 'ajcc/[name].js' : '[name].js';
+    },
+    path: path.resolve(__dirname, 'dist'),
+    // Important: Clean the output directory before emit
+    clean: true
   },
 
   optimization: {
@@ -85,11 +91,14 @@ module.exports = {
   // https://webpack.js.org/concepts/plugins/
   plugins: [
     ...htmlPlugins, // 展開所有動態產生的 HtmlWebpackPlugin
+    
+    // NHI Lung RADS
     new HtmlWebpackPlugin({
       template: './src/html/nhi_lung_rads.html',
-      filename: 'nhi-lung-rads/index.html',
-      chunks: [],
+      filename: 'nhi-lung-rads/index.html', // Output to dist/nhi-lung-rads/
+      chunks: [], // No JS chunks for this page currently based on your previous config
     }),
+
     new FaviconsWebpackPlugin({
       logo: './src/image/favicon.png',
       favicons: {
