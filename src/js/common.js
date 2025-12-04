@@ -16,11 +16,11 @@ $('#link_about').on('click', function(event) {
 // Function to apply the theme immediately
 function applyTheme(theme) {
     if (theme === 'dark') {
-        document.body.setAttribute('data-theme', 'dark');
+        document.documentElement.setAttribute('data-theme', 'dark');
         $('#btn_dark_mode').text('Light Mode');
         $('#btn_dark_mode').removeClass('btn-outline-light').addClass('btn-outline-warning');
     } else {
-        document.body.removeAttribute('data-theme');
+        document.documentElement.removeAttribute('data-theme');
         $('#btn_dark_mode').text('Dark Mode');
         $('#btn_dark_mode').removeClass('btn-outline-warning').addClass('btn-outline-light');
     }
@@ -52,7 +52,7 @@ $(document).ready(function() {
     applyTheme(currentTheme);
 
     $('#btn_dark_mode').on('click', function() {
-        const isDark = document.body.getAttribute('data-theme') === 'dark';
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
         const newTheme = isDark ? 'light' : 'dark';
         applyTheme(newTheme);
         localStorage.setItem('theme', newTheme);
