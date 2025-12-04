@@ -9,7 +9,16 @@
       })();
     </script>
     <style>
-      /* Critical CSS to prevent FOUC (White Flash) */
+      /* Critical CSS to prevent FOUC */
+      body { /* Apply to body regardless of theme */
+        font-size: .875rem; /* Set base font size immediately */
+      }
+      .sidebar { /* Light mode critical styles for sidebar */
+        background-color: #f8f9fa !important; /* Matches --sidebar-bg from :root */
+      }
+      .sidebar .nav-link {
+        color: #333; /* Matches default color for .sidebar .nav-link */
+      }
       html[data-theme="dark"] body {
         background-color: #121212;
         color: #e0e0e0;
