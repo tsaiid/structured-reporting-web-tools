@@ -18,6 +18,7 @@ html[data-theme="dark"] {
   --input-bg: #3a3a3a;
   --input-text: #e0e0e0;
   --modal-content-bg: #2c2c2c;
+  --input-group-text-bg: var(--card-bg); /* New variable */
 }
 
 body {
@@ -198,4 +199,10 @@ html[data-theme="dark"] a:hover {
 
 html[data-theme="dark"] .text-dark {
     color: var(--text-color) !important;
+}
+
+html[data-theme="dark"] .input-group-text {
+    background-color: var(--input-group-text-bg);
+    color: var(--input-text);
+    border-color: var(--border-color);
 }
