@@ -13,8 +13,9 @@ $('#link_about').on('click', function(event) {
 });
 
 // Dark Mode Logic
-function setDarkMode(isDark) {
-    if (isDark) {
+// Function to apply the theme immediately
+function applyTheme(theme) {
+    if (theme === 'dark') {
         document.body.setAttribute('data-theme', 'dark');
         $('#btn_dark_mode').text('Light Mode');
         $('#btn_dark_mode').removeClass('btn-outline-light').addClass('btn-outline-warning');
@@ -23,22 +24,37 @@ function setDarkMode(isDark) {
         $('#btn_dark_mode').text('Dark Mode');
         $('#btn_dark_mode').removeClass('btn-outline-warning').addClass('btn-outline-light');
     }
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
 }
 
-$(document).ready(function() {
+// Get theme from storage or system preference
+function getPreferredTheme() {
     const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    // Initialize
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-        setDarkMode(true);
-    } else {
-        setDarkMode(false); // Default to light/standard if no pref
+    if (savedTheme) {
+        return savedTheme;
     }
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+// Immediate execution to prevent FOUC (Flash of Unstyled Content)
+// This script needs to run as early as possible, before DOMContentLoaded
+(function() {
+    const theme = getPreferredTheme();
+    if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark'); // Set on html/root element initially
+        // We also set it on body when it becomes available, but setting on root helps earlier
+    }
+})();
+
+
+$(document).ready(function() {
+    // Re-apply to ensure UI elements like button text are updated
+    const currentTheme = getPreferredTheme();
+    applyTheme(currentTheme);
 
     $('#btn_dark_mode').on('click', function() {
         const isDark = document.body.getAttribute('data-theme') === 'dark';
-        setDarkMode(!isDark);
+        const newTheme = isDark ? 'light' : 'dark';
+        applyTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
     });
 });

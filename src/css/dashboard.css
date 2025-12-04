@@ -9,7 +9,7 @@
   --modal-content-bg: #ffffff;
 }
 
-[data-theme="dark"] {
+html[data-theme="dark"] {
   --bg-color: #121212;
   --text-color: #e0e0e0;
   --sidebar-bg: #1e1e1e;
@@ -71,7 +71,7 @@ body {
   padding: .2rem 1rem;
 }
 
-[data-theme="dark"] .sidebar .nav-link {
+html[data-theme="dark"] .sidebar .nav-link {
   color: #b0b0b0;
 }
 
@@ -84,11 +84,11 @@ body {
   color: #007bff;
 }
 
-[data-theme="dark"] .sidebar .nav-link.active {
+html[data-theme="dark"] .sidebar .nav-link.active {
   color: #3794ff;
 }
 
-[data-theme="dark"] .sidebar .nav-link:hover {
+html[data-theme="dark"] .sidebar .nav-link:hover {
   color: #fff;
 }
 
@@ -147,44 +147,44 @@ body {
 
 /* Dark Mode Extras */
 
-[data-theme="dark"] .card,
-[data-theme="dark"] .modal-content {
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .modal-content {
   background-color: var(--modal-content-bg);
   border-color: var(--border-color);
   color: var(--text-color);
 }
 
-[data-theme="dark"] .table {
+html[data-theme="dark"] .table {
   color: var(--text-color);
 }
 
-[data-theme="dark"] .table th,
-[data-theme="dark"] .table td,
-[data-theme="dark"] .table thead th {
+html[data-theme="dark"] .table th,
+html[data-theme="dark"] .table td,
+html[data-theme="dark"] .table thead th {
   border-color: var(--border-color);
 }
 
-[data-theme="dark"] .form-control,
-[data-theme="dark"] .form-control:focus {
+html[data-theme="dark"] .form-control,
+html[data-theme="dark"] .form-control:focus {
     background-color: var(--input-bg);
     color: var(--input-text);
     border-color: var(--border-color);
 }
 
-[data-theme="dark"] .modal-header,
-[data-theme="dark"] .modal-footer {
+html[data-theme="dark"] .modal-header,
+html[data-theme="dark"] .modal-footer {
     border-color: var(--border-color);
 }
 
-[data-theme="dark"] .close {
+html[data-theme="dark"] .close {
     color: var(--text-color);
     text-shadow: none;
 }
 
-[data-theme="dark"] hr {
+html[data-theme="dark"] hr {
     border-top-color: var(--border-color);
 }
 
-[data-theme="dark"] pre {
+html[data-theme="dark"] pre {
     color: var(--text-color);
 }
