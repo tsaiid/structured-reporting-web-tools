@@ -196,3 +196,7 @@ html[data-theme="dark"] a {
 html[data-theme="dark"] a:hover {
     color: #8cc5ff;
 }
+
+html[data-theme="dark"] .text-dark {
+    color: var(--text-color) !important;
+}
