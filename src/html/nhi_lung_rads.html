@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lung-RADS v2022 報告產生器 (v11.1)</title>
+    <title>Lung-RADS v2022 報告產生器 (v12.0)</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
     <style>
         /* --- 基礎樣式調整 --- */
@@ -29,7 +29,7 @@
         /* General UI Components */
         .nested-section { padding-left: 1.5rem; border-left: 3px solid var(--primary); margin-top: 0.5rem; }
 
-        /* [修正] 這裡保留 !important 以確保隱藏，但 JS 需改用 classList 操作 */
+        /* 隱藏樣式：使用 classList 操作 */
         .hidden { display: none !important; }
 
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
@@ -183,7 +183,7 @@
                     <label><input type="checkbox" id="nodule_lt6"> Lung nodule(s) (&lt;6mm) (選填 SE: <input type="text" class="form-input" id="lt6_se" style="width: 60px;">, IM: <input type="text" class="form-input" id="lt6_im" style="width: 350px; max-width: 80vw;">)</label>
                     <label><input type="checkbox" id="juxtapleural"> Juxtapleural nodule.</label>
                     <label>
-                        <input type="checkbox" id="nodule_gte6" onchange="toggleSection('nodule_details', this.checked)">
+                        <input type="checkbox" id="nodule_gte6" onchange="handleNoduleGte6Change(this.checked)">
                         Lung nodule(s) (≧6mm or enlarging&gt;1.5mm or new≧4mm)
                     </label>
                 </fieldset>
@@ -211,7 +211,6 @@
                                     <input type="text" class="form-input num-only" id="n1_size" style="width: 80px;"> <span class="unit-label">mm</span>
                                 </div>
                             </div>
-
                             <div class="nodule-density-col">
                                 <fieldset>
                                     <legend>Density:</legend>
@@ -588,13 +587,32 @@
         });
 
         // --- B. 動態 UI 邏輯 ---
-        // [修正] 改用 classList 操作，以對應 CSS 的 !important
         function toggleSection(elementId, show) {
             const el = $(elementId);
             if (show) {
                 el.classList.remove('hidden');
             } else {
                 el.classList.add('hidden');
+            }
+        }
+
+        // 新增：處理 Lung nodule(s) (>=6mm) 勾選邏輯
+        function handleNoduleGte6Change(isChecked) {
+            toggleSection('nodule_details', isChecked);
+            if (isChecked) {
+                // 如果勾選但沒有選 Total number，預設選 1
+                const radio = document.querySelector('input[name="total_nodules"]:checked');
+                if (!radio) {
+                    const r1 = document.querySelector('input[name="total_nodules"][value="1"]');
+                    if (r1) {
+                        r1.checked = true;
+                        updateNoduleCount();
+                    }
+                }
+            } else {
+                // 取消勾選時，是否要清空 Total number? 根據需求1，完整報告要輸出，所以可能不需要清空資料，
+                // 但根據需求2 (刪除最後一顆時)，是會被清空的。
+                // 這裡僅做顯示切換，不強制清空資料，保留操作彈性。
             }
         }
 
@@ -661,7 +679,7 @@
             show('block_else', count >= 4);
         }
 
-        // --- 刪除功能 (Request 3: Modal Implementation) ---
+        // --- 刪除功能 ---
         let noduleToDelete = null;
 
         function promptDelete(index) {
@@ -672,7 +690,7 @@
         function confirmDelete() {
             if (noduleToDelete === null) return;
             const index = noduleToDelete;
-            closeModal('delete_modal'); // Close modal first
+            closeModal('delete_modal');
 
             const radio = document.querySelector('input[name="total_nodules"]:checked');
             if (!radio) return;
@@ -734,10 +752,22 @@
                  document.querySelectorAll(`input[name="n${clearIndex}_status"]`).forEach(el => el.checked = false);
             }
 
-            let newCount = currentCount - 1;
-            if (newCount < 1) newCount = 1;
+            // Logic for deleting last nodule (Requirement 2)
+            if (currentCount === 1) {
+                // 1. Uncheck total number radios
+                document.querySelectorAll('input[name="total_nodules"]').forEach(el => el.checked = false);
+                // 2. Uncheck Lung nodule(s) (>=6mm...)
+                const mainCheck = $('nodule_gte6');
+                if (mainCheck) {
+                    mainCheck.checked = false;
+                    handleNoduleGte6Change(false); // Helper to hide section
+                }
+                // 3. Explicitly hide N1 block (updateNoduleCount relies on radio, so manual hide here)
+                $('block_n1').classList.add('hidden');
+                $('n1_enable').checked = false;
 
-            if (currentCount > 1) {
+            } else {
+                let newCount = currentCount - 1;
                 let radioVal = String(newCount);
                 if (newCount >= 4) radioVal = '>=4';
 
@@ -808,7 +838,6 @@
         };
 
         function closeModalOnBackdrop(event) {
-            // Check if click is on backdrop (target is the dialog element itself)
             if (event.target.tagName === 'DIALOG') {
                 event.target.close();
             }
@@ -823,7 +852,7 @@
             }
         };
 
-        // --- C. 驗證與報告產生 (Request 4: Silent Validation) ---
+        // --- C. 驗證與報告產生 ---
 
         function validateForm() {
             document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
@@ -860,22 +889,16 @@
             }
 
             if (errors.length > 0) {
-                // Request 4: No alert, just highlight and scroll
                 const firstId = errors[0].id;
                 const el = $(firstId);
-
-                // Highlight all errors
                 errors.forEach(e => {
                     const elem = $(e.id);
                     if(elem) elem.classList.add('input-error');
                 });
-
-                // Scroll to first error
                 if(el) {
                     el.scrollIntoView({behavior: 'smooth', block: 'center'});
                     if(el.tagName === 'INPUT') el.focus();
                 }
-
                 return false;
             }
             return true;
@@ -883,24 +906,34 @@
 
         function validateAndCopy(type) {
             if (!validateForm()) return;
-
             if (type === 'full') generateAndCopyFull();
             else generateAndCopySimple();
         }
 
-        // --- Report Generation Logic ---
+        // --- Report Generation Logic (Modified for Req 1) ---
+        // Helper to get formatted text for a single nodule (populated or empty)
         function generateNoduleText(n, isSimple) {
-            if (!isChecked('nodule_gte6')) return "";
-            if (isSimple && !isChecked(`n${n}_enable`)) return "";
-            if (!isChecked(`n${n}_enable`)) return "";
+            const enabled = isChecked(`n${n}_enable`);
 
-            let text = `  ${cb(`n${n}_enable`, `Lung nodule ${n} (size, character and location)`)}`;
-            text = text.trimEnd();
-            text += `\n    Entire Nodule: ${txt(`n${n}_size`, '', ' mm')}\n`;
+            // 如果是簡易報告，未啟用則不顯示
+            if (isSimple && !enabled) return "";
 
-            const density = getRadio(`n${n}_density`);
+            // 如果是完整報告，無論是否啟用都顯示，若未啟用則顯示空白模板
+
+            // 檢查該 Nodule 是否有資料被填寫/啟用 (如果是完整報告且未啟用，我們要給空白模板)
+            const isPopulated = enabled;
+
+            // Header line
+            let text = `  ${isPopulated ? '[+]' : '[ ]'} Lung nodule ${n} (size, character and location)\n`;
+
+            // Entire Nodule
+            text += `    Entire Nodule: ${isPopulated ? txt(`n${n}_size`, '', ' mm') : '_ mm'}\n`;
+
+            // Density
+            const density = isPopulated ? getRadio(`n${n}_density`) : '';
             text += `    Density: ${density === 'non-solid' ? '[+]' : '[ ]'} non-solid `;
 
+            // Part-solid
             let partSolidText = ` ${density === 'part-solid' ? '[+]' : '[ ]'} part-solid`;
             if (density === 'part-solid') {
                 partSolidText += ` (Solid Part: ${txt(`n${n}_solid_part`, '', ' mm')}) `;
@@ -909,19 +942,23 @@
             }
             text += partSolidText;
 
+            // Solid
             text += `${density === 'solid' ? '[+]' : '[ ]'} solid\n`;
 
-            text += `    Lobe: (SE:${txt(`n${n}_se`)}, IM:${txt(`n${n}_im`)}) `;
-            text += `${rb(`n${n}_lobe`, 'RUL', 'RUL')}`;
-            text = text.trimEnd() + ` ${rb(`n${n}_lobe`, 'RML', 'RML')}`;
-            text = text.trimEnd() + ` ${rb(`n${n}_lobe`, 'RLL', 'RLL')}`;
-            text = text.trimEnd() + ` ${rb(`n${n}_lobe`, 'LUL', 'LUL')}`;
-            text = text.trimEnd() + ` ${rb(`n${n}_lobe`, 'LLL', 'LLL')}`;
+            // Lobe
+            text += `    Lobe: (SE:${isPopulated ? txt(`n${n}_se`) : '_'}, IM:${isPopulated ? txt(`n${n}_im`) : '_'}) `;
+            text += `${isPopulated ? rb(`n${n}_lobe`, 'RUL', 'RUL') : '[ ] RUL'}`;
+            text = text.trimEnd() + ` ${isPopulated ? rb(`n${n}_lobe`, 'RML', 'RML') : '[ ] RML'}`;
+            text = text.trimEnd() + ` ${isPopulated ? rb(`n${n}_lobe`, 'RLL', 'RLL') : '[ ] RLL'}`;
+            text = text.trimEnd() + ` ${isPopulated ? rb(`n${n}_lobe`, 'LUL', 'LUL') : '[ ] LUL'}`;
+            text = text.trimEnd() + ` ${isPopulated ? rb(`n${n}_lobe`, 'LLL', 'LLL') : '[ ] LLL'}`;
 
-            text += `    The nodule is ${rb(`n${n}_status`, 'unchanged', 'unchanged')}`;
-            text = text.trimEnd() + ` ${rb(`n${n}_status`, 'enlarging', 'enlarging (>1.5 mm)')}`;
-            text = text.trimEnd() + ` ${rb(`n${n}_status`, 'newly found', 'newly found (≧4 mm)')}`;
-            text = text.trimEnd() + ` ${rb(`n${n}_status`, 'no prior', 'No prior chest CT comparison')}\n`;
+            // Status
+            text += `\n    The nodule is ${isPopulated ? rb(`n${n}_status`, 'unchanged', 'unchanged') : '[ ] unchanged'}`;
+            text = text.trimEnd() + ` ${isPopulated ? rb(`n${n}_status`, 'enlarging', 'enlarging (>1.5 mm)') : '[ ] enlarging (>1.5 mm)'}`;
+            text = text.trimEnd() + ` ${isPopulated ? rb(`n${n}_status`, 'newly found', 'newly found (≧4 mm)') : '[ ] newly found (≧4 mm)'}`;
+            text = text.trimEnd() + ` ${isPopulated ? rb(`n${n}_status`, 'no prior', 'No prior chest CT comparison') : '[ ] No prior chest CT comparison'}\n`;
+
             return text;
         }
 
@@ -947,24 +984,39 @@
             addLine(isChecked('nodule_lt6'), () => cb_se_im('nodule_lt6', 'Lung nodule(s) (<6mm)', 'lt6_se', 'lt6_im'));
             addLineCb('juxtapleural', 'Juxtapleural nodule.');
 
-            if (isChecked('nodule_gte6')) {
-                report += "[+] Lung nodule(s) (≧6mm or enlarging>1.5mm or new≧4mm): total number ";
-                report += `${rb('total_nodules', '1', '1')}`;
-                report = report.trimEnd() + ` ${rb('total_nodules', '2', '2')}`;
-                report = report.trimEnd() + ` ${rb('total_nodules', '3', '3')}`;
-                report = report.trimEnd() + ` ${rb('total_nodules', '>=4', '≥4')}`;
-                report += "  請依序描述最懷疑之肺結節(至多 3 個) (Describe the most suspicious 3 nodules in order)\n\n";
+            // Logic for Nodule Block Output
+            // Requirement 1: Full report must output 1,2,3 templates even if unchecked
+            const isGte6Checked = isChecked('nodule_gte6');
 
-                add(generateNoduleText(1, isSimple));
-                add(generateNoduleText(2, isSimple));
-                add(generateNoduleText(3, isSimple));
+            if (isSimple && !isGte6Checked) {
+                // Simple report + unchecked: Output nothing for this section
+            } else {
+                // Either Full Report (always output) OR Simple Report (output if checked)
+                if (isGte6Checked) {
+                    report += "[+] Lung nodule(s) (≧6mm or enlarging>1.5mm or new≧4mm): total number ";
+                    report += `${rb('total_nodules', '1', '1')}`;
+                    report = report.trimEnd() + ` ${rb('total_nodules', '2', '2')}`;
+                    report = report.trimEnd() + ` ${rb('total_nodules', '3', '3')}`;
+                    report = report.trimEnd() + ` ${rb('total_nodules', '>=4', '≥4')}`;
+                    report += "  請依序描述最懷疑之肺結節(至多 3 個) (Describe the most suspicious 3 nodules in order)\n\n";
+                } else if (!isSimple) {
+                     // Full report, unchecked
+                     report += "[ ] Lung nodule(s) (≧6mm or enlarging>1.5mm or new≧4mm): total number [ ]1 [ ]2 [ ]3 [ ]≥4, and described as followings:\n";
+                }
 
+                // Generate N1, N2, N3
+                report += generateNoduleText(1, isSimple);
+                report += generateNoduleText(2, isSimple);
+                report += generateNoduleText(3, isSimple);
+
+                // Else block
                 const totalVal = getRadio('total_nodules');
                 const showElse = (totalVal === '>=4');
+                const elseLobesChecked = isChecked('else_rul') || isChecked('else_rml') || isChecked('else_rll') || isChecked('else_lul') || isChecked('else_lll');
 
-                if (!isSimple || showElse) {
-                    const elseLobesChecked = isChecked('else_rul') || isChecked('else_rml') || isChecked('else_rll') || isChecked('else_lul') || isChecked('else_lll');
-                    if (showElse) {
+                if (isSimple) {
+                    // Only show if active and visible (>=4)
+                    if (isGte6Checked && showElse) {
                         report += `  ${elseLobesChecked ? '[+]' : '[ ]'} Lung nodules else `;
                         report += `${cb_inline('else_rul', 'RUL')} `;
                         report += `${cb_inline('else_rml', 'RML')} `;
@@ -973,11 +1025,16 @@
                         report += `${cb_inline('else_lll', 'LLL')} `;
                         report += `(SE:${txt('else_se')}, IM:${txt('else_im')})\n`;
                     }
+                } else {
+                    // Full report: Always show template
+                    report += `  ${elseLobesChecked && showElse ? '[+]' : '[ ]'} Lung nodules else `;
+                    report += `${showElse ? cb_inline('else_rul', 'RUL') : '[ ] RUL'} `;
+                    report += `${showElse ? cb_inline('else_rml', 'RML') : '[ ] RML'} `;
+                    report += `${showElse ? cb_inline('else_rll', 'RLL') : '[ ] RLL'} `;
+                    report += `${showElse ? cb_inline('else_lul', 'LUL') : '[ ] LUL'} `;
+                    report += `${showElse ? cb_inline('else_lll', 'LLL') : '[ ] LLL'} `;
+                    report += `(SE:${showElse ? txt('else_se') : '_'}, IM:${showElse ? txt('else_im') : '_'})\n`;
                 }
-
-            } else if (!isSimple) {
-                report += "[ ] Lung nodule(s) (≧6mm or enlarging>1.5mm or new≧4mm): total number [ ]1 [ ]2 [ ]3 [ ]≥4, and described as followings:\n";
-                report += `  [ ] Lung nodule 1 (size, character and location)\n    Entire Nodule: _ mm\n    Density: [ ] non-solid  [ ] part-solid (Solid Part: ___ mm)  [ ] solid\n    Lobe: (SE:_, IM:_) [ ] RUL [ ] RML [ ] RLL [ ] LUL [ ] LLL\n    The nodule is [ ] unchanged [ ] enlarging (>1.5 mm) [ ] newly found (≧4 mm) [ ] No prior chest CT comparison\n`;
             }
             report += "\n";
 
