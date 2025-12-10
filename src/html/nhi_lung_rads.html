@@ -3,165 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lung-RADS v2022 報告產生器 (v9.2)</title>
+    <title>Lung-RADS v2022 報告產生器 (v11.1)</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
     <style>
-        /* 2. 客製化樣式 */
-        body {
-            padding-bottom: 100px;
-        }
+        /* --- 基礎樣式調整 --- */
+        body { padding-bottom: 100px; }
 
+        /* Sticky Footer */
         .sticky-footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+            position: fixed; bottom: 0; left: 0; width: 100%;
             background-color: var(--background-color);
             border-top: 1px solid var(--primary);
             box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.15);
-            padding: 1rem;
-            z-index: 100;
+            padding: 1rem; z-index: 100;
             transition: opacity 0.3s ease, transform 0.3s ease;
-            opacity: 0;
-            transform: translateY(100%);
-            visibility: hidden;
+            opacity: 0; transform: translateY(100%); visibility: hidden;
         }
-
-        .sticky-footer.visible {
-            opacity: 1;
-            transform: translateY(0);
-            visibility: visible;
-        }
-
+        .sticky-footer.visible { opacity: 1; transform: translateY(0); visibility: visible; }
         .footer-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1152px;
-            margin: 0 auto;
-            padding: 0 1rem;
-            gap: 1rem;
+            display: flex; justify-content: space-between; align-items: center;
+            max-width: 1152px; margin: 0 auto; padding: 0 1rem; gap: 1rem;
         }
+        .footer-container button { margin-bottom: 0; }
 
-        .footer-container button {
-            margin-bottom: 0;
-        }
+        /* General UI Components */
+        .nested-section { padding-left: 1.5rem; border-left: 3px solid var(--primary); margin-top: 0.5rem; }
 
-        .nested-section {
-            padding-left: 1.5rem;
-            border-left: 3px solid var(--primary);
-            margin-top: 0.5rem;
-        }
+        /* [修正] 這裡保留 !important 以確保隱藏，但 JS 需改用 classList 操作 */
+        .hidden { display: none !important; }
 
-        .hidden { display: none; }
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
         .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
 
-        input.form-input,
-        input[type="number"],
-        select {
-            font-size: 0.9em;
-            padding: 0.2rem 0.4rem;
-            height: auto;
-            vertical-align: middle;
-            margin: 0 0.25em;
-            width: auto;
+        input.form-input, input[type="number"], input[type="text"], select {
+            font-size: 0.9em; padding: 0.2rem 0.4rem; height: auto;
+            vertical-align: middle; margin: 0 0.25em; width: auto; display: inline-block;
         }
-        input.form-input[style*="width"] { display: inline-block; }
-
         input::placeholder { font-size: 0.9em; color: var(--muted-color); }
         input[type="checkbox"], input[type="radio"] { vertical-align: middle; }
 
-        .inline-label-group {
+        .inline-label-group { display: flex; flex-wrap: wrap; gap: 1rem; align-items: baseline; margin-bottom: var(--pico-spacing); }
+        .inline-label-group span { display: inline-flex; align-items: center; gap: 0.5rem; margin-right: 0.5rem; }
+
+        fieldset { margin-bottom: var(--pico-spacing); }
+        fieldset legend { font-weight: bold; }
+        fieldset label { display: block; margin-bottom: 0.5rem; }
+        fieldset span { display: inline-block; margin-right: 1.5rem; }
+
+        .unit-label { color: var(--muted-color); margin-left: 2px; font-size: 0.9em; }
+
+        /* --- Nodule Card Styling --- */
+        article.nodule-block {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid var(--muted-border-color);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            background-color: var(--card-background-color);
+            border-radius: var(--border-radius);
+            position: relative;
+        }
+
+        .nodule-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 1rem; border-bottom: 2px solid var(--muted-border-color);
+            padding-bottom: 0.5rem;
+        }
+        .nodule-title { font-weight: bold; font-size: 1.2em; color: var(--primary); }
+
+        .btn-delete {
+            background-color: transparent; border: 1px solid var(--del-color);
+            color: var(--del-color); padding: 0.3rem 0.8rem; font-size: 0.8em;
+            cursor: pointer; margin-bottom: 0; transition: all 0.2s;
+        }
+        .btn-delete:hover { background-color: var(--del-color); color: white; border-color: var(--del-color); }
+
+        /* --- Layout: Size (Left) vs Density (Right) --- */
+        .nodule-row-layout {
             display: flex;
             flex-wrap: wrap;
-            gap: 1rem;
-            align-items: baseline;
-            margin-bottom: var(--pico-spacing);
+            gap: 2rem;
+            align-items: flex-start;
+            margin-bottom: 1rem;
         }
-        .inline-label-group span {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-right: 0.5rem;
-        }
-        .inline-label-group span:first-child {
-            margin-right: 0.5rem;
-            font-weight: normal;
-        }
-
-        fieldset {
-            margin-bottom: var(--pico-spacing);
-        }
-        fieldset legend {
-            font-weight: bold;
-        }
-        fieldset label {
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-        fieldset span {
-            display: inline-block;
-            margin-right: 1.5rem;
-        }
-
-        /* 專門處理 Part-solid 下方 input 的排版 */
-        .density-option {
-            display: inline-flex;
-            flex-direction: column;
-            vertical-align: top;
-            margin-right: 1rem;
-        }
-        .density-label {
-            display: inline-flex;
-            align-items: center;
-        }
-        .solid-part-input-container {
-            margin-top: 0.25rem;
-            margin-left: 1.2rem; /* 對齊 radio 文字 */
-            font-size: 0.9em;
-        }
-
-        .lobe-checkbox-container {
-            display: inline-block;
-            margin-left: 1rem;
-        }
-
-        .inline-inputs label { display: block; }
-
-        .inline-inputs label input.form-input {
-            display: inline-block;
+        .nodule-size-col {
+            flex: 0 0 auto;
             min-width: 200px;
-            vertical-align: middle;
+        }
+        .nodule-density-col {
+            flex: 1 1 auto;
         }
 
-        /* 單位標籤樣式 */
-        .unit-label {
-            color: var(--muted-color);
-            margin-left: 2px;
-            font-size: 0.9em;
+        /* Density Radio Group Styling */
+        .density-options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .density-option-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+        .density-radio-label {
+            display: inline-flex; align-items: center; font-weight: normal;
+        }
+
+        /* Solid part indentation */
+        .solid-part-container {
+            margin-top: 0.3rem;
+            margin-left: 1.4rem;
+            padding: 0.3rem;
+            background-color: var(--muted-background-color);
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        /* Error Styling */
+        .input-error {
+            border: 2px solid #e53935 !important;
+            background-color: #ffebee !important;
+            box-shadow: 0 0 5px rgba(229, 57, 53, 0.5);
+            transition: all 0.3s ease;
         }
 
         #modal_output {
-            white-space: pre-wrap;
-            word-wrap: break-word;
+            white-space: pre-wrap; word-wrap: break-word;
             background-color: var(--muted-background-color);
-            padding: 1rem;
-            border-radius: var(--border-radius);
+            padding: 1rem; border-radius: var(--border-radius);
             font-family: var(--pico-font-family-monospace);
         }
 
-        dialog article {
-            width: 90vw;
-            max-width: 1000px;
-        }
+        dialog article { width: 90vw; max-width: 1000px; }
 
-        /* Nodule Block visibility handled by JS, but style distinct blocks */
-        .nodule-block {
-            border: 1px solid var(--muted-border-color);
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border-radius: var(--border-radius);
+        /* 刪除確認 Modal 專用樣式 */
+        #delete_modal article {
+            max-width: 400px;
+            text-align: center;
+        }
+        .modal-actions {
+            display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem;
         }
     </style>
 </head>
@@ -183,12 +162,12 @@
                 </div>
 
                 <div class="inline-label-group">
-                    <span>CTDIvol: <input type="text" class="form-input" id="ctdi" placeholder="" style="width: 80px;"><span class="unit-label">mGy</span></span>
-                    <span>Total DLP: <input type="text" class="form-input" id="dlp" placeholder="" style="width: 100px;"><span class="unit-label">mGy*cm</span></span>
+                    <span>CTDIvol: <input type="text" class="form-input num-only" id="ctdi" placeholder="" style="width: 80px;"><span class="unit-label">mGy</span></span>
+                    <span>Total DLP: <input type="text" class="form-input num-only" id="dlp" placeholder="" style="width: 100px;"><span class="unit-label">mGy*cm</span></span>
                 </div>
 
                 <div class="inline-label-group">
-                    <span>Prior CT Date (Y/M/D): <input type="text" class="form-input" id="prior_date" placeholder="YYYY/MM/DD" style="width: 120px;" oninput="handlePriorDateInput()"></span>
+                    <span>Prior CT Date (Y/M/D): <input type="text" class="form-input" id="prior_date" placeholder="YYYY/MM/DD" style="width: 160px;" oninput="handlePriorDateInput()"></span>
                     <span><label><input type="checkbox" id="no_prior" onchange="togglePriorDate(this.checked)"> No prior chest CT available</label></span>
                 </div>
             </section>
@@ -218,125 +197,202 @@
                     </fieldset>
                     <p>請依序描述最懷疑之肺結節(至多 3 個)</p>
 
-                    <div id="block_n1" class="nodule-block hidden">
-                        <label><input type="checkbox" id="n1_enable" class="hidden"> <b>Lung nodule 1</b></label>
-                        <div class="grid-2">
-                            <label>Entire Nodule: <input type="text" class="form-input" id="n1_size" style="width: 60px;"><span class="unit-label">mm</span></label>
-                            <fieldset>
-                                <legend>Density:</legend>
-                                <div class="density-option">
-                                    <label class="density-label"><input type="radio" name="n1_density" value="non-solid" onchange="toggleSolidPart('n1_solid_container', this.value)"> non-solid</label>
+                    <article id="block_n1" class="nodule-block hidden">
+                        <div class="nodule-header">
+                            <span class="nodule-title">Lung nodule 1</span>
+                            <button class="btn-delete" onclick="promptDelete(1)" title="刪除此結節並往上遞補">🗑 刪除</button>
+                        </div>
+                        <input type="checkbox" id="n1_enable" class="hidden">
+
+                        <div class="nodule-row-layout">
+                            <div class="nodule-size-col">
+                                <label><b>Entire Nodule:</b></label>
+                                <div style="margin-top: 0.5rem;">
+                                    <input type="text" class="form-input num-only" id="n1_size" style="width: 80px;"> <span class="unit-label">mm</span>
                                 </div>
-                                <div class="density-option">
-                                    <label class="density-label"><input type="radio" name="n1_density" value="part-solid" onchange="toggleSolidPart('n1_solid_container', this.value)"> part-solid</label>
-                                    <div id="n1_solid_container" class="hidden solid-part-input-container">
-                                        Solid Part: <input type="text" id="n1_solid_part" class="form-input" style="width: 50px;"> <span class="unit-label">mm</span>
+                            </div>
+
+                            <div class="nodule-density-col">
+                                <fieldset>
+                                    <legend>Density:</legend>
+                                    <div class="density-options-group">
+                                        <div class="density-option-wrapper">
+                                            <label class="density-radio-label">
+                                                <input type="radio" name="n1_density" value="non-solid" onchange="toggleSolidPart('n1_solid_container', this.value)"> non-solid
+                                            </label>
+                                        </div>
+                                        <div class="density-option-wrapper">
+                                            <label class="density-radio-label">
+                                                <input type="radio" name="n1_density" value="part-solid" onchange="toggleSolidPart('n1_solid_container', this.value)"> part-solid
+                                            </label>
+                                            <div id="n1_solid_container" class="hidden solid-part-container">
+                                                <small>Solid Part:</small>
+                                                <input type="text" class="form-input num-only" id="n1_solid_part" style="width: 60px;"> <span class="unit-label">mm</span>
+                                            </div>
+                                        </div>
+                                        <div class="density-option-wrapper">
+                                            <label class="density-radio-label">
+                                                <input type="radio" name="n1_density" value="solid" onchange="toggleSolidPart('n1_solid_container', this.value)"> solid
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="density-option">
-                                    <label class="density-label"><input type="radio" name="n1_density" value="solid" onchange="toggleSolidPart('n1_solid_container', this.value)"> solid</label>
-                                </div>
-                            </fieldset>
+                                </fieldset>
+                            </div>
                         </div>
+
                         <div class="grid-3">
-                            <label>Lobe (SE: <input type="text" class="form-input" id="n1_se" style="width: 50px;">, IM: <input type="text" class="form-input" id="n1_im" style="width: 50px;">)</label>
-                            <fieldset>
-                                <span><label><input type="radio" name="n1_lobe" value="RUL"> RUL</label></span>
-                                <span><label><input type="radio" name="n1_lobe" value="RML"> RML</label></span>
-                                <span><label><input type="radio" name="n1_lobe" value="RLL"> RLL</label></span>
-                                <span><label><input type="radio" name="n1_lobe" value="LUL"> LUL</label></span>
-                                <span><label><input type="radio" name="n1_lobe" value="LLL"> LLL</label></span>
-                            </fieldset>
+                            <div>
+                                <label>Lobe (SE: <input type="text" class="form-input" id="n1_se" style="width: 50px;">, IM: <input type="text" class="form-input" id="n1_im" style="width: 50px;">)</label>
+                                <fieldset id="n1_lobe_group">
+                                    <span><label><input type="radio" name="n1_lobe" value="RUL"> RUL</label></span>
+                                    <span><label><input type="radio" name="n1_lobe" value="RML"> RML</label></span>
+                                    <span><label><input type="radio" name="n1_lobe" value="RLL"> RLL</label></span>
+                                    <span><label><input type="radio" name="n1_lobe" value="LUL"> LUL</label></span>
+                                    <span><label><input type="radio" name="n1_lobe" value="LLL"> LLL</label></span>
+                                </fieldset>
+                            </div>
                         </div>
-                        <fieldset>
+
+                        <fieldset id="n1_status_group">
                             <legend>Status</legend>
                             <span><label><input type="radio" name="n1_status" value="unchanged"> unchanged</label></span>
                             <span><label><input type="radio" name="n1_status" value="enlarging"> enlarging (&gt;1.5 mm)</label></span>
                             <span><label><input type="radio" name="n1_status" value="newly found"> newly found (≧4 mm)</label></span>
                             <span><label><input type="radio" name="n1_status" value="no prior"> No prior chest CT comparison</label></span>
                         </fieldset>
-                    </div>
+                    </article>
 
-                    <div id="block_n2" class="nodule-block hidden">
-                        <label><input type="checkbox" id="n2_enable" class="hidden"> <b>Lung nodule 2</b></label>
-                        <div class="grid-2">
-                            <label>Entire Nodule: <input type="text" class="form-input" id="n2_size" style="width: 60px;"><span class="unit-label">mm</span></label>
-                            <fieldset>
-                                <legend>Density:</legend>
-                                <div class="density-option">
-                                    <label class="density-label"><input type="radio" name="n2_density" value="non-solid" onchange="toggleSolidPart('n2_solid_container', this.value)"> non-solid</label>
+                    <article id="block_n2" class="nodule-block hidden">
+                        <div class="nodule-header">
+                            <span class="nodule-title">Lung nodule 2</span>
+                            <button class="btn-delete" onclick="promptDelete(2)" title="刪除此結節並往上遞補">🗑 刪除</button>
+                        </div>
+                        <input type="checkbox" id="n2_enable" class="hidden">
+
+                        <div class="nodule-row-layout">
+                            <div class="nodule-size-col">
+                                <label><b>Entire Nodule:</b></label>
+                                <div style="margin-top: 0.5rem;">
+                                    <input type="text" class="form-input num-only" id="n2_size" style="width: 80px;"> <span class="unit-label">mm</span>
                                 </div>
-                                <div class="density-option">
-                                    <label class="density-label"><input type="radio" name="n2_density" value="part-solid" onchange="toggleSolidPart('n2_solid_container', this.value)"> part-solid</label>
-                                    <div id="n2_solid_container" class="hidden solid-part-input-container">
-                                        Solid Part: <input type="text" id="n2_solid_part" class="form-input" style="width: 50px;"> <span class="unit-label">mm</span>
+                            </div>
+                            <div class="nodule-density-col">
+                                <fieldset>
+                                    <legend>Density:</legend>
+                                    <div class="density-options-group">
+                                        <div class="density-option-wrapper">
+                                            <label class="density-radio-label">
+                                                <input type="radio" name="n2_density" value="non-solid" onchange="toggleSolidPart('n2_solid_container', this.value)"> non-solid
+                                            </label>
+                                        </div>
+                                        <div class="density-option-wrapper">
+                                            <label class="density-radio-label">
+                                                <input type="radio" name="n2_density" value="part-solid" onchange="toggleSolidPart('n2_solid_container', this.value)"> part-solid
+                                            </label>
+                                            <div id="n2_solid_container" class="hidden solid-part-container">
+                                                <small>Solid Part:</small>
+                                                <input type="text" class="form-input num-only" id="n2_solid_part" style="width: 60px;"> <span class="unit-label">mm</span>
+                                            </div>
+                                        </div>
+                                        <div class="density-option-wrapper">
+                                            <label class="density-radio-label">
+                                                <input type="radio" name="n2_density" value="solid" onchange="toggleSolidPart('n2_solid_container', this.value)"> solid
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="density-option">
-                                    <label class="density-label"><input type="radio" name="n2_density" value="solid" onchange="toggleSolidPart('n2_solid_container', this.value)"> solid</label>
-                                </div>
-                            </fieldset>
+                                </fieldset>
+                            </div>
                         </div>
+
                         <div class="grid-3">
-                            <label>Lobe (SE: <input type="text" class="form-input" id="n2_se" style="width: 50px;">, IM: <input type="text" class="form-input" id="n2_im" style="width: 50px;">)</label>
-                            <fieldset>
-                                <span><label><input type="radio" name="n2_lobe" value="RUL"> RUL</label></span>
-                                <span><label><input type="radio" name="n2_lobe" value="RML"> RML</label></span>
-                                <span><label><input type="radio" name="n2_lobe" value="RLL"> RLL</label></span>
-                                <span><label><input type="radio" name="n2_lobe" value="LUL"> LUL</label></span>
-                                <span><label><input type="radio" name="n2_lobe" value="LLL"> LLL</label></span>
-                            </fieldset>
+                            <div>
+                                <label>Lobe (SE: <input type="text" class="form-input" id="n2_se" style="width: 50px;">, IM: <input type="text" class="form-input" id="n2_im" style="width: 50px;">)</label>
+                                <fieldset id="n2_lobe_group">
+                                    <span><label><input type="radio" name="n2_lobe" value="RUL"> RUL</label></span>
+                                    <span><label><input type="radio" name="n2_lobe" value="RML"> RML</label></span>
+                                    <span><label><input type="radio" name="n2_lobe" value="RLL"> RLL</label></span>
+                                    <span><label><input type="radio" name="n2_lobe" value="LUL"> LUL</label></span>
+                                    <span><label><input type="radio" name="n2_lobe" value="LLL"> LLL</label></span>
+                                </fieldset>
+                            </div>
                         </div>
-                        <fieldset>
+
+                        <fieldset id="n2_status_group">
                             <legend>Status</legend>
                             <span><label><input type="radio" name="n2_status" value="unchanged"> unchanged</label></span>
                             <span><label><input type="radio" name="n2_status" value="enlarging"> enlarging (&gt;1.5 mm)</label></span>
                             <span><label><input type="radio" name="n2_status" value="newly found"> newly found (≧4 mm)</label></span>
                             <span><label><input type="radio" name="n2_status" value="no prior"> No prior chest CT comparison</label></span>
                         </fieldset>
-                    </div>
+                    </article>
 
-                    <div id="block_n3" class="nodule-block hidden">
-                        <label><input type="checkbox" id="n3_enable" class="hidden"> <b>Lung nodule 3</b></label>
-                        <div class="grid-2">
-                            <label>Entire Nodule: <input type="text" class="form-input" id="n3_size" style="width: 60px;"><span class="unit-label">mm</span></label>
-                            <fieldset>
-                                <legend>Density:</legend>
-                                <div class="density-option">
-                                    <label class="density-label"><input type="radio" name="n3_density" value="non-solid" onchange="toggleSolidPart('n3_solid_container', this.value)"> non-solid</label>
+                    <article id="block_n3" class="nodule-block hidden">
+                        <div class="nodule-header">
+                            <span class="nodule-title">Lung nodule 3</span>
+                            <button class="btn-delete" onclick="promptDelete(3)" title="刪除此結節並往上遞補">🗑 刪除</button>
+                        </div>
+                        <input type="checkbox" id="n3_enable" class="hidden">
+
+                        <div class="nodule-row-layout">
+                            <div class="nodule-size-col">
+                                <label><b>Entire Nodule:</b></label>
+                                <div style="margin-top: 0.5rem;">
+                                    <input type="text" class="form-input num-only" id="n3_size" style="width: 80px;"> <span class="unit-label">mm</span>
                                 </div>
-                                <div class="density-option">
-                                    <label class="density-label"><input type="radio" name="n3_density" value="part-solid" onchange="toggleSolidPart('n3_solid_container', this.value)"> part-solid</label>
-                                    <div id="n3_solid_container" class="hidden solid-part-input-container">
-                                        Solid Part: <input type="text" id="n3_solid_part" class="form-input" style="width: 50px;"> <span class="unit-label">mm</span>
+                            </div>
+                            <div class="nodule-density-col">
+                                <fieldset>
+                                    <legend>Density:</legend>
+                                    <div class="density-options-group">
+                                        <div class="density-option-wrapper">
+                                            <label class="density-radio-label">
+                                                <input type="radio" name="n3_density" value="non-solid" onchange="toggleSolidPart('n3_solid_container', this.value)"> non-solid
+                                            </label>
+                                        </div>
+                                        <div class="density-option-wrapper">
+                                            <label class="density-radio-label">
+                                                <input type="radio" name="n3_density" value="part-solid" onchange="toggleSolidPart('n3_solid_container', this.value)"> part-solid
+                                            </label>
+                                            <div id="n3_solid_container" class="hidden solid-part-container">
+                                                <small>Solid Part:</small>
+                                                <input type="text" class="form-input num-only" id="n3_solid_part" style="width: 60px;"> <span class="unit-label">mm</span>
+                                            </div>
+                                        </div>
+                                        <div class="density-option-wrapper">
+                                            <label class="density-radio-label">
+                                                <input type="radio" name="n3_density" value="solid" onchange="toggleSolidPart('n3_solid_container', this.value)"> solid
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="density-option">
-                                    <label class="density-label"><input type="radio" name="n3_density" value="solid" onchange="toggleSolidPart('n3_solid_container', this.value)"> solid</label>
-                                </div>
-                            </fieldset>
+                                </fieldset>
+                            </div>
                         </div>
+
                         <div class="grid-3">
-                            <label>Lobe (SE: <input type="text" class="form-input" id="n3_se" style="width: 50px;">, IM: <input type="text" class="form-input" id="n3_im" style="width: 50px;">)</label>
-                            <fieldset>
-                                <span><label><input type="radio" name="n3_lobe" value="RUL"> RUL</label></span>
-                                <span><label><input type="radio" name="n3_lobe" value="RML"> RML</label></span>
-                                <span><label><input type="radio" name="n3_lobe" value="RLL"> RLL</label></span>
-                                <span><label><input type="radio" name="n3_lobe" value="LUL"> LUL</label></span>
-                                <span><label><input type="radio" name="n3_lobe" value="LLL"> LLL</label></span>
-                            </fieldset>
+                            <div>
+                                <label>Lobe (SE: <input type="text" class="form-input" id="n3_se" style="width: 50px;">, IM: <input type="text" class="form-input" id="n3_im" style="width: 50px;">)</label>
+                                <fieldset id="n3_lobe_group">
+                                    <span><label><input type="radio" name="n3_lobe" value="RUL"> RUL</label></span>
+                                    <span><label><input type="radio" name="n3_lobe" value="RML"> RML</label></span>
+                                    <span><label><input type="radio" name="n3_lobe" value="RLL"> RLL</label></span>
+                                    <span><label><input type="radio" name="n3_lobe" value="LUL"> LUL</label></span>
+                                    <span><label><input type="radio" name="n3_lobe" value="LLL"> LLL</label></span>
+                                </fieldset>
+                            </div>
                         </div>
-                        <fieldset>
+
+                        <fieldset id="n3_status_group">
                             <legend>Status</legend>
                             <span><label><input type="radio" name="n3_status" value="unchanged"> unchanged</label></span>
                             <span><label><input type="radio" name="n3_status" value="enlarging"> enlarging (&gt;1.5 mm)</label></span>
                             <span><label><input type="radio" name="n3_status" value="newly found"> newly found (≧4 mm)</label></span>
                             <span><label><input type="radio" name="n3_status" value="no prior"> No prior chest CT comparison</label></span>
                         </fieldset>
-                    </div>
+                    </article>
 
-                    <div id="block_else" class="nodule-block hidden">
-                        <label>Lung nodules else</label>
+                    <article id="block_else" class="nodule-block hidden">
+                        <label class="nodule-title">Lung nodules else</label>
+                        <hr>
                         <fieldset>
                             <span><label><input type="checkbox" id="else_rul"> RUL</label></span>
                             <span><label><input type="checkbox" id="else_rml"> RML</label></span>
@@ -348,7 +404,7 @@
                             <label>SE: <input type="text" class="form-input" id="else_se"></label>
                             <label>IM: <input type="text" class="form-input" id="else_im"></label>
                         </div>
-                    </div>
+                    </article>
                 </div>
             </section>
 
@@ -459,10 +515,10 @@
         <div class="footer-container">
             <strong>準備好後點擊複製</strong>
             <div>
-                <button id="copy_simple_button" onclick="generateAndCopySimple()" class="secondary">
+                <button id="copy_simple_button" onclick="validateAndCopy('simple')" class="secondary">
                     複製簡易報告
                 </button>
-                <button id="copy_button" onclick="generateAndCopyFull()">
+                <button id="copy_button" onclick="validateAndCopy('full')">
                     複製完整報告
                 </button>
             </div>
@@ -472,25 +528,26 @@
     <dialog id="report_modal" onclick="closeModalOnBackdrop(event)">
         <article>
             <header>
-                <a href="#close"
-                   aria-label="Close"
-                   class="close"
-                   data-target="report_modal"
-                   onclick="toggleModal(event)">
-                </a>
+                <a href="#close" aria-label="Close" class="close" data-target="report_modal" onclick="toggleModal(event)"></a>
                 <span id="modal_title">報告內容 (已複製到剪貼簿)</span>
             </header>
             <pre id="modal_output"></pre>
             <footer>
-                <button
-                    data-target="report_modal"
-                    onclick="toggleModal(event)">
-                    關閉
-                </button>
+                <button data-target="report_modal" onclick="toggleModal(event)">關閉</button>
             </footer>
         </article>
     </dialog>
 
+    <dialog id="delete_modal" onclick="closeModalOnBackdrop(event)">
+        <article>
+            <header>確認刪除</header>
+            <p>確定要刪除此結節嗎？<br>後面的結節資料將會往前遞補。</p>
+            <div class="modal-actions">
+                <button class="secondary" onclick="closeModal('delete_modal')">取消</button>
+                <button class="contrast" onclick="confirmDelete()">確定刪除</button>
+            </div>
+        </article>
+    </dialog>
 
     <script>
         // --- A. 輔助函數 ---
@@ -517,12 +574,30 @@
             return `[ ] ${text} (選填 SE: , IM:  )\n`;
         };
 
+        // 數字輸入限制
+        document.addEventListener('input', function(e) {
+            if (e.target.classList.contains('num-only')) {
+                let val = e.target.value;
+                val = val.replace(/[^0-9.]/g, '');
+                const parts = val.split('.');
+                if (parts.length > 2) {
+                    val = parts[0] + '.' + parts.slice(1).join('');
+                }
+                e.target.value = val;
+            }
+        });
+
         // --- B. 動態 UI 邏輯 ---
+        // [修正] 改用 classList 操作，以對應 CSS 的 !important
         function toggleSection(elementId, show) {
-            $(elementId).style.display = show ? 'block' : 'none';
+            const el = $(elementId);
+            if (show) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
         }
 
-        // 修改：更新 Part-solid 顯示邏輯
         function toggleSolidPart(containerId, densityValue) {
             const container = $(containerId);
             if (densityValue === 'part-solid') {
@@ -558,111 +633,169 @@
             }
         }
 
-        // 新增：處理 Total Number 變更時，自動展開對應 Nodule 表單
         function updateNoduleCount() {
             const val = getRadio('total_nodules');
             const show = (id, enable) => {
                 const el = $(id);
+                const checkId = id.replace('block_', '') + '_enable';
+                const checkEl = $(checkId);
+
                 if (enable) {
                     el.classList.remove('hidden');
-                    // 自動勾選對應的隱藏 checkbox，以便 generateReportText 邏輯正確
-                    const checkId = id.replace('block_', '') + '_enable';
-                    const checkEl = $(checkId);
                     if (checkEl) checkEl.checked = true;
                 } else {
                     el.classList.add('hidden');
-                    const checkId = id.replace('block_', '') + '_enable';
-                    const checkEl = $(checkId);
                     if (checkEl) checkEl.checked = false;
                 }
             };
 
-            // Reset logic
-            $('n1_enable').checked = false;
-            $('n2_enable').checked = false;
-            $('n3_enable').checked = false;
+            let count = 0;
+            if (val === '1') count = 1;
+            if (val === '2') count = 2;
+            if (val === '3') count = 3;
+            if (val === '>=4') count = 4;
 
-            if (val === '1') {
-                show('block_n1', true);
-                show('block_n2', false);
-                show('block_n3', false);
-                show('block_else', false);
-            } else if (val === '2') {
-                show('block_n1', true);
-                show('block_n2', true);
-                show('block_n3', false);
-                show('block_else', false);
-            } else if (val === '3') {
-                show('block_n1', true);
-                show('block_n2', true);
-                show('block_n3', true);
-                show('block_else', false);
-            } else if (val === '>=4') {
-                show('block_n1', true);
-                show('block_n2', true);
-                show('block_n3', true);
-                show('block_else', true);
-            }
+            show('block_n1', count >= 1);
+            show('block_n2', count >= 2);
+            show('block_n3', count >= 3);
+            show('block_else', count >= 4);
         }
 
-        // 新增：處理 Prior CT Date 輸入框變更
+        // --- 刪除功能 (Request 3: Modal Implementation) ---
+        let noduleToDelete = null;
+
+        function promptDelete(index) {
+            noduleToDelete = index;
+            openModal('delete_modal');
+        }
+
+        function confirmDelete() {
+            if (noduleToDelete === null) return;
+            const index = noduleToDelete;
+            closeModal('delete_modal'); // Close modal first
+
+            const radio = document.querySelector('input[name="total_nodules"]:checked');
+            if (!radio) return;
+
+            let currentCountStr = radio.value;
+            let currentCount = 0;
+            if(currentCountStr === '1') currentCount = 1;
+            else if(currentCountStr === '2') currentCount = 2;
+            else if(currentCountStr === '3') currentCount = 3;
+            else if(currentCountStr === '>=4') currentCount = 4;
+
+            // Shift Data
+            for (let i = index; i < 3; i++) {
+                let next = i + 1;
+                $(`n${i}_size`).value = $(`n${next}_size`).value;
+                $(`n${i}_solid_part`).value = $(`n${next}_solid_part`).value;
+                $(`n${i}_se`).value = $(`n${next}_se`).value;
+                $(`n${i}_im`).value = $(`n${next}_im`).value;
+
+                let nextDensity = getRadio(`n${next}_density`);
+                if(nextDensity) {
+                    let r = document.querySelector(`input[name="n${i}_density"][value="${nextDensity}"]`);
+                    if(r) r.checked = true;
+                    toggleSolidPart(`n${i}_solid_container`, nextDensity);
+                } else {
+                    document.querySelectorAll(`input[name="n${i}_density"]`).forEach(el => el.checked = false);
+                    toggleSolidPart(`n${i}_solid_container`, '');
+                }
+
+                let nextLobe = getRadio(`n${next}_lobe`);
+                if(nextLobe) {
+                    let r = document.querySelector(`input[name="n${i}_lobe"][value="${nextLobe}"]`);
+                    if(r) r.checked = true;
+                } else {
+                    document.querySelectorAll(`input[name="n${i}_lobe"]`).forEach(el => el.checked = false);
+                }
+
+                let nextStatus = getRadio(`n${next}_status`);
+                if(nextStatus) {
+                    let r = document.querySelector(`input[name="n${i}_status"][value="${nextStatus}"]`);
+                    if(r) r.checked = true;
+                } else {
+                    document.querySelectorAll(`input[name="n${i}_status"]`).forEach(el => el.checked = false);
+                }
+            }
+
+            // Clear Last active
+            let clearIndex = currentCount;
+            if (currentCount >= 4) clearIndex = 3;
+
+            if (clearIndex <= 3) {
+                 $(`n${clearIndex}_size`).value = '';
+                 $(`n${clearIndex}_solid_part`).value = '';
+                 $(`n${clearIndex}_se`).value = '';
+                 $(`n${clearIndex}_im`).value = '';
+                 document.querySelectorAll(`input[name="n${clearIndex}_density"]`).forEach(el => el.checked = false);
+                 toggleSolidPart(`n${clearIndex}_solid_container`, '');
+                 document.querySelectorAll(`input[name="n${clearIndex}_lobe"]`).forEach(el => el.checked = false);
+                 document.querySelectorAll(`input[name="n${clearIndex}_status"]`).forEach(el => el.checked = false);
+            }
+
+            let newCount = currentCount - 1;
+            if (newCount < 1) newCount = 1;
+
+            if (currentCount > 1) {
+                let radioVal = String(newCount);
+                if (newCount >= 4) radioVal = '>=4';
+
+                const r = document.querySelector(`input[name="total_nodules"][value="${radioVal}"]`);
+                if(r) {
+                    r.checked = true;
+                    updateNoduleCount();
+                }
+            }
+
+            autoCalculateCategory();
+            noduleToDelete = null;
+        }
+
         function handlePriorDateInput() {
             const hasText = getValue('prior_date').length > 0;
             const noPriorCheckbox = $('no_prior');
 
-            // 1. 若有日期，上方的 No prior checkbox 變為 disabled 且 unchecked
             if (hasText) {
                 noPriorCheckbox.checked = false;
                 noPriorCheckbox.disabled = true;
             } else {
                 noPriorCheckbox.disabled = false;
             }
-
-            // 2. 連動所有 Nodule 的 Status
             updateNoduleStatusBasedOnPrior(hasText);
         }
 
         function togglePriorDate(isNoPriorChecked) {
             const priorDateInput = $('prior_date');
-
             if (isNoPriorChecked) {
                 priorDateInput.value = '';
                 priorDateInput.disabled = true;
-                // 連動 Nodule Status 為 No prior
                 updateNoduleStatusBasedOnPrior(false, true);
             } else {
                 priorDateInput.disabled = false;
-                // 恢復 Nodule Status 可選，但不強制改值
                 updateNoduleStatusBasedOnPrior(false, false);
             }
         }
 
-        // 輔助：更新所有 Nodule 的 "No prior chest CT comparison" 狀態
         function updateNoduleStatusBasedOnPrior(hasDate, isNoPriorChecked = false) {
-            // 對於 n1, n2, n3
             for (let i = 1; i <= 3; i++) {
                 const noPriorRadio = document.querySelector(`input[name="n${i}_status"][value="no prior"]`);
                 if (!noPriorRadio) continue;
 
                 if (hasDate) {
-                    // 有日期：此選項 disabled (若原本選中則取消?)
-                    // 這裡選擇僅 disabled，使用者需手動選別的，或者保持原狀但無效
                     noPriorRadio.disabled = true;
                     if (noPriorRadio.checked) noPriorRadio.checked = false;
                 } else {
-                    // 無日期
                     if (isNoPriorChecked || !getValue('prior_date')) {
-                         // 強制勾選 No prior (若是空白日期)
                          noPriorRadio.disabled = false;
-                         // 若原本沒有選任何 status，或日期被清空時，預設選這個
-                         noPriorRadio.checked = true;
+                         const anyChecked = document.querySelector(`input[name="n${i}_status"]:checked`);
+                         if (!anyChecked) noPriorRadio.checked = true;
                     } else {
                         noPriorRadio.disabled = false;
                     }
                 }
             }
         }
-
 
         // Modal 輔助
         const openModal = (target) => $(target)?.showModal();
@@ -675,12 +808,12 @@
         };
 
         function closeModalOnBackdrop(event) {
-            if (event.target === $('report_modal')) {
-                closeModal('report_modal');
+            // Check if click is on backdrop (target is the dialog element itself)
+            if (event.target.tagName === 'DIALOG') {
+                event.target.close();
             }
         }
 
-        // Footer 滾動顯示
         window.onscroll = function() {
             const footer = $('sticky-footer');
             if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50) {
@@ -690,13 +823,76 @@
             }
         };
 
-        // --- C. 報告產生核心 ---
+        // --- C. 驗證與報告產生 (Request 4: Silent Validation) ---
 
+        function validateForm() {
+            document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+
+            let errors = [];
+
+            if (!getValue('ctdi')) errors.push({id: 'ctdi'});
+            if (!getValue('dlp')) errors.push({id: 'dlp'});
+
+            const priorDate = getValue('prior_date');
+            const noPrior = isChecked('no_prior');
+            if (!priorDate && !noPrior) {
+                errors.push({id: 'prior_date'});
+            }
+
+            if (isChecked('nodule_gte6')) {
+                const totalNodules = getRadio('total_nodules');
+                let count = 0;
+                if(totalNodules === '1') count = 1;
+                else if(totalNodules === '2') count = 2;
+                else if(totalNodules === '3') count = 3;
+                else if(totalNodules === '>=4') count = 3;
+
+                for (let i = 1; i <= count; i++) {
+                    if (!getValue(`n${i}_size`)) errors.push({id: `n${i}_size`});
+
+                    const density = getRadio(`n${i}_density`);
+                    if (density === 'part-solid') {
+                        if (!getValue(`n${i}_solid_part`)) errors.push({id: `n${i}_solid_part`});
+                    }
+                    if (!getRadio(`n${i}_lobe`)) errors.push({id: `n${i}_lobe_group`});
+                    if (!getRadio(`n${i}_status`)) errors.push({id: `n${i}_status_group`});
+                }
+            }
+
+            if (errors.length > 0) {
+                // Request 4: No alert, just highlight and scroll
+                const firstId = errors[0].id;
+                const el = $(firstId);
+
+                // Highlight all errors
+                errors.forEach(e => {
+                    const elem = $(e.id);
+                    if(elem) elem.classList.add('input-error');
+                });
+
+                // Scroll to first error
+                if(el) {
+                    el.scrollIntoView({behavior: 'smooth', block: 'center'});
+                    if(el.tagName === 'INPUT') el.focus();
+                }
+
+                return false;
+            }
+            return true;
+        }
+
+        function validateAndCopy(type) {
+            if (!validateForm()) return;
+
+            if (type === 'full') generateAndCopyFull();
+            else generateAndCopySimple();
+        }
+
+        // --- Report Generation Logic ---
         function generateNoduleText(n, isSimple) {
-            // 修改：嚴格檢查父項目 nodule_gte6 是否勾選
             if (!isChecked('nodule_gte6')) return "";
             if (isSimple && !isChecked(`n${n}_enable`)) return "";
-            if (!isChecked(`n${n}_enable`)) return ""; // Double check for full report too
+            if (!isChecked(`n${n}_enable`)) return "";
 
             let text = `  ${cb(`n${n}_enable`, `Lung nodule ${n} (size, character and location)`)}`;
             text = text.trimEnd();
@@ -733,13 +929,10 @@
             let report = "";
             const add = (text) => { report += text; };
             const addLine = (condition, lineGenerator) => {
-                if (!isSimple || condition) {
-                    add(lineGenerator());
-                }
+                if (!isSimple || condition) add(lineGenerator());
             };
             const addLineCb = (id, text) => addLine(isChecked(id), () => cb(id, text));
 
-            // --- 開始生成 ---
             report += `LDCT Quality: ${rb('quality', 'Good', 'Good')}`;
             report = report.trimEnd() + ` ${rb('quality', 'Acceptable', 'Acceptable')}`;
             report = report.trimEnd() + ` ${rb('quality', 'Not Acceptable', 'Not Acceptable')}`;
@@ -766,15 +959,12 @@
                 add(generateNoduleText(2, isSimple));
                 add(generateNoduleText(3, isSimple));
 
-                // Else logic: Only check if parent is checked AND val is >=4
                 const totalVal = getRadio('total_nodules');
                 const showElse = (totalVal === '>=4');
 
                 if (!isSimple || showElse) {
-                    // 為了保持格式，如果選 >=4 但沒填細項，還是會顯示 [ ]
                     const elseLobesChecked = isChecked('else_rul') || isChecked('else_rml') || isChecked('else_rll') || isChecked('else_lul') || isChecked('else_lll');
-                    // 只有在 >=4 模式下才輸出，或者在完整報告模式下
-                     if (showElse) {
+                    if (showElse) {
                         report += `  ${elseLobesChecked ? '[+]' : '[ ]'} Lung nodules else `;
                         report += `${cb_inline('else_rul', 'RUL')} `;
                         report += `${cb_inline('else_rml', 'RML')} `;
@@ -786,19 +976,11 @@
                 }
 
             } else if (!isSimple) {
-                // 父項目未勾選的完整報告模式
                 report += "[ ] Lung nodule(s) (≧6mm or enlarging>1.5mm or new≧4mm): total number [ ]1 [ ]2 [ ]3 [ ]≥4, and described as followings:\n";
-                // 這裡不呼叫 generateNoduleText，因為父項目未勾選，要求不輸出細項
                 report += `  [ ] Lung nodule 1 (size, character and location)\n    Entire Nodule: _ mm\n    Density: [ ] non-solid  [ ] part-solid (Solid Part: ___ mm)  [ ] solid\n    Lobe: (SE:_, IM:_) [ ] RUL [ ] RML [ ] RLL [ ] LUL [ ] LLL\n    The nodule is [ ] unchanged [ ] enlarging (>1.5 mm) [ ] newly found (≧4 mm) [ ] No prior chest CT comparison\n`;
-                // (省略其他空行，保持簡潔，因為使用者要求若未勾選則不輸出"資料"，但格式需保留空白嗎？
-                // 根據使用者指示：「如果父項目未勾選，子選項就算曾填過資料，也應該不輸出。」
-                // 這通常意味著輸出空白的模板，或者是完全不輸出該段落。
-                // 這裡保留模板供手寫，但確保不會帶入使用者之前填的 9mm 等數據。
             }
             report += "\n";
 
-            // (Airway, Cyst, etc... unchanged)
-            // Airway nodule
             let airwayChecked = isChecked('airway_subsegmental') || isChecked('airway_proximal');
             if (!isSimple || airwayChecked) {
                 report += `${airwayChecked ? '[+]' : '[ ]'} Airway nodule\n`;
@@ -810,20 +992,19 @@
                 report += "\n";
             }
 
-            // Atypical pulmonary cyst
-            const getCystString = (cat_id, cat_name, se_id, im_id, isSimple) => {
-                if (isSimple && !isChecked(cat_id)) return "";
-                let line = `  ${cb(cat_id, `Category ${cat_name}. Lobe: (SE: ${txt(se_id)}, IM: ${txt(im_id)}) `)}`;
-                line = line.trimEnd();
-                line += ` ${cb_inline(cat_id + '_rul', 'RUL')}`;
-                line += ` ${cb_inline(cat_id + '_rml', 'RML')}`;
-                line += ` ${cb_inline(cat_id + '_rll', 'RLL')}`;
-                line += ` ${cb_inline(cat_id + '_lul', 'LUL')}`;
-                line += ` ${cb_inline(cat_id + '_lll', 'LLL')}\n`;
-                return line;
-            };
             let cystChecked = isChecked('cyst_3') || isChecked('cyst_4a') || isChecked('cyst_4b');
             if (!isSimple || cystChecked) {
+                const getCystString = (cat_id, cat_name, se_id, im_id, isSimple) => {
+                    if (isSimple && !isChecked(cat_id)) return "";
+                    let line = `  ${cb(cat_id, `Category ${cat_name}. Lobe: (SE: ${txt(se_id)}, IM: ${txt(im_id)}) `)}`;
+                    line = line.trimEnd();
+                    line += ` ${cb_inline(cat_id + '_rul', 'RUL')}`;
+                    line += ` ${cb_inline(cat_id + '_rml', 'RML')}`;
+                    line += ` ${cb_inline(cat_id + '_rll', 'RLL')}`;
+                    line += ` ${cb_inline(cat_id + '_lul', 'LUL')}`;
+                    line += ` ${cb_inline(cat_id + '_lll', 'LLL')}\n`;
+                    return line;
+                };
                 report += `${cystChecked ? '[+]' : '[ ]'} Atypical pulmonary cyst\n`;
                 add(getCystString('cyst_3', '3', 'cyst_3_se', 'cyst_3_im', isSimple));
                 add(getCystString('cyst_4a', '4A', 'cyst_4a_se', 'cyst_4a_im', isSimple));
@@ -833,7 +1014,6 @@
 
             addLineCb('metastases', 'The pattern of lung nodules has a higher probability of metastases');
 
-            // Other Lung Findings
             let otherLungChecked = isChecked('other_emphysema') || isChecked('other_bronchiectasis') || isChecked('other_bronchitis') || isChecked('other_treeinbud') || isChecked('other_centrilobular') || isChecked('other_tb') || isChecked('other_ild') || isChecked('other_other_lung_check');
             if (!isSimple || otherLungChecked) {
                 report += "\n----\nOther Lung Findings (選填)\n";
@@ -852,11 +1032,9 @@
                 if (line2.trim() !== "") report += line2.trimEnd() + "\n";
             }
 
-            // Other Findings
             let otherFindingsChecked = getValue('other_lymph') || getValue('other_coronary') || getValue('other_chest') || getValue('other_abnormal');
             if (!isSimple || otherFindingsChecked) {
                 report += "\nOther Findings (選填)\n";
-
                 const addOtherFinding = (id, text) => {
                     const val = getValue(id);
                     if (isSimple && !val) return;
@@ -864,22 +1042,18 @@
                     const content = val ? `: ${val}` : '';
                     report += `${mark} ${text}${content}\n`;
                 }
-
                 addOtherFinding('other_lymph', 'Enlarged lymph nodes, location');
                 addOtherFinding('other_coronary', 'Coronary artery calcification');
                 addOtherFinding('other_chest', 'Other significant abnormal chest findings');
                 addOtherFinding('other_abnormal', 'Other significant abnormal abdominal or neck findings in this chest CT scan');
             }
 
-            // Overall recommendation
             report += "\n----\nOverall recommendation\n";
             report += "Lung-RADS v2022 Category Descriptor\n";
-
             report += `  ${rb('category', '0', 'Category 0: Incomplete.')}`;
             report += `    ${cb('cat_0_prior', 'Prior chest CT examination being located for comparison.')}`;
             report += `    ${cb('cat_0_unevaluated', 'Part or all of lungs cannot be evaluated.')}`;
             report += `    ${cb('cat_0_inflammatory', 'Findings suggestive of an inflammatory or infectious process.')}`;
-
             report += `  ${rb('category', '1', 'Category 1: Negative.')}`;
             report += `  ${rb('category', '2', 'Category 2: Benign - Based on imaging features or indolent behavior.')}`;
             report += `  ${rb('category', '3', 'Category 3: Probably Benign - Based on imaging features or behavior.')}`;
@@ -901,7 +1075,6 @@
                 $('modal_output').textContent = report;
                 $('modal_title').textContent = title + " (已複製到剪貼簿)";
                 openModal('report_modal');
-
                 const btn = $(buttonId);
                 const originalText = (buttonId === 'copy_button') ? '複製完整報告' : '複製簡易報告';
                 btn.innerHTML = "✓ 已複製！";
@@ -915,12 +1088,10 @@
                 alert('複製失敗。請檢查您的瀏覽器權限設定。');
             });
         }
-
         function generateAndCopyFull() {
             const report = generateReportText(false);
             copyToClipboardAndShowModal(report, 'copy_button', '完整報告內容');
         }
-
         function generateAndCopySimple() {
             const report = generateReportText(true);
             copyToClipboardAndShowModal(report, 'copy_simple_button', '簡易報告內容');
@@ -928,31 +1099,20 @@
 
         // --- D. 自動判定 Category 邏輯 (Lung-RADS 2022) ---
         function autoCalculateCategory() {
-            const CAT_4B = 6;
-            const CAT_4A = 5;
-            const CAT_3 = 4;
-            const CAT_2 = 3;
-            const CAT_1 = 2;
-            const CAT_0 = 10;
-
+            const CAT_4B = 6; const CAT_4A = 5; const CAT_3 = 4; const CAT_2 = 3; const CAT_1 = 2; const CAT_0 = 10;
             let currentScore = 0;
             const setScore = (score) => { if (score > currentScore) currentScore = score; };
 
             if (isChecked('cat_0_prior') || isChecked('cat_0_unevaluated') || isChecked('cat_0_inflammatory')) {
                 setScore(CAT_0);
             }
-            if (currentScore === CAT_0) {
-                checkCategoryRadio("0");
-                return;
-            }
+            if (currentScore === CAT_0) { checkCategoryRadio("0"); return; }
 
             if (isChecked('airway_stable')) setScore(CAT_4B);
             if (isChecked('cyst_4b')) setScore(CAT_4B);
 
             for (let i = 1; i <= 3; i++) {
-                // 修改：必須父項目勾選且該子項目 enable 才計算
                 if (!isChecked('nodule_gte6') || !isChecked(`n${i}_enable`)) continue;
-
                 let size = parseFloat(getValue(`n${i}_size`)) || 0;
                 let density = getRadio(`n${i}_density`);
                 let solidPart = parseFloat(getValue(`n${i}_solid_part`)) || 0;
@@ -970,15 +1130,12 @@
             if (currentScore < CAT_4B) {
                 if (isChecked('airway_baseline')) setScore(CAT_4A);
                 if (isChecked('cyst_4a')) setScore(CAT_4A);
-
                 for (let i = 1; i <= 3; i++) {
                     if (!isChecked('nodule_gte6') || !isChecked(`n${i}_enable`)) continue;
-
                     let size = parseFloat(getValue(`n${i}_size`)) || 0;
                     let density = getRadio(`n${i}_density`);
                     let solidPart = parseFloat(getValue(`n${i}_solid_part`)) || 0;
                     let status = getRadio(`n${i}_status`);
-
                     if (density === 'solid') {
                         if (size >= 8 && size < 15) setScore(CAT_4A);
                         if (status === 'enlarging' && size < 8) setScore(CAT_4A);
@@ -992,15 +1149,12 @@
 
             if (currentScore < CAT_4A) {
                 if (isChecked('cyst_3')) setScore(CAT_3);
-
                 for (let i = 1; i <= 3; i++) {
                     if (!isChecked('nodule_gte6') || !isChecked(`n${i}_enable`)) continue;
-
                     let size = parseFloat(getValue(`n${i}_size`)) || 0;
                     let density = getRadio(`n${i}_density`);
                     let solidPart = parseFloat(getValue(`n${i}_solid_part`)) || 0;
                     let status = getRadio(`n${i}_status`);
-
                     if (density === 'solid') {
                         if (size >= 6 && size < 8) setScore(CAT_3);
                         if (status === 'newly found' && size >= 4 && size < 6) setScore(CAT_3);
@@ -1019,29 +1173,22 @@
                 if (isChecked('nodule_lt6')) setScore(CAT_2);
                 if (isChecked('juxtapleural')) setScore(CAT_2);
                 if (isChecked('airway_subsegmental') || isChecked('airway_secretions')) setScore(CAT_2);
-
                 for (let i = 1; i <= 3; i++) {
                     if (!isChecked('nodule_gte6') || !isChecked(`n${i}_enable`)) continue;
-
                     let size = parseFloat(getValue(`n${i}_size`)) || 0;
                     let density = getRadio(`n${i}_density`);
                     let status = getRadio(`n${i}_status`);
-
                     if (density === 'solid') {
                         if (size < 6) setScore(CAT_2);
                         if (status === 'newly found' && size < 4) setScore(CAT_2);
                     } else if (density === 'part-solid') {
                         if (size < 6) setScore(CAT_2);
-                    } else if (density === 'non-solid') {
-                         setScore(CAT_2);
-                    }
+                    } else if (density === 'non-solid') { setScore(CAT_2); }
                 }
             }
 
             if (currentScore < CAT_2) {
-                if (isChecked('no_nodule') || isChecked('benign_features')) {
-                    setScore(CAT_1);
-                }
+                if (isChecked('no_nodule') || isChecked('benign_features')) setScore(CAT_1);
             }
 
             if (currentScore === CAT_4B) checkCategoryRadio("4B");
@@ -1053,15 +1200,11 @@
 
         function checkCategoryRadio(val) {
             const radio = document.querySelector(`input[name="category"][value="${val}"]`);
-            if (radio && !radio.checked) {
-                radio.checked = true;
-            }
+            if (radio && !radio.checked) radio.checked = true;
         }
 
         document.querySelector('main').addEventListener('change', autoCalculateCategory);
         document.querySelector('main').addEventListener('input', autoCalculateCategory);
-
     </script>
-
 </body>
 </html>
