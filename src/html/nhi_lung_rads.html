@@ -33,59 +33,51 @@
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
         .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
 
-        /* --- [重要修正] 通用 Input/Select 樣式重置 --- */
+        /* --- 通用 Input/Select 樣式重置 --- */
         input.form-input, input[type="number"], input[type="text"], select {
             font-size: 0.9em;
             padding: 0.2rem 0.4rem;
             height: auto;
-            margin: 0 0.25em; /* 上下 margin 歸零 */
+            margin: 0 0.25em;
             width: auto;
             display: inline-block;
             vertical-align: middle;
         }
         input::placeholder { font-size: 0.9em; color: var(--muted-color); }
 
-        /* --- [重要修正] 強力對齊系統 --- */
+        /* --- 強力對齊系統 --- */
 
-        /* 1. 最外層容器：使用 Flex 且垂直置中 */
         .inline-label-group {
             display: flex;
             flex-wrap: wrap;
             gap: 1rem;
-            align-items: center; /* 這裡改為 center，不要用 baseline */
+            align-items: center;
             margin-bottom: var(--pico-spacing);
         }
-
-        /* 2. 中間層 span：確保高度一致並垂直置中 */
         .inline-label-group > span {
             display: inline-flex;
             align-items: center;
             height: 100%;
         }
-
-        /* 3. 內層 Label：Flex 佈局，歸零 margin */
         .inline-label-group label {
             display: inline-flex !important;
             align-items: center !important;
-            margin-bottom: 0 !important; /* 強制移除 Pico 預設的 margin-bottom */
+            margin-bottom: 0 !important;
             cursor: pointer;
         }
-
-        /* 4. Radio/Checkbox：微調位置與邊距 */
         .inline-label-group input[type="checkbox"],
         .inline-label-group input[type="radio"] {
-            margin: 0 0.5rem 0 0 !important; /* 只保留右邊距 */
-            transform: translateY(1px); /* 視覺微調：讓圓圈稍微下一點點看起來更正 */
+            margin: 0 0.5rem 0 0 !important;
+            transform: translateY(1px);
         }
 
-        /* Unit Label */
         .unit-label { color: var(--muted-color); margin-left: 2px; font-size: 0.9em; display: inline-flex; align-items: center;}
-
 
         /* Fieldset & Legend */
         fieldset { margin-bottom: var(--pico-spacing); border: none; padding: 0; }
+        /* 預設 fieldset label 為 block (垂直排列) */
         fieldset label { display: block; margin-bottom: 0.5rem; cursor: pointer; }
-        /* 修正 fieldset 內部的 checkbox 對齊 */
+
         fieldset label input[type="checkbox"],
         fieldset label input[type="radio"] {
             vertical-align: middle;
@@ -95,6 +87,33 @@
         }
 
         legend { font-weight: bold; margin-bottom: 0.5rem; }
+
+        /* --- [新增] 用於 Lung nodules else 的水平 Checkbox 樣式 --- */
+        .horizontal-checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1.5rem; /* Checkbox 之間的間距 */
+            margin-bottom: 1rem;
+        }
+        .horizontal-checkboxes label {
+            display: inline-flex !important; /* 強制橫排 */
+            align-items: center !important;
+            margin-bottom: 0 !important;
+        }
+
+        /* --- [新增] 用於 SE/IM 的單行容器 --- */
+        .se-im-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem; /* SE 和 IM 之間的間距 */
+        }
+        .se-im-row label {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 0;
+        }
 
         /* --- Nodule Card Styling --- */
         article.nodule-block {
@@ -140,7 +159,7 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Density Inline Group (Specific Fix) */
+        /* Density Inline Group */
         .density-inline-group {
             display: flex;
             flex-wrap: nowrap;
@@ -444,16 +463,17 @@
                     <article id="block_else" class="nodule-block hidden">
                         <label class="nodule-title">Lung nodules else</label>
                         <hr>
-                        <fieldset>
+                        <div class="horizontal-checkboxes">
                             <label><input type="checkbox" id="else_rul"> RUL</label>
                             <label><input type="checkbox" id="else_rml"> RML</label>
                             <label><input type="checkbox" id="else_rll"> RLL</label>
                             <label><input type="checkbox" id="else_lul"> LUL</label>
                             <label><input type="checkbox" id="else_lll"> LLL</label>
-                        </fieldset>
-                        <div class="grid-2">
-                            <label>SE: <input type="text" class="form-input" id="else_se"></label>
-                            <label>IM: <input type="text" class="form-input" id="else_im"></label>
+                        </div>
+
+                        <div class="se-im-row">
+                            <label>SE: <input type="text" class="form-input" id="else_se" style="width: 150px;"></label>
+                            <label>IM: <input type="text" class="form-input" id="else_im" style="width: 250px;"></label>
                         </div>
                     </article>
                 </div>
@@ -609,7 +629,6 @@
 
         const cb = (id, text) => `${isChecked(id) ? '[+]' : '[ ]'} ${text}\n`;
         const rb = (name, value, text) => `${getRadio(name) === value ? '[+]' : '[ ]'} ${text}\n`;
-        // [新增] rb_inline: 用於不換行的單選按鈕輸出
         const rb_inline = (name, value, text) => `${getRadio(name) === value ? '[+]' : '[ ]'} ${text}`;
 
         const cb_inline = (id, text) => `${isChecked(id) ? '[+]' : '[ ]'} ${text}`;
