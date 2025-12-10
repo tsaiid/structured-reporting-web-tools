@@ -33,25 +33,68 @@
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
         .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
 
+        /* --- [重要修正] 通用 Input/Select 樣式重置 --- */
         input.form-input, input[type="number"], input[type="text"], select {
-            font-size: 0.9em; padding: 0.2rem 0.4rem; height: auto;
-            vertical-align: middle; margin: 0 0.25em; width: auto; display: inline-block;
+            font-size: 0.9em;
+            padding: 0.2rem 0.4rem;
+            height: auto;
+            margin: 0 0.25em; /* 上下 margin 歸零 */
+            width: auto;
+            display: inline-block;
+            vertical-align: middle;
         }
         input::placeholder { font-size: 0.9em; color: var(--muted-color); }
-        input[type="checkbox"], input[type="radio"] { vertical-align: middle; margin-right: 0.25rem; }
 
-        .inline-label-group { display: flex; flex-wrap: wrap; gap: 1rem; align-items: baseline; margin-bottom: var(--pico-spacing); }
-        .inline-label-group span { display: inline-flex; align-items: center; gap: 0.5rem; margin-right: 0.5rem; }
+        /* --- [重要修正] 強力對齊系統 --- */
 
-        /* [修正] 恢復全域 fieldset label 的垂直排列 */
+        /* 1. 最外層容器：使用 Flex 且垂直置中 */
+        .inline-label-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center; /* 這裡改為 center，不要用 baseline */
+            margin-bottom: var(--pico-spacing);
+        }
+
+        /* 2. 中間層 span：確保高度一致並垂直置中 */
+        .inline-label-group > span {
+            display: inline-flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        /* 3. 內層 Label：Flex 佈局，歸零 margin */
+        .inline-label-group label {
+            display: inline-flex !important;
+            align-items: center !important;
+            margin-bottom: 0 !important; /* 強制移除 Pico 預設的 margin-bottom */
+            cursor: pointer;
+        }
+
+        /* 4. Radio/Checkbox：微調位置與邊距 */
+        .inline-label-group input[type="checkbox"],
+        .inline-label-group input[type="radio"] {
+            margin: 0 0.5rem 0 0 !important; /* 只保留右邊距 */
+            transform: translateY(1px); /* 視覺微調：讓圓圈稍微下一點點看起來更正 */
+        }
+
+        /* Unit Label */
+        .unit-label { color: var(--muted-color); margin-left: 2px; font-size: 0.9em; display: inline-flex; align-items: center;}
+
+
+        /* Fieldset & Legend */
         fieldset { margin-bottom: var(--pico-spacing); border: none; padding: 0; }
         fieldset label { display: block; margin-bottom: 0.5rem; cursor: pointer; }
-        fieldset span { display: inline-block; margin-right: 1.5rem; }
+        /* 修正 fieldset 內部的 checkbox 對齊 */
+        fieldset label input[type="checkbox"],
+        fieldset label input[type="radio"] {
+            vertical-align: middle;
+            margin-right: 0.5rem;
+            margin-bottom: 0;
+            transform: translateY(-1px);
+        }
 
-        /* 標題樣式統一 */
         legend { font-weight: bold; margin-bottom: 0.5rem; }
-
-        .unit-label { color: var(--muted-color); margin-left: 2px; font-size: 0.9em; }
 
         /* --- Nodule Card Styling --- */
         article.nodule-block {
@@ -78,7 +121,7 @@
         }
         .btn-delete:hover { background-color: var(--del-color); color: white; border-color: var(--del-color); }
 
-        /* --- Layout: Split 50/50 --- */
+        /* Layout: Split 50/50 */
         .nodule-split-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -89,16 +132,15 @@
             padding-bottom: 1rem;
         }
 
-        /* [修正] Density Label 字體大小與 Entire Nodule 一致 */
         .nodule-input-label {
             font-weight: bold;
-            font-size: 1rem; /* Match standard Pico label size */
+            font-size: 1rem;
             color: var(--h1-color);
             display: block;
             margin-bottom: 0.5rem;
         }
 
-        /* Inline Radios for Density (No Wrap) */
+        /* Density Inline Group (Specific Fix) */
         .density-inline-group {
             display: flex;
             flex-wrap: nowrap;
@@ -106,11 +148,15 @@
             gap: 1rem;
         }
         .density-inline-group label {
-            display: inline-flex; /* Override block */
+            display: inline-flex;
             align-items: center;
             margin-bottom: 0;
             white-space: nowrap;
             font-size: 0.9em;
+        }
+        .density-inline-group input {
+            margin-right: 0.4rem;
+            margin-bottom: 0;
         }
 
         /* Size Row */
@@ -122,11 +168,10 @@
             margin-bottom: 0.5rem;
         }
         .size-input-row label {
-            margin-bottom: 0; /* Override default */
+            margin-bottom: 0;
             margin-right: 0.5rem;
         }
 
-        /* Lobe & Status (Horizontal Layout) */
         .nodule-row-full { width: 100%; margin-bottom: 1rem; }
 
         .lobe-inline-wrapper {
@@ -138,9 +183,9 @@
         .lobe-label {
             white-space: nowrap; margin-right: 1rem;
             font-weight: bold; font-size: 1rem;
+            display: inline-flex; align-items: center;
         }
 
-        /* 強制內部 radio 橫排 */
         .horizontal-radios {
             display: flex;
             flex-wrap: wrap;
@@ -151,14 +196,17 @@
             margin-bottom: 0;
             align-items: center;
         }
+        .horizontal-radios input {
+            margin-right: 0.4rem;
+            margin-bottom: 0;
+        }
 
         .solid-part-container {
             margin-top: 0.2rem;
-            margin-left: 0; /* Reset indentation since it's under entire nodule now */
-            padding-left: 2rem; /* Indent slightly under Entire Nodule text */
+            margin-left: 0;
+            padding-left: 2rem;
         }
 
-        /* Error Styling */
         .input-error {
             border: 2px solid #e53935 !important;
             background-color: #ffebee !important;
@@ -176,6 +224,10 @@
         dialog article { width: 90vw; max-width: 1000px; }
         #delete_modal article { max-width: 400px; text-align: center; }
         .modal-actions { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; }
+
+        .lobe-checkbox-container { display: inline-flex; flex-wrap: wrap; gap: 0.5rem; vertical-align: middle; margin-left: 1rem;}
+        .lobe-checkbox-container span label { margin-bottom: 0; font-size: 0.9em; display: inline-flex; align-items: center;}
+
     </style>
 </head>
 <body>
@@ -190,9 +242,9 @@
             <section>
                 <div class="inline-label-group">
                     <span>LDCT Quality:</span>
-                    <span><label style="display:inline-flex"><input type="radio" name="quality" value="Good" checked> Good</label></span>
-                    <span><label style="display:inline-flex"><input type="radio" name="quality" value="Acceptable"> Acceptable</label></span>
-                    <span><label style="display:inline-flex"><input type="radio" name="quality" value="Not Acceptable"> Not Acceptable</label></span>
+                    <span><label><input type="radio" name="quality" value="Good" checked> Good</label></span>
+                    <span><label><input type="radio" name="quality" value="Acceptable"> Acceptable</label></span>
+                    <span><label><input type="radio" name="quality" value="Not Acceptable"> Not Acceptable</label></span>
                 </div>
 
                 <div class="inline-label-group">
@@ -202,7 +254,7 @@
 
                 <div class="inline-label-group">
                     <span>Prior CT Date (Y/M/D): <input type="text" class="form-input" id="prior_date" placeholder="YYYY/MM/DD" style="width: 160px;" oninput="handlePriorDateInput()"></span>
-                    <span><label style="display:inline-flex"><input type="checkbox" id="no_prior" onchange="togglePriorDate(this.checked)"> No prior chest CT available</label></span>
+                    <span><label><input type="checkbox" id="no_prior" onchange="togglePriorDate(this.checked)"> No prior chest CT available</label></span>
                 </div>
             </section>
 
