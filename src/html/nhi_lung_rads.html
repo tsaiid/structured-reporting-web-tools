@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lung-RADS v2022 報告產生器 (v9)</title>
+    <title>Lung-RADS v2022 報告產生器 (v9.1)</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
     <style>
         /* 2. 客製化樣式 */
@@ -672,7 +672,6 @@
                 if (!isSimple || isChecked('other_treeinbud')) line1 += `${cb_inline('other_treeinbud', 'Tree-in-bud pattern')}`;
 
                 if (!isSimple || isChecked('other_centrilobular')) line2 += `${cb_inline('other_centrilobular', 'Centrilobular nodules')} `;
-                // (Update v8) Fixed bug: isCodeChecked -> isChecked
                 if (!isSimple || isChecked('other_tb')) line2 += `${cb_inline('other_tb', 'Old pulmonary TB')} `;
                 if (!isSimple || isChecked('other_ild')) line2 += `${cb_inline('other_ild', 'Interstitial lung disease (ILD)')} `;
                 if (!isSimple || isChecked('other_other_lung_check')) line2 += `${cb_inline('other_other_lung_check', `Other ${txt('other_other_lung_text')}`)}`;
@@ -686,7 +685,6 @@
             if (!isSimple || otherFindingsChecked) {
                 report += "\nOther Findings (選填)\n";
 
-                // (Update v8) Revised logic for Other Findings
                 const addOtherFinding = (id, text) => {
                     const val = getValue(id);
                     if (isSimple && !val) return;
@@ -758,6 +756,154 @@
             const report = generateReportText(true);
             copyToClipboardAndShowModal(report, 'copy_simple_button', '簡易報告內容');
         }
+
+        // --- D. 自動判定 Category 邏輯 (Lung-RADS 2022) ---
+        function autoCalculateCategory() {
+            // 定義權重: 4B > 4A > 3 > 2 > 1 > 0(Special)
+            const CAT_4B = 6;
+            const CAT_4A = 5;
+            const CAT_3 = 4;
+            const CAT_2 = 3;
+            const CAT_1 = 2;
+            const CAT_0 = 10; // 優先權最高
+
+            let currentScore = 0;
+            const setScore = (score) => { if (score > currentScore) currentScore = score; };
+
+            // --- Category 0 ---
+            if (isChecked('cat_0_prior') || isChecked('cat_0_unevaluated') || isChecked('cat_0_inflammatory')) {
+                setScore(CAT_0);
+            }
+            if (currentScore === CAT_0) {
+                checkCategoryRadio("0");
+                return;
+            }
+
+            // --- Category 4B ---
+            if (isChecked('airway_stable')) setScore(CAT_4B);
+            if (isChecked('cyst_4b')) setScore(CAT_4B);
+
+            for (let i = 1; i <= 3; i++) {
+                // [修改] 增加 !isChecked('nodule_gte6') 判斷，若父項目未勾選則忽略子項目
+                if (!isChecked('nodule_gte6') || !isChecked(`n${i}_enable`)) continue;
+
+                let size = parseFloat(getValue(`n${i}_size`)) || 0;
+                let density = getRadio(`n${i}_density`);
+                let solidPart = parseFloat(getValue(`n${i}_solid_part`)) || 0;
+                let status = getRadio(`n${i}_status`); // unchanged, enlarging, newly found, no prior
+
+                if (density === 'solid') {
+                    if (size >= 15) setScore(CAT_4B);
+                    if ((status === 'newly found' || status === 'enlarging') && size >= 8) setScore(CAT_4B);
+                } else if (density === 'part-solid') {
+                    if (solidPart >= 8) setScore(CAT_4B);
+                    if ((status === 'newly found' || status === 'enlarging') && solidPart >= 4) setScore(CAT_4B);
+                }
+            }
+
+            // --- Category 4A ---
+            if (currentScore < CAT_4B) {
+                if (isChecked('airway_baseline')) setScore(CAT_4A);
+                if (isChecked('cyst_4a')) setScore(CAT_4A);
+
+                for (let i = 1; i <= 3; i++) {
+                    // [修改] 增加 !isChecked('nodule_gte6') 判斷
+                    if (!isChecked('nodule_gte6') || !isChecked(`n${i}_enable`)) continue;
+
+                    let size = parseFloat(getValue(`n${i}_size`)) || 0;
+                    let density = getRadio(`n${i}_density`);
+                    let solidPart = parseFloat(getValue(`n${i}_solid_part`)) || 0;
+                    let status = getRadio(`n${i}_status`);
+
+                    if (density === 'solid') {
+                        if (size >= 8 && size < 15) setScore(CAT_4A);
+                        if (status === 'enlarging' && size < 8) setScore(CAT_4A);
+                        if (status === 'newly found' && size >= 6 && size < 8) setScore(CAT_4A);
+                    } else if (density === 'part-solid') {
+                        if (size >= 6 && solidPart >= 6 && solidPart < 8) setScore(CAT_4A);
+                        if ((status === 'newly found' || status === 'enlarging') && solidPart < 4) setScore(CAT_4A);
+                    }
+                }
+            }
+
+            // --- Category 3 ---
+            if (currentScore < CAT_4A) {
+                if (isChecked('cyst_3')) setScore(CAT_3);
+
+                for (let i = 1; i <= 3; i++) {
+                    // [修改] 增加 !isChecked('nodule_gte6') 判斷
+                    if (!isChecked('nodule_gte6') || !isChecked(`n${i}_enable`)) continue;
+
+                    let size = parseFloat(getValue(`n${i}_size`)) || 0;
+                    let density = getRadio(`n${i}_density`);
+                    let solidPart = parseFloat(getValue(`n${i}_solid_part`)) || 0;
+                    let status = getRadio(`n${i}_status`);
+
+                    if (density === 'solid') {
+                        if (size >= 6 && size < 8) setScore(CAT_3);
+                        if (status === 'newly found' && size >= 4 && size < 6) setScore(CAT_3);
+                    } else if (density === 'part-solid') {
+                        if (size >= 6 && solidPart < 6) setScore(CAT_3);
+                        if (status === 'newly found' && size < 6) setScore(CAT_3);
+                    } else if (density === 'non-solid') {
+                        // >= 30mm (baseline or new) -> Cat 3
+                        if (size >= 30 && (status === 'no prior' || status === 'newly found')) {
+                            setScore(CAT_3);
+                        }
+                    }
+                }
+            }
+
+            // --- Category 2 ---
+            if (currentScore < CAT_3) {
+                if (isChecked('nodule_lt6')) setScore(CAT_2);
+                if (isChecked('juxtapleural')) setScore(CAT_2);
+                if (isChecked('airway_subsegmental') || isChecked('airway_secretions')) setScore(CAT_2);
+
+                for (let i = 1; i <= 3; i++) {
+                    // [修改] 增加 !isChecked('nodule_gte6') 判斷
+                    if (!isChecked('nodule_gte6') || !isChecked(`n${i}_enable`)) continue;
+
+                    let size = parseFloat(getValue(`n${i}_size`)) || 0;
+                    let density = getRadio(`n${i}_density`);
+                    let status = getRadio(`n${i}_status`);
+
+                    if (density === 'solid') {
+                        if (size < 6) setScore(CAT_2);
+                        if (status === 'newly found' && size < 4) setScore(CAT_2);
+                    } else if (density === 'part-solid') {
+                        if (size < 6) setScore(CAT_2);
+                    } else if (density === 'non-solid') {
+                         setScore(CAT_2); // <30mm or >=30mm(stable/slow)
+                    }
+                }
+            }
+
+            // --- Category 1 ---
+            if (currentScore < CAT_2) {
+                if (isChecked('no_nodule') || isChecked('benign_features')) {
+                    setScore(CAT_1);
+                }
+            }
+
+            // Map Score to Radio Value
+            if (currentScore === CAT_4B) checkCategoryRadio("4B");
+            else if (currentScore === CAT_4A) checkCategoryRadio("4A");
+            else if (currentScore === CAT_3) checkCategoryRadio("3");
+            else if (currentScore === CAT_2) checkCategoryRadio("2");
+            else if (currentScore === CAT_1) checkCategoryRadio("1");
+        }
+
+        function checkCategoryRadio(val) {
+            const radio = document.querySelector(`input[name="category"][value="${val}"]`);
+            if (radio && !radio.checked) {
+                radio.checked = true;
+            }
+        }
+
+        // Add Listeners to Main Container (Event Bubbling)
+        document.querySelector('main').addEventListener('change', autoCalculateCategory);
+        document.querySelector('main').addEventListener('input', autoCalculateCategory);
 
     </script>
 
