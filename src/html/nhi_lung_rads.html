@@ -57,7 +57,8 @@
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
         .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
 
-        input[type="text"],
+        /* [修改] 改用 .form-input 取代 input[type="text"] */
+        input.form-input,
         input[type="number"],
         select {
             font-size: 0.9em;
@@ -67,7 +68,9 @@
             margin: 0 0.25em;
             width: auto;
         }
-        input[type="text"][style*="width"] { display: inline-block; }
+        /* [修改] 改用 .form-input 取代 input[type="text"] */
+        input.form-input[style*="width"] { display: inline-block; }
+
         input::placeholder { font-size: 0.9em; color: var(--muted-color); }
         input[type="checkbox"], input[type="radio"] { vertical-align: middle; }
 
@@ -110,7 +113,9 @@
         }
 
         .inline-inputs label { display: block; }
-        .inline-inputs label input[type="text"] {
+
+        /* [修改] 改用 .form-input 取代 input[type="text"] */
+        .inline-inputs label input.form-input {
             display: inline-block;
             min-width: 200px;
             vertical-align: middle;
@@ -149,12 +154,12 @@
                 </div>
 
                 <div class="inline-label-group">
-                    <span>CTDIvol: <input type="text" id="ctdi" placeholder="mGy" style="width: 80px;"></span>
-                    <span>Total DLP: <input type="text" id="dlp" placeholder="mGy*cm" style="width: 100px;"></span>
+                    <span>CTDIvol: <input type="text" class="form-input" id="ctdi" placeholder="mGy" style="width: 80px;"></span>
+                    <span>Total DLP: <input type="text" class="form-input" id="dlp" placeholder="mGy*cm" style="width: 100px;"></span>
                 </div>
 
                 <div class="inline-label-group">
-                    <span>Prior CT Date (Y/M/D): <input type="text" id="prior_date" placeholder="YYYY/MM/DD" style="width: 120px;"></span>
+                    <span>Prior CT Date (Y/M/D): <input type="text" class="form-input" id="prior_date" placeholder="YYYY/MM/DD" style="width: 120px;"></span>
                     <span><label><input type="checkbox" id="no_prior" onchange="togglePriorDate(this.checked)"> No prior chest CT available</label></span>
                 </div>
             </section>
@@ -167,7 +172,7 @@
                 <fieldset>
                     <label><input type="checkbox" id="no_nodule"> No lung nodule</label>
                     <label><input type="checkbox" id="benign_features"> Nodule with benign features.</label>
-                    <label><input type="checkbox" id="nodule_lt6"> Lung nodule(s) (&lt;6mm) (選填 SE: <input type="text" id="lt6_se" style="width: 60px;">, IM: <input type="text" id="lt6_im" style="width: 350px; max-width: 80vw;">)</label>
+                    <label><input type="checkbox" id="nodule_lt6"> Lung nodule(s) (&lt;6mm) (選填 SE: <input type="text" class="form-input" id="lt6_se" style="width: 60px;">, IM: <input type="text" class="form-input" id="lt6_im" style="width: 350px; max-width: 80vw;">)</label>
                     <label><input type="checkbox" id="juxtapleural"> Juxtapleural nodule.</label>
                     <label>
                         <input type="checkbox" id="nodule_gte6" onchange="toggleSection('nodule_details', this.checked)">
@@ -187,7 +192,7 @@
                     <article>
                         <label><input type="checkbox" id="n1_enable"> <b>Lung nodule 1</b></label>
                         <div class="grid-2">
-                            <label>Entire Nodule: <input type="text" id="n1_size" placeholder="mm"></label>
+                            <label>Entire Nodule: <input type="text" class="form-input" id="n1_size" placeholder="mm"></label>
                             <fieldset>
                                 <legend>Density:</legend>
                                 <span><label><input type="radio" name="n1_density" value="non-solid" onchange="toggleSolidPart('n1_solid_part', this.value)"> non-solid</label></span>
@@ -195,9 +200,9 @@
                                 <span><label><input type="radio" name="n1_density" value="solid" onchange="toggleSolidPart('n1_solid_part', this.value)"> solid</label></span>
                             </fieldset>
                         </div>
-                        <input type="text" id="n1_solid_part" class="hidden" placeholder="solid part: ___ mm">
+                        <input type="text" id="n1_solid_part" class="hidden form-input" placeholder="solid part: ___ mm">
                         <div class="grid-3">
-                            <label>Lobe (SE: <input type="text" id="n1_se" style="width: 50px;">, IM: <input type="text" id="n1_im" style="width: 50px;">)</label>
+                            <label>Lobe (SE: <input type="text" class="form-input" id="n1_se" style="width: 50px;">, IM: <input type="text" class="form-input" id="n1_im" style="width: 50px;">)</label>
                             <fieldset>
                                 <span><label><input type="radio" name="n1_lobe" value="RUL"> RUL</label></span>
                                 <span><label><input type="radio" name="n1_lobe" value="RML"> RML</label></span>
@@ -218,7 +223,7 @@
                     <article>
                         <label><input type="checkbox" id="n2_enable"> <b>Lung nodule 2</b></label>
                         <div class="grid-2">
-                            <label>Entire Nodule: <input type="text" id="n2_size" placeholder="mm"></label>
+                            <label>Entire Nodule: <input type="text" class="form-input" id="n2_size" placeholder="mm"></label>
                             <fieldset>
                                 <legend>Density:</legend>
                                 <span><label><input type="radio" name="n2_density" value="non-solid" onchange="toggleSolidPart('n2_solid_part', this.value)"> non-solid</label></span>
@@ -226,9 +231,9 @@
                                 <span><label><input type="radio" name="n2_density" value="solid" onchange="toggleSolidPart('n2_solid_part', this.value)"> solid</label></span>
                             </fieldset>
                         </div>
-                        <input type="text" id="n2_solid_part" class="hidden" placeholder="solid part: ___ mm">
+                        <input type="text" id="n2_solid_part" class="hidden form-input" placeholder="solid part: ___ mm">
                         <div class="grid-3">
-                            <label>Lobe (SE: <input type="text" id="n2_se" style="width: 50px;">, IM: <input type="text" id="n2_im" style="width: 50px;">)</label>
+                            <label>Lobe (SE: <input type="text" class="form-input" id="n2_se" style="width: 50px;">, IM: <input type="text" class="form-input" id="n2_im" style="width: 50px;">)</label>
                             <fieldset>
                                 <span><label><input type="radio" name="n2_lobe" value="RUL"> RUL</label></span>
                                 <span><label><input type="radio" name="n2_lobe" value="RML"> RML</label></span>
@@ -249,7 +254,7 @@
                     <article>
                         <label><input type="checkbox" id="n3_enable"> <b>Lung nodule 3</b></label>
                         <div class="grid-2">
-                            <label>Entire Nodule: <input type="text" id="n3_size" placeholder="mm"></label>
+                            <label>Entire Nodule: <input type="text" class="form-input" id="n3_size" placeholder="mm"></label>
                             <fieldset>
                                 <legend>Density:</legend>
                                 <span><label><input type="radio" name="n3_density" value="non-solid" onchange="toggleSolidPart('n3_solid_part', this.value)"> non-solid</label></span>
@@ -257,9 +262,9 @@
                                 <span><label><input type="radio" name="n3_density" value="solid" onchange="toggleSolidPart('n3_solid_part', this.value)"> solid</label></span>
                             </fieldset>
                         </div>
-                        <input type="text" id="n3_solid_part" class="hidden" placeholder="solid part: ___ mm">
+                        <input type="text" id="n3_solid_part" class="hidden form-input" placeholder="solid part: ___ mm">
                         <div class="grid-3">
-                            <label>Lobe (SE: <input type="text" id="n3_se" style="width: 50px;">, IM: <input type="text" id="n3_im" style="width: 50px;">)</label>
+                            <label>Lobe (SE: <input type="text" class="form-input" id="n3_se" style="width: 50px;">, IM: <input type="text" class="form-input" id="n3_im" style="width: 50px;">)</label>
                             <fieldset>
                                 <span><label><input type="radio" name="n3_lobe" value="RUL"> RUL</label></span>
                                 <span><label><input type="radio" name="n3_lobe" value="RML"> RML</label></span>
@@ -287,8 +292,8 @@
                             <span><label><input type="checkbox" id="else_lll"> LLL</label></span>
                         </fieldset>
                         <div class="grid-2">
-                            <label>SE: <input type="text" id="else_se"></label>
-                            <label>IM: <input type="text" id="else_im"></label>
+                            <label>SE: <input type="text" class="form-input" id="else_se"></label>
+                            <label>IM: <input type="text" class="form-input" id="else_im"></label>
                         </div>
                     </article>
                 </div>
@@ -314,7 +319,7 @@
                 <fieldset>
                     <legend>Atypical pulmonary cyst</legend>
                     <label>
-                        <input type="checkbox" id="cyst_3"> Category 3. Lobe: (SE: <input type="text" id="cyst_3_se" style="width: 50px;">, IM: <input type="text" id="cyst_3_im" style="width: 50px;">)
+                        <input type="checkbox" id="cyst_3"> Category 3. Lobe: (SE: <input type="text" class="form-input" id="cyst_3_se" style="width: 50px;">, IM: <input type="text" class="form-input" id="cyst_3_im" style="width: 50px;">)
                         <span class="lobe-checkbox-container">
                             <span><label><input type="checkbox" id="cyst_3_rul"> RUL</label></span>
                             <span><label><input type="checkbox" id="cyst_3_rml"> RML</label></span>
@@ -324,7 +329,7 @@
                         </span>
                     </label>
                     <label>
-                        <input type="checkbox" id="cyst_4a"> Category 4A. Lobe: (SE: <input type="text" id="cyst_4a_se" style="width: 50px;">, IM: <input type="text" id="cyst_4a_im" style="width: 50px;">)
+                        <input type="checkbox" id="cyst_4a"> Category 4A. Lobe: (SE: <input type="text" class="form-input" id="cyst_4a_se" style="width: 50px;">, IM: <input type="text" class="form-input" id="cyst_4a_im" style="width: 50px;">)
                         <span class="lobe-checkbox-container">
                             <span><label><input type="checkbox" id="cyst_4a_rul"> RUL</label></span>
                             <span><label><input type="checkbox" id="cyst_4a_rml"> RML</label></span>
@@ -334,7 +339,7 @@
                         </span>
                     </label>
                     <label>
-                        <input type="checkbox" id="cyst_4b"> Category 4B. Lobe: (SE: <input type="text" id="cyst_4b_se" style="width: 50px;">, IM: <input type="text" id="cyst_4b_im" style="width: 50px;">)
+                        <input type="checkbox" id="cyst_4b"> Category 4B. Lobe: (SE: <input type="text" class="form-input" id="cyst_4b_se" style="width: 50px;">, IM: <input type="text" class="form-input" id="cyst_4b_im" style="width: 50px;">)
                         <span class="lobe-checkbox-container">
                             <span><label><input type="checkbox" id="cyst_4b_rul"> RUL</label></span>
                             <span><label><input type="checkbox" id="cyst_4b_rml"> RML</label></span>
@@ -359,15 +364,15 @@
                     <span><label><input type="checkbox" id="other_centrilobular"> Centrilobular nodules</label></span>
                     <span><label><input type="checkbox" id="other_tb"> Old pulmonary TB</label></span>
                     <span><label><input type="checkbox" id="other_ild"> Interstitial lung disease (ILD)</label></span>
-                    <span><label><input type="checkbox" id="other_other_lung_check"> Other <input type="text" id="other_other_lung_text" placeholder="..." style="width: 200px;"></label></span>
+                    <span><label><input type="checkbox" id="other_other_lung_check"> Other <input type="text" class="form-input" id="other_other_lung_text" placeholder="..." style="width: 200px;"></label></span>
                 </fieldset>
             </section>
             <section class="inline-inputs">
                 <h3>Other Findings (選填)</h3>
-                <label>Enlarged lymph nodes, location <input type="text" id="other_lymph" placeholder="..."></label>
-                <label>Coronary artery calcification <input type="text" id="other_coronary" placeholder="..."></label>
-                <label>Other significant abnormal chest findings <input type="text" id="other_chest" placeholder="..."></label>
-                <label>Other significant abnormal abdominal or neck findings <input type="text" id="other_abnormal" placeholder="..."></label>
+                <label>Enlarged lymph nodes, location <input type="text" class="form-input" id="other_lymph" placeholder="..."></label>
+                <label>Coronary artery calcification <input type="text" class="form-input" id="other_coronary" placeholder="..."></label>
+                <label>Other significant abnormal chest findings <input type="text" class="form-input" id="other_chest" placeholder="..."></label>
+                <label>Other significant abnormal abdominal or neck findings <input type="text" class="form-input" id="other_abnormal" placeholder="..."></label>
             </section>
             <hr>
             <section>
