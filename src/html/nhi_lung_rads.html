@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lung-RADS v2022 報告產生器 (v13.2)</title>
+    <title>Lung-RADS v2022 報告產生器 (v13.4)</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
     <style>
         /* --- 基礎變數調整 --- */
         :root {
-            --nav-height: 70px; /* 稍微縮減高度讓比例更緊湊 */
+            --nav-height: 80px;
             --nav-bg-light: rgba(255, 255, 255, 0.95);
             --nav-bg-dark: rgba(19, 23, 31, 0.95);
             --border-radius: 8px;
@@ -19,263 +19,121 @@
             padding-bottom: 100px;
         }
 
-        /* --- 1. Sticky Navbar 優化 --- */
+        /* --- Sticky Navbar --- */
         .sticky-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: var(--nav-height);
-            z-index: 900;
-            background-color: var(--nav-bg-light);
-            border-bottom: 1px solid var(--pico-muted-border-color);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            transition: background-color 0.3s;
-            display: flex;             /* 讓內容垂直置中 */
-            align-items: center;       /* 讓內容垂直置中 */
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-height); z-index: 900;
+            background-color: var(--nav-bg-light); border-bottom: 1px solid var(--pico-muted-border-color);
+            backdrop-filter: blur(10px); box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: background-color 0.3s; display: flex; align-items: center;
         }
+        [data-theme="dark"] .sticky-nav { background-color: var(--nav-bg-dark); }
 
-        [data-theme="dark"] .sticky-nav {
-            background-color: var(--nav-bg-dark);
-        }
-
-        /* 內容容器：左右撐開，垂直置中 */
         .nav-content {
-            width: 100%;
-            max-width: 1152px; /* 與 Pico Container 對齊 */
-            margin: 0 auto;
-            padding: 0 1rem;
-            display: flex;
-            justify-content: space-between; /* 標題靠左，按鈕靠右 */
-            align-items: center;            /* 強制垂直對齊 */
-        }
-
-        /* 左側標題群組 */
-        .nav-title-group {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .nav-title-group h1 {
-            font-size: 1.25rem;
-            margin: 0;
-            line-height: 1.2;
-            color: var(--pico-h1-color);
-            font-weight: 800;
-        }
-
-        .nav-title-group p {
-            font-size: 0.8rem;
-            margin: 0;
-            color: var(--pico-muted-color);
-            display: block;
-        }
-
-        /* 右側控制群組 */
-        .nav-controls {
-            display: flex;
-            align-items: center; /* 按鈕與 Switch 垂直對齊 */
-            gap: 1.2rem;         /* 增加間距 */
-        }
-
-        /* --- 2. 強化版 Theme Switch --- */
-        .theme-switch {
-            position: relative;
-            display: inline-block;
-            width: 52px;  /* 加寬 */
-            height: 28px; /* 加高 */
-            margin-bottom: 0; /* 修正 Pico 預設 margin */
-        }
-        .theme-switch input { opacity: 0; width: 0; height: 0; }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #e0e0e0; /* Light mode 預設背景 */
-            transition: .4s;
-            border-radius: 30px;
-            border: 2px solid #ccc; /* 增加邊框增加辨識度 */
-        }
-
-        /* Dark mode 下 Switch 背景變深 */
-        [data-theme="dark"] .slider {
-            background-color: #37474f;
-            border-color: #546e7a;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 20px;
-            width: 20px;
-            left: 2px;
-            bottom: 2px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3); /* 增加立體感 */
-            z-index: 2;
-        }
-
-        input:checked + .slider { background-color: var(--pico-primary); border-color: var(--pico-primary); }
-        input:checked + .slider:before { transform: translateX(24px); }
-
-        /* Icons inside slider */
-        .slider-icon {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 14px;
-            pointer-events: none;
-            z-index: 1;
-            line-height: 1;
-        }
-        .icon-sun {
-            right: 6px;
-            color: #f39c12;
-            opacity: 1; /* 預設顯示太陽在右邊 (未選取狀態) */
-            transition: opacity 0.3s;
-        }
-        .icon-moon {
-            left: 7px;
-            color: #fff;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        /* 切換後的 Icon 顯示邏輯 */
-        input:checked + .slider .icon-sun { opacity: 0; }
-        input:checked + .slider .icon-moon { opacity: 1; }
-
-        /* Minimalist About Button - 調整大小以匹配 Switch */
-        .btn-about {
-            background: transparent;
-            border: 2px solid var(--pico-muted-border-color);
-            color: var(--pico-muted-color);
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.2s;
-            margin-bottom: 0;
-        }
-        .btn-about:hover {
-            border-color: var(--pico-primary);
-            color: var(--pico-primary);
-            background-color: var(--pico-card-background-color);
-        }
-
-        /* 手機版調整 */
-        @media (max-width: 576px) {
-            .nav-title-group p { display: none; }
-            .nav-title-group h1 { font-size: 1rem; }
-            .nav-content { padding: 0 0.5rem; }
-            .theme-switch { width: 46px; height: 26px; }
-            .slider:before { height: 18px; width: 18px; }
-            input:checked + .slider:before { transform: translateX(20px); }
-        }
-
-
-        /* --- 3. Dark Mode 輸入框可視性優化 (High Contrast Fixes) --- */
-
-        /* 針對 Dark Mode 的 Input, Select, Textarea */
-        [data-theme="dark"] input:not([type="submit"]):not([type="button"]):not([type="radio"]):not([type="checkbox"]),
-        [data-theme="dark"] select,
-        [data-theme="dark"] textarea {
-            background-color: #1e252e !important; /* 比背景稍亮 */
-            border-color: #4a5a6a !important;     /* 明顯的灰藍色邊框 */
-            color: #ffffff !important;
-        }
-
-        [data-theme="dark"] input:focus,
-        [data-theme="dark"] select:focus {
-            border-color: var(--pico-primary) !important;
-            background-color: #26303b !important;
-        }
-
-        /* 針對 Dark Mode 的 Checkbox 和 Radio */
-        [data-theme="dark"] input[type="checkbox"],
-        [data-theme="dark"] input[type="radio"] {
-            background-color: #1e252e; /* 讓框框有底色，不再是透明或純黑 */
-            border: 1px solid #6c7f93; /* 明顯的邊框顏色 */
-        }
-
-        [data-theme="dark"] input[type="checkbox"]:checked,
-        [data-theme="dark"] input[type="radio"]:checked {
-            background-color: var(--pico-primary);
-            border-color: var(--pico-primary);
-            background-image: none; /* 重置，讓 Pico 處理打勾圖示，但底色要是亮的 */
-        }
-
-        /* 讓 Radio 在選取時中間的點更清楚 (Pico v2 使用 background-image svg) */
-        /* 這裡稍微加強未選取狀態的辨識度即可 */
-
-
-        /* --- 其餘通用樣式 (保持原樣) --- */
-        .sticky-footer {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background-color: var(--pico-background-color);
-            border-top: 1px solid var(--pico-primary);
-            box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.15);
-            padding: 1rem; z-index: 100;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            opacity: 0; transform: translateY(100%); visibility: hidden;
-        }
-        .sticky-footer.visible { opacity: 1; transform: translateY(0); visibility: visible; }
-        .footer-container {
+            width: 100%; max-width: 1152px; margin: 0 auto; padding: 0 1rem;
             display: flex; justify-content: space-between; align-items: center;
-            max-width: 1152px; margin: 0 auto; padding: 0 1rem; gap: 1rem;
         }
-        .footer-container button { margin-bottom: 0; }
 
-        .nested-section { padding-left: 1.5rem; border-left: 3px solid var(--pico-primary); margin-top: 0.5rem; }
-        .hidden { display: none !important; }
+        .nav-title-group { display: flex; flex-direction: column; justify-content: center; }
+        .nav-title-group h1 { font-size: 1.75rem; margin: 0; line-height: 1.1; color: var(--pico-h1-color); font-weight: 800; }
+        .nav-title-group p { font-size: 0.85rem; margin: 0; color: var(--pico-muted-color); display: block; margin-top: 2px; }
 
-        input.form-input, input[type="number"], input[type="text"], select {
-            font-size: 0.9em; padding: 0.2rem 0.4rem; height: auto;
-            margin: 0 0.25em; width: auto; display: inline-block; vertical-align: middle;
+        .nav-controls { display: flex; align-items: center; gap: 1rem; height: 100%; }
+
+        /* --- Theme Capsule Switch --- */
+        .theme-capsule {
+            position: relative; display: inline-flex !important; width: 64px !important; height: 34px !important;
+            align-items: center; justify-content: center; border: 2px solid var(--pico-muted-border-color);
+            border-radius: 50px; cursor: pointer; background-color: transparent; transition: all 0.3s ease;
+            margin-bottom: 0; flex-shrink: 0; box-sizing: border-box;
         }
-        input::placeholder { font-size: 0.9em; color: var(--pico-muted-color); }
+        .theme-capsule:hover { border-color: var(--pico-primary); background-color: var(--pico-background-color); }
+        .theme-capsule input { appearance: none; -webkit-appearance: none; position: absolute; opacity: 0; width: 0; height: 0; margin: 0; pointer-events: none; }
 
+        .capsule-content { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 34px; }
+        .capsule-icon {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.3s;
+        }
+        .capsule-icon svg { width: 20px; height: 20px; display: block; }
+
+        .icon-sun { opacity: 1; transform: translateY(0) rotate(0deg); color: #f59e0b; }
+        .icon-moon { opacity: 0; transform: translateY(30px) rotate(-90deg); color: #fbbf24; }
+
+        .theme-capsule input:checked ~ .capsule-content .icon-sun { opacity: 0; transform: translateY(-30px) rotate(90deg); }
+        .theme-capsule input:checked ~ .capsule-content .icon-moon { opacity: 1; transform: translateY(0) rotate(0deg); }
+
+        [data-theme="dark"] .theme-capsule { border-color: #546e7a; background-color: rgba(255, 255, 255, 0.05); }
+        [data-theme="dark"] .theme-capsule:hover { border-color: var(--pico-primary); }
+
+        .btn-about {
+            background: transparent; border: 2px solid var(--pico-muted-border-color); color: var(--pico-muted-color);
+            width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            padding: 0; font-weight: 800; font-size: 1.1rem; transition: all 0.2s; margin-bottom: 0; flex-shrink: 0;
+        }
+        .btn-about:hover { border-color: var(--pico-primary); color: var(--pico-primary); background-color: var(--pico-card-background-color); }
+
+        /* --- Dark Mode Input Fixes --- */
+        [data-theme="dark"] input:not([type="submit"]):not([type="button"]):not([type="radio"]):not([type="checkbox"]),
+        [data-theme="dark"] select, [data-theme="dark"] textarea {
+            background-color: #1e252e !important; border-color: #4a5a6a !important; color: #ffffff !important;
+        }
+        [data-theme="dark"] input:focus, [data-theme="dark"] select:focus {
+            border-color: var(--pico-primary) !important; background-color: #26303b !important;
+        }
+
+        /* [修正] Dark Mode Checkbox/Radio */
+        [data-theme="dark"] input[type="checkbox"], [data-theme="dark"] input[type="radio"] {
+            background-color: #1e252e; border: 1px solid #6c7f93;
+        }
+        [data-theme="dark"] input[type="checkbox"]:checked, [data-theme="dark"] input[type="radio"]:checked {
+            background-color: var(--pico-primary); border-color: var(--pico-primary);
+            /* background-image: none;  <-- [移除] 這行導致打勾消失 */
+        }
+
+        /* --- UI Spacing & Layout --- */
         .inline-label-group { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: var(--pico-spacing); }
         .inline-label-group > span { display: inline-flex; align-items: center; height: 100%; }
-        .inline-label-group label { display: inline-flex !important; align-items: center !important; margin-bottom: 0 !important; cursor: pointer; }
-        .inline-label-group input { margin: 0 0.5rem 0 0 !important; transform: translateY(1px); }
+        /* [新增] 文字標籤右側間距，解決黏在一起的問題 */
+        .inline-label-group > span > span:first-child, /* for simple text inside span */
+        .unit-label { margin-right: 0.5rem; }
 
-        .unit-label { color: var(--pico-muted-color); margin-left: 2px; font-size: 0.9em; display: inline-flex; align-items: center;}
+        /* 針對純文字 label 加強間距 */
+        .label-text { margin-right: 0.5rem; }
 
-        fieldset { margin-bottom: var(--pico-spacing); border: none; padding: 0; }
-        fieldset label { display: block; margin-bottom: 0.5rem; cursor: pointer; }
-        fieldset label input { vertical-align: middle; margin-right: 0.5rem; margin-bottom: 0; transform: translateY(-1px); }
-        legend { font-weight: bold; margin-bottom: 0.5rem; }
+        input.form-input, input[type="number"], input[type="text"], select {
+            font-size: 0.9em; padding: 0.2rem 0.4rem; height: auto; margin: 0 0.25em; width: auto; display: inline-block; vertical-align: middle;
+        }
 
+        /* [修正] Validation Error Style (增強 Dark Mode 可視性) */
+        .input-error {
+            border: 2px solid #e53935 !important;
+            box-shadow: 0 0 5px rgba(229, 57, 53, 0.5);
+            transition: all 0.3s ease;
+        }
+        /* 特別針對 Dark Mode 讓紅框更亮、更明顯 */
+        [data-theme="dark"] .input-error {
+            border-color: #ff5252 !important;
+            box-shadow: 0 0 8px rgba(255, 82, 82, 0.6) !important;
+            background-color: rgba(255, 82, 82, 0.05) !important;
+        }
+
+        /* General Styles */
+        .sticky-footer { position: fixed; bottom: 0; left: 0; width: 100%; background-color: var(--pico-background-color); border-top: 1px solid var(--pico-primary); box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.15); padding: 1rem; z-index: 100; transition: opacity 0.3s, transform 0.3s; opacity: 0; transform: translateY(100%); visibility: hidden; }
+        .sticky-footer.visible { opacity: 1; transform: translateY(0); visibility: visible; }
+        .footer-container { display: flex; justify-content: space-between; align-items: center; max-width: 1152px; margin: 0 auto; padding: 0 1rem; gap: 1rem; }
+        .footer-container button { margin-bottom: 0; }
+        .nested-section { padding-left: 1.5rem; border-left: 3px solid var(--pico-primary); margin-top: 0.5rem; }
+        .hidden { display: none !important; }
         .horizontal-checkboxes { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; margin-bottom: 1rem; }
         .horizontal-checkboxes label { display: inline-flex !important; align-items: center !important; margin-bottom: 0 !important; }
-
         .se-im-row { display: flex; align-items: center; flex-wrap: wrap; gap: 2rem; }
         .se-im-row label { display: inline-flex; align-items: center; margin-bottom: 0; }
-
-        article.nodule-block {
-            margin-bottom: 2rem; padding: 1.5rem;
-            border: 1px solid var(--pico-muted-border-color);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-            background-color: var(--pico-card-background-color);
-            border-radius: var(--border-radius);
-            position: relative;
-        }
+        article.nodule-block { margin-bottom: 2rem; padding: 1.5rem; border: 1px solid var(--pico-muted-border-color); box-shadow: 0 4px 8px rgba(0,0,0,0.08); background-color: var(--pico-card-background-color); border-radius: var(--border-radius); position: relative; }
         .nodule-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 2px solid var(--pico-muted-border-color); padding-bottom: 0.5rem; }
         .nodule-title { font-weight: bold; font-size: 1.2em; color: var(--pico-primary); }
         .btn-delete { background-color: transparent; border: 1px solid var(--pico-del-color); color: var(--pico-del-color); padding: 0.3rem 0.8rem; font-size: 0.8em; cursor: pointer; margin-bottom: 0; transition: all 0.2s; }
         .btn-delete:hover { background-color: var(--pico-del-color); color: white; border-color: var(--pico-del-color); }
-
         .nodule-split-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; margin-bottom: 1rem; border-bottom: 1px solid var(--pico-muted-border-color); padding-bottom: 1rem; }
         .nodule-input-label { font-weight: bold; font-size: 1rem; color: var(--pico-h1-color); display: block; margin-bottom: 0.5rem; }
         .density-inline-group { display: flex; flex-wrap: nowrap; align-items: center; gap: 1rem; }
@@ -287,7 +145,6 @@
         .horizontal-radios { display: flex; flex-wrap: wrap; gap: 1rem; }
         .horizontal-radios label { display: inline-flex; margin-bottom: 0; align-items: center; }
         .solid-part-container { margin-top: 0.2rem; margin-left: 0; padding-left: 2rem; }
-        .input-error { border: 2px solid #e53935 !important; background-color: rgba(229, 57, 53, 0.1) !important; box-shadow: 0 0 5px rgba(229, 57, 53, 0.5); transition: all 0.3s ease; }
 
         #modal_output { white-space: pre-wrap; word-wrap: break-word; background-color: var(--pico-muted-background-color); padding: 1rem; border-radius: var(--border-radius); font-family: var(--pico-font-family-monospace); }
         dialog article { width: 90vw; max-width: 1000px; }
@@ -297,6 +154,15 @@
         .lobe-checkbox-container { display: inline-flex; flex-wrap: wrap; gap: 0.5rem; vertical-align: middle; margin-left: 1rem;}
         .lobe-checkbox-container span label { margin-bottom: 0; font-size: 0.9em; display: inline-flex; align-items: center;}
 
+        /* 手機版調整 */
+        @media (max-width: 576px) {
+            .nav-title-group p { display: none; }
+            .nav-title-group h1 { font-size: 1.2rem; }
+            .nav-content { padding: 0 0.5rem; }
+            .theme-capsule { width: 48px; height: 30px; }
+            .btn-about { width: 30px; height: 30px; font-size: 1rem; }
+            .capsule-icon { font-size: 1rem; }
+        }
     </style>
 </head>
 <body>
@@ -313,12 +179,20 @@
                     ?
                 </button>
 
-                <label class="theme-switch" title="Toggle Dark/Light Mode">
+                <label class="theme-capsule" title="Toggle Dark/Light Mode">
                     <input type="checkbox" id="theme_toggle" onchange="toggleTheme()">
-                    <span class="slider">
-                        <span class="slider-icon icon-moon">🌙</span>
-                        <span class="slider-icon icon-sun">☀️</span>
-                    </span>
+                    <div class="capsule-content">
+                        <div class="capsule-icon icon-sun">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                            </svg>
+                        </div>
+                        <div class="capsule-icon icon-moon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                              <path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.7-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
                 </label>
             </div>
         </div>
@@ -328,19 +202,19 @@
         <article>
             <section>
                 <div class="inline-label-group">
-                    <span>LDCT Quality:</span>
+                    <span class="label-text">LDCT Quality:</span>
                     <span><label><input type="radio" name="quality" value="Good" checked> Good</label></span>
                     <span><label><input type="radio" name="quality" value="Acceptable"> Acceptable</label></span>
                     <span><label><input type="radio" name="quality" value="Not Acceptable"> Not Acceptable</label></span>
                 </div>
 
                 <div class="inline-label-group">
-                    <span>CTDIvol: <input type="text" class="form-input num-only" id="ctdi" placeholder="" style="width: 80px;"><span class="unit-label">mGy</span></span>
-                    <span>Total DLP: <input type="text" class="form-input num-only" id="dlp" placeholder="" style="width: 100px;"><span class="unit-label">mGy*cm</span></span>
+                    <span><span class="label-text">CTDIvol:</span><input type="text" class="form-input num-only" id="ctdi" placeholder="" style="width: 80px;"><span class="unit-label">mGy</span></span>
+                    <span><span class="label-text">Total DLP:</span><input type="text" class="form-input num-only" id="dlp" placeholder="" style="width: 100px;"><span class="unit-label">mGy*cm</span></span>
                 </div>
 
                 <div class="inline-label-group">
-                    <span>Prior CT Date (Y/M/D): <input type="text" class="form-input" id="prior_date" placeholder="YYYY/MM/DD" style="width: 160px;" oninput="handlePriorDateInput()"></span>
+                    <span><span class="label-text">Prior CT Date (Y/M/D):</span><input type="text" class="form-input" id="prior_date" placeholder="YYYY/MM/DD" style="width: 160px;" oninput="handlePriorDateInput()"></span>
                     <span><label><input type="checkbox" id="no_prior" onchange="togglePriorDate(this.checked)"> No prior chest CT available</label></span>
                 </div>
             </section>
@@ -474,7 +348,7 @@
                     </article>
 
                     <article id="block_n3" class="nodule-block hidden">
-                         <div class="nodule-header">
+                        <div class="nodule-header">
                             <span class="nodule-title">Lung nodule 3</span>
                             <button class="btn-delete" onclick="promptDelete(3)" title="刪除此結節並往上遞補">🗑 刪除</button>
                         </div>
@@ -532,6 +406,7 @@
                             <label><input type="checkbox" id="else_lul"> LUL</label>
                             <label><input type="checkbox" id="else_lll"> LLL</label>
                         </div>
+
                         <div class="se-im-row">
                             <label>SE: <input type="text" class="form-input" id="else_se" style="width: 150px;"></label>
                             <label>IM: <input type="text" class="form-input" id="else_im" style="width: 250px;"></label>
@@ -559,7 +434,7 @@
             <section>
                 <fieldset>
                     <legend>Atypical pulmonary cyst</legend>
-                     <label>
+                    <label>
                         <input type="checkbox" id="cyst_3"> Category 3. Lobe: (SE: <input type="text" class="form-input" id="cyst_3_se" style="width: 50px;">, IM: <input type="text" class="form-input" id="cyst_3_im" style="width: 50px;">)
                         <span class="lobe-checkbox-container">
                             <span><label><input type="checkbox" id="cyst_3_rul"> RUL</label></span>
@@ -608,7 +483,7 @@
                     <label><input type="checkbox" id="other_other_lung_check"> Other <input type="text" class="form-input" id="other_other_lung_text" placeholder="..." style="width: 200px;"></label>
                 </fieldset>
             </section>
-             <section class="inline-inputs">
+            <section class="inline-inputs">
                 <h3>Other Findings (選填)</h3>
                 <label>Enlarged lymph nodes, location <input type="text" class="form-input" id="other_lymph" placeholder="..."></label>
                 <label>Coronary artery calcification <input type="text" class="form-input" id="other_coronary" placeholder="..."></label>
@@ -647,12 +522,8 @@
         <div class="footer-container">
             <strong>準備好後點擊複製</strong>
             <div>
-                <button id="copy_simple_button" onclick="validateAndCopy('simple')" class="secondary">
-                    複製簡易報告
-                </button>
-                <button id="copy_button" onclick="validateAndCopy('full')">
-                    複製完整報告
-                </button>
+                <button id="copy_simple_button" onclick="validateAndCopy('simple')" class="secondary">複製簡易報告</button>
+                <button id="copy_button" onclick="validateAndCopy('full')">複製完整報告</button>
             </div>
         </div>
     </footer>
@@ -664,9 +535,7 @@
                 <span id="modal_title">報告內容 (已複製到剪貼簿)</span>
             </header>
             <pre id="modal_output"></pre>
-            <footer>
-                <button data-target="report_modal" onclick="toggleModal(event)">關閉</button>
-            </footer>
+            <footer><button data-target="report_modal" onclick="toggleModal(event)">關閉</button></footer>
         </article>
     </dialog>
 
@@ -696,19 +565,15 @@
                 <li><strong>License:</strong> MIT</li>
                 <li><strong>Source Code:</strong> <a href="https://github.com/tsaiid/structured-reporting-web-tools" target="_blank">GitHub</a></li>
             </ul>
-            <footer>
-                <button class="secondary" data-target="about_modal" onclick="toggleModal(event)">關閉</button>
-            </footer>
+            <footer><button class="secondary" data-target="about_modal" onclick="toggleModal(event)">關閉</button></footer>
         </article>
     </dialog>
 
     <script>
-        // JS 邏輯保持原樣，無需更動，僅保留讓介面正常運作的部分
         const $ = id => document.getElementById(id);
         const getValue = id => $(id).value.trim();
         const isChecked = id => $(id).checked;
         const getRadio = name => document.querySelector(`input[name="${name}"]:checked`)?.value || "";
-
         const cb = (id, text) => `${isChecked(id) ? '[+]' : '[ ]'} ${text}\n`;
         const rb = (name, value, text) => `${getRadio(name) === value ? '[+]' : '[ ]'} ${text}\n`;
         const rb_inline = (name, value, text) => `${getRadio(name) === value ? '[+]' : '[ ]'} ${text}`;
@@ -734,34 +599,56 @@
             }
         });
 
+        // [新增] Theme 記憶功能與切換邏輯
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const toggle = document.getElementById('theme_toggle');
+
+            if (savedTheme) {
+                // 如果有儲存的設定，直接套用
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                if (toggle) toggle.checked = (savedTheme === 'dark');
+            } else {
+                // 如果沒有，偵測系統設定
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const initialTheme = prefersDark ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', initialTheme);
+                if (toggle) toggle.checked = prefersDark;
+            }
+        }
+
         function toggleTheme() {
             const html = document.documentElement;
             const currentTheme = html.getAttribute('data-theme');
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
             html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme); // [新增] 儲存到 localStorage
+
             const toggle = document.getElementById('theme_toggle');
             if (toggle) toggle.checked = (newTheme === 'dark');
         }
 
-        // ... (其他既有的邏輯函數省略，以節省長度，請保留原有的 JS) ...
-        // 為了完整性，這裡簡單列出關鍵的 toggleSection 等
-         function toggleSection(elementId, show) { const el = $(elementId); if (show) el.classList.remove('hidden'); else el.classList.add('hidden'); }
-         function handleNoduleGte6Change(isChecked) { toggleSection('nodule_details', isChecked); if (isChecked) { const radio = document.querySelector('input[name="total_nodules"]:checked'); if (!radio) { const r1 = document.querySelector('input[name="total_nodules"][value="1"]'); if (r1) { r1.checked = true; updateNoduleCount(); } } } }
-         function toggleSolidPart(containerId, densityValue) { const container = $(containerId); if (densityValue === 'part-solid') container.classList.remove('hidden'); else container.classList.add('hidden'); }
-         function updateAirwayParent() { $('airway_proximal').checked = isChecked('airway_secretions') || isChecked('airway_baseline') || isChecked('airway_stable'); }
-         function clearAirwayChildren(parentIsChecked) { if (!parentIsChecked) { $('airway_secretions').checked = false; $('airway_baseline').checked = false; $('airway_stable').checked = false; } }
-         function handleCategoryChange() { if (getRadio('category') !== '0') { $('cat_0_prior').checked = false; $('cat_0_unevaluated').checked = false; $('cat_0_inflammatory').checked = false; } }
-         function updateCat0Radio() { if (isChecked('cat_0_prior') || isChecked('cat_0_unevaluated') || isChecked('cat_0_inflammatory')) { document.querySelector('input[name="category"][value="0"]').checked = true; } }
-         function updateNoduleCount() {
+        // 初始化 Theme
+        initTheme();
+
+        function toggleSection(elementId, show) { const el = $(elementId); if (show) el.classList.remove('hidden'); else el.classList.add('hidden'); }
+        function handleNoduleGte6Change(isChecked) { toggleSection('nodule_details', isChecked); if (isChecked) { const radio = document.querySelector('input[name="total_nodules"]:checked'); if (!radio) { const r1 = document.querySelector('input[name="total_nodules"][value="1"]'); if (r1) { r1.checked = true; updateNoduleCount(); } } } }
+        function toggleSolidPart(containerId, densityValue) { const container = $(containerId); if (densityValue === 'part-solid') container.classList.remove('hidden'); else container.classList.add('hidden'); }
+        function updateAirwayParent() { $('airway_proximal').checked = isChecked('airway_secretions') || isChecked('airway_baseline') || isChecked('airway_stable'); }
+        function clearAirwayChildren(parentIsChecked) { if (!parentIsChecked) { $('airway_secretions').checked = false; $('airway_baseline').checked = false; $('airway_stable').checked = false; } }
+        function handleCategoryChange() { if (getRadio('category') !== '0') { $('cat_0_prior').checked = false; $('cat_0_unevaluated').checked = false; $('cat_0_inflammatory').checked = false; } }
+        function updateCat0Radio() { if (isChecked('cat_0_prior') || isChecked('cat_0_unevaluated') || isChecked('cat_0_inflammatory')) { document.querySelector('input[name="category"][value="0"]').checked = true; } }
+        function updateNoduleCount() {
             const val = getRadio('total_nodules');
             const show = (id, enable) => { const el = $(id); const checkId = id.replace('block_', '') + '_enable'; const checkEl = $(checkId); if (enable) { el.classList.remove('hidden'); if (checkEl) checkEl.checked = true; } else { el.classList.add('hidden'); if (checkEl) checkEl.checked = false; } };
             let count = 0; if (val === '1') count = 1; if (val === '2') count = 2; if (val === '3') count = 3; if (val === '>=4') count = 4;
             show('block_n1', count >= 1); show('block_n2', count >= 2); show('block_n3', count >= 3); show('block_else', count >= 4);
-         }
+        }
 
-         let noduleToDelete = null;
-         function promptDelete(index) { noduleToDelete = index; openModal('delete_modal'); }
-         function confirmDelete() {
+        let noduleToDelete = null;
+        function promptDelete(index) { noduleToDelete = index; openModal('delete_modal'); }
+        function confirmDelete() {
             if (noduleToDelete === null) return;
             const index = noduleToDelete;
             closeModal('delete_modal');
@@ -785,26 +672,22 @@
             if (clearIndex <= 3) { $(`n${clearIndex}_size`).value = ''; $(`n${clearIndex}_solid_part`).value = ''; $(`n${clearIndex}_se`).value = ''; $(`n${clearIndex}_im`).value = ''; document.querySelectorAll(`input[name="n${clearIndex}_density"]`).forEach(el => el.checked = false); toggleSolidPart(`n${clearIndex}_solid_container`, ''); document.querySelectorAll(`input[name="n${clearIndex}_lobe"]`).forEach(el => el.checked = false); document.querySelectorAll(`input[name="n${clearIndex}_status"]`).forEach(el => el.checked = false); }
             if (currentCount === 1) { document.querySelectorAll('input[name="total_nodules"]').forEach(el => el.checked = false); const mainCheck = $('nodule_gte6'); if (mainCheck) { mainCheck.checked = false; handleNoduleGte6Change(false); } $('block_n1').classList.add('hidden'); $('n1_enable').checked = false; } else { let newCount = currentCount - 1; let radioVal = String(newCount); if (newCount >= 4) radioVal = '>=4'; const r = document.querySelector(`input[name="total_nodules"][value="${radioVal}"]`); if(r) { r.checked = true; updateNoduleCount(); } }
             autoCalculateCategory(); noduleToDelete = null;
-         }
+        }
 
-         function handlePriorDateInput() { const hasText = getValue('prior_date').length > 0; const noPriorCheckbox = $('no_prior'); if (hasText) { noPriorCheckbox.checked = false; noPriorCheckbox.disabled = true; } else { noPriorCheckbox.disabled = false; } updateNoduleStatusBasedOnPrior(hasText); }
-         function togglePriorDate(isNoPriorChecked) { const priorDateInput = $('prior_date'); if (isNoPriorChecked) { priorDateInput.value = ''; priorDateInput.disabled = true; updateNoduleStatusBasedOnPrior(false, true); } else { priorDateInput.disabled = false; updateNoduleStatusBasedOnPrior(false, false); } }
-         function updateNoduleStatusBasedOnPrior(hasDate, isNoPriorChecked = false) { for (let i = 1; i <= 3; i++) { const noPriorRadio = document.querySelector(`input[name="n${i}_status"][value="no prior"]`); if (!noPriorRadio) continue; if (hasDate) { noPriorRadio.disabled = true; if (noPriorRadio.checked) noPriorRadio.checked = false; } else { if (isNoPriorChecked || !getValue('prior_date')) { noPriorRadio.disabled = false; const anyChecked = document.querySelector(`input[name="n${i}_status"]:checked`); if (!anyChecked) noPriorRadio.checked = true; } else { noPriorRadio.disabled = false; } } } }
+        function handlePriorDateInput() { const hasText = getValue('prior_date').length > 0; const noPriorCheckbox = $('no_prior'); if (hasText) { noPriorCheckbox.checked = false; noPriorCheckbox.disabled = true; } else { noPriorCheckbox.disabled = false; } updateNoduleStatusBasedOnPrior(hasText); }
+        function togglePriorDate(isNoPriorChecked) { const priorDateInput = $('prior_date'); if (isNoPriorChecked) { priorDateInput.value = ''; priorDateInput.disabled = true; updateNoduleStatusBasedOnPrior(false, true); } else { priorDateInput.disabled = false; updateNoduleStatusBasedOnPrior(false, false); } }
+        function updateNoduleStatusBasedOnPrior(hasDate, isNoPriorChecked = false) { for (let i = 1; i <= 3; i++) { const noPriorRadio = document.querySelector(`input[name="n${i}_status"][value="no prior"]`); if (!noPriorRadio) continue; if (hasDate) { noPriorRadio.disabled = true; if (noPriorRadio.checked) noPriorRadio.checked = false; } else { if (isNoPriorChecked || !getValue('prior_date')) { noPriorRadio.disabled = false; const anyChecked = document.querySelector(`input[name="n${i}_status"]:checked`); if (!anyChecked) noPriorRadio.checked = true; } else { noPriorRadio.disabled = false; } } } }
 
-         const openModal = (target) => $(target)?.showModal();
-         const closeModal = (target) => $(target)?.close();
-         const toggleModal = (event) => { event.preventDefault(); const modalId = event.currentTarget.dataset.target; const modal = $(modalId); modal.open ? closeModal(modalId) : openModal(modalId); };
-         function closeModalOnBackdrop(event) { if (event.target.tagName === 'DIALOG') { event.target.close(); } }
-         window.onscroll = function() { const footer = $('sticky-footer'); if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50) { footer.classList.add('visible'); } else { footer.classList.remove('visible'); } };
+        const openModal = (target) => $(target)?.showModal();
+        const closeModal = (target) => $(target)?.close();
+        const toggleModal = (event) => { event.preventDefault(); const modalId = event.currentTarget.dataset.target; const modal = $(modalId); modal.open ? closeModal(modalId) : openModal(modalId); };
+        function closeModalOnBackdrop(event) { if (event.target.tagName === 'DIALOG') { event.target.close(); } }
+        window.onscroll = function() { const footer = $('sticky-footer'); if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50) { footer.classList.add('visible'); } else { footer.classList.remove('visible'); } };
 
-         function validateForm() { document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error')); let errors = []; if (!getValue('ctdi')) errors.push({id: 'ctdi'}); if (!getValue('dlp')) errors.push({id: 'dlp'}); const priorDate = getValue('prior_date'); const noPrior = isChecked('no_prior'); if (!priorDate && !noPrior) { errors.push({id: 'prior_date'}); } if (isChecked('nodule_gte6')) { const totalNodules = getRadio('total_nodules'); let count = 0; if(totalNodules === '1') count = 1; else if(totalNodules === '2') count = 2; else if(totalNodules === '3') count = 3; else if(totalNodules === '>=4') count = 3; for (let i = 1; i <= count; i++) { if (!getValue(`n${i}_size`)) errors.push({id: `n${i}_size`}); const density = getRadio(`n${i}_density`); if (!density) { errors.push({id: `n${i}_density_group`}); } else if (density === 'part-solid') { if (!getValue(`n${i}_solid_part`)) errors.push({id: `n${i}_solid_part`}); } if (!getRadio(`n${i}_lobe`)) errors.push({id: `n${i}_lobe_group`}); if (!getRadio(`n${i}_status`)) errors.push({id: `n${i}_status_group`}); } } if (errors.length > 0) { const firstId = errors[0].id; const el = $(firstId); errors.forEach(e => { const elem = $(e.id); if(elem) elem.classList.add('input-error'); }); if(el) { el.scrollIntoView({behavior: 'smooth', block: 'center'}); if(el.tagName === 'INPUT') el.focus(); } return false; } return true; }
-         function validateAndCopy(type) { if (!validateForm()) return; if (type === 'full') generateAndCopyFull(); else generateAndCopySimple(); }
+        function validateForm() { document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error')); let errors = []; if (!getValue('ctdi')) errors.push({id: 'ctdi'}); if (!getValue('dlp')) errors.push({id: 'dlp'}); const priorDate = getValue('prior_date'); const noPrior = isChecked('no_prior'); if (!priorDate && !noPrior) { errors.push({id: 'prior_date'}); } if (isChecked('nodule_gte6')) { const totalNodules = getRadio('total_nodules'); let count = 0; if(totalNodules === '1') count = 1; else if(totalNodules === '2') count = 2; else if(totalNodules === '3') count = 3; else if(totalNodules === '>=4') count = 3; for (let i = 1; i <= count; i++) { if (!getValue(`n${i}_size`)) errors.push({id: `n${i}_size`}); const density = getRadio(`n${i}_density`); if (!density) { errors.push({id: `n${i}_density_group`}); } else if (density === 'part-solid') { if (!getValue(`n${i}_solid_part`)) errors.push({id: `n${i}_solid_part`}); } if (!getRadio(`n${i}_lobe`)) errors.push({id: `n${i}_lobe_group`}); if (!getRadio(`n${i}_status`)) errors.push({id: `n${i}_status_group`}); } } if (errors.length > 0) { const firstId = errors[0].id; const el = $(firstId); errors.forEach(e => { const elem = $(e.id); if(elem) elem.classList.add('input-error'); }); if(el) { el.scrollIntoView({behavior: 'smooth', block: 'center'}); if(el.tagName === 'INPUT') el.focus(); } return false; } return true; }
+        function validateAndCopy(type) { if (!validateForm()) return; if (type === 'full') generateAndCopyFull(); else generateAndCopySimple(); }
 
-         // (Report Generation logic omitted - Assume same as before)
-         // (Auto Calculate logic omitted - Assume same as before)
-         // 因篇幅關係，假設 report 產生邏輯與原本一致，請確保保留這些函數
-         // ... generateNoduleText, generateReportText, copyToClipboardAndShowModal, generateAndCopyFull, generateAndCopySimple, autoCalculateCategory, checkCategoryRadio ...
-         // 這裡補上最關鍵的兩個，以免按鈕無效
+        // Report Logic (unchanged logic)
         function generateNoduleText(n, isSimple) { const enabled = isChecked(`n${n}_enable`); if (isSimple && !enabled) return ""; const isPopulated = enabled; let text = `  ${isPopulated ? '[+]' : '[ ]'} Lung nodule ${n} (size, character and location)\n`; text += `    Entire Nodule: ${isPopulated ? txt(`n${n}_size`, '', ' mm') : '_ mm'}\n`; const density = isPopulated ? getRadio(`n${n}_density`) : ''; text += `    Density: ${density === 'non-solid' ? '[+]' : '[ ]'} non-solid  `; text += `${density === 'part-solid' ? '[+]' : '[ ]'} part-solid (solid part: ${density === 'part-solid' ? txt(`n${n}_solid_part`, '', ' mm') : '___ mm'}) `; text += `${density === 'solid' ? '[+]' : '[ ]'} solid\n`; text += `    Lobe: (SE:${isPopulated ? txt(`n${n}_se`) : '_'}, IM:${isPopulated ? txt(`n${n}_im`) : '_'}) `; text += `${isPopulated ? rb_inline(`n${n}_lobe`, 'RUL', 'RUL') : '[ ] RUL'} `; text += `${isPopulated ? rb_inline(`n${n}_lobe`, 'RML', 'RML') : '[ ] RML'} `; text += `${isPopulated ? rb_inline(`n${n}_lobe`, 'RLL', 'RLL') : '[ ] RLL'} `; text += `${isPopulated ? rb_inline(`n${n}_lobe`, 'LUL', 'LUL') : '[ ] LUL'} `; text += `${isPopulated ? rb_inline(`n${n}_lobe`, 'LLL', 'LLL') : '[ ] LLL'}\n`; text += `    The nodule is ${isPopulated ? rb_inline(`n${n}_status`, 'unchanged', 'unchanged') : '[ ] unchanged'} `; text += `${isPopulated ? rb_inline(`n${n}_status`, 'enlarging', 'enlarging (>1.5 mm)') : '[ ] enlarging (>1.5 mm)'} `; text += `${isPopulated ? rb_inline(`n${n}_status`, 'newly found', 'newly found (≧4 mm)') : '[ ] newly found (≧4 mm)'} `; text += `${isPopulated ? rb_inline(`n${n}_status`, 'no prior', 'No prior chest CT comparison') : '[ ] No prior chest CT comparison'}`; return text; }
         function generateReportText(isSimple = false) { let report = ""; const add = (text) => { report += text; }; const addLine = (condition, lineGenerator) => { if (!isSimple || condition) add(lineGenerator()); }; const addLineCb = (id, text) => addLine(isChecked(id), () => cb(id, text)); report += `LDCT Quality: ${rb_inline('quality', 'Good', 'Good')} ${rb_inline('quality', 'Acceptable', 'Acceptable')} ${rb_inline('quality', 'Not Acceptable', 'Not Acceptable')}\n`; report += `CTDIvol: ${txt('ctdi')} mGy Total DLP: ${txt('dlp')} mGy*cm\n`; report += `In comparison with the prior CT, Date (Y/M/D) ${txt('prior_date')} ${cb('no_prior', 'No prior chest CT available')}`; report += "\nLung nodule findings related to cancer screening\n"; report += "詳細規範請參閱 Lung-RADS v2022\n\n"; addLineCb('no_nodule', 'No lung nodule'); addLineCb('benign_features', 'Nodule with benign features.'); addLine(isChecked('nodule_lt6'), () => cb_se_im('nodule_lt6', 'Lung nodule(s) (<6mm)', 'lt6_se', 'lt6_im')); addLineCb('juxtapleural', 'Juxtapleural nodule.'); const isGte6Checked = isChecked('nodule_gte6'); if (isSimple) { if (isGte6Checked) { report += "[+] Lung nodule(s) (≧6mm or enlarging>1.5mm or new≧4mm): total number "; report += `${rb_inline('total_nodules', '1', '1')} ${rb_inline('total_nodules', '2', '2')} ${rb_inline('total_nodules', '3', '3')} ${rb_inline('total_nodules', '>=4', '≥4')}`; report += ", and described as followings:\n"; report += generateNoduleText(1, true) + (isChecked('n1_enable') ? "\n\n" : ""); report += generateNoduleText(2, true) + (isChecked('n2_enable') ? "\n\n" : ""); report += generateNoduleText(3, true) + (isChecked('n3_enable') ? "\n\n" : ""); } } else { report += `${isGte6Checked ? '[+]' : '[ ]'} Lung nodule(s) (≧6mm or enlarging>1.5mm or new≧4mm): total number `; report += `${rb_inline('total_nodules', '1', '1')} ${rb_inline('total_nodules', '2', '2')} ${rb_inline('total_nodules', '3', '3')} ${rb_inline('total_nodules', '>=4', '≥4')}`; report += ", and described as followings:\n"; report += generateNoduleText(1, false) + "\n\n"; report += generateNoduleText(2, false) + "\n\n"; report += generateNoduleText(3, false) + "\n\n"; } const showElse = (getRadio('total_nodules') === '>=4'); const elseLobesChecked = isChecked('else_rul') || isChecked('else_rml') || isChecked('else_rll') || isChecked('else_lul') || isChecked('else_lll'); if (isSimple) { if (isGte6Checked && showElse) { report += `  [+] Lung nodules else `; report += `${cb_inline('else_rul', 'RUL')} `; report += `${cb_inline('else_rml', 'RML')} `; report += `${cb_inline('else_rll', 'RLL')} `; report += `${cb_inline('else_lul', 'LUL')} `; report += `${cb_inline('else_lll', 'LLL')} `; report += `(SE:${txt('else_se')}, IM:${txt('else_im')})\n\n`; } } else { report += `  ${elseLobesChecked && showElse ? '[+]' : '[ ]'} Lung nodules else `; report += `${showElse ? cb_inline('else_rul', 'RUL') : '[ ] RUL'} `; report += `${showElse ? cb_inline('else_rml', 'RML') : '[ ] RML'} `; report += `${showElse ? cb_inline('else_rll', 'RLL') : '[ ] RLL'} `; report += `${showElse ? cb_inline('else_lul', 'LUL') : '[ ] LUL'} `; report += `${showElse ? cb_inline('else_lll', 'LLL') : '[ ] LLL'} `; report += `(SE:${showElse ? txt('else_se') : '_'}, IM:${showElse ? txt('else_im') : '_'})\n\n`; } let airwayChecked = isChecked('airway_subsegmental') || isChecked('airway_proximal'); if (!isSimple || airwayChecked) { report += `${airwayChecked ? '[+]' : '[ ]'} Airway nodule\n`; addLine(true, () => `  ${cb('airway_subsegmental', 'Subsegmental (Category 2)')}`); addLine(true, () => `  ${cb('airway_proximal', 'Segmental or more proximal')}`); addLine(true, () => `    ${cb('airway_secretions', 'Favors secretions (Category 2)')}`); addLine(true, () => `    ${cb('airway_baseline', 'At baseline (Category 4A)')}`); addLine(true, () => `    ${cb('airway_stable', 'Stable or growing (Category 4B)')}`); report += "\n"; } let cystChecked = isChecked('cyst_3') || isChecked('cyst_4a') || isChecked('cyst_4b'); if (!isSimple || cystChecked) { const getCystString = (cat_id, cat_name, se_id, im_id, isSimple) => { if (isSimple && !isChecked(cat_id)) return ""; let line = `  ${cb(cat_id, `Category ${cat_name}. Lobe: (SE: ${txt(se_id)}, IM: ${txt(im_id)}) `)}`; line = line.trimEnd(); line += ` ${cb_inline(cat_id + '_rul', 'RUL')}`; line += ` ${cb_inline(cat_id + '_rml', 'RML')}`; line += ` ${cb_inline(cat_id + '_rll', 'RLL')}`; line += ` ${cb_inline(cat_id + '_lul', 'LUL')}`; line += ` ${cb_inline(cat_id + '_lll', 'LLL')}\n`; return line; }; report += `${cystChecked ? '[+]' : '[ ]'} Atypical pulmonary cyst\n`; add(getCystString('cyst_3', '3', 'cyst_3_se', 'cyst_3_im', isSimple)); add(getCystString('cyst_4a', '4A', 'cyst_4a_se', 'cyst_4a_im', isSimple)); add(getCystString('cyst_4b', '4B', 'cyst_4b_se', 'cyst_4b_im', isSimple)); report += "\n"; } addLineCb('metastases', 'The pattern of lung nodules has a higher probability of metastases'); let otherLungChecked = isChecked('other_emphysema') || isChecked('other_bronchiectasis') || isChecked('other_bronchitis') || isChecked('other_treeinbud') || isChecked('other_centrilobular') || isChecked('other_tb') || isChecked('other_ild') || isChecked('other_other_lung_check'); if (!isSimple || otherLungChecked) { report += "\n----\nOther Lung Findings (選填)\n"; let line1 = "", line2 = ""; if (!isSimple || isChecked('other_emphysema')) line1 += `${cb_inline('other_emphysema', 'Emphysema')} `; if (!isSimple || isChecked('other_bronchiectasis')) line1 += `${cb_inline('other_bronchiectasis', 'Bronchiectasis')} `; if (!isSimple || isChecked('other_bronchitis')) line1 += `${cb_inline('other_bronchitis', 'Bronchitis/bronchiolitis')} `; if (!isSimple || isChecked('other_treeinbud')) line1 += `${cb_inline('other_treeinbud', 'Tree-in-bud pattern')}`; if (!isSimple || isChecked('other_centrilobular')) line2 += `${cb_inline('other_centrilobular', 'Centrilobular nodules')} `; if (!isSimple || isChecked('other_tb')) line2 += `${cb_inline('other_tb', 'Old pulmonary TB')} `; if (!isSimple || isChecked('other_ild')) line2 += `${cb_inline('other_ild', 'Interstitial lung disease (ILD)')} `; if (!isSimple || isChecked('other_other_lung_check')) line2 += `${cb_inline('other_other_lung_check', `Other ${txt('other_other_lung_text')}`)}`; if (line1.trim() !== "") report += line1.trimEnd() + "\n"; if (line2.trim() !== "") report += line2.trimEnd() + "\n"; } let otherFindingsChecked = getValue('other_lymph') || getValue('other_coronary') || getValue('other_chest') || getValue('other_abnormal'); if (!isSimple || otherFindingsChecked) { report += "\nOther Findings (選填)\n"; const addOtherFinding = (id, text) => { const val = getValue(id); if (isSimple && !val) return; const mark = val ? '[+]' : '[ ]'; const content = val ? `: ${val}` : ''; report += `${mark} ${text}${content}\n`; }; addOtherFinding('other_lymph', 'Enlarged lymph nodes, location'); addOtherFinding('other_coronary', 'Coronary artery calcification'); addOtherFinding('other_chest', 'Other significant abnormal chest findings'); addOtherFinding('other_abnormal', 'Other significant abnormal abdominal or neck findings in this chest CT scan'); } report += "\n----\nOverall recommendation\n"; report += "Lung-RADS v2022 Category Descriptor\n"; report += `  ${rb_inline('category', '0', 'Category 0: Incomplete.')}\n`; report += `    ${cb('cat_0_prior', 'Prior chest CT examination being located for comparison.')}`; report += `    ${cb('cat_0_unevaluated', 'Part or all of lungs cannot be evaluated.')}`; report += `    ${cb('cat_0_inflammatory', 'Findings suggestive of an inflammatory or infectious process.')}`; report += `  ${rb_inline('category', '1', 'Category 1: Negative.')}\n`; report += `  ${rb_inline('category', '2', 'Category 2: Benign - Based on imaging features or indolent behavior.')}\n`; report += `  ${rb_inline('category', '3', 'Category 3: Probably Benign - Based on imaging features or behavior.')}\n`; report += `  ${rb_inline('category', '4A', 'Category 4A: Suspicious.')}\n`; report += `  ${rb_inline('category', '4B', 'Category 4B: Very suspicious.')}\n`; report += `  ${rb_inline('category', '4X', 'Category 4X: Category 3 or 4 nodules with additional features or imaging findings that increase suspicion for lung cancer.')}\n`; if (!isSimple || isChecked('modifier_s') || isChecked('refer_opd')) { report += "\n----\n(選填)\n"; addLineCb('modifier_s', 'Modifier S: May add to category 0-4 for clinically significant or potentially clinically significant findings unrelated to lung cancer.'); addLineCb('refer_opd', '請至門診就診'); } return report.replace(/\n\n\n/g, '\n\n'); }
         function copyToClipboardAndShowModal(report, buttonId, title) { navigator.clipboard.writeText(report).then(() => { $('modal_output').textContent = report; $('modal_title').textContent = title + " (已複製到剪貼簿)"; openModal('report_modal'); const btn = $(buttonId); const originalText = (buttonId === 'copy_button') ? '複製完整報告' : '複製簡易報告'; btn.innerHTML = "✓ 已複製！"; btn.disabled = true; setTimeout(() => { btn.innerHTML = originalText; btn.disabled = false; }, 2000); }).catch(err => { console.error('複製失敗: ', err); alert('複製失敗。請檢查您的瀏覽器權限設定。'); }); }
