@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lung-RADS v2022 報告產生器 (v13.4)</title>
+    <title>Lung-RADS v2022 報告產生器 (v13.5)</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
     <style>
         /* --- 基礎變數調整 --- */
@@ -73,49 +73,76 @@
         }
         .btn-about:hover { border-color: var(--pico-primary); color: var(--pico-primary); background-color: var(--pico-card-background-color); }
 
-        /* --- Dark Mode Input Fixes --- */
-        [data-theme="dark"] input:not([type="submit"]):not([type="button"]):not([type="radio"]):not([type="checkbox"]),
-        [data-theme="dark"] select, [data-theme="dark"] textarea {
-            background-color: #1e252e !important; border-color: #4a5a6a !important; color: #ffffff !important;
-        }
-        [data-theme="dark"] input:focus, [data-theme="dark"] select:focus {
-            border-color: var(--pico-primary) !important; background-color: #26303b !important;
-        }
-
-        /* [修正] Dark Mode Checkbox/Radio */
-        [data-theme="dark"] input[type="checkbox"], [data-theme="dark"] input[type="radio"] {
-            background-color: #1e252e; border: 1px solid #6c7f93;
-        }
-        [data-theme="dark"] input[type="checkbox"]:checked, [data-theme="dark"] input[type="radio"]:checked {
-            background-color: var(--pico-primary); border-color: var(--pico-primary);
-            /* background-image: none;  <-- [移除] 這行導致打勾消失 */
-        }
-
-        /* --- UI Spacing & Layout --- */
+        /* --- UI Spacing & Layout (間距修正) --- */
         .inline-label-group { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: var(--pico-spacing); }
         .inline-label-group > span { display: inline-flex; align-items: center; height: 100%; }
-        /* [新增] 文字標籤右側間距，解決黏在一起的問題 */
-        .inline-label-group > span > span:first-child, /* for simple text inside span */
-        .unit-label { margin-right: 0.5rem; }
 
-        /* 針對純文字 label 加強間距 */
-        .label-text { margin-right: 0.5rem; }
+        /* 修正：文字與輸入框之間的間距 */
+        .inline-label-group > span > span:first-child,
+        .label-text {
+            margin-right: 0.5rem;
+        }
+        .unit-label { color: var(--pico-muted-color); margin-left: 0.5rem; font-size: 0.9em; display: inline-flex; align-items: center;}
+
+        /* --- Dark Mode Input Fixes (核心修正) --- */
+
+        /* 1. 一般輸入框 (排除 Checkbox/Radio) */
+        [data-theme="dark"] input:not([type="submit"]):not([type="button"]):not([type="radio"]):not([type="checkbox"]),
+        [data-theme="dark"] select,
+        [data-theme="dark"] textarea {
+            background-color: #1e252e !important;
+            border-color: #4a5a6a !important;
+            color: #ffffff !important;
+        }
+
+        /* 2. 一般輸入框 Focus 狀態 (排除 Checkbox/Radio，避免搶走藍底) */
+        [data-theme="dark"] input:not([type="radio"]):not([type="checkbox"]):focus,
+        [data-theme="dark"] select:focus {
+            border-color: var(--pico-primary) !important;
+            background-color: #26303b !important;
+        }
+
+        /* 3. Checkbox & Radio - 未選取狀態 */
+        [data-theme="dark"] input[type="checkbox"],
+        [data-theme="dark"] input[type="radio"] {
+            background-color: #1e252e;
+            border: 1px solid #6c7f93;
+            transition: background-color 0.1s, border-color 0.1s, background-image 0.1s; /* 確保動畫平滑 */
+        }
+
+        /* 4. Checkbox & Radio - 選取狀態 (包含 Focus) */
+        /* 使用 !important 確保藍色背景優先於任何 Focus 樣式 */
+        [data-theme="dark"] input[type="checkbox"]:checked,
+        [data-theme="dark"] input[type="checkbox"]:checked:focus,
+        [data-theme="dark"] input[type="radio"]:checked,
+        [data-theme="dark"] input[type="radio"]:checked:focus {
+            background-color: var(--pico-primary) !important;
+            border-color: var(--pico-primary) !important;
+            border-width: 1px;
+        }
+
+        /* 5. 確保圖示 (SVG) 存在 */
+        [data-theme="dark"] input[type="checkbox"]:checked {
+            background-image: var(--pico-icon-checkbox) !important;
+        }
+        [data-theme="dark"] input[type="radio"]:checked {
+            background-image: var(--pico-icon-radio) !important;
+        }
 
         input.form-input, input[type="number"], input[type="text"], select {
             font-size: 0.9em; padding: 0.2rem 0.4rem; height: auto; margin: 0 0.25em; width: auto; display: inline-block; vertical-align: middle;
         }
 
-        /* [修正] Validation Error Style (增強 Dark Mode 可視性) */
+        /* Validation Error Style (Dark Mode 強化) */
         .input-error {
             border: 2px solid #e53935 !important;
             box-shadow: 0 0 5px rgba(229, 57, 53, 0.5);
             transition: all 0.3s ease;
         }
-        /* 特別針對 Dark Mode 讓紅框更亮、更明顯 */
         [data-theme="dark"] .input-error {
             border-color: #ff5252 !important;
-            box-shadow: 0 0 8px rgba(255, 82, 82, 0.6) !important;
-            background-color: rgba(255, 82, 82, 0.05) !important;
+            box-shadow: 0 0 8px rgba(255, 82, 82, 0.8) !important; /* 加強光暈 */
+            background-color: rgba(255, 82, 82, 0.1) !important;
         }
 
         /* General Styles */
@@ -154,7 +181,6 @@
         .lobe-checkbox-container { display: inline-flex; flex-wrap: wrap; gap: 0.5rem; vertical-align: middle; margin-left: 1rem;}
         .lobe-checkbox-container span label { margin-bottom: 0; font-size: 0.9em; display: inline-flex; align-items: center;}
 
-        /* 手機版調整 */
         @media (max-width: 576px) {
             .nav-title-group p { display: none; }
             .nav-title-group h1 { font-size: 1.2rem; }
