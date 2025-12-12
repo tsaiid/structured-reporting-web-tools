@@ -6,14 +6,150 @@
     <title>Lung-RADS v2022 報告產生器 (v13.1)</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
     <style>
-        /* --- 基礎樣式 --- */
-        body { padding-bottom: 100px; }
+        /* --- 基礎樣式與 CSS 變數 --- */
+        :root {
+            --nav-height: 80px;
+            --nav-bg-light: rgba(255, 255, 255, 0.95);
+            --nav-bg-dark: rgba(19, 23, 31, 0.95);
+            --border-radius: 8px;
+        }
 
-        /* Sticky Footer */
+        body {
+            padding-top: var(--nav-height); /* 預留 Navbar 空間 */
+            padding-bottom: 100px;
+        }
+
+        /* --- Sticky Navbar --- */
+        .sticky-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            min-height: var(--nav-height);
+            z-index: 900;
+            padding: 0.5rem 1rem;
+            background-color: var(--nav-bg-light);
+            border-bottom: 1px solid var(--pico-muted-border-color);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: background-color 0.3s;
+        }
+
+        [data-theme="dark"] .sticky-nav {
+            background-color: var(--nav-bg-dark);
+        }
+
+        .nav-content {
+            max-width: 1152px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-title-group h1 {
+            font-size: 1.25rem;
+            margin: 0;
+            color: var(--pico-h1-color);
+        }
+
+        .nav-title-group p {
+            font-size: 0.75rem;
+            margin: 0;
+            color: var(--pico-muted-color);
+            display: block;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* 響應式調整：手機版隱藏副標題以節省空間 */
+        @media (max-width: 576px) {
+            .nav-title-group p { display: none; }
+            .nav-title-group h1 { font-size: 1rem; }
+            .sticky-nav { padding: 0.5rem; }
+        }
+
+        /* --- Theme Switch Toggle (Modern Minimalist) --- */
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--pico-primary-background); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        /* Sun/Moon Icons inside slider */
+        .slider-icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            pointer-events: none;
+        }
+        .icon-sun { left: 5px; color: #f39c12; opacity: 0; transition: opacity 0.3s; }
+        .icon-moon { right: 6px; color: #f1c40f; opacity: 1; transition: opacity 0.3s; }
+
+        input:checked + .slider .icon-sun { opacity: 1; }
+        input:checked + .slider .icon-moon { opacity: 0; }
+
+        /* Minimalist About Button */
+        .btn-about {
+            background: transparent;
+            border: 1px solid var(--pico-muted-border-color);
+            color: var(--pico-muted-color);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+        }
+        .btn-about:hover {
+            border-color: var(--pico-primary);
+            color: var(--pico-primary);
+            background-color: var(--pico-card-background-color);
+        }
+
+        /* --- Sticky Footer 適配 Dark Mode --- */
         .sticky-footer {
             position: fixed; bottom: 0; left: 0; width: 100%;
-            background-color: var(--background-color);
-            border-top: 1px solid var(--primary);
+            background-color: var(--pico-background-color); /* 使用 Pico 變數 */
+            border-top: 1px solid var(--pico-primary);
             box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.15);
             padding: 1rem; z-index: 100;
             transition: opacity 0.3s ease, transform 0.3s ease;
@@ -26,12 +162,9 @@
         }
         .footer-container button { margin-bottom: 0; }
 
-        /* General UI Components */
-        .nested-section { padding-left: 1.5rem; border-left: 3px solid var(--primary); margin-top: 0.5rem; }
+        /* --- General UI Components --- */
+        .nested-section { padding-left: 1.5rem; border-left: 3px solid var(--pico-primary); margin-top: 0.5rem; }
         .hidden { display: none !important; }
-
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
-        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
 
         /* --- 通用 Input/Select 樣式重置 --- */
         input.form-input, input[type="number"], input[type="text"], select {
@@ -43,10 +176,9 @@
             display: inline-block;
             vertical-align: middle;
         }
-        input::placeholder { font-size: 0.9em; color: var(--muted-color); }
+        input::placeholder { font-size: 0.9em; color: var(--pico-muted-color); }
 
         /* --- 強力對齊系統 --- */
-
         .inline-label-group {
             display: flex;
             flex-wrap: wrap;
@@ -71,13 +203,11 @@
             transform: translateY(1px);
         }
 
-        .unit-label { color: var(--muted-color); margin-left: 2px; font-size: 0.9em; display: inline-flex; align-items: center;}
+        .unit-label { color: var(--pico-muted-color); margin-left: 2px; font-size: 0.9em; display: inline-flex; align-items: center;}
 
         /* Fieldset & Legend */
         fieldset { margin-bottom: var(--pico-spacing); border: none; padding: 0; }
-        /* 預設 fieldset label 為 block (垂直排列) */
         fieldset label { display: block; margin-bottom: 0.5rem; cursor: pointer; }
-
         fieldset label input[type="checkbox"],
         fieldset label input[type="radio"] {
             vertical-align: middle;
@@ -85,119 +215,78 @@
             margin-bottom: 0;
             transform: translateY(-1px);
         }
-
         legend { font-weight: bold; margin-bottom: 0.5rem; }
 
-        /* --- [新增] 用於 Lung nodules else 的水平 Checkbox 樣式 --- */
+        /* Checkbox 排列 */
         .horizontal-checkboxes {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 1.5rem; /* Checkbox 之間的間距 */
-            margin-bottom: 1rem;
+            display: flex; flex-wrap: wrap; align-items: center;
+            gap: 1.5rem; margin-bottom: 1rem;
         }
         .horizontal-checkboxes label {
-            display: inline-flex !important; /* 強制橫排 */
-            align-items: center !important;
-            margin-bottom: 0 !important;
+            display: inline-flex !important; align-items: center !important; margin-bottom: 0 !important;
         }
 
-        /* --- [新增] 用於 SE/IM 的單行容器 --- */
+        /* SE/IM 單行容器 */
         .se-im-row {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 2rem; /* SE 和 IM 之間的間距 */
+            display: flex; align-items: center; flex-wrap: wrap; gap: 2rem;
         }
-        .se-im-row label {
-            display: inline-flex;
-            align-items: center;
-            margin-bottom: 0;
-        }
+        .se-im-row label { display: inline-flex; align-items: center; margin-bottom: 0; }
 
-        /* --- Nodule Card Styling --- */
+        /* --- Nodule Card Styling (Dark Mode Ready) --- */
         article.nodule-block {
             margin-bottom: 2rem;
             padding: 1.5rem;
-            border: 1px solid var(--muted-border-color);
+            border: 1px solid var(--pico-muted-border-color);
             box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-            background-color: var(--card-background-color);
+            background-color: var(--pico-card-background-color);
             border-radius: var(--border-radius);
             position: relative;
         }
 
         .nodule-header {
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 1rem; border-bottom: 2px solid var(--muted-border-color);
+            margin-bottom: 1rem; border-bottom: 2px solid var(--pico-muted-border-color);
             padding-bottom: 0.5rem;
         }
-        .nodule-title { font-weight: bold; font-size: 1.2em; color: var(--primary); }
+        .nodule-title { font-weight: bold; font-size: 1.2em; color: var(--pico-primary); }
 
         .btn-delete {
-            background-color: transparent; border: 1px solid var(--del-color);
-            color: var(--del-color); padding: 0.3rem 0.8rem; font-size: 0.8em;
+            background-color: transparent; border: 1px solid var(--pico-del-color);
+            color: var(--pico-del-color); padding: 0.3rem 0.8rem; font-size: 0.8em;
             cursor: pointer; margin-bottom: 0; transition: all 0.2s;
         }
-        .btn-delete:hover { background-color: var(--del-color); color: white; border-color: var(--del-color); }
+        .btn-delete:hover { background-color: var(--pico-del-color); color: white; border-color: var(--pico-del-color); }
 
-        /* Layout: Split 50/50 */
         .nodule-split-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            align-items: start;
-            margin-bottom: 1rem;
-            border-bottom: 1px solid var(--muted-border-color);
+            display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+            align-items: start; margin-bottom: 1rem;
+            border-bottom: 1px solid var(--pico-muted-border-color);
             padding-bottom: 1rem;
         }
 
         .nodule-input-label {
-            font-weight: bold;
-            font-size: 1rem;
-            color: var(--h1-color);
-            display: block;
-            margin-bottom: 0.5rem;
+            font-weight: bold; font-size: 1rem;
+            color: var(--pico-h1-color);
+            display: block; margin-bottom: 0.5rem;
         }
 
-        /* Density Inline Group */
         .density-inline-group {
-            display: flex;
-            flex-wrap: nowrap;
-            align-items: center;
-            gap: 1rem;
+            display: flex; flex-wrap: nowrap; align-items: center; gap: 1rem;
         }
         .density-inline-group label {
-            display: inline-flex;
-            align-items: center;
-            margin-bottom: 0;
-            white-space: nowrap;
-            font-size: 0.9em;
+            display: inline-flex; align-items: center; margin-bottom: 0; white-space: nowrap; font-size: 0.9em;
         }
-        .density-inline-group input {
-            margin-right: 0.4rem;
-            margin-bottom: 0;
-        }
+        .density-inline-group input { margin-right: 0.4rem; margin-bottom: 0; }
 
-        /* Size Row */
         .size-input-row {
-            display: flex;
-            flex-wrap: nowrap;
-            align-items: center;
-            white-space: nowrap;
-            margin-bottom: 0.5rem;
+            display: flex; flex-wrap: nowrap; align-items: center; white-space: nowrap; margin-bottom: 0.5rem;
         }
-        .size-input-row label {
-            margin-bottom: 0;
-            margin-right: 0.5rem;
-        }
+        .size-input-row label { margin-bottom: 0; margin-right: 0.5rem; }
 
         .nodule-row-full { width: 100%; margin-bottom: 1rem; }
 
         .lobe-inline-wrapper {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 0.5rem;
+            display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;
         }
         .lobe-label {
             white-space: nowrap; margin-right: 1rem;
@@ -205,43 +294,29 @@
             display: inline-flex; align-items: center;
         }
 
-        .horizontal-radios {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        .horizontal-radios label {
-            display: inline-flex;
-            margin-bottom: 0;
-            align-items: center;
-        }
-        .horizontal-radios input {
-            margin-right: 0.4rem;
-            margin-bottom: 0;
-        }
+        .horizontal-radios { display: flex; flex-wrap: wrap; gap: 1rem; }
+        .horizontal-radios label { display: inline-flex; margin-bottom: 0; align-items: center; }
+        .horizontal-radios input { margin-right: 0.4rem; margin-bottom: 0; }
 
-        .solid-part-container {
-            margin-top: 0.2rem;
-            margin-left: 0;
-            padding-left: 2rem;
-        }
+        .solid-part-container { margin-top: 0.2rem; margin-left: 0; padding-left: 2rem; }
 
         .input-error {
             border: 2px solid #e53935 !important;
-            background-color: #ffebee !important;
+            background-color: rgba(229, 57, 53, 0.1) !important; /* 透明度背景以適應 Dark mode */
             box-shadow: 0 0 5px rgba(229, 57, 53, 0.5);
             transition: all 0.3s ease;
         }
 
         #modal_output {
             white-space: pre-wrap; word-wrap: break-word;
-            background-color: var(--muted-background-color);
+            background-color: var(--pico-muted-background-color);
             padding: 1rem; border-radius: var(--border-radius);
             font-family: var(--pico-font-family-monospace);
         }
 
         dialog article { width: 90vw; max-width: 1000px; }
         #delete_modal article { max-width: 400px; text-align: center; }
+        #about_modal article { max-width: 600px; text-align: left; }
         .modal-actions { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; }
 
         .lobe-checkbox-container { display: inline-flex; flex-wrap: wrap; gap: 0.5rem; vertical-align: middle; margin-left: 1rem;}
@@ -251,12 +326,29 @@
 </head>
 <body>
 
-    <main class="container">
-        <header>
-            <h1>Lung-RADS v2022 報告產生器</h1>
-            <p>填寫以下欄位，點擊「複製報告」按鈕即可產生純文字報告並複製到剪貼簿。</p>
-        </header>
+    <nav class="sticky-nav">
+        <div class="nav-content">
+            <div class="nav-title-group">
+                <h1>Lung-RADS v2022 報告產生器</h1>
+                <p>填寫以下欄位，點擊「複製報告」按鈕即可產生純文字報告並複製到剪貼簿。</p>
+            </div>
+            <div class="nav-controls">
+                <button class="btn-about" onclick="openModal('about_modal')" title="About this project" aria-label="About">
+                    ?
+                </button>
 
+                <label class="theme-switch">
+                    <input type="checkbox" id="theme_toggle" onchange="toggleTheme()">
+                    <span class="slider">
+                        <span class="slider-icon icon-moon">🌙</span>
+                        <span class="slider-icon icon-sun">☀️</span>
+                    </span>
+                </label>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
         <article>
             <section>
                 <div class="inline-label-group">
@@ -620,6 +712,27 @@
         </article>
     </dialog>
 
+    <dialog id="about_modal" onclick="closeModalOnBackdrop(event)">
+        <article>
+            <header>
+                <a href="#close" aria-label="Close" class="close" data-target="about_modal" onclick="toggleModal(event)"></a>
+                <strong>About this project</strong>
+            </header>
+            <p>
+                <strong>Lung-RADS v2022 報告產生器</strong><br>
+                這是一個協助放射科醫師快速產生 Lung-RADS v2022 結構化報告的工具。
+            </p>
+            <ul>
+                <li><strong>作者:</strong> 蔡依達 / 陽交大附醫放射科醫師</li>
+                <li><strong>License:</strong> MIT</li>
+                <li><strong>Source Code:</strong> <a href="https://github.com/tsaiid/structured-reporting-web-tools" target="_blank">GitHub</a></li>
+            </ul>
+            <footer>
+                <button class="secondary" data-target="about_modal" onclick="toggleModal(event)">關閉</button>
+            </footer>
+        </article>
+    </dialog>
+
     <script>
         // --- A. 輔助函數 ---
         const $ = id => document.getElementById(id);
@@ -659,6 +772,18 @@
                 e.target.value = val;
             }
         });
+
+        // --- Theme Toggle Logic ---
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+
+            // 讓 Switch 狀態同步 (雖然點擊時就會變，但為了嚴謹)
+            const toggle = document.getElementById('theme_toggle');
+            if (toggle) toggle.checked = (newTheme === 'dark');
+        }
 
         // --- B. 動態 UI 邏輯 ---
         function toggleSection(elementId, show) {
@@ -944,7 +1069,6 @@
                     if (!getValue(`n${i}_size`)) errors.push({id: `n${i}_size`});
 
                     const density = getRadio(`n${i}_density`);
-                    // [修正] 加入 Density 必填驗證
                     if (!density) {
                         errors.push({id: `n${i}_density_group`});
                     } else if (density === 'part-solid') {
@@ -1000,7 +1124,7 @@
             // Solid
             text += `${density === 'solid' ? '[+]' : '[ ]'} solid\n`;
 
-            // Lobe [修正: 使用 rb_inline 移除多餘換行]
+            // Lobe
             text += `    Lobe: (SE:${isPopulated ? txt(`n${n}_se`) : '_'}, IM:${isPopulated ? txt(`n${n}_im`) : '_'}) `;
             text += `${isPopulated ? rb_inline(`n${n}_lobe`, 'RUL', 'RUL') : '[ ] RUL'} `;
             text += `${isPopulated ? rb_inline(`n${n}_lobe`, 'RML', 'RML') : '[ ] RML'} `;
@@ -1008,7 +1132,7 @@
             text += `${isPopulated ? rb_inline(`n${n}_lobe`, 'LUL', 'LUL') : '[ ] LUL'} `;
             text += `${isPopulated ? rb_inline(`n${n}_lobe`, 'LLL', 'LLL') : '[ ] LLL'}\n`;
 
-            // Status [修正: 使用 rb_inline]
+            // Status
             text += `    The nodule is ${isPopulated ? rb_inline(`n${n}_status`, 'unchanged', 'unchanged') : '[ ] unchanged'} `;
             text += `${isPopulated ? rb_inline(`n${n}_status`, 'enlarging', 'enlarging (>1.5 mm)') : '[ ] enlarging (>1.5 mm)'} `;
             text += `${isPopulated ? rb_inline(`n${n}_status`, 'newly found', 'newly found (≧4 mm)') : '[ ] newly found (≧4 mm)'} `;
