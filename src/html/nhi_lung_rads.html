@@ -253,12 +253,16 @@
                 <h3>Lung nodule findings related to cancer screening</h3>
                 <p><small>詳細規範請參閱 Lung-RADS v2022</small></p>
                 <fieldset>
-                    <label><input type="checkbox" id="no_nodule"> No lung nodule</label>
-                    <label><input type="checkbox" id="benign_features"> Nodule with benign features.</label>
-                    <label><input type="checkbox" id="nodule_lt6"> Lung nodule(s) (&lt;6mm) (選填 SE: <input type="text" class="form-input" id="lt6_se" style="width: 60px;">, IM: <input type="text" class="form-input" id="lt6_im" style="width: 350px; max-width: 80vw;">)</label>
-                    <label><input type="checkbox" id="juxtapleural"> Juxtapleural nodule.</label>
+                    <label><input type="checkbox" id="no_nodule" onchange="toggleNoNodule(this.checked)"> No lung nodule</label>
+
+                    <label><input type="checkbox" id="benign_features" onchange="updateNoNoduleState()"> Nodule with benign features.</label>
                     <label>
-                        <input type="checkbox" id="nodule_gte6" onchange="handleNoduleGte6Change(this.checked)">
+                        <input type="checkbox" id="nodule_lt6" onchange="updateNoNoduleState()">
+                        Lung nodule(s) (&lt;6mm) (選填 SE: <input type="text" class="form-input" id="lt6_se" style="width: 60px;">, IM: <input type="text" class="form-input" id="lt6_im" style="width: 350px; max-width: 80vw;">)
+                    </label>
+                    <label><input type="checkbox" id="juxtapleural" onchange="updateNoNoduleState()"> Juxtapleural nodule.</label>
+                    <label>
+                        <input type="checkbox" id="nodule_gte6" onchange="handleNoduleGte6Change(this.checked); updateNoNoduleState()">
                         Lung nodule(s) (≧6mm or enlarging&gt;1.5mm or new≧4mm)
                     </label>
                 </fieldset>
@@ -622,6 +626,45 @@
 
         function toggleSection(elementId, show) { const el = $(elementId); if (show) el.classList.remove('hidden'); else el.classList.add('hidden'); }
         function handleNoduleGte6Change(isChecked) { toggleSection('nodule_details', isChecked); if (isChecked) { const radio = document.querySelector('input[name="total_nodules"]:checked'); if (!radio) { const r1 = document.querySelector('input[name="total_nodules"][value="1"]'); if (r1) { r1.checked = true; updateNoduleCount(); } } } }
+        // --- 新增：互斥邏輯控制 ---
+
+        // 當勾選 "No lung nodule" 時觸發
+        function toggleNoNodule(isChecked) {
+            const groupIds = ['benign_features', 'nodule_lt6', 'juxtapleural', 'nodule_gte6'];
+
+            groupIds.forEach(id => {
+                const el = $(id);
+                if (isChecked) {
+                    // 如果 No nodule 被勾選，強制取消其他項目的勾選
+                    el.checked = false;
+                    // 特殊處理：如果取消的是 >=6mm，需連動隱藏細節區塊
+                    if (id === 'nodule_gte6') handleNoduleGte6Change(false);
+                }
+                // 設定為禁用或啟用
+                el.disabled = isChecked;
+            });
+
+            // 連動禁用/啟用 <6mm 選項內的文字輸入框
+            $('lt6_se').disabled = isChecked;
+            $('lt6_im').disabled = isChecked;
+        }
+
+        // 當勾選其他四項任何一項時觸發
+        function updateNoNoduleState() {
+            const groupIds = ['benign_features', 'nodule_lt6', 'juxtapleural', 'nodule_gte6'];
+            // 檢查是否由任何一項被勾選
+            const anyChecked = groupIds.some(id => isChecked(id));
+            const noNoduleCheckbox = $('no_nodule');
+
+            if (anyChecked) {
+                // 如果有選其他項，No nodule 必須取消勾選並禁用
+                noNoduleCheckbox.checked = false;
+                noNoduleCheckbox.disabled = true;
+            } else {
+                // 如果都沒選，No nodule 恢復可選狀態
+                noNoduleCheckbox.disabled = false;
+            }
+        }
         function toggleSolidPart(containerId, densityValue) { const container = $(containerId); if (densityValue === 'part-solid') container.classList.remove('hidden'); else container.classList.add('hidden'); }
         function updateAirwayParent() { $('airway_proximal').checked = isChecked('airway_secretions') || isChecked('airway_baseline') || isChecked('airway_stable'); }
         function clearAirwayChildren(parentIsChecked) { if (!parentIsChecked) { $('airway_secretions').checked = false; $('airway_baseline').checked = false; $('airway_stable').checked = false; } }
