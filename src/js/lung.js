@@ -405,7 +405,7 @@ $('#btn_ajcc').on('click', function(event) {
 $( document ).ready(function() {
     console.log( "document loaded" );
     let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
-    $('#ajccModalLongTitle').html("AJCC Definitions for Lung Cancer <span class='badge badge-secondary ml-2' style='font-size: 60%; vertical-align: super;'>9th</span>");
+    $('#ajccModalLongTitle').html("AJCC Definitions for Lung Cancer <span class='badge badge-primary ml-2' style='font-size: 60%; vertical-align: super;'>9th</span>");
     $('#ajccModalBody').html(ajcc_table);
 });
 
