@@ -342,7 +342,7 @@ $( document ).ready(function() {
     let AJCC_T = (is_hpv ? AJCC_T_HPV : AJCC_T_NONHPV);
     let AJCC_N = (is_hpv ? AJCC_N_HPV : AJCC_N_NONHPV);
     let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
-    $('#ajccModalLongTitle').html(`AJCC Definitions for ${AJCC_TITLE}`);
+    $('#ajccModalLongTitle').html(`AJCC Definitions for ${AJCC_TITLE} <span class='badge badge-secondary ml-2' style='font-size: 60%; vertical-align: super;'>8th</span>`);
     $('#ajccModalBody').html(ajcc_table);
 });
 
