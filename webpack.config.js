@@ -97,15 +97,6 @@ module.exports = {
       template: './src/html/nhi_lung_rads.html',
       filename: 'nhi-lung-rads/index.html', // Output to dist/nhi-lung-rads/
       chunks: [], // No JS chunks for this page currently based on your previous config
-      minify: {
-        collapseWhitespace: true, // 保持壓縮空白（選用）
-        keepClosingSlash: true,
-        removeComments: true,
-        removeRedundantAttributes: false, // [關鍵] 設定為 false，保留 type="text"
-        removeScriptTypeAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        useShortDoctype: true
-      },
     }),
 
     new FaviconsWebpackPlugin({
