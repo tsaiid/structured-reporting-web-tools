@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
+import { calculateOvaryStage } from './ovary_logic.js';
 
 const AJCC_T = new Map([
     ['x', 'Primary tumor cannot be assessed'],
@@ -41,9 +42,6 @@ const AJCC_M = new Map([
 ]);
 
 function generate_report(){
-    var t_stage = [];
-    var n_stage = ["0"];
-    var m_stage = ["0"];
     var report = `1. Imaging modality
   - Imaging by `;
 
@@ -125,39 +123,27 @@ function generate_report(){
     [${ti_a_check}] Ascites
     `;
 
-    // calculate stage
-    if (!has_ti) {
-        if (!t_length) {
-            t_stage.push("x");
-        } else {
-            if (t_length === 0) {
-                t_stage.push("0");
-            } else {
-                // t_stage.push("1");
-                if ($('input[name=radio_tl]:checked').val() == 'bilateral') {
-                    t_stage.push("1b");
-                } else {
-                    t_stage.push("1a");
-                }
-            }
-        }
-    } else {
-        if ($('.cb_ti_t3:checked').length) {
-            if ($('#cb_ti_t3_2cm').is(':checked')) {
-                t_stage.push("3c");
-            } else {
-                t_stage.push("3b");
-            }
-        } else if ($('.cb_ti_t2:checked').length) {
-            if ($('.cb_ti_t2a:checked').length) {
-                t_stage.push("2a");
-            }
-            if ($('.cb_ti_t2b:checked').length) {
-                t_stage.push("2b");
-            }
-        }
-        //console.log(t_stage);
-    }
+    // Calculate staging via Logic
+    const data = {
+        tumorSize: t_length,
+        hasInvasion: has_ti,
+        isBilateral: $('input[name=radio_tl]:checked').val() == 'bilateral',
+        invasion: {
+            t3: $('.cb_ti_t3:checked').length > 0,
+            t3_gt_2cm: $('#cb_ti_t3_2cm').is(':checked'),
+            t2: $('.cb_ti_t2:checked').length > 0,
+            t2a: $('.cb_ti_t2a:checked').length > 0,
+            t2b: $('.cb_ti_t2b:checked').length > 0
+        },
+        hasNodes: $('.cb_rn:checked').length > 0,
+        hasMetastasis: $('.cb_dm:checked').length > 0
+    };
+
+    const stageResult = calculateOvaryStage(data);
+    const t_stage = stageResult.t;
+    const n_stage = stageResult.n;
+    const m_stage = stageResult.m;
+
     report += "\n";
 
     // Regional nodal metastasis
@@ -193,11 +179,7 @@ function generate_report(){
 
 `;
 
-    // calculate N stage
-    if (has_rln) {
-        t_stage.push("3");
-        n_stage.push("1");
-    }
+    // calculate N stage (Calculated via Logic)
 
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
@@ -220,10 +202,8 @@ function generate_report(){
 
 `;
 
-    if (has_dm) {
-        m_stage.push("1");
-        //console.log(m_stage);
-    }
+    // M stage calculated via logic
+
 
     // Other Findings
     report += "6. Other findings\n\n\n";
