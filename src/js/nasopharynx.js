@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
+import { calculateNasopharynxStage } from './nasopharynx_logic.js';
 
 // AJCC 9th Edition Definitions
 const AJCC_T = new Map([
@@ -34,10 +35,6 @@ const AJCC_M = new Map([
 ]);
 
 function generate_report(){
-    var t_stage = ["0"];
-    var n_stage = ["0"];
-    var m_stage = ["0"];
-
     // 1. Imaging Modality
     var report = `1. Imaging modality
   - Imaging by `;
@@ -110,17 +107,6 @@ function generate_report(){
 
 `;
 
-    // Calculate T stage
-    if (has_ts_nm) {
-        t_stage.push("x");
-    }
-    if (has_ti) {
-        if ($('.cb_ti_t1:checked').length) t_stage.push("1");
-        if ($('.cb_ti_t2:checked').length) t_stage.push("2");
-        if ($('.cb_ti_t3:checked').length) t_stage.push("3");
-        if ($('.cb_ti_t4:checked').length) t_stage.push("4");
-    }
-
     // 4. Regional nodal metastasis
     let has_rln = $('.cb_rn:not("#cb_rn_ene"):checked').length > 0; // Check LNs excluding the ENE checkbox
     let has_ene = $('#cb_rn_ene').is(':checked'); // Check if ENE is explicitly checked
@@ -161,21 +147,8 @@ function generate_report(){
     report += `        Maximal size of the largest positive node: ${txt_rn_len} cm (long axis)\n`;
     report += `        [${has_ene ? "+" : " "}] Advanced radiologic extranodal extension (involvement of adjacent muscles, skin, and/or neurovascular bundle)\n\n`;
 
-    // Calculate N stage (AJCC 9th Logic)
-    // N3: Size > 6cm OR Below Cricoid OR Advanced ENE
-    if ((is_rn_positive && n_length > 6.0) || $('.cb_rn_n3:checked').length || has_ene) {
-        n_stage.push("3");
-    } else if ($('.cb_rn_r_nrp:checked').length && $('.cb_rn_l_nrp:checked').length) {
-        // N2: Bilateral
-        n_stage.push("2");
-    } else if (($('.cb_rn_r:checked').length ^ $('.cb_rn_l:checked').length) || $('.cb_rn_n1:checked').length) {
-        // N1: Unilateral or RP only
-        n_stage.push("1");
-    }
-
     // 5. Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
-    let m_category_str = "0";
 
     report += "5. Distant metastasis\n";
     report += "    [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
@@ -198,16 +171,39 @@ function generate_report(){
         let m1b_chk = is_m1b ? "+" : " ";
 
         report += `\n        [${m1a_chk}] <= 3 lesions (M1a)    [${m1b_chk}] > 3 lesions (M1b)`;
-
-        if (is_m1b) {
-            m_stage.push("1b");
-        } else {
-            m_stage.push("1a");
-        }
     } else {
         report += "___";
     }
     report += "\n\n";
+
+    // Calculate staging via Logic
+    const data = {
+        isNonMeasurable: has_ts_nm,
+        invasion: {
+            t1: $('.cb_ti_t1:checked').length > 0,
+            t2: $('.cb_ti_t2:checked').length > 0,
+            t3: $('.cb_ti_t3:checked').length > 0,
+            t4: $('.cb_ti_t4:checked').length > 0
+        },
+        nodes: {
+            isPositive: is_rn_positive,
+            maxSize: n_length,
+            hasN3Location: $('.cb_rn_n3:checked').length > 0,
+            hasENE: has_ene,
+            isBilateral: $('.cb_rn_r_nrp:checked').length && $('.cb_rn_l_nrp:checked').length,
+            isUnilateral: ($('.cb_rn_r:checked').length ^ $('.cb_rn_l:checked').length),
+            isRPOnly: $('.cb_rn_n1:checked').length > 0
+        },
+        metastasis: {
+            isPositive: has_dm,
+            isMoreThan3: $('#radio_dm_m1b').is(':checked')
+        }
+    };
+
+    const stageResult = calculateNasopharynxStage(data);
+    const t_stage = stageResult.t;
+    const n_stage = stageResult.n;
+    const m_stage = stageResult.m;
 
     // 6. Other Findings
     report += "6. Other findings\n\n\n";
@@ -215,7 +211,7 @@ function generate_report(){
     // AJCC staging reference text
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
-    let m = m_stage.sort()[m_stage.length-1]; // Sort will put 1b after 1a roughly, but logic ensures only one M pushed
+    let m = m_stage.sort()[m_stage.length-1]; 
 
     // Pass '9' as the version number
     report += ajcc_template_with_parent("Nasopharyngeal Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 9);
