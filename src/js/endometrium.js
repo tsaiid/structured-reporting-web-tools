@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
+import { calculateEndometriumStage } from './endometrium_logic.js';
 
 const AJCC_T = new Map([
     ['x', 'Primary tumor cannot be assessed'],
@@ -36,9 +37,6 @@ const AJCC_M = new Map([
 ]);
 
 function generate_report(){
-    var t_stage = [];
-    var n_stage = ["0"];
-    var m_stage = ["0"];
     var report = `1. Imaging modality
   - Imaging by `;
 
@@ -98,23 +96,28 @@ function generate_report(){
         [${ti_others_check}] Others: ${txt_ti_others}`;
     report += "\n\n";
 
-    if (has_ti_na && !has_ti) {
-        t_stage.push("x");
-    } else if ($('.cb_ti_t4:checked').length) {
-                t_stage.push("4");
-    } else if ($('.cb_ti_t3b:checked').length) {
-        t_stage.push("3b");
-    } else if ($('.cb_ti_t3a:checked').length) {
-        t_stage.push("3a");
-    } else if ($('.cb_ti_t2:checked').length) {
-        t_stage.push("2");
-    } else if ($('#rb_ti_mhm').is(':checked')) {
-        t_stage.push("1b");
-    } else if ($('#rb_ti_lhm').is(':checked')) {
-        t_stage.push("1a");
-    } else {
-        t_stage.push("0");
-    }
+    // Calculate staging via Logic
+    const data = {
+        isNotAssessable: has_ti_na,
+        invasion: {
+            t4: $('.cb_ti_t4:checked').length > 0,
+            t3b: $('.cb_ti_t3b:checked').length > 0,
+            t3a: $('.cb_ti_t3a:checked').length > 0,
+            t2: $('.cb_ti_t2:checked').length > 0,
+            t1b: $('#rb_ti_mhm').is(':checked'),
+            t1a: $('#rb_ti_lhm').is(':checked')
+        },
+        nodes: {
+            hasParaaortic: $('.cb_rn_n2:checked').length > 0,
+            hasRegional: $('.cb_rn:checked').length > 0
+        },
+        hasMetastasis: $('.cb_dm:checked').length > 0
+    };
+
+    const stageResult = calculateEndometriumStage(data);
+    const t_stage = stageResult.t;
+    const n_stage = stageResult.n;
+    const m_stage = stageResult.m;
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length > 0;
@@ -144,12 +147,7 @@ function generate_report(){
 
 `;
 
-    // calculate N stage
-    if ($('.cb_rn_n2:checked').length) {
-        n_stage.push("2");
-    } else if ($('.cb_rn:checked').length) {
-        n_stage.push("1");
-    }
+    // calculate N stage (Calculated via Logic)
 
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
@@ -179,9 +177,8 @@ function generate_report(){
 
 `;
 
-    if (has_dm) {
-        m_stage.push("1");
-    }
+    // M stage calculated via logic
+
 
     // Other Findings
     report += "6. Other findings\n\n\n";
