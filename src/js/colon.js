@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
+import { calculateColonStage } from './colon_logic.js';
 
 const AJCC_T = new Map([
     ['x', 'Primary tumor cannot be assessed'],
@@ -38,9 +39,6 @@ const AJCC_M = new Map([
 ]);
 
 function generate_report(){
-    var t_stage = [];
-    var n_stage = ["0"];
-    var m_stage = ["0"];
     var report = `1. Imaging modality
   - Imaging by `;
 
@@ -95,31 +93,28 @@ function generate_report(){
 
 `;
 
-    // Calculate T staging
-    if (has_ti_na) {
-        t_stage.push("x");
-    } else {
-        if (has_ts_nm || t_length === 0) {
-            t_stage.push("0");
-        } else {
-            t_stage.push("1");
+    // Calculate T staging via Logic
+    const data = {
+        isNotVisualized: has_ti_na,
+        isNonMeasurable: has_ts_nm,
+        tumorSize: t_length,
+        invasion: {
+            t4b: $('.cb_ti_t4b:checked').length > 0,
+            t4a: $('.cb_ti_t4a:checked').length > 0,
+            t3: $('.cb_ti_t3:checked').length > 0,
+            t2: $('.cb_ti_t2:checked').length > 0
+        },
+        nodesCount: ($('.cb_rn:checked').length && $('#txt_rln_num').val() > 0) ? parseInt($('#txt_rln_num').val()) : 0,
+        metastasis: {
+            m1c: $('.cb_dm_m1c:checked').length > 0,
+            m1abCount: $('.cb_dm_m1ab:checked').length
         }
-        if ($('.cb_ti:checked').length) {
-            if ($('.cb_ti_t2:checked').length) {
-                t_stage.push("2");
-            }
-            if ($('.cb_ti_t3:checked').length) {
-                t_stage.push("3");
-            }
-            if ($('.cb_ti_t4a:checked').length) {
-                t_stage.push("4a");
-            }
-            if ($('.cb_ti_t4b:checked').length) {
-                t_stage.push("4b");
-            }
-            //console.log(t_stage);
-        }
-    }
+    };
+
+    const stageResult = calculateColonStage(data);
+    const t_stage = stageResult.t;
+    const n_stage = stageResult.n;
+    const m_stage = stageResult.m;
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length && $('#txt_rln_num').val() > 0;
@@ -145,21 +140,7 @@ function generate_report(){
 
 `;
 
-    // calculate N stage
-    if (has_rln) {
-        if (rln_num >= 7) {
-            n_stage.push("2b");
-        } else if (rln_num >= 4) {
-            n_stage.push("2a");
-        } else if (rln_num >= 2) {
-            n_stage.push("1b");
-        } else if (rln_num >= 1) {
-            n_stage.push("1a");
-        } else {
-            n_stage.push("0");
-        }
-        //console.log(n_stage);
-    }
+    // calculate N stage (Calculated via Logic)
 
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
@@ -177,16 +158,7 @@ function generate_report(){
             report += $('#txt_dm_others').val();
         }
 
-        if ($('.cb_dm_m1c:checked').length) {
-            m_stage.push("1c");
-        } else {
-            if ($('.cb_dm_m1ab:checked').length == 1) {
-                m_stage.push("1a");
-            } else {
-                m_stage.push("1b");
-            }
-        }
-        //console.log(m_stage);
+        // M stage calculated via logic
     } else {
         report += "___";
     }
