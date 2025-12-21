@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
+import { calculateCervixStage } from './cervix_logic.js';
 
 const AJCC_T = new Map([
     ['x', 'Primary tumor cannot be assessed'],
@@ -45,9 +46,6 @@ const AJCC_M = new Map([
 ]);
 
 function generate_report(){
-    var t_stage = [];
-    var n_stage = ["0"];
-    var m_stage = ["0"];
     var report = `1. Imaging modality
   - Imaging by `;
 
@@ -109,28 +107,29 @@ function generate_report(){
 
 `;
 
-    // calculate T stage
-    if ($('.cb_ti_t4:checked').length) {
-        t_stage.push("4");
-    } else if ($('.cb_ti_t3b:checked').length) {
-        t_stage.push("3b");
-    } else if ($('.cb_ti_t3a:checked').length) {
-        t_stage.push("3a");
-    } else if ($('.cb_ti_t2b:checked').length) {
-        t_stage.push("2b");
-    } else if ($('.cb_ti_t2a:checked').length) {
-        t_stage.push("2a");
-    } else if ($('.cb_ti_t1:checked').length) {
-        if (!$('#cb_ts_nm').is(':checked') && t_length > 0) {
-            t_stage.push("1b");
-        } else {
-            t_stage.push("1a");
-        }
-    } else if (t_length === 0) {
-        t_stage.push("0");
-    } else {
-        t_stage.push("x");
-    }
+    // Calculate staging via logic
+    const data = {
+        tumorSize: t_length,
+        isNonMeasurable: $('#cb_ts_nm').is(':checked'),
+        invasion: {
+            t4: $('.cb_ti_t4:checked').length > 0,
+            t3b: $('.cb_ti_t3b:checked').length > 0,
+            t3a: $('.cb_ti_t3a:checked').length > 0,
+            t2b: $('.cb_ti_t2b:checked').length > 0,
+            t2a: $('.cb_ti_t2a:checked').length > 0,
+            t1: $('.cb_ti_t1:checked').length > 0
+        },
+        nodes: {
+            hasRegional: $('.cb_rn:checked').length > 0,
+            hasParaaortic: $('#cb_rn_pa').is(':checked')
+        },
+        hasMetastasis: $('.cb_dm:checked').length > 0
+    };
+
+    const stageResult = calculateCervixStage(data);
+    const t_stage = stageResult.t;
+    const n_stage = stageResult.n;
+    const m_stage = stageResult.m;
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length > 0;
@@ -167,14 +166,8 @@ function generate_report(){
 
 `;
 
-    // calculate N stage
-    if (has_rln) {
-        if ($('#cb_rn_pa').is(':checked')) {
-            n_stage.push("2");
-        } else {
-            n_stage.push("1");
-        }
-    }
+    // calculate N stage (Calculated via Logic)
+
     report += "\n";
 
     // Distant metastasis
@@ -193,8 +186,7 @@ function generate_report(){
             report += $('#txt_dm_others').val();
         }
 
-        m_stage.push("1");
-        //console.log(m_stage);
+        // M stage calculated via logic
     } else {
         report += "___";
     }
