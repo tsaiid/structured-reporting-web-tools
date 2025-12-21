@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
+import { calculateGastricStage } from './gastric_logic.js';
 
 const AJCC_T = new Map([
     ['x', 'Primary tumor cannot be assessed'],
@@ -35,9 +36,6 @@ const AJCC_M = new Map([
 ]);
 
 function generate_report(){
-    var t_stage = ["0"];
-    var n_stage = ["0"];
-    var m_stage = ["0"];
     var report = `1. Imaging modality
   - Imaging by `;
 
@@ -85,7 +83,6 @@ function generate_report(){
         report += "\n";
     });
     report += "\n";
-    t_stage.push($('input[name="radios_tid"]:checked').val());
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length && $('#txt_rln_num').val() > 0;
@@ -118,23 +115,6 @@ function generate_report(){
 
 `;
 
-    // calculate N stage
-    if (has_rln) {
-        if (rln_num >= 16) {
-            n_stage.push("3b");
-        } else if (rln_num >= 7) {
-            n_stage.push("3a");
-        } else if (rln_num >= 3) {
-            n_stage.push("2");
-        } else if (rln_num >= 1) {
-            n_stage.push("1");
-        } else {
-            n_stage.push("0");
-        }
-        //console.log(n_stage);
-    }
-    report += "\n";
-
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
@@ -157,10 +137,17 @@ function generate_report(){
     }
     report += "\n\n";
 
-    if (has_dm) {
-        m_stage.push("1");
-        //console.log(m_stage);
-    }
+    // Calculate staging via Logic
+    const data = {
+        tStageValue: $('input[name="radios_tid"]:checked').val(),
+        nodesCount: ($('.cb_rn:checked').length && $('#txt_rln_num').val() > 0) ? parseInt($('#txt_rln_num').val()) : 0,
+        hasMetastasis: has_dm
+    };
+
+    const stageResult = calculateGastricStage(data);
+    const t_stage = stageResult.t;
+    const n_stage = stageResult.n;
+    const m_stage = stageResult.m;
 
     // Other Findings
     report += "6. Other findings\n\n\n";
