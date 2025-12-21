@@ -39,9 +39,8 @@
     "raw-loader": "^4.0.2",
     "script-loader": "^0.7.2",
     "style-loader": "^4.0.0",
-    "terser-webpack-plugin": "^5.3.14",
-    "url-regex": "^5.0.0",
-    "webpack": "^5.103.0",
+    "terser-webpack-plugin": "^5.3.16",
+    "webpack": "^5.104.1",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2"
   },
