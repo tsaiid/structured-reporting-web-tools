@@ -36,8 +36,9 @@ module.exports = {
   output: {
     // Update JS output path to match the folder structure
     // If chunk name corresponds to an ajcc page, put it in ajcc/ folder
+    // Otherwise, put it in assets/js/ (for vendors and common)
     filename: (pathData) => {
-        return ajccPages.includes(pathData.chunk.name) ? 'ajcc/[name].js' : '[name].js';
+      return ajccPages.includes(pathData.chunk.name) ? 'ajcc/[name].js' : 'assets/js/[name].js';
     },
     path: path.resolve(__dirname, 'dist'),
     // Important: Clean the output directory before emit
@@ -92,22 +93,29 @@ module.exports = {
 
   module: {
     rules: [{
-        test: /\.(js)$/,
-        exclude: /(node_modules)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env']
-          }
+      test: /\.(js)$/,
+      exclude: /(node_modules)/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env']
         }
-      },
-      {
-        test: /\.css$/, // 針對所有.css 的檔案作預處理，這邊是用 regular express 的格式
-        use: [
-          'style-loader', // 這個會後執行 (順序很重要)
-          'css-loader' // 這個會先執行
-        ]
-      },
+      }
+    },
+    {
+      test: /\.css$/, // 針對所有.css 的檔案作預處理，這邊是用 regular express 的格式
+      use: [
+        'style-loader', // 這個會後執行 (順序很重要)
+        'css-loader' // 這個會先執行
+      ]
+    },
+    {
+      test: /\.(png|svg|jpg|jpeg|gif|ico)$/i,
+      type: 'asset/resource',
+      generator: {
+        filename: 'assets/images/[name][ext][query]'
+      }
+    },
     ]
   },
 
@@ -124,6 +132,7 @@ module.exports = {
 
     new FaviconsWebpackPlugin({
       logo: './src/image/favicon.png',
+      prefix: 'assets/images/',
       favicons: {
         appName: null,
         appDescription: null,
