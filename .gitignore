@@ -1,5 +1,6 @@
-yarn.lock
-pnpm-lock.yaml
+# Lockfiles are now tracked
+# yarn.lock
+# pnpm-lock.yaml
 Capfile
 .capistrano
 config/
