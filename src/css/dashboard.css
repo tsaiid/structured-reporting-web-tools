@@ -19,7 +19,19 @@ html[data-theme="dark"] {
   --input-text: #e0e0e0;
   --modal-content-bg: #2c2c2c;
   --input-group-text-bg: var(--card-bg);
-  /* New variable */
+}
+
+/* Custom breakpoint for sidebar labels */
+@media (max-width: 1499.98px) {
+  .full-label {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1500px) {
+  .short-label {
+    display: none !important;
+  }
 }
 
 body {
@@ -73,7 +85,23 @@ body {
 .sidebar .nav-link {
   font-weight: 500;
   color: #333;
-  padding: .2rem 1rem;
+  padding: .5rem 1rem;
+  /* Increased from .2rem */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar .nav-item {
+  border-bottom: 1px solid rgba(0, 0, 0, .05);
+}
+
+html[data-theme="dark"] .sidebar .nav-item {
+  border-bottom: 1px solid rgba(255, 255, 255, .05);
+}
+
+.sidebar .nav-item:last-child {
+  border-bottom: none;
 }
 
 html[data-theme="dark"] .sidebar .nav-link {
