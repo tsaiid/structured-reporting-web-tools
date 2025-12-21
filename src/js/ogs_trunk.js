@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/ogs_trunk.html');
 }
 
-import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage} from './ajcc_common.js';
 
 const AJCC_T = new Map([
     ['x', 'Primary tumor cannot be assessed'],
@@ -163,48 +163,16 @@ $('.cb_rn').change(function(){
     }
 });
 
-$('#btn_copy').on('click', function(event) {
-    event.preventDefault(); // To prevent following the link (optional)
-
-    /*
-    // form validation
-    var f, is_valid
-    f = document.getElementById('form_tumor_size');
-    is_valid = f.checkValidity();
-    if (!is_valid && !$('#cb_tp_ts_nm').is(':checked')) {
-        f.classList.add('was-validated');
-        return;
-    }
-    f = document.getElementById('form_tumor_location');
-    is_valid = f.checkValidity();
-    if (is_valid) {
-        f.classList.add('was-validated');
-        return;
-    }
-    */
-
-    generate_report();
+setupReportPage({
+    generateReportFn: generate_report,
+    ajccData: {
+        T: AJCC_T,
+        N: AJCC_N,
+        M: AJCC_M
+    },
+    ajccTitleHtml: "AJCC Definitions for OGS for Appendicular Skeleton, Trunk, Skull and Facial Bones <span class='badge badge-secondary ml-2' style='font-size: 60%; vertical-align: super;'>8th</span>"
 });
 
-new ClipboardJS('#btn_copy', {
-    text: function(trigger) {
-        let report_title = $("#reportModalLongTitle").text();
-        let report_body = $("#reportModalBody pre code").text();
-        return report_title + "\n\n" + report_body;
-    }
-});
-
-$('#btn_ajcc').on('click', function(event) {
-    event.preventDefault(); // To prevent following the link (optional)
-    $('#ajccModalLong').modal('show');
-});
-
-$( document ).ready(function() {
-    console.log( "document loaded" );
-    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
-    $('#ajccModalLongTitle').html("AJCC Definitions for OGS for Appendicular Skeleton, Trunk, Skull and Facial Bones <span class='badge badge-secondary ml-2' style='font-size: 60%; vertical-align: super;'>8th</span>");
-    $('#ajccModalBody').html(ajcc_table);
-});
 
 /*
 var clipboard = new ClipboardJS('#btn_copy');

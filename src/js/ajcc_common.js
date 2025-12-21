@@ -167,3 +167,71 @@ export function generate_ajcc_table(t, n, m){
 `;
     return ajcc_table;
 }
+
+/**
+ * Sets up the standard report page interactions:
+ * - Copy button logic (ClipboardJS)
+ * - AJCC Modal button logic
+ * - Populates AJCC Modal content on load
+ *
+ * @param {Object} options
+ * @param {Function} options.generateReportFn - Function to call when copy is clicked (to generate text).
+ * @param {Object} options.ajccData - { T: Map, N: Map, M: Map } Definitions for the table.
+ * @param {string} options.ajccTitleHtml - HTML content for #ajccModalLongTitle.
+ * @param {string} [options.copyButtonId='#btn_copy']
+ * @param {string} [options.ajccButtonId='#btn_ajcc']
+ * @param {string} [options.ajccModalId='#ajccModalLong']
+ * @param {string} [options.ajccModalTitleId='#ajccModalLongTitle']
+ * @param {string} [options.ajccModalBodyId='#ajccModalBody']
+ * @param {string} [options.reportModalTitleId='#reportModalLongTitle']
+ * @param {string} [options.reportModalBodySelector='#reportModalBody pre code']
+ */
+export function setupReportPage({
+    generateReportFn,
+    ajccData,
+    ajccTitleHtml,
+    copyButtonId = '#btn_copy',
+    ajccButtonId = '#btn_ajcc',
+    ajccModalId = '#ajccModalLong',
+    ajccModalTitleId = '#ajccModalLongTitle',
+    ajccModalBodyId = '#ajccModalBody',
+    reportModalTitleId = '#reportModalLongTitle',
+    reportModalBodySelector = '#reportModalBody pre code'
+}) {
+    // 1. Copy Button Click - Trigger Generation
+    $(copyButtonId).on('click', function(event) {
+        event.preventDefault();
+        if (typeof generateReportFn === 'function') {
+            generateReportFn();
+        }
+    });
+
+    // 2. ClipboardJS Setup
+    // Ensure ClipboardJS is available (it should be via common.js -> window.ClipboardJS or import)
+    // Note: In common.js we set window.ClipboardJS. If we imported it here, we could use that too.
+    const ClipboardConstructor = window.ClipboardJS || require('clipboard');
+    
+    new ClipboardConstructor(copyButtonId, {
+        text: function(trigger) {
+            const report_title = $(reportModalTitleId).text();
+            const report_body = $(reportModalBodySelector).text();
+            return report_title + "\n\n" + report_body;
+        }
+    });
+
+    // 3. AJCC Button Click
+    $(ajccButtonId).on('click', function(event) {
+        event.preventDefault();
+        $(ajccModalId).modal('show');
+    });
+
+    // 4. Document Ready - Populate AJCC Table
+    $(document).ready(function() {
+        // console.log("setupReportPage: Document loaded");
+        if (ajccData && ajccData.T && ajccData.N && ajccData.M) {
+            const ajcc_table = generate_ajcc_table(ajccData.T, ajccData.N, ajccData.M);
+            $(ajccModalTitleId).html(ajccTitleHtml);
+            $(ajccModalBodyId).html(ajcc_table);
+        }
+    });
+}

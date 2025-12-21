@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/oral.html');
 }
 
-import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage} from './ajcc_common.js';
 import { calculateOralStage } from './oral_logic.js';
 
 const AJCC_T_LIP = new Map([
@@ -249,50 +249,17 @@ $('.cb_rn').change(function(){
     }
 });
 
-$('#btn_copy').on('click', function(event) {
-    event.preventDefault(); // To prevent following the link (optional)
-
-    /*
-    // form validation
-    var f, is_valid
-    f = document.getElementById('form_tumor_size');
-    is_valid = f.checkValidity();
-    if (!is_valid && !$('#cb_tp_ts_nm').is(':checked')) {
-        f.classList.add('was-validated');
-        return;
-    }
-    f = document.getElementById('form_tumor_location');
-    is_valid = f.checkValidity();
-    if (is_valid) {
-        f.classList.add('was-validated');
-        return;
-    }
-    */
-
-    generate_report();
+let has_lip_initial = $('.cb_tl_l:checked').length > 0;
+setupReportPage({
+    generateReportFn: generate_report,
+    ajccData: {
+        T: (has_lip_initial ? AJCC_T_LIP : AJCC_T_ORAL),
+        N: AJCC_N,
+        M: AJCC_M
+    },
+    ajccTitleHtml: "AJCC Definitions for Oral Cavity Carcinoma <span class='badge badge-secondary ml-2' style='font-size: 60%; vertical-align: super;'>8th</span>"
 });
 
-new ClipboardJS('#btn_copy', {
-    text: function(trigger) {
-        let report_title = $("#reportModalLongTitle").text();
-        let report_body = $("#reportModalBody pre code").text();
-        return report_title + "\n\n" + report_body;
-    }
-});
-
-$('#btn_ajcc').on('click', function(event) {
-    event.preventDefault(); // To prevent following the link (optional)
-    $('#ajccModalLong').modal('show');
-});
-
-$( document ).ready(function() {
-    console.log( "document loaded" );
-    let has_lip = $('.cb_tl_l:checked').length > 0;
-    let AJCC_T = (has_lip ? AJCC_T_LIP : AJCC_T_ORAL );
-    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
-    $('#ajccModalLongTitle').html("AJCC Definitions for Oral Cavity Carcinoma <span class='badge badge-secondary ml-2' style='font-size: 60%; vertical-align: super;'>8th</span>");
-    $('#ajccModalBody').html(ajcc_table);
-});
 
 /*
 var clipboard = new ClipboardJS('#btn_copy');
