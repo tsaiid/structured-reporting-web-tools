@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
+import { calculateLungStage, getMaxStageNumber } from './lung_logic.js';
 
 const AJCC_T = new Map([
     ['x', 'Primary tumor cannot be assessed'],
@@ -41,41 +42,7 @@ const AJCC_M = new Map([
     ['1c2', 'Multiple extrathoracic metastases in multiple organ systems'],
 ]);
 
-function get_t_stage_by_size(t_size) {
-    var t_stage;
-    if (isNaN(t_size)) {
-        t_stage = "x";
-    } else if (t_size === 0) {
-        t_stage = "0";
-    } else if (t_size <= 1) {
-        t_stage = "1a";
-    } else if (t_size <= 2) {
-        t_stage = "1b";
-    } else if (t_size <= 3) {
-        t_stage = "1c";
-    } else if (t_size <= 4) {
-        t_stage = "2a";
-    } else if (t_size <= 5) {
-        t_stage = "2b";
-    } else if (t_size <= 7) {
-        t_stage = "3";
-    } else {
-        t_stage = "4";
-    }
-    return t_stage;
-}
-
-function getMaxStageNumber(arr) {
-    return arr
-        .filter(item => /^\d/.test(item)) // 只保留第一個字元是數字的
-        .map(item => parseInt(item, 10))  // 轉換為純數字
-        .reduce((max, num) => Math.max(max, num), -Infinity); // 取最大值
-}
-
 function generate_report(){
-    var t_stage = [];
-    var n_stage = ["0"];
-    var m_stage = ["0"];
     var report = `1. Imaging modality
   - Imaging by `;
 
@@ -117,19 +84,32 @@ function generate_report(){
     }
     report += "\n\n";
 
-    // calculate T stage
-    if ($('#cb_tp_ts_nm').is(':checked')) {
-        t_stage.push("x");
-    } else {
-        t_stage.push(get_t_stage_by_size(t_size));
-        if ($('.cb_ti_t4:checked').length) {
-            t_stage.push("4");
-        } else if ($('.cb_ti_t3:checked').length) {
-            t_stage.push("3");
-        } else if ($('.cb_ti_t2a:checked').length) {
-            t_stage.push("2");
+    // Collect data for calculation
+    const data = {
+        tumorSize: t_size,
+        isNonMeasurable: $('#cb_tp_ts_nm').is(':checked'),
+        invasion: {
+            t4: $('.cb_ti_t4:checked').length > 0,
+            t3: $('.cb_ti_t3:checked').length > 0,
+            t2a: $('.cb_ti_t2a:checked').length > 0
+        },
+        nodes: {
+            n1: $('.cb_rn_n1:checked').length > 0,
+            n2: $('.cb_rn_n2:checked').length > 0,
+            n2Type: $('input[name="radio_n2"]:checked').val(),
+            n3: $('.cb_rn_n3:checked').length > 0
+        },
+        metastasis: {
+            m1a: $('.cb_dm_m1a:checked').length > 0,
+            m1bc: $('.cb_dm_m1bc:checked').length > 0,
+            m1Type: $("input[name='radio_m1bc']:checked").val()
         }
-    }
+    };
+
+    const stageResult = calculateLungStage(data);
+    const t_stage = stageResult.t;
+    const n_stage = stageResult.n;
+    const m_stage = stageResult.m;
 
     // Tumor invasion
     let t1_check  = getMaxStageNumber(t_stage) == 1 ? "+" : " ";
@@ -230,21 +210,7 @@ function generate_report(){
 
 `;
 
-    // calculate N stage
-    if (has_rln) {
-        if ($('.cb_rn_n1:checked').length) {
-            n_stage.push("1");
-        }
-        if ($('.cb_rn_n2:checked').length) {
-            n_stage.push("2");
-            let rn_n2a_val = $('input[name="radio_n2"]:checked').val();
-            n_stage.push(rn_n2a_val);
-        }
-        if ($('.cb_rn_n3:checked').length) {
-            n_stage.push("3");
-        }
-        //console.log(n_stage);
-    }
+    // calculate N stage (calculated via calculateLungStage)
 
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
@@ -292,18 +258,7 @@ function generate_report(){
 
 `;
 
-    // calculate M stage
-    if (has_dm) {
-        if ($('.cb_dm_m1a:checked').length) {
-            m_stage.push("1a");
-        }
-        if ($('.cb_dm_m1bc:checked').length) {
-            if (radio_dm_val) {
-                m_stage.push(radio_dm_val);
-            }
-        }
-        //console.log(m_stage);
-    }
+    // calculate M stage (calculated via calculateLungStage)
 
     // Other Findings
     report += "6. Other findings\n\n\n";
