@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
+import { calculateHCCStage } from './hcc_logic.js';
 
 const AJCC_T = new Map([
     ['x', 'Primary tumor cannot be assessed'],
@@ -28,9 +29,6 @@ const AJCC_M = new Map([
 ]);
 
 function generate_report(){
-    var t_stage = ["0"];    // at least T1?
-    var n_stage = ["0"];
-    var m_stage = ["0"];
     var report = `1. Imaging modality
   - Imaging by `;
 
@@ -76,21 +74,19 @@ function generate_report(){
     });
     report += "\n";
 
-    if ($('.cb_tc_t4:checked').length) {
-        t_stage.push('4');
-    } else if (tl_num == 1) {
-        if (t_length > 2) {
-            t_stage.push('1b');
-        } else {
-            t_stage.push('1a');
-        }
-    } else {
-        if (t_length > 5) {
-            t_stage.push('3');
-        } else {
-            t_stage.push('2');
-        }
-    }
+    // Collect data for calculation
+    const data = {
+        tumorCount: tl_num,
+        largestTumorSize: t_length,
+        majorVascularInvasion: $('.cb_tc_t4:checked').length > 0,
+        hasNodes: $('.cb_rn:checked').length > 0,
+        hasMetastasis: $('.cb_dm:checked').length > 0
+    };
+
+    const stageResult = calculateHCCStage(data);
+    const t_stage = stageResult.t;
+    const n_stage = stageResult.n;
+    const m_stage = stageResult.m;
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length;
@@ -110,10 +106,7 @@ function generate_report(){
 
 `;
 
-    // calculate N stage
-    if ($('.cb_rn:checked').length) {
-        n_stage.push('1');
-    }
+    // calculate N stage (calculated via calculateHCCStage)
 
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
@@ -131,8 +124,7 @@ function generate_report(){
             report += $('#txt_dm_others').val();
         }
 
-        m_stage.push("1");
-        //console.log(m_stage);
+        // M stage calculated via calculateHCCStage
     } else {
         report += "___";
     }
