@@ -4,9 +4,19 @@
 <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
   <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="./">Structured Report</a>
   <ul class="navbar-nav px-3 ml-auto">
-    <li class="nav-item text-nowrap">
+    <li class="nav-item text-nowrap d-flex align-items-center">
       <button class="btn btn-sm text-light mr-2" style="opacity: 0.8;" id="link_about">About</button>
-      <button class="btn btn-sm btn-outline-light" id="btn_dark_mode">Dark Mode</button>
+      <div class="theme-switch-wrapper">
+        <label class="theme-switch" for="checkbox_dark_mode" aria-label="Toggle Dark Mode">
+          <input type="checkbox" id="checkbox_dark_mode" />
+          <div class="slider round">
+            <div class="knob">
+              <i class="fas fa-sun icon-sun"></i>
+              <i class="fas fa-moon icon-moon"></i>
+            </div>
+          </div>
+        </label>
+      </div>
     </li>
   </ul>
 </nav>

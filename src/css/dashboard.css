@@ -18,7 +18,8 @@ html[data-theme="dark"] {
   --input-bg: #3a3a3a;
   --input-text: #e0e0e0;
   --modal-content-bg: #2c2c2c;
-  --input-group-text-bg: var(--card-bg); /* New variable */
+  --input-group-text-bg: var(--card-bg);
+  /* New variable */
 }
 
 body {
@@ -42,10 +43,13 @@ body {
   top: 0;
   bottom: 0;
   left: 0;
-  z-index: 100; /* Behind the navbar */
-  padding: 48px 0 0; /* Height of navbar */
+  z-index: 100;
+  /* Behind the navbar */
+  padding: 48px 0 0;
+  /* Height of navbar */
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-  background-color: var(--sidebar-bg) !important; /* Override .bg-light */
+  background-color: var(--sidebar-bg) !important;
+  /* Override .bg-light */
   transition: background-color 0.3s;
 }
 
@@ -55,7 +59,8 @@ body {
   height: calc(100vh - 48px);
   padding-top: .5rem;
   overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  overflow-y: auto;
+  /* Scrollable contents if viewport is shorter than content. */
 }
 
 @supports ((position: -webkit-sticky) or (position: sticky)) {
@@ -107,12 +112,14 @@ html[data-theme="dark"] .sidebar .nav-link:hover {
  */
 
 [role="main"] {
-  padding-top: 133px; /* Space for fixed navbar */
+  padding-top: 133px;
+  /* Space for fixed navbar */
 }
 
 @media (min-width: 768px) {
   [role="main"] {
-    padding-top: 48px; /* Space for fixed navbar */
+    padding-top: 48px;
+    /* Space for fixed navbar */
   }
 }
 
@@ -166,43 +173,139 @@ html[data-theme="dark"] .table thead th {
 
 html[data-theme="dark"] .form-control,
 html[data-theme="dark"] .form-control:focus {
-    background-color: var(--input-bg);
-    color: var(--input-text);
-    border-color: var(--border-color);
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  border-color: var(--border-color);
 }
 
 html[data-theme="dark"] .modal-header,
 html[data-theme="dark"] .modal-footer {
-    border-color: var(--border-color);
+  border-color: var(--border-color);
 }
 
 html[data-theme="dark"] .close {
-    color: var(--text-color);
-    text-shadow: none;
+  color: var(--text-color);
+  text-shadow: none;
 }
 
 html[data-theme="dark"] hr {
-    border-top-color: var(--border-color);
+  border-top-color: var(--border-color);
 }
 
 html[data-theme="dark"] pre {
-    color: var(--text-color);
+  color: var(--text-color);
 }
 
 html[data-theme="dark"] a {
-    color: #66b0ff;
+  color: #66b0ff;
 }
 
 html[data-theme="dark"] a:hover {
-    color: #8cc5ff;
+  color: #8cc5ff;
 }
 
 html[data-theme="dark"] .text-dark {
-    color: var(--text-color) !important;
+  color: var(--text-color) !important;
 }
 
 html[data-theme="dark"] .input-group-text {
-    background-color: var(--input-group-text-bg);
-    color: var(--input-text);
-    border-color: var(--border-color);
+  background-color: var(--input-group-text-bg);
+  color: var(--input-text);
+  border-color: var(--border-color);
+}
+
+/*
+ * Toggle Switch
+ */
+.theme-switch-wrapper {
+  display: flex;
+  /* Changed from inline-flex to flex */
+  align-items: center;
+}
+
+.theme-switch {
+  display: inline-block;
+  height: 20px;
+  /* Reduced from 24px */
+  position: relative;
+  width: 40px;
+  /* Reduced from 50px */
+  margin-bottom: 0;
+}
+
+.theme-switch input {
+  display: none;
+}
+
+.slider {
+  background-color: #ccc;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.knob {
+  background-color: #fff;
+  bottom: 3px;
+  height: 14px;
+  /* Reduced from 18px */
+  left: 3px;
+  position: absolute;
+  transition: .4s;
+  width: 14px;
+  /* Reduced from 18px */
+  border-radius: 50%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input:checked+.slider {
+  background-color: #666;
+}
+
+input:checked+.slider .knob {
+  transform: translateX(20px);
+  /* 40px width - 3px left - 3px right - 14px width = 20px travel */
+}
+
+/* Icons mapping */
+.theme-switch .icon-sun,
+.theme-switch .icon-moon {
+  transition: opacity 0.3s;
+  /* FontAwesome SVG sizing */
+  width: 10px;
+  /* Reduced from 12px */
+  height: 10px;
+}
+
+/* Light state: Sun visible */
+.theme-switch .icon-sun {
+  opacity: 1;
+  color: #f39c12;
+  /* Sun color */
+  position: absolute;
+}
+
+.theme-switch .icon-moon {
+  opacity: 0;
+  color: #f1c40f;
+  /* Moon color */
+  position: absolute;
+}
+
+/* Dark state: Moon visible */
+input:checked+.slider .icon-sun {
+  opacity: 0;
+}
+
+input:checked+.slider .icon-moon {
+  opacity: 1;
 }
