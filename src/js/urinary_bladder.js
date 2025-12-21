@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
+import { calculateUrinaryBladderStage } from './urinary_bladder_logic.js';
 
 const AJCC_T = new Map([
     ['x', 'Primary tumor cannot be assessed'],
@@ -34,9 +35,6 @@ const AJCC_M = new Map([
 ]);
 
 function generate_report(){
-    var t_stage = [];
-    var n_stage = ["0"];
-    var m_stage = ["0"];
     var report = `1. Imaging modality
   - Imaging by `;
 
@@ -112,28 +110,33 @@ function generate_report(){
     [${ti_others_check}] Others: ${txt_ti_others}
 
 `;
-    // calculate T stage
-    if (has_tl_na || has_ts_nm) {
-        if (has_ti_na)
-            t_stage.push("x");
-        else
-            t_stage.push("0");
-    } else {
-        t_stage.push("1");
-        if ($('.cb_ti_t2:checked').length) {
-            t_stage.push("2");
+    // Calculate staging via Logic
+    const data = {
+        isNotAssessable: has_tl_na,
+        isNonMeasurable: has_ts_nm,
+        isTInvasionNotAssessable: has_ti_na,
+        invasion: {
+            t4b: $('.cb_ti_t4b:checked').length > 0,
+            t4a: $('.cb_ti_t4a:checked').length > 0,
+            t3: $('.cb_ti_t3:checked').length > 0,
+            t2: $('.cb_ti_t2:checked').length > 0
+        },
+        nodes: {
+            hasNodes: $('.cb_rn:checked').length > 0,
+            hasCommonIliacNodes: $('.cb_rn_n3:checked').length > 0,
+            isMultipleNodes: $('#cb_rn_m').is(':checked'),
+            nodesCount: ($('.cb_rn:checked').length) // count is proxy for multiple selection here
+        },
+        metastasis: {
+            hasMetastasis: $('.cb_dm:checked').length > 0,
+            isM1b: $('.cb_dm_m1b:checked').length > 0
         }
-        if ($('.cb_ti_t3:checked').length) {
-            t_stage.push("3");
-        }
-        if ($('.cb_ti_t4a:checked').length) {
-            t_stage.push("4a");
-        }
-        if ($('.cb_ti_t4b:checked').length) {
-            t_stage.push("4b");
-        }
-        //console.log(t_stage);
-    }
+    };
+
+    const stageResult = calculateUrinaryBladderStage(data);
+    const t_stage = stageResult.t;
+    const n_stage = stageResult.n;
+    const m_stage = stageResult.m;
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length > 0;
@@ -164,17 +167,6 @@ function generate_report(){
     });
     report += "\n";
 
-    // calculate N stage
-    if (has_rln) {
-        if ($('.cb_rn_n3:checked').length) {
-            n_stage.push("3");
-        } else if ($('.cb_rn:checked').length > 1 || $('#cb_rn_m').is(':checked')) {
-            n_stage.push("2");
-        } else {
-            n_stage.push("1");
-        }
-    }
-
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
@@ -191,12 +183,7 @@ function generate_report(){
             report += $('#txt_dm_others').val();
         }
 
-        if ($('.cb_dm_m1b:checked').length) {
-            m_stage.push("1b");
-        } else {
-            m_stage.push("1a");
-        }
-        //console.log(m_stage);
+        // M stage calculated via logic
     } else {
         report += "___";
     }
