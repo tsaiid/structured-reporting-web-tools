@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
+import { calculatePancreasStage } from './pancreas_logic.js';
 
 const AJCC_T = new Map([
     ['x', 'Primary tumor cannot be assessed'],
@@ -31,9 +32,6 @@ const AJCC_M = new Map([
 ]);
 
 function generate_report(){
-    var t_stage = ["0"];
-    var n_stage = ["0"];
-    var m_stage = ["0"];
     var report = `1. Imaging modality
   - Imaging by `;
 
@@ -60,28 +58,15 @@ function generate_report(){
     }
 
     report += "  - Size:";
+    let t_length = parseFloat($('#txt_ts_len').val());
     if ($('#cb_ts_nm').is(':checked') || !$('#txt_ts_len').val()) {
         report += `
     [+] Non-measurable
     [ ] Measurable: ___ cm (largest diameter)`;
     } else {
-        let t_length = parseFloat($('#txt_ts_len').val());
         report += `
     [ ] Non-measurable
     [+] Measurable: ${t_length} cm (largest diameter)`;
-        //console.log(t_stage);
-
-        if (t_length > 4) {
-            t_stage.push("3");
-        } else if (t_length > 2) {
-            t_stage.push("2");
-        } else if (t_length >= 1) {
-            t_stage.push("1c");
-        } else if (t_length > 0.5) {
-            t_stage.push("1b");
-        } else {
-            t_stage.push("1a");
-        }
     }
     report += "\n\n";
 
@@ -109,11 +94,21 @@ function generate_report(){
         report += "    [ ] Others: ___\n";
     }
 
-    if ($('.cb_ti_t4:checked').length) {
-        t_stage.push("4");
-    }
-    //console.log(t_stage);
     report += "\n";
+
+    // Collect data for staging
+    const data = {
+        tumorSize: t_length,
+        isNonMeasurable: $('#cb_ts_nm').is(':checked'),
+        isT4: $('.cb_ti_t4:checked').length > 0,
+        nodesCount: ($('.cb_rn:checked').length && $('#txt_rln_num').val() > 0) ? parseInt($('#txt_rln_num').val()) : 0,
+        hasMetastasis: $('.cb_dm:checked').length > 0
+    };
+
+    const stageResult = calculatePancreasStage(data);
+    const t_stage = stageResult.t;
+    const n_stage = stageResult.n;
+    const m_stage = stageResult.m;
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length && $('#txt_rln_num').val() > 0;
@@ -137,15 +132,6 @@ function generate_report(){
     report += str_rn + "\n";
     report += "\n";
 
-    if (rln_num >= 4) {
-        n_stage.push("2");
-    } else if (rln_num >= 1) {
-        n_stage.push("1");
-    } else {
-        n_stage.push("0");
-    }
-    //console.log(n_stage);
-
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
@@ -163,8 +149,7 @@ function generate_report(){
         }
         report += "\n";
 
-        m_stage.push("1");
-        //console.log(m_stage);
+        // M stage calculated via logic
     } else {
         report += "___";
     }
