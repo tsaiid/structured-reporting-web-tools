@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
+import { calculateGistStage } from './gist_logic.js';
 
 const AJCC_T = new Map([
     ['x', 'Primary tumor cannot be assessed'],
@@ -25,9 +26,6 @@ const AJCC_M = new Map([
 ]);
 
 function generate_report(){
-    var t_stage = ["0"];
-    var n_stage = ["0"];
-    var m_stage = ["0"];
     var report = "1. ";
 
     // Protocol
@@ -58,21 +56,12 @@ Dynamic contrast–enhanced axial imaging at arterial phase, venous phase
         report += "* " + join_checkbox_values($('.cb_tl:checked'), "\n* ") + "\n";
     }
 
+    let t_length = parseFloat($('#txt_ts_len').val());
     report += "--- Size:\n";
     if ($('#cb_ts_nm').is(':checked')) {
         report += "* Non-measurable";
     } else {
-        let t_length = parseFloat($('#txt_ts_len').val());
         report += "* Measurable: " + t_length + " cm (greatest dimension of the largest tumor)";
-        if (t_length > 10) {
-            t_stage.push("4");
-        } else if (t_length > 5) {
-            t_stage.push("3");
-        } else if (t_length > 2) {
-            t_stage.push("2");
-        } else if (t_length > 0) {
-            t_stage.push("1");
-        }
     }
     report += "\n\n";
 
@@ -92,8 +81,6 @@ Dynamic contrast–enhanced axial imaging at arterial phase, venous phase
     report += "4. Regional nodal metastasis\n";
     if ($('.cb_rn:checked').length) {
         report += "--- Yes: " + $('#txt_rn_others').val() + "\n";
-
-        n_stage.push("1");
     }
     if ($('.cb_rn:not(:checked)').length) {
         report += "--- No or Equivocal\n";
@@ -114,8 +101,6 @@ Dynamic contrast–enhanced axial imaging at arterial phase, venous phase
             report += $('#txt_dm_others').val();
         }
         report += "\n";
-        m_stage.push("1");
-        //console.log(m_stage);
     } /* else {
         report += "* No distant metastasis in the scanned range.\n";
     } */
@@ -129,6 +114,19 @@ Dynamic contrast–enhanced axial imaging at arterial phase, venous phase
         }
     }
     report += "\n";
+
+    // Calculate staging via Logic
+    const data = {
+        tumorSize: t_length,
+        isNonMeasurable: $('#cb_ts_nm').is(':checked'),
+        hasNodes: $('.cb_rn:checked').length > 0,
+        hasMetastasis: $('.cb_dm:checked').length > 0
+    };
+
+    const stageResult = calculateGistStage(data);
+    const t_stage = stageResult.t;
+    const n_stage = stageResult.n;
+    const m_stage = stageResult.m;
 
     // Other Findings
     report += "6. Other findings\n\n\n";
