@@ -24,7 +24,7 @@ const htmlPlugins = ajccPages.map(page => {
   return new HtmlWebpackPlugin({
     template: `./src/html/ajcc/${page}.html`,
     filename: `ajcc/${page}.html`, // Output to dist/ajcc/
-    chunks: [page],
+    chunks: ['vendors', 'common', page],
   });
 });
 
@@ -56,6 +56,29 @@ module.exports = {
         extractComments: false,
       }),
     ],
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        defaultVendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+          priority: 20,
+        },
+        common: {
+          test: /[\\/]src[\\/]js[\\/](common|ajcc_common)\.js/,
+          name: 'common',
+          chunks: 'all',
+          priority: 10,
+          enforce: true,
+        },
+      },
+    },
+  },
+
+  performance: {
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
   },
 
   // https://webpack.js.org/configuration/dev-server/
