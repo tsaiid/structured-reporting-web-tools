@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
+import { calculateOralStage } from './oral_logic.js';
 
 const AJCC_T_LIP = new Map([
     ['x', 'Primary tumor cannot be assessed.'],
@@ -47,9 +48,6 @@ const AJCC_M = new Map([
 ]);
 
 function generate_report(){
-    var t_stage = [];
-    var n_stage = ["0"];
-    var m_stage = ["0"];
     // Protocol
     var report = `1. Imaging modality
   - Imaging by `;
@@ -127,35 +125,6 @@ function generate_report(){
 
 `;
 
-    // calculate T stage
-    let has_lip = $('.cb_tl_l:checked').length > 0;
-    let has_oral = $('.cb_tl_o:checked').length > 0;
-    if (has_ts_nm) {
-        t_stage.push('x');
-    } else if (has_ts_no || !has_tl) {
-        t_stage.push('0');
-    } else {
-        // by size
-        if (t_length > 4) {
-            t_stage.push("3");
-        } else if (t_length > 2) {
-            t_stage.push("2");
-        } else {
-            t_stage.push("1");
-        }
-
-        // by invasion
-        if (has_lip && $('.cb_ti_lip.cb_ti_t4a:checked').length) {
-            t_stage.push("4a");
-        }
-        if (has_oral && $('.cb_ti_oral.cb_ti_t4a:checked').length) {
-            t_stage.push("4a");
-        }
-        if ($('.cb_ti_t4b:checked').length) {
-            t_stage.push("4b");
-        }
-    }
-
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length > 0;
     let n_length = parseFloat($('#txt_rn_len').val());
@@ -195,25 +164,6 @@ function generate_report(){
 
 `;
 
-    // Calculate N stage
-    if (has_rln) {
-        if (has_ene) {
-            n_stage.push("3b");
-        } else if (n_length > 6.0) {
-            n_stage.push("3a");
-        } else if ((    $('.cb_rn_r:checked').length && $('.cb_rn_l:checked').length)       // bilateral
-                    || ($('#cb_tl_r').is(':checked') && $('.cb_rn_l:checked').length)       // tumor right, LAP left
-                    || ($('#cb_tl_l').is(':checked') && $('.cb_rn_r:checked').length)) {    // tumor left, LAP right
-            n_stage.push("2c");
-        } else if (!has_sin) {          // multiple ipsilateral
-            n_stage.push("2b");
-        } else if (n_length > 3.0) {    // single ipsilateral, > 3 cm
-            n_stage.push("2a");
-        } else {                        // single ipsilateral, <= 3 cm
-            n_stage.push("1");
-        }
-    }
-
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
@@ -229,13 +179,42 @@ function generate_report(){
             }
             report += $('#txt_dm_others').val();
         }
-
-        m_stage.push("1");
-        //console.log(m_stage);
     } else {
         report += "___";
     }
     report += "\n\n";
+
+    // Calculate staging via Logic
+    const data = {
+        tumorSize: t_length,
+        isNotAssessable: has_ts_nm,
+        isNoEvidence: has_ts_no,
+        hasTumorLocation: has_tl,
+        isLip: $('.cb_tl_l:checked').length > 0,
+        isOral: $('.cb_tl_o:checked').length > 0,
+        invasion: {
+            lipT4a: $('.cb_ti_lip.cb_ti_t4a:checked').length > 0,
+            oralT4a: $('.cb_ti_oral.cb_ti_t4a:checked').length > 0,
+            t4b: $('.cb_ti_t4b:checked').length > 0
+        },
+        nodes: {
+            hasNodes: has_rln,
+            nodeSize: n_length,
+            hasENE: has_ene,
+            isSingleNode: has_sin,
+            isBilateralOrContralateral: (
+                ($('.cb_rn_r:checked').length && $('.cb_rn_l:checked').length) ||
+                ($('#cb_tl_r').is(':checked') && $('.cb_rn_l:checked').length) ||
+                ($('#cb_tl_l').is(':checked') && $('.cb_rn_r:checked').length)
+            )
+        },
+        hasMetastasis: has_dm
+    };
+
+    const stageResult = calculateOralStage(data);
+    const t_stage = stageResult.t;
+    const n_stage = stageResult.n;
+    const m_stage = stageResult.m;
 
     // Other Findings
     report += "6. Other findings\n\n\n";
@@ -244,7 +223,7 @@ function generate_report(){
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    let AJCC_T = (has_lip ? AJCC_T_LIP : AJCC_T_ORAL );
+    let AJCC_T = (data.isLip ? AJCC_T_LIP : AJCC_T_ORAL );
     report += ajcc_template_with_parent("Oral Cavity Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Oral Cancer Staging Form");
