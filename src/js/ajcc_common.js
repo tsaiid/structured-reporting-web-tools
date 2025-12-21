@@ -1,4 +1,4 @@
-export function ajcc_template(ca_str, t, t_str, n, n_str, m, m_str, ver=8) {
+export function ajcc_template(ca_str, t, t_str, n, n_str, m, m_str, ver = 8) {
     var report = `
 ===================================================
 AJCC Cancer Staging System, ${ver}th edition
@@ -22,7 +22,7 @@ T${t}N${n}M${m}
     return report;
 }
 
-export function ajcc_template_with_parent(ca_str, t, t_table, n, n_table, m, m_table, ver=8) {
+export function ajcc_template_with_parent(ca_str, t, t_table, n, n_table, m, m_table, ver = 8) {
     var report = `
 ===================================================
 AJCC Cancer Staging System, ${ver}th edition
@@ -73,22 +73,22 @@ T${t}N${n}M${m}
     return report;
 }
 
-export function join_checkbox_values(jq_cbs, sep=', '){
-   return jq_cbs
-   .map(function() {
-     if (this.value !== "") {
-      return this.value;
-     }
-   })
-   .get()
-   .join(sep);
+export function join_checkbox_values(jq_cbs, sep = ', ') {
+    return jq_cbs
+        .map(function () {
+            if (this.value !== "") {
+                return this.value;
+            }
+        })
+        .get()
+        .join(sep);
 }
 
-export function generate_ajcc_table(t, n, m){
+export function generate_ajcc_table(t, n, m) {
     let t_table = "";
     let n_table = "";
     let m_table = "";
-    t.forEach(function(v, k, m){
+    t.forEach(function (v, k, m) {
         let k_span = k;
         if (k.match(/^\d\w+\d$/)) {
             k_span = `<span class="ml-4">${k_span}</span>`;
@@ -101,7 +101,7 @@ export function generate_ajcc_table(t, n, m){
       <td>${v}</td>
     </tr>`;
     });
-    n.forEach(function(v, k, m){
+    n.forEach(function (v, k, m) {
         let k_span = k;
         if (k.match(/^\d\w+\d$/)) {
             k_span = `<span class="ml-4">${k_span}</span>`;
@@ -114,7 +114,7 @@ export function generate_ajcc_table(t, n, m){
       <td>${v}</td>
     </tr>`;
     });
-    m.forEach(function(v, k, m){
+    m.forEach(function (v, k, m) {
         let k_span = k;
         if (k.match(/^\d\w+\d$/)) {
             k_span = `<span class="ml-4">${k_span}</span>`;
@@ -199,34 +199,55 @@ export function setupReportPage({
     reportModalBodySelector = '#reportModalBody pre code'
 }) {
     // 1. Copy Button Click - Trigger Generation
-    $(copyButtonId).on('click', function(event) {
+    // 1. Copy Button Click - Trigger Generation and Copy
+    $(copyButtonId).on('click', function (event) {
         event.preventDefault();
+
+        // Generate report
         if (typeof generateReportFn === 'function') {
             generateReportFn();
         }
-    });
 
-    // 2. ClipboardJS Setup
-    // Ensure ClipboardJS is available (it should be via common.js -> window.ClipboardJS or import)
-    // Note: In common.js we set window.ClipboardJS. If we imported it here, we could use that too.
-    const ClipboardConstructor = window.ClipboardJS || require('clipboard');
-    
-    new ClipboardConstructor(copyButtonId, {
-        text: function(trigger) {
-            const report_title = $(reportModalTitleId).text();
-            const report_body = $(reportModalBodySelector).text();
-            return report_title + "\n\n" + report_body;
+        // Get text to copy
+        const report_title = $(reportModalTitleId).text();
+        const report_body = $(reportModalBodySelector).text();
+        const text_to_copy = report_title + "\n\n" + report_body;
+
+        // Copy to clipboard
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text_to_copy).then(() => {
+                // Optional: Feedback could be added here
+            }).catch(err => {
+                console.error("Failed to copy: ", err);
+            });
+        } else {
+            // Fallback for older browsers or non-secure contexts
+            const textArea = document.createElement("textarea");
+            textArea.value = text_to_copy;
+            textArea.style.position = "fixed";  // Avoid scrolling to bottom
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+            document.body.removeChild(textArea);
         }
     });
 
+    // 2. ClipboardJS Setup - REMOVED
+    // Replaced with native navigator.clipboard in the click handler above
+
     // 3. AJCC Button Click
-    $(ajccButtonId).on('click', function(event) {
+    $(ajccButtonId).on('click', function (event) {
         event.preventDefault();
         $(ajccModalId).modal('show');
     });
 
     // 4. Document Ready - Populate AJCC Table
-    $(document).ready(function() {
+    $(document).ready(function () {
         // console.log("setupReportPage: Document loaded");
         if (ajccData && ajccData.T && ajccData.N && ajccData.M) {
             const ajcc_table = generate_ajcc_table(ajccData.T, ajccData.N, ajccData.M);

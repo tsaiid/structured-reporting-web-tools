@@ -2,9 +2,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 import $ from 'jquery';
-import ClipboardJS from 'clipboard';
 
-window.ClipboardJS = ClipboardJS;
 
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
 import { faGithub, faFacebookSquare, faTwitterSquare } from "@fortawesome/free-brands-svg-icons";

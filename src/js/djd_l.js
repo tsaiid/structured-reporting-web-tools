@@ -8,7 +8,7 @@ var DJDLForm = 'Lumbar spine:' + "\n";
 
 // Control for radio and checkbox.
 // Disc Space Narrowing
-$('.disc_space_narrowing').change(function() {
+$('.disc_space_narrowing').change(function () {
     var cb_dsn = $(this).parent().parent().find('.cb_dsn');
 
     if (!cb_dsn.is(':checked')) {
@@ -16,7 +16,7 @@ $('.disc_space_narrowing').change(function() {
     }
 });
 
-$('.cb_dsn').change(function() {
+$('.cb_dsn').change(function () {
     if (!$(this).is(':checked')) {
         $(this).parent().parent().find(':radio').prop('checked', false);
     } else {
@@ -28,7 +28,7 @@ $('.cb_dsn').change(function() {
 });
 
 // Degenerative Spondylolisthesis
-$('.deg_spon').change(function() {
+$('.deg_spon').change(function () {
     var cb_deg_spon = $(this).parent().parent().find('.cb_deg_spon');
 
     if (!cb_deg_spon.is(':checked')) {
@@ -36,7 +36,7 @@ $('.deg_spon').change(function() {
     }
 });
 
-$('.cb_deg_spon').change(function() {
+$('.cb_deg_spon').change(function () {
     if (!$(this).is(':checked')) {
         $(this).parent().parent().find(':radio').prop('checked', false);
     } else {
@@ -48,7 +48,7 @@ $('.cb_deg_spon').change(function() {
 });
 
 // Scoliosis
-$('.scoliosis').change(function() {
+$('.scoliosis').change(function () {
     var cb_scoliosis = $(this).parent().parent().find('.cb_scoliosis');
 
     if (!cb_scoliosis.is(':checked')) {
@@ -56,7 +56,7 @@ $('.scoliosis').change(function() {
     }
 });
 
-$('.cb_scoliosis').change(function() {
+$('.cb_scoliosis').change(function () {
     if (!$(this).is(':checked')) {
         $(this).parent().parent().find(':radio').prop('checked', false);
     } else {
@@ -68,7 +68,7 @@ $('.cb_scoliosis').change(function() {
 });
 
 // Vertebral Collapse
-$('.v_collapse').change(function() {
+$('.v_collapse').change(function () {
     var cb_collapse = $(this).parent().parent().find('.cb_collapse');
 
     if (!cb_collapse.is(':checked')) {
@@ -82,7 +82,7 @@ $('.v_collapse').change(function() {
     }
 });
 
-$('.cb_collapse').change(function() {
+$('.cb_collapse').change(function () {
     if (!$(this).is(':checked')) {
         $(this).parent().parent().find(':checkbox').prop('checked', false);
     } else {
@@ -94,7 +94,7 @@ $('.cb_collapse').change(function() {
 });
 
 // LSTV
-$('.lstv').change(function() {
+$('.lstv').change(function () {
     var cb_lstv = $(this).parent().parent().find('.cb_lstv');
 
     if (!cb_lstv.is(':checked')) {
@@ -114,7 +114,7 @@ $('.lstv').change(function() {
     }
 });
 
-$('.cb_lstv').change(function() {
+$('.cb_lstv').change(function () {
     if (!$(this).is(':checked')) {
         $(this).parent().parent().find(':radio').prop('checked', false);
     } else {
@@ -127,11 +127,11 @@ $('.cb_lstv').change(function() {
     }
 });
 
-$(':checkbox, :radio').change(function() {
+$(':checkbox, :radio').change(function () {
     analyze();
 });
 
-$('#btn_clear').click(function() {
+$('#btn_clear').click(function () {
     $(':checkbox, :radio').prop('checked', false);
     $('#result').text('');
 });
@@ -151,7 +151,7 @@ function analyze() {
         var degree_text = ['', 'mild', 'moderate', 'severe'];
         var has_disc_space_narrowing = false;
 
-        $('.disc_space_narrowing:checked').each(function() {
+        $('.disc_space_narrowing:checked').each(function () {
             var level = $(this).parent().parent().parent().attr('id');
             if (typeof degree[$(this).val()] == "undefined") {
                 degree[$(this).val()] = new Array();
@@ -172,7 +172,7 @@ function analyze() {
     }
 
     // Retrolisthesis
-    $('.cb_retro:checked').each(function() {
+    $('.cb_retro:checked').each(function () {
         var level = $(this).parent().parent().parent().attr('id');
         retro.push(level);
     });
@@ -191,7 +191,7 @@ function analyze() {
         //var grade_text = ['', 'mild', 'moderate', 'severe'];
         var has_spondylolisthesis = false;
 
-        $('.deg_spon:checked').each(function() {
+        $('.deg_spon:checked').each(function () {
             var level = $(this).parent().parent().parent().attr('id');
             if (typeof grade[$(this).val()] == "undefined") {
                 grade[$(this).val()] = new Array();
@@ -226,7 +226,7 @@ function analyze() {
     }
 
     // Hypermobility
-    $('.cb_hyper:checked').each(function() {
+    $('.cb_hyper:checked').each(function () {
         var level = $(this).parent().parent().parent().attr('id');
         hyper.push(level);
     });
@@ -247,7 +247,7 @@ function analyze() {
         var v_collapses = $('.v_collapse:checked');
         str += "- Collapse of ";
         var len = v_collapses.length;
-        v_collapses.each(function(i) {
+        v_collapses.each(function (i) {
             str += $(this).val();
             if (i != len - 1)
                 str += ', ';
@@ -271,23 +271,41 @@ function analyze() {
     return false;
 }
 
-var clipboard = new ClipboardJS('#btn_copy');
-clipboard.on('success', function(e) {
-    console.info('Action:', e.action);
-    console.info('Text:', e.text);
-    console.info('Trigger:', e.trigger);
+// Replaced ClipboardJS with native navigator.clipboard
+$('#btn_copy').click(function (event) {
+    event.preventDefault();
 
-    e.clearSelection();
-    $('#btn_copy').tooltip('show');
+    // The text to copy is in the textarea #result
+    var text_to_copy = $('#result').val();
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text_to_copy).then(function () {
+            // Success feedback
+            $('#btn_copy').attr('data-original-title', "Copied!"); // Ensure title is correct
+            $('#btn_copy').tooltip('show');
+            setTimeout(function () { $('#btn_copy').tooltip('hide'); }, 2000);
+        }, function (err) {
+            console.error('Async: Could not copy text: ', err);
+            $('#btn_copy').attr('data-original-title', "Failed to copy").tooltip('show');
+        });
+    } else {
+        // Fallback for older browsers
+        var $temp = $('#result');
+        $temp.select();
+        try {
+            document.execCommand("copy");
+            $('#btn_copy').attr('data-original-title', "Copied!");
+            $('#btn_copy').tooltip('show');
+            setTimeout(function () { $('#btn_copy').tooltip('hide'); }, 2000);
+        } catch (e) {
+            $('#btn_copy').attr('data-original-title', "Press Ctrl+C to copy!").tooltip('show');
+        }
+    }
 });
 
-clipboard.on('error', function(e) {
-    console.error('Action:', e.action);
-    console.error('Trigger:', e.trigger);
-    $('#btn_copy').attr('data-original-title', "Press Ctrl+C to copy!").tooltip('show');
+$('#btn_copy').mouseleave(function () {
+    $(this).tooltip('hide');
 });
 
-$('#btn_copy').mouseleave(function(){
-    $(this).tooltip('dispose');
-});
+
 
