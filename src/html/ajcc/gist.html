@@ -17,19 +17,19 @@
     <![endif]-->
 
   <!-- Google Analytics -->
-  <%= require('html-loader!../partials/google_analytics.html').default %>
+  <%= require('../partials/google_analytics.html').default %>
 
     <!-- Vendors: jquery, bootstrap, clipboard.js -->
-    <%= require('html-loader!../partials/vendors_css.html').default %>
+    <%= require('../partials/vendors_css.html').default %>
 </head>
 
 <body>
 
-  <%= require('html-loader!../partials/nav.html').default %>
+  <%= require('../partials/nav.html').default %>
 
     <div class="container-fluid">
       <div class="row">
-        <%= require('html-loader!../partials/sidebar.html').default %>
+        <%= require('../partials/sidebar.html').default %>
 
           <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             <div
@@ -37,7 +37,7 @@
               <h1 class="h3">Gastrointestinal Stromal Tumor Staging Form <span class="badge badge-secondary ml-2"
                   style="font-size: 50%; vertical-align: super;">AJCC 8th</span></h1>
 
-              <%= require('html-loader!../partials/toolbar_buttons.html').default %>
+              <%= require('../partials/toolbar_buttons.html').default %>
             </div>
 
             <div class="row">
@@ -226,16 +226,16 @@
     </div>
 
     <!-- AJCC Definitions Modal -->
-    <%= require('html-loader!../partials/ajcc_modal.html').default %>
+    <%= require('../partials/ajcc_modal.html').default %>
 
       <!-- Report Modal -->
-      <%= require('html-loader!../partials/report_modal.html').default %>
+      <%= require('../partials/report_modal.html').default %>
 
         <!-- About Modal -->
-        <%= require('html-loader!../partials/about_modal.html').default %>
+        <%= require('../partials/about_modal.html').default %>
 
           <!-- Vendors: jquery, bootstrap, clipboard.js -->
-          <%= require('html-loader!../partials/vendors_js.html').default %>
+          <%= require('../partials/vendors_js.html').default %>
 </body>
 
 </html>

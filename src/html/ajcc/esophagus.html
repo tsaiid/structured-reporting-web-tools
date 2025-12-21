@@ -17,392 +17,413 @@
     <![endif]-->
 
   <!-- Google Analytics -->
-<%= require('html-loader!../partials/google_analytics.html').default %>
+  <%= require('../partials/google_analytics.html').default %>
 
-  <!-- Vendors: jquery, bootstrap, clipboard.js -->
-<%= require('html-loader!../partials/vendors_css.html').default %>
+    <!-- Vendors: jquery, bootstrap, clipboard.js -->
+    <%= require('../partials/vendors_css.html').default %>
 </head>
 
 <body>
 
-<%= require('html-loader!../partials/nav.html').default %>
+  <%= require('../partials/nav.html').default %>
 
-  <div class="container-fluid">
-    <div class="row">
-<%= require('html-loader!../partials/sidebar.html').default %>
+    <div class="container-fluid">
+      <div class="row">
+        <%= require('../partials/sidebar.html').default %>
 
-      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h3">Esophageal Cancer Staging Form <span class="badge badge-secondary ml-2" style="font-size: 50%; vertical-align: super;">AJCC 8th</span></h1>
+          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <div
+              class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+              <h1 class="h3">Esophageal Cancer Staging Form <span class="badge badge-secondary ml-2"
+                  style="font-size: 50%; vertical-align: super;">AJCC 8th</span></h1>
 
-<%= require('html-loader!../partials/toolbar_buttons.html').default %>
-        </div>
+              <%= require('../partials/toolbar_buttons.html').default %>
+            </div>
 
-        <div class="row">
-          <div class="col">
-            <!-- Imaging Modality -->
-            <h2 class="h4">Imaging Modality</h2>
-            <form class="">
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input" type="radio" name="protocol_radios" id="radio_ct" value="ct" checked>
-                <label class="form-check-label" for="radio_ct">CT</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input" type="radio" name="protocol_radios" id="radio_mr" value="mr">
-                <label class="form-check-label" for="radio_mr">MRI</label>
-              </div>
-            </form>
-
-            <!-- Tumor Location -->
-            <h2 class="h4 mt-4">Tumor Location</h2>
-            <form class="needs-validation" id="form_tumor_location" novalidate>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_cer"
-                  value="Cervical segment (hypopharynx to sternal notch)">
-                <label class="form-check-label" for="cb_tl_cer">Cervical segment (hypopharynx to sternal notch)</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_upp"
-                  value="Upper third of thoracic segment (sternal notch to azygos vein)">
-                <label class="form-check-label" for="cb_tl_upp">Upper third of thoracic segment (sternal notch to azygos
-                  vein)</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_mid"
-                  value="Middle third of thoracic segment (azygos vein to inferior pulmonary vein)">
-                <label class="form-check-label" for="cb_tl_mid">Middle third of thoracic segment (azygos vein to
-                  inferior pulmonary vein)</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_low"
-                  value="Lower third of thoracic segment (inferior pulmonary vein to esophagogastric junction)">
-                <label class="form-check-label" for="cb_tl_low">Lower third of thoracic segment (inferior pulmonary vein
-                  to esophagogastric junction)</label>
-              </div>
-            </form>
-
-            <!-- Tumor Size -->
-            <h2 class="h4 mt-4">Tumor Size</h2>
-            <form class="needs-validation" id="form_tumor_size" novalidate>
-              <div class="row">
-                <div class="col">
-                  <div class="input-group input-group-sm mb-2 mr-sm-2">
-                    <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" step="0.1" class="form-control"
-                      aria-label="Length of tumor in cm" id="txt_ts_len" placeholder="Length" required>
-                    <div class="input-group-append">
-                      <span class="input-group-text">cm</span>
-                    </div>
-                    <div class="invalid-tooltip">
-                      Please enter a number.
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="input-group input-group-sm mb-2 mr-sm-2">
-                    <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" step="0.1" class="form-control"
-                      aria-label="Max thickness of tumor in cm" id="txt_ts_thick" placeholder="Max thickness" required>
-                    <div class="input-group-append">
-                      <span class="input-group-text">cm</span>
-                    </div>
-                    <div class="invalid-tooltip">
-                      Please enter a number.
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="cb_ts_nm" value="1">
-                <label class="form-check-label" for="cb_ts_nm">Non-measurable</label>
-                <div class="valid-tooltip">
-                  Or, check Non-measurable.
-                </div>
-              </div>
-            </form>
-
-            <!-- Tumor Invasion -->
-            <h2 class="h4 mt-4">Tumor Invasion</h2>
             <div class="row">
-              <div class="col t_sidebar">
-                T2
-              </div>
               <div class="col">
+                <!-- Imaging Modality -->
+                <h2 class="h4">Imaging Modality</h2>
                 <form class="">
                   <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_ti cb_ti_t2" type="checkbox" id="cb_ti_mp"
-                      value="esophageal muscularis propria">
-                    <label class="form-check-label" for="cb_ti_mp">Muscularis propria</label>
+                    <input class="form-check-input" type="radio" name="protocol_radios" id="radio_ct" value="ct"
+                      checked>
+                    <label class="form-check-label" for="radio_ct">CT</label>
+                  </div>
+                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                    <input class="form-check-input" type="radio" name="protocol_radios" id="radio_mr" value="mr">
+                    <label class="form-check-label" for="radio_mr">MRI</label>
+                  </div>
+                </form>
+
+                <!-- Tumor Location -->
+                <h2 class="h4 mt-4">Tumor Location</h2>
+                <form class="needs-validation" id="form_tumor_location" novalidate>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_cer"
+                      value="Cervical segment (hypopharynx to sternal notch)">
+                    <label class="form-check-label" for="cb_tl_cer">Cervical segment (hypopharynx to sternal
+                      notch)</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_upp"
+                      value="Upper third of thoracic segment (sternal notch to azygos vein)">
+                    <label class="form-check-label" for="cb_tl_upp">Upper third of thoracic segment (sternal notch to
+                      azygos
+                      vein)</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_mid"
+                      value="Middle third of thoracic segment (azygos vein to inferior pulmonary vein)">
+                    <label class="form-check-label" for="cb_tl_mid">Middle third of thoracic segment (azygos vein to
+                      inferior pulmonary vein)</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_low"
+                      value="Lower third of thoracic segment (inferior pulmonary vein to esophagogastric junction)">
+                    <label class="form-check-label" for="cb_tl_low">Lower third of thoracic segment (inferior pulmonary
+                      vein
+                      to esophagogastric junction)</label>
+                  </div>
+                </form>
+
+                <!-- Tumor Size -->
+                <h2 class="h4 mt-4">Tumor Size</h2>
+                <form class="needs-validation" id="form_tumor_size" novalidate>
+                  <div class="row">
+                    <div class="col">
+                      <div class="input-group input-group-sm mb-2 mr-sm-2">
+                        <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" step="0.1" class="form-control"
+                          aria-label="Length of tumor in cm" id="txt_ts_len" placeholder="Length" required>
+                        <div class="input-group-append">
+                          <span class="input-group-text">cm</span>
+                        </div>
+                        <div class="invalid-tooltip">
+                          Please enter a number.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="input-group input-group-sm mb-2 mr-sm-2">
+                        <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" step="0.1" class="form-control"
+                          aria-label="Max thickness of tumor in cm" id="txt_ts_thick" placeholder="Max thickness"
+                          required>
+                        <div class="input-group-append">
+                          <span class="input-group-text">cm</span>
+                        </div>
+                        <div class="invalid-tooltip">
+                          Please enter a number.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input" type="checkbox" id="cb_ts_nm" value="1">
+                    <label class="form-check-label" for="cb_ts_nm">Non-measurable</label>
+                    <div class="valid-tooltip">
+                      Or, check Non-measurable.
+                    </div>
+                  </div>
+                </form>
+
+                <!-- Tumor Invasion -->
+                <h2 class="h4 mt-4">Tumor Invasion</h2>
+                <div class="row">
+                  <div class="col t_sidebar">
+                    T2
+                  </div>
+                  <div class="col">
+                    <form class="">
+                      <div class="form-check form-check-inline mb-2 mr-sm-2">
+                        <input class="form-check-input cb_ti cb_ti_t2" type="checkbox" id="cb_ti_mp"
+                          value="esophageal muscularis propria">
+                        <label class="form-check-label" for="cb_ti_mp">Muscularis propria</label>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col t_sidebar">
+                    T3
+                  </div>
+                  <div class="col">
+                    <form class="">
+                      <div class="form-check form-check-inline mb-2 mr-sm-2">
+                        <input class="form-check-input cb_ti cb_ti_t3" type="checkbox" id="cb_ti_ad"
+                          value="esophageal adventitia">
+                        <label class="form-check-label" for="cb_ti_ad">Adventitia</label>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col t_sidebar">
+                    T4a
+                  </div>
+                  <div class="col">
+                    <form class="">
+                      <div class="form-check form-check-inline mb-2 mr-sm-2">
+                        <input class="form-check-input cb_ti cb_ti_t4a" type="checkbox" id="cb_ti_pl" value="pleura">
+                        <label class="form-check-label" for="cb_ti_pl">Pleura</label>
+                      </div>
+                      <div class="form-check form-check-inline mb-2 mr-sm-2">
+                        <input class="form-check-input cb_ti cb_ti_t4a" type="checkbox" id="cb_ti_pc"
+                          value="pericardium">
+                        <label class="form-check-label" for="cb_ti_pc">Pericardium</label>
+                      </div>
+                      <div class="form-check form-check-inline mb-2 mr-sm-2">
+                        <input class="form-check-input cb_ti cb_ti_t4a" type="checkbox" id="cb_ti_av"
+                          value="azygos vein">
+                        <label class="form-check-label" for="cb_ti_av">Azygos vein</label>
+                      </div>
+                      <div class="form-check form-check-inline mb-2 mr-sm-2">
+                        <input class="form-check-input cb_ti cb_ti_t4a" type="checkbox" id="cb_ti_di" value="diaphragm">
+                        <label class="form-check-label" for="cb_ti_di">Diaphragm</label>
+                      </div>
+                      <div class="form-check form-check-inline mb-2 mr-sm-2">
+                        <input class="form-check-input cb_ti cb_ti_t4a" type="checkbox" id="cb_ti_pt"
+                          value="peritoneum">
+                        <label class="form-check-label" for="cb_ti_pt">Peritoneum</label>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col t_sidebar">
+                    T4b
+                  </div>
+                  <div class="col">
+                    <form class="">
+                      <div class="form-check form-check-inline mb-2 mr-sm-2">
+                        <input class="form-check-input cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_aw"
+                          value="aortic wall">
+                        <label class="form-check-label" for="cb_ti_aw">Aortic wall</label>
+                      </div>
+                      <div class="form-check form-check-inline mb-2 mr-sm-2">
+                        <input class="form-check-input cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_car" value="carina">
+                        <label class="form-check-label" for="cb_ti_car">Carina</label>
+                      </div>
+                      <div class="form-check form-check-inline mb-2 mr-sm-2">
+                        <input class="form-check-input cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_law"
+                          value="left atrial wall">
+                        <label class="form-check-label" for="cb_ti_law">Left atrial wall</label>
+                      </div>
+                      <div class="form-check form-check-inline mb-2 mr-sm-2">
+                        <input class="form-check-input cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_vb"
+                          value="vertebral body">
+                        <label class="form-check-label" for="cb_ti_vb">Vertebral body</label>
+                      </div>
+                      <div class="form-check form-check-inline mb-2 mr-sm-2">
+                        <input class="form-check-input cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_pwot"
+                          value="posterior wall of trachea">
+                        <label class="form-check-label" for="cb_ti_pwot">Posterior wall of trachea</label>
+                      </div>
+                      <div class="form-check form-check-inline mb-2 mr-sm-2">
+                        <input class="form-check-input cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_pwomb"
+                          value="posterior wall of main bronchus">
+                        <label class="form-check-label" for="cb_ti_pwomb">Posterior wall of main bronchus</label>
+                      </div>
+                      <div class="form-check form-check-inline mb-2 mr-sm-2">
+                        <input class="form-check-input cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_s" value="stomach">
+                        <label class="form-check-label" for="cb_ti_s">Stomach</label>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <!-- second column -->
+              <div class="col">
+                <!-- Regional Lymph Node -->
+                <h2 class="h4">Regional Lymph Node</h2>
+                <form class="form-inline">
+                  <div class="form-group">
+                    <div class="input-group input-group-sm mb-2 mr-sm-2">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Number</span>
+                      </div>
+                      <input type="number" pattern="[0-9]+" step="1" class="form-control"
+                        aria-label="Number of suspicious lymph node" id="txt_rln_num" placeholder="0" value="0">
+                    </div>
+                  </div>
+                  <div class="form-group mb-2 mr-sm-2">
+                    <small id="ref_rln_num" class="text-muted">
+                      1-2 (N1), 3-6 (N2), or ≥7 (N3)
+                    </small>
+                  </div>
+                </form>
+                <h3 class="h5">Locations</h3>
+                <form class="form-inline rn_item">
+                  <div class="form-check mb-2 mr-sm-2">
+                    <label class="form-check-label cb_rn_title" for="">Lower cervical</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_rlc" value="right lower cervical">
+                    <label class="form-check-label" for="cb_rn_rlc">right</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_llc" value="left lower cervical">
+                    <label class="form-check-label" for="cb_rn_llc">left</label>
+                  </div>
+                </form>
+                <form class="form-inline rn_item">
+                  <div class="form-check mb-2 mr-sm-2">
+                    <label class="form-check-label cb_rn_title" for="">Upper paratracheal</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_rup"
+                      value="right upper paratracheal">
+                    <label class="form-check-label" for="cb_rn_rup">right</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_lup"
+                      value="left upper paratracheal">
+                    <label class="form-check-label" for="cb_rn_lup">left</label>
+                  </div>
+                </form>
+                <form class="form-inline rn_item">
+                  <div class="form-check mb-2 mr-sm-2">
+                    <label class="form-check-label cb_rn_title" for="">Lower paratracheal</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_rlp"
+                      value="right lower paratracheal">
+                    <label class="form-check-label" for="cb_rn_rlp">right</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_llp"
+                      value="left lower paratracheal">
+                    <label class="form-check-label" for="cb_rn_llp">left</label>
+                  </div>
+                </form>
+                <form class="form-inline rn_item">
+                  <div class="form-check mb-2 mr-sm-2">
+                    <label class="form-check-label cb_rn_title" for="">Thoracic paraesophageal</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_utpe"
+                      value="upper thoracic paraesophageal">
+                    <label class="form-check-label" for="cb_rn_utpe">upper</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_mtpe"
+                      value="middle thoracic paraesophageal">
+                    <label class="form-check-label" for="cb_rn_mtpe">middle</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_ltpe"
+                      value="lower thoracic paraesophageal">
+                    <label class="form-check-label" for="cb_rn_ltpe">lower</label>
+                  </div>
+                </form>
+                <form class="form-inline rn_item">
+                  <div class="form-check mb-2 mr-sm-2">
+                    <label class="form-check-label cb_rn_title" for="">Pulmonary ligament</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_rpl"
+                      value="right pulmonary ligament">
+                    <label class="form-check-label" for="cb_rn_rpl">right</label>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_lpl"
+                      value="left pulmonary ligament">
+                    <label class="form-check-label" for="cb_rn_lpl">left</label>
+                  </div>
+                </form>
+                <form class="">
+                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                    <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_sca" value="subcarinal">
+                    <label class="form-check-label" for="cb_rn_sca">Subcarinal</label>
+                  </div>
+                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                    <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_di" value="diaphragmatic">
+                    <label class="form-check-label" for="cb_rn_di">Diaphragmatic</label>
+                  </div>
+                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                    <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_pc" value="paracardial">
+                    <label class="form-check-label" for="cb_rn_pc">Paracardial</label>
+                  </div>
+                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                    <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_lga" value="left gastric">
+                    <label class="form-check-label" for="cb_rn_lga">Left gastric</label>
+                  </div>
+                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                    <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_cha" value="common hepatic">
+                    <label class="form-check-label" for="cb_rn_cha">Common hepatic</label>
+                  </div>
+                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                    <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_sa" value="splenic">
+                    <label class="form-check-label" for="cb_rn_sa">Splenic</label>
+                  </div>
+                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                    <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_c" value="celiac">
+                    <label class="form-check-label" for="cb_rn_c">Celiac</label>
+                  </div>
+                  <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <input type="checkbox" class="cb_rn" aria-label="Checkbox for other regional lymphadenopathy"
+                          id="cb_rn_others" value="">
+                      </div>
+                      <span class="input-group-text">Others</span>
+                    </div>
+                    <input type="text" class="form-control"
+                      aria-label="Text input with checkbox for other regional lymphadenopathy" id="txt_rn_others">
+                  </div>
+                </form>
+
+                <!-- Distant Metastasis -->
+                <h2 class="h4 mt-4">Distant Metastasis</h2>
+                <form class="">
+                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                    <input class="form-check-input cb_dm" type="checkbox" id="cb_dm_et_liv" value="lung">
+                    <label class="form-check-label" for="cb_dm_et_liv">Lung</label>
+                  </div>
+                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                    <input class="form-check-input cb_dm" type="checkbox" id="cb_dm_et_liv" value="liver">
+                    <label class="form-check-label" for="cb_dm_et_liv">Liver</label>
+                  </div>
+                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                    <input class="form-check-input cb_dm" type="checkbox" id="cb_dm_et_ad" value="adrenal">
+                    <label class="form-check-label" for="cb_dm_et_ad">Adrenal</label>
+                  </div>
+                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                    <input class="form-check-input cb_dm" type="checkbox" id="cb_dm_et_b" value="bone">
+                    <label class="form-check-label" for="cb_dm_et_b">Bone</label>
+                  </div>
+                  <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <input type="checkbox" class="cb_dm" aria-label="Checkbox for other distant metastasis"
+                          id="cb_dm_others" value="">
+                      </div>
+                      <span class="input-group-text">Others</span>
+                    </div>
+                    <input type="text" class="form-control"
+                      aria-label="Text input with checkbox for other distant metastasis" id="txt_dm_others">
                   </div>
                 </form>
               </div>
             </div>
-
-            <div class="row">
-              <div class="col t_sidebar">
-                T3
-              </div>
-              <div class="col">
-                <form class="">
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_ti cb_ti_t3" type="checkbox" id="cb_ti_ad" value="esophageal adventitia">
-                    <label class="form-check-label" for="cb_ti_ad">Adventitia</label>
-                  </div>
-                </form>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col t_sidebar">
-                T4a
-              </div>
-              <div class="col">
-                <form class="">
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4a" type="checkbox" id="cb_ti_pl" value="pleura">
-                <label class="form-check-label" for="cb_ti_pl">Pleura</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4a" type="checkbox" id="cb_ti_pc" value="pericardium">
-                <label class="form-check-label" for="cb_ti_pc">Pericardium</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4a" type="checkbox" id="cb_ti_av" value="azygos vein">
-                <label class="form-check-label" for="cb_ti_av">Azygos vein</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4a" type="checkbox" id="cb_ti_di" value="diaphragm">
-                <label class="form-check-label" for="cb_ti_di">Diaphragm</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4a" type="checkbox" id="cb_ti_pt" value="peritoneum">
-                <label class="form-check-label" for="cb_ti_pt">Peritoneum</label>
-              </div>
-            </form>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col t_sidebar">
-                T4b
-              </div>
-              <div class="col">
-            <form class="">
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_aw" value="aortic wall">
-                <label class="form-check-label" for="cb_ti_aw">Aortic wall</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_car" value="carina">
-                <label class="form-check-label" for="cb_ti_car">Carina</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_law" value="left atrial wall">
-                <label class="form-check-label" for="cb_ti_law">Left atrial wall</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_vb" value="vertebral body">
-                <label class="form-check-label" for="cb_ti_vb">Vertebral body</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_pwot"
-                  value="posterior wall of trachea">
-                <label class="form-check-label" for="cb_ti_pwot">Posterior wall of trachea</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_pwomb"
-                  value="posterior wall of main bronchus">
-                <label class="form-check-label" for="cb_ti_pwomb">Posterior wall of main bronchus</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_s"
-                  value="stomach">
-                <label class="form-check-label" for="cb_ti_s">Stomach</label>
-              </div>
-            </form>
-              </div>
-            </div>
-          </div>
-
-          <!-- second column -->
-          <div class="col">
-            <!-- Regional Lymph Node -->
-            <h2 class="h4">Regional Lymph Node</h2>
-            <form class="form-inline">
-              <div class="form-group">
-                <div class="input-group input-group-sm mb-2 mr-sm-2">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">Number</span>
-                  </div>
-                  <input type="number" pattern="[0-9]+" step="1" class="form-control"
-                    aria-label="Number of suspicious lymph node" id="txt_rln_num" placeholder="0" value="0">
-                </div>
-              </div>
-              <div class="form-group mb-2 mr-sm-2">
-                <small id="ref_rln_num" class="text-muted">
-                  1-2 (N1), 3-6 (N2), or ≥7 (N3)
-                </small>
-              </div>
-            </form>
-            <h3 class="h5">Locations</h3>
-            <form class="form-inline rn_item">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label cb_rn_title" for="">Lower cervical</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_rlc" value="right lower cervical">
-                <label class="form-check-label" for="cb_rn_rlc">right</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_llc" value="left lower cervical">
-                <label class="form-check-label" for="cb_rn_llc">left</label>
-              </div>
-            </form>
-            <form class="form-inline rn_item">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label cb_rn_title" for="">Upper paratracheal</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_rup" value="right upper paratracheal">
-                <label class="form-check-label" for="cb_rn_rup">right</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_lup" value="left upper paratracheal">
-                <label class="form-check-label" for="cb_rn_lup">left</label>
-              </div>
-            </form>
-            <form class="form-inline rn_item">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label cb_rn_title" for="">Lower paratracheal</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_rlp" value="right lower paratracheal">
-                <label class="form-check-label" for="cb_rn_rlp">right</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_llp" value="left lower paratracheal">
-                <label class="form-check-label" for="cb_rn_llp">left</label>
-              </div>
-            </form>
-            <form class="form-inline rn_item">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label cb_rn_title" for="">Thoracic paraesophageal</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_utpe" value="upper thoracic paraesophageal">
-                <label class="form-check-label" for="cb_rn_utpe">upper</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_mtpe" value="middle thoracic paraesophageal">
-                <label class="form-check-label" for="cb_rn_mtpe">middle</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_ltpe" value="lower thoracic paraesophageal">
-                <label class="form-check-label" for="cb_rn_ltpe">lower</label>
-              </div>
-            </form>
-            <form class="form-inline rn_item">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label cb_rn_title" for="">Pulmonary ligament</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_rpl" value="right pulmonary ligament">
-                <label class="form-check-label" for="cb_rn_rpl">right</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_lpl" value="left pulmonary ligament">
-                <label class="form-check-label" for="cb_rn_lpl">left</label>
-              </div>
-            </form>
-            <form class="">
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_sca" value="subcarinal">
-                <label class="form-check-label" for="cb_rn_sca">Subcarinal</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_di" value="diaphragmatic">
-                <label class="form-check-label" for="cb_rn_di">Diaphragmatic</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_pc" value="paracardial">
-                <label class="form-check-label" for="cb_rn_pc">Paracardial</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_lga" value="left gastric">
-                <label class="form-check-label" for="cb_rn_lga">Left gastric</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_cha" value="common hepatic">
-                <label class="form-check-label" for="cb_rn_cha">Common hepatic</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_sa" value="splenic">
-                <label class="form-check-label" for="cb_rn_sa">Splenic</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_rn" type="checkbox" id="cb_rn_c" value="celiac">
-                <label class="form-check-label" for="cb_rn_c">Celiac</label>
-              </div>
-              <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <input type="checkbox" class="cb_rn" aria-label="Checkbox for other regional lymphadenopathy"
-                      id="cb_rn_others" value="">
-                  </div>
-                  <span class="input-group-text">Others</span>
-                </div>
-                <input type="text" class="form-control"
-                  aria-label="Text input with checkbox for other regional lymphadenopathy" id="txt_rn_others">
-              </div>
-            </form>
-
-            <!-- Distant Metastasis -->
-            <h2 class="h4 mt-4">Distant Metastasis</h2>
-            <form class="">
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_dm" type="checkbox" id="cb_dm_et_liv" value="lung">
-                <label class="form-check-label" for="cb_dm_et_liv">Lung</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_dm" type="checkbox" id="cb_dm_et_liv" value="liver">
-                <label class="form-check-label" for="cb_dm_et_liv">Liver</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_dm" type="checkbox" id="cb_dm_et_ad" value="adrenal">
-                <label class="form-check-label" for="cb_dm_et_ad">Adrenal</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_dm" type="checkbox" id="cb_dm_et_b" value="bone">
-                <label class="form-check-label" for="cb_dm_et_b">Bone</label>
-              </div>
-              <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <input type="checkbox" class="cb_dm" aria-label="Checkbox for other distant metastasis"
-                      id="cb_dm_others" value="">
-                  </div>
-                  <span class="input-group-text">Others</span>
-                </div>
-                <input type="text" class="form-control"
-                  aria-label="Text input with checkbox for other distant metastasis" id="txt_dm_others">
-              </div>
-            </form>
-          </div>
-        </div>
-      </main>
+          </main>
+      </div>
     </div>
-  </div>
 
-  <!-- AJCC Definitions Modal -->
-<%= require('html-loader!../partials/ajcc_modal.html').default %>
+    <!-- AJCC Definitions Modal -->
+    <%= require('../partials/ajcc_modal.html').default %>
 
-  <!-- Report Modal -->
-<%= require('html-loader!../partials/report_modal.html').default %>
+      <!-- Report Modal -->
+      <%= require('../partials/report_modal.html').default %>
 
-  <!-- About Modal -->
-<%= require('html-loader!../partials/about_modal.html').default %>
+        <!-- About Modal -->
+        <%= require('../partials/about_modal.html').default %>
 
-  <!-- Vendors: jquery, bootstrap, clipboard.js -->
-<%= require('html-loader!../partials/vendors_js.html').default %>
+          <!-- Vendors: jquery, bootstrap, clipboard.js -->
+          <%= require('../partials/vendors_js.html').default %>
 </body>
 
 </html>
-

@@ -38,7 +38,8 @@ module.exports = {
     // If chunk name corresponds to an ajcc page, put it in ajcc/ folder
     // Otherwise, put it in assets/js/ (for vendors and common)
     filename: (pathData) => {
-      return ajccPages.includes(pathData.chunk.name) ? 'ajcc/[name].js' : 'assets/js/[name].js';
+      // Use [contenthash] for better caching
+      return ajccPages.includes(pathData.chunk.name) ? 'ajcc/[name].[contenthash].js' : 'assets/js/[name].[contenthash].js';
     },
     path: path.resolve(__dirname, 'dist'),
     // Important: Clean the output directory before emit
@@ -101,6 +102,11 @@ module.exports = {
           presets: ['@babel/preset-env']
         }
       }
+    },
+    {
+      test: /\.html$/i,
+      include: path.resolve(__dirname, 'src/html/partials'),
+      loader: "html-loader",
     },
     {
       test: /\.css$/, // 針對所有.css 的檔案作預處理，這邊是用 regular express 的格式

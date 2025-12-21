@@ -17,210 +17,214 @@
     <![endif]-->
 
   <!-- Google Analytics -->
-<%= require('html-loader!../partials/google_analytics.html').default %>
+  <%= require('../partials/google_analytics.html').default %>
 
-  <!-- Vendors: jquery, bootstrap, clipboard.js -->
-<%= require('html-loader!../partials/vendors_css.html').default %>
+    <!-- Vendors: jquery, bootstrap, clipboard.js -->
+    <%= require('../partials/vendors_css.html').default %>
 </head>
 
 <body>
 
-<%= require('html-loader!../partials/nav.html').default %>
+  <%= require('../partials/nav.html').default %>
 
-  <div class="container-fluid">
-    <div class="row">
-<%= require('html-loader!../partials/sidebar.html').default %>
+    <div class="container-fluid">
+      <div class="row">
+        <%= require('../partials/sidebar.html').default %>
 
-      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h3">
-            Cholangiocarcinoma: Distal Bile Duct
-            <small class="text-muted">
-              (ampulla of Vatar to cystic duct origin)
-            </small>
-            Staging Form
-            <span class="badge badge-secondary ml-2" style="font-size: 50%; vertical-align: super;">AJCC 8th</span>
-          </h1>
+          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <div
+              class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+              <h1 class="h3">
+                Cholangiocarcinoma: Distal Bile Duct
+                <small class="text-muted">
+                  (ampulla of Vatar to cystic duct origin)
+                </small>
+                Staging Form
+                <span class="badge badge-secondary ml-2" style="font-size: 50%; vertical-align: super;">AJCC 8th</span>
+              </h1>
 
-<%= require('html-loader!../partials/toolbar_buttons.html').default %>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <!-- Imaging Modality -->
-            <h2 class="h4">Imaging Modality</h2>
-            <form class="">
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input" type="radio" name="protocol_radios" id="radio_ct" value="ct" checked>
-                <label class="form-check-label" for="radio_ct">CT</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input" type="radio" name="protocol_radios" id="radio_mr" value="mr">
-                <label class="form-check-label" for="radio_mr">MRI</label>
-              </div>
-            </form>
-
-            <!-- Tumor Size -->
-            <h2 class="h4 mt-4">Tumor Size</h2>
-            <form class="form-inline needs-validation" id="form_tumor_size" novalidate>
-              <div class="input-group input-group-sm col-md-7 pl-0 mb-2 mr-sm-2">
-                <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" step="0.1" class="form-control"
-                  aria-label="Greatest dimension of tumor in cm" id="txt_ts_len"
-                  placeholder="The largest tumor" required>
-                <div class="input-group-append">
-                  <span class="input-group-text">cm</span>
-                </div>
-                <div class="invalid-tooltip">
-                  Please enter a number.
-                </div>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="cb_ts_nm" value="1">
-                <label class="form-check-label" for="cb_ts_nm">Non-measurable</label>
-                <div class="valid-tooltip">
-                  Or, check Non-measurable.
-                </div>
-              </div>
-            </form>
-
-            <!-- Tumor Invasion -->
-            <h2 class="h4 mt-4">Tumor Invasion</h2>
-            <form class="form-inline needs-validation" id="form_tumor_depth" novalidate>
-              <div class="input-group input-group-sm col-md-7 pl-0 mb-0 mr-sm-2">
-                <input type="number" pattern="[0-9]+" step="1" class="form-control"
-                  aria-label="Maximum depth of tumor invasion in mm" id="txt_ti_dep"
-                  placeholder="Maximum depth of bile duct wall invasion" required>
-                <div class="input-group-append">
-                  <span class="input-group-text">mm</span>
-                </div>
-                <div class="invalid-tooltip">
-                  Please enter a number.
-                </div>
-              </div>
-              <div class="form-check mb-0 mr-sm-2">
-                <input class="form-check-input" type="checkbox" id="cb_ti_na" value="1">
-                <label class="form-check-label" for="cb_ti_na">Difficult to assess</label>
-                <div class="valid-tooltip">
-                  Or, check Non-measurable.
-                </div>
-              </div>
-            </form>
-            <div class="ml-2 mb-2 mr-sm-2">
-              <small id="ref_ti_dep" class="text-muted">
-                &lt; 5 mm (T1), 5–12 mm (T2), &gt; 12 mm (T3)
-              </small>
+              <%= require('../partials/toolbar_buttons.html').default %>
             </div>
 
-            <div class="row pt-2">
-              <div class="col t_sidebar">
-                T4
-              </div>
+            <div class="row">
               <div class="col">
-            <form class="" id="">
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_ca" value="celiac axis">
-                <label class="form-check-label" for="cb_ti_ca">Celiac axis</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_sma" value="superior mesenteric artery">
-                <label class="form-check-label" for="cb_ti_sma">Superior mesenteric artery</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_cha" value="common hepatic artery">
-                <label class="form-check-label" for="cb_ti_cha">Common hepatic artery</label>
-              </div>
-              <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <input type="checkbox" class="cb_ti cb_ti_t4" aria-label="Checkbox for other tumor invasion"
-                      id="cb_ti_others" value="">
+                <!-- Imaging Modality -->
+                <h2 class="h4">Imaging Modality</h2>
+                <form class="">
+                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                    <input class="form-check-input" type="radio" name="protocol_radios" id="radio_ct" value="ct"
+                      checked>
+                    <label class="form-check-label" for="radio_ct">CT</label>
                   </div>
-                  <span class="input-group-text">Adjacent organs</span>
+                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                    <input class="form-check-input" type="radio" name="protocol_radios" id="radio_mr" value="mr">
+                    <label class="form-check-label" for="radio_mr">MRI</label>
+                  </div>
+                </form>
+
+                <!-- Tumor Size -->
+                <h2 class="h4 mt-4">Tumor Size</h2>
+                <form class="form-inline needs-validation" id="form_tumor_size" novalidate>
+                  <div class="input-group input-group-sm col-md-7 pl-0 mb-2 mr-sm-2">
+                    <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" step="0.1" class="form-control"
+                      aria-label="Greatest dimension of tumor in cm" id="txt_ts_len" placeholder="The largest tumor"
+                      required>
+                    <div class="input-group-append">
+                      <span class="input-group-text">cm</span>
+                    </div>
+                    <div class="invalid-tooltip">
+                      Please enter a number.
+                    </div>
+                  </div>
+                  <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input" type="checkbox" id="cb_ts_nm" value="1">
+                    <label class="form-check-label" for="cb_ts_nm">Non-measurable</label>
+                    <div class="valid-tooltip">
+                      Or, check Non-measurable.
+                    </div>
+                  </div>
+                </form>
+
+                <!-- Tumor Invasion -->
+                <h2 class="h4 mt-4">Tumor Invasion</h2>
+                <form class="form-inline needs-validation" id="form_tumor_depth" novalidate>
+                  <div class="input-group input-group-sm col-md-7 pl-0 mb-0 mr-sm-2">
+                    <input type="number" pattern="[0-9]+" step="1" class="form-control"
+                      aria-label="Maximum depth of tumor invasion in mm" id="txt_ti_dep"
+                      placeholder="Maximum depth of bile duct wall invasion" required>
+                    <div class="input-group-append">
+                      <span class="input-group-text">mm</span>
+                    </div>
+                    <div class="invalid-tooltip">
+                      Please enter a number.
+                    </div>
+                  </div>
+                  <div class="form-check mb-0 mr-sm-2">
+                    <input class="form-check-input" type="checkbox" id="cb_ti_na" value="1">
+                    <label class="form-check-label" for="cb_ti_na">Difficult to assess</label>
+                    <div class="valid-tooltip">
+                      Or, check Non-measurable.
+                    </div>
+                  </div>
+                </form>
+                <div class="ml-2 mb-2 mr-sm-2">
+                  <small id="ref_ti_dep" class="text-muted">
+                    &lt; 5 mm (T1), 5–12 mm (T2), &gt; 12 mm (T3)
+                  </small>
                 </div>
-                <input type="text" class="form-control" aria-label="Text input with checkbox for other tumor invasion"
-                  id="txt_ti_others">
+
+                <div class="row pt-2">
+                  <div class="col t_sidebar">
+                    T4
+                  </div>
+                  <div class="col">
+                    <form class="" id="">
+                      <div class="form-check mb-2 mr-sm-2">
+                        <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_ca"
+                          value="celiac axis">
+                        <label class="form-check-label" for="cb_ti_ca">Celiac axis</label>
+                      </div>
+                      <div class="form-check mb-2 mr-sm-2">
+                        <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_sma"
+                          value="superior mesenteric artery">
+                        <label class="form-check-label" for="cb_ti_sma">Superior mesenteric artery</label>
+                      </div>
+                      <div class="form-check mb-2 mr-sm-2">
+                        <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_cha"
+                          value="common hepatic artery">
+                        <label class="form-check-label" for="cb_ti_cha">Common hepatic artery</label>
+                      </div>
+                      <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <input type="checkbox" class="cb_ti cb_ti_t4" aria-label="Checkbox for other tumor invasion"
+                              id="cb_ti_others" value="">
+                          </div>
+                          <span class="input-group-text">Adjacent organs</span>
+                        </div>
+                        <input type="text" class="form-control"
+                          aria-label="Text input with checkbox for other tumor invasion" id="txt_ti_others">
+                      </div>
+                    </form>
+                  </div>
+                </div>
               </div>
-            </form>
+
+              <!-- second column -->
+              <div class="col">
+                <!-- Regional Lymph Node -->
+                <h2 class="h4">Regional Lymph Node</h2>
+                <form class="form-inline">
+                  <div class="form-group">
+                    <div class="input-group input-group-sm mb-2 mr-sm-2">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Number</span>
+                      </div>
+                      <input type="number" pattern="[0-9]+" step="1" class="form-control"
+                        aria-label="Number of suspicious lymph node" id="txt_rln_num" placeholder="0" value="0">
+                    </div>
+                  </div>
+                  <div class="form-group mb-2 mr-sm-2">
+                    <small id="ref_rln_num" class="text-muted">
+                      1-3 (N1), ≥4 (N2)
+                    </small>
+                  </div>
+                  <div class="form-group mb-2 mr-sm-2">
+                    <small id="ref_rln_loc" class="text-muted">
+                      Nodes along the portal triad, pancreaticoduodenal nodes, SMV, or the right aspect of the SMA
+                    </small>
+                  </div>
+                </form>
+
+                <!-- Distant Metastasis -->
+                <h2 class="h4 mt-4">Distant Metastasis</h2>
+                <form class="">
+                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                    <input class="form-check-input cb_dm cb_dm_m1ab" type="checkbox" id="cb_dm_li" value="liver">
+                    <label class="form-check-label" for="cb_dm_li">Liver</label>
+                  </div>
+                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                    <input class="form-check-input cb_dm" type="checkbox" id="cb_dm_ad" value="adrenal">
+                    <label class="form-check-label" for="cb_dm_ad">Adrenal</label>
+                  </div>
+                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                    <input class="form-check-input cb_dm" type="checkbox" id="cb_dm_lu" value="lung">
+                    <label class="form-check-label" for="cb_dm_lu">Lung</label>
+                  </div>
+                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                    <input class="form-check-input cb_dm" type="checkbox" id="cb_dm_b" value="bone">
+                    <label class="form-check-label" for="cb_dm_b">Bone</label>
+                  </div>
+                  <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <input type="checkbox" class="cb_dm" aria-label="Checkbox for other distant metastasis"
+                          id="cb_dm_others" value="">
+                      </div>
+                      <span class="input-group-text">Others</span>
+                    </div>
+                    <input type="text" class="form-control"
+                      aria-label="Text input with checkbox for other distant metastasis" id="txt_dm_others">
+                  </div>
+                </form>
+
               </div>
             </div>
-          </div>
-
-          <!-- second column -->
-          <div class="col">
-            <!-- Regional Lymph Node -->
-            <h2 class="h4">Regional Lymph Node</h2>
-            <form class="form-inline">
-              <div class="form-group">
-                <div class="input-group input-group-sm mb-2 mr-sm-2">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">Number</span>
-                  </div>
-                  <input type="number" pattern="[0-9]+" step="1" class="form-control"
-                    aria-label="Number of suspicious lymph node" id="txt_rln_num" placeholder="0" value="0">
-                </div>
-              </div>
-              <div class="form-group mb-2 mr-sm-2">
-                <small id="ref_rln_num" class="text-muted">
-                  1-3 (N1), ≥4 (N2)
-                </small>
-              </div>
-              <div class="form-group mb-2 mr-sm-2">
-                <small id="ref_rln_loc" class="text-muted">
-                  Nodes along the portal triad, pancreaticoduodenal nodes, SMV, or the right aspect of the SMA
-                </small>
-              </div>
-            </form>
-
-            <!-- Distant Metastasis -->
-            <h2 class="h4 mt-4">Distant Metastasis</h2>
-            <form class="">
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_dm cb_dm_m1ab" type="checkbox" id="cb_dm_li" value="liver">
-                <label class="form-check-label" for="cb_dm_li">Liver</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_dm" type="checkbox" id="cb_dm_ad" value="adrenal">
-                <label class="form-check-label" for="cb_dm_ad">Adrenal</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_dm" type="checkbox" id="cb_dm_lu" value="lung">
-                <label class="form-check-label" for="cb_dm_lu">Lung</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input class="form-check-input cb_dm" type="checkbox" id="cb_dm_b" value="bone">
-                <label class="form-check-label" for="cb_dm_b">Bone</label>
-              </div>
-              <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <input type="checkbox" class="cb_dm" aria-label="Checkbox for other distant metastasis"
-                      id="cb_dm_others" value="">
-                  </div>
-                  <span class="input-group-text">Others</span>
-                </div>
-                <input type="text" class="form-control"
-                  aria-label="Text input with checkbox for other distant metastasis" id="txt_dm_others">
-              </div>
-            </form>
-
-          </div>
-        </div>
-      </main>
+          </main>
+      </div>
     </div>
-  </div>
 
-  <!-- AJCC Definitions Modal -->
-<%= require('html-loader!../partials/ajcc_modal.html').default %>
+    <!-- AJCC Definitions Modal -->
+    <%= require('../partials/ajcc_modal.html').default %>
 
-  <!-- Report Modal -->
-<%= require('html-loader!../partials/report_modal.html').default %>
+      <!-- Report Modal -->
+      <%= require('../partials/report_modal.html').default %>
 
-  <!-- About Modal -->
-<%= require('html-loader!../partials/about_modal.html').default %>
+        <!-- About Modal -->
+        <%= require('../partials/about_modal.html').default %>
 
-  <!-- Vendors: jquery, bootstrap, clipboard.js -->
-<%= require('html-loader!../partials/vendors_js.html').default %>
+          <!-- Vendors: jquery, bootstrap, clipboard.js -->
+          <%= require('../partials/vendors_js.html').default %>
 </body>
 
 </html>
-
