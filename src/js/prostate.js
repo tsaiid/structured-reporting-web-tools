@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
+import { calculateProstateStage, map_prostate_invasion } from './prostate_logic.js';
 
 const AJCC_T = new Map([
     ['x', 'Primary tumor cannot be assessed'],
@@ -35,16 +36,8 @@ const AJCC_M = new Map([
     ['1b', 'Bone(s)'],
     ['1c', 'Other site(s) with or without bone disease'],
 ]);
-const map_prostate_invasion = {
-    'One-half of one lobe or less': '2a',
-    'More than one-half of one lobe but not both lobes': '2b',
-    'Involves both lobes': '2c',
-};
 
 function generate_report(){
-    var t_stage = [];
-    var n_stage = ["0"];
-    var m_stage = ["0"];
     var report = `1. Imaging modality
   - Imaging by `;
 
@@ -108,27 +101,30 @@ function generate_report(){
             [${ti_others_check}] Others ${txt_ti_others}
 
 `;
-    // Calculate T staging
-    // No T1, do not know if palpable or not
-    if (has_tl_na) {
-        t_stage.push("x");
-    } else if (tl_no_check === "+" || t_length === 0) {
-        t_stage.push("0");
-    } else if (has_ti) {
-        if ($("input[name='rb_ti_p']:checked").length) {
-            t_stage.push(map_prostate_invasion[$("input[name='rb_ti_p']:checked").val()]);
+
+    // Calculate staging via Logic
+    const data = {
+        isNotAssessable: has_tl_na,
+        isNoOrEquivocal: tl_no_check === "+",
+        tumorSize: t_length,
+        invasion: {
+            prostateInvasionType: $("input[name='rb_ti_p']:checked").val(),
+            t3a: $('.cb_ti_t3a:checked').length > 0,
+            t3b: $('.cb_ti_t3b:checked').length > 0,
+            t4: $('.cb_ti_t4:checked').length > 0
+        },
+        hasNodes: $('.cb_rn:checked').length > 0,
+        metastasis: {
+            m1a: $('.cb_dm_m1a:checked').length > 0,
+            m1b: $('.cb_dm_m1b:checked').length > 0,
+            m1c: $('.cb_dm_m1c:checked').length > 0
         }
-        if ($('.cb_ti_t3a:checked').length) {
-            t_stage.push("3a");
-        }
-        if ($('.cb_ti_t3b:checked').length) {
-            t_stage.push("3b");
-        }
-        if ($('.cb_ti_t4:checked').length) {
-            t_stage.push("4");
-        }
-        //console.log(t_stage);
-    }
+    };
+
+    const stageResult = calculateProstateStage(data);
+    const t_stage = stageResult.t;
+    const n_stage = stageResult.n;
+    const m_stage = stageResult.m;
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length > 0;
@@ -150,10 +146,7 @@ function generate_report(){
 
 `;
 
-    // calculate N stage
-    if (has_rln) {
-        n_stage.push("1");
-    }
+    // calculate N stage (Calculated via Logic)
 
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
@@ -186,18 +179,8 @@ function generate_report(){
 
 `;
 
-    if (has_dm) {
-        if ($('.cb_dm_m1a:checked').length) {
-            m_stage.push("1a");
-        }
-        if ($('.cb_dm_m1b:checked').length) {
-            m_stage.push("1b");
-        }
-        if ($('.cb_dm_m1c:checked').length) {
-            m_stage.push("1c");
-        }
-        //console.log(m_stage);
-    }
+    // M stage calculated via Logic
+
 
     // Other Findings
     report += "6. Other findings\n\n\n";
