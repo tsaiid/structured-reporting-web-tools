@@ -14,7 +14,7 @@ echo -e "${GREEN}==> Starting Deployment Process <==${NC}"
 
 # 1. Build project
 echo -e "${GREEN}1. Building project...${NC}"
-npm run build
+pnpm run build
 if [ $? -ne 0 ]; then
     echo -e "${RED}Build failed! stopping deployment.${NC}"
     exit 1
