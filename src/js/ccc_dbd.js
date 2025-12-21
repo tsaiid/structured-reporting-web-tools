@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
+import { calculate_staging } from './ccc_dbd_logic.js';
 
 const AJCC_T = new Map([
     ['x', 'Primary tumor cannot be assessed'],
@@ -28,9 +29,26 @@ const AJCC_M = new Map([
 ]);
 
 function generate_report(){
-    var t_stage = [];
-    var n_stage = ["0"];
-    var m_stage = ["0"];
+    // Gather data for logic
+    const t_length = parseFloat($('#txt_ts_len').val());
+    const is_measurable = !$('#cb_ts_nm').is(':checked') && t_length > 0;
+    const t_depth = parseInt($('#txt_ti_dep').val()) || 0;
+    const has_inv = !$('#cb_ti_na').is(':checked') && t_depth > 0;
+
+    const data = {
+        isMeasurable: is_measurable,
+        hasInvasion: has_inv,
+        invasionDepth: t_depth,
+        isT4: $('.cb_ti_t4:checked').length > 0,
+        nodesCount: parseInt($('#txt_rln_num').val()) || 0,
+        hasMetastasis: $('.cb_dm:checked').length > 0
+    };
+
+    const staging = calculate_staging(data);
+    const t_stage = staging.t;
+    const n_stage = staging.n;
+    const m_stage = staging.m;
+
     var report = `1. Imaging modality
   - Imaging by `;
 
@@ -43,8 +61,6 @@ function generate_report(){
     report += "\n\n";
 
     // Tumor location / size
-    let t_length = parseFloat($('#txt_ts_len').val());
-    let is_measurable = !$('#cb_ts_nm').is(':checked') && t_length > 0;
     report += `2. Tumor size\n`;
     report += "  - Size: ";
     if (!is_measurable) {
@@ -58,8 +74,6 @@ function generate_report(){
     }
     report += "\n\n";
 
-    let t_depth = parseInt($('#txt_ti_dep').val());
-    let has_inv = !$('#cb_ti_na').is(':checked') && t_depth > 0;
     report += "3. Tumor invasion\n";
     report += "  - Tumor invades the bile duct wall with a depth (Maximum tumor thickness): " + (has_inv? t_depth + " mm" : "" ) + "\n";
     report += "    [" + (has_inv? " " : "+") + "] Difficult to access\n";
@@ -77,21 +91,8 @@ function generate_report(){
     report += $('#txt_ti_others').val()? $('#txt_ti_others').val() : "___";
     report += "\n\n";
 
-    // 似乎無法呈現 T0
-    if (!is_measurable || !has_inv && !$('.cb_ti_t4:checked').length) {
-        t_stage.push('x');
-    } else if ($('.cb_ti_t4:checked').length) {
-        t_stage.push('4');
-    } else if (t_depth > 12) {
-        t_stage.push('3');
-    } else if (t_depth >= 5) {
-        t_stage.push('2');
-    } else if (t_depth) {
-        t_stage.push('1');
-    }
-
     // Regional nodal metastasis
-    let rln_num = parseInt($('#txt_rln_num').val());
+    let rln_num = data.nodesCount;
     let has_rln = rln_num > 0;
     report += `4. Regional nodal metastasis
     [` + (has_rln? " " : "+") + `] No regional lymph node metastasis
@@ -99,17 +100,10 @@ function generate_report(){
     [` + (has_rln && rln_num > 3 ? "+" : " ") + `] 4 or more positive lymph nodes (N2)
     Number: ` + (Number.isInteger(rln_num)? rln_num : "___");
 
-    if (has_rln) {
-        if (rln_num >= 4) {
-            n_stage.push("2");
-        } else if (rln_num >= 1) {
-            n_stage.push("1");
-        }
-    }
     report += "\n\n";
 
     // Distant metastasis
-    let has_dm = $('.cb_dm:checked').length > 0;
+    let has_dm = data.hasMetastasis;
     report += "5. Distant metastasis (In this study)\n";
     report += "    [" + (has_dm ? " " : "+") + "] No or Equivocal\n";
     report += "    [" + (has_dm ? "+" : " ") + "] Yes, location: ";
@@ -123,9 +117,6 @@ function generate_report(){
             }
             report += $('#txt_dm_others').val();
         }
-
-        m_stage.push("1");
-        //console.log(m_stage);
     } else {
         report += "___";
     }

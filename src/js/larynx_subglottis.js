@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
+import { calculate_staging } from './larynx_subglottis_logic.js';
 
 const AJCC_T = new Map([
     ['x', 'Primary tumor cannot be assessed'],
@@ -35,9 +36,36 @@ const AJCC_M = new Map([
 ]);
 
 function generate_report(){
-    var t_stage = ["0"];
-    var n_stage = ["0"];
-    var m_stage = ["0"];
+    // Gather data for logic
+    const data = {
+        hasTumor: $('.cb_tl:checked').length > 0,
+        isNonMeasurable: $('#cb_ts_nm').is(':checked'),
+        invasion: {
+            t2: $('.cb_ti_t2:checked').length > 0,
+            t3: $('.cb_ti_t3:checked').length > 0,
+            t4a: $('.cb_ti_t4a:checked').length > 0,
+            t4b: $('.cb_ti_t4b:checked').length > 0
+        },
+        nodes: {
+            hasNodes: $('.cb_rn:checked').length > 0,
+            hasRightNodes: $('.cb_rn_r:checked').length > 0,
+            hasLeftNodes: $('.cb_rn_l:checked').length > 0,
+            isEne: $('#cb_rn_ene').is(':checked'),
+            size: parseFloat($('#txt_rn_len').val()) || 0,
+            isSingle: $('#cb_rn_sin').is(':checked')
+        },
+        tumorSide: {
+            isRight: $('#cb_tl_r').is(':checked'),
+            isLeft: $('#cb_tl_l').is(':checked')
+        },
+        hasMetastasis: $('.cb_dm:checked').length > 0
+    };
+
+    const staging = calculate_staging(data);
+    const t_stage = staging.t;
+    const n_stage = staging.n;
+    const m_stage = staging.m;
+
     // Protocol
     var report = `1. MR protocol
 SEQUENCES:
@@ -61,8 +89,6 @@ SEQUENCES:
         if ($('.cb_tl_lat:checked').length) {
             report += "Laterality: " + join_checkbox_values($('.cb_tl_lat:checked'));
         }
-
-        t_stage.push("1");
     }
     report += "\n\n";
 
@@ -70,7 +96,6 @@ SEQUENCES:
     report += "3. Tumor size\n";
     if ($('#cb_ts_nm').is(':checked')) {
         report += "--- Non-measurable";
-        t_stage.push('x');
     } else if ($('#cb_ts_no').is(':checked')) {
         report += "--- No evidence of primary tumor";
     } else {
@@ -85,20 +110,6 @@ SEQUENCES:
         report += "--- Yes:\n";
         report += "* " + join_checkbox_values($('.cb_ti:checked'), "\n* ");
         report += "\n";
-
-        if ($('.cb_ti_t2:checked').length) {
-            t_stage.push("2");
-        }
-        if ($('.cb_ti_t3:checked').length) {
-            t_stage.push("3");
-        }
-        if ($('.cb_ti_t4a:checked').length) {
-            t_stage.push("4a");
-        }
-        if ($('.cb_ti_t4b:checked').length) {
-            t_stage.push("4b");
-        }
-        //console.log(t_stage);
     }
     if ($('.cb_ti:not(:checked)').length) {
         report += "--- No or Equivocal:\n";
@@ -142,23 +153,6 @@ SEQUENCES:
         }
     }
     report += "\n";
-    if ($('.cb_rn:checked').length) {
-        if ($('#cb_rn_ene').is(':checked')) {
-            n_stage.push("3b");
-        } else if (n_length > 6.0) {
-            n_stage.push("3a");
-        } else if ((   $('.cb_rn_r:checked').length && $('.cb_rn_l:checked').length)
-                    || ($('#cb_tl_r').is(':checked') && $('.cb_rn_l:checked').length)
-                    || ($('#cb_tl_l').is(':checked') && $('.cb_rn_r:checked').length)   ) {
-            n_stage.push("2c");
-        } else if (!$('#cb_rn_sin').is(':checked')) {
-            n_stage.push("2b");
-        } else if (n_length > 3.0) {
-            n_stage.push("2a");
-        } else {
-            n_stage.push("1");
-        }
-    }
 
     // Distant metastasis
     report += "6. Distant metastasis (In this study)\n";
@@ -170,8 +164,6 @@ SEQUENCES:
         if ($('#cb_dm_others').is(':checked')) {
             report += "* " + $('#txt_dm_others').val() + "\n";
         }
-        m_stage.push("1");
-        //console.log(m_stage);
     } /* else {
         report += "* No distant metastasis in the scanned range.\n";
     } */
@@ -188,7 +180,7 @@ SEQUENCES:
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
     let m = m_stage.sort()[m_stage.length-1];
-    report += ajcc_template_with_parent("Laryngeal Carcinoma (Glottis)", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
+    report += ajcc_template_with_parent("Laryngeal Carcinoma (Subglottis)", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Laryngeal Cancer (Subglottis) Staging Form");
     $('#reportModalBody pre code').html(report);
