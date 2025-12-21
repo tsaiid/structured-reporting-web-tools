@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table} from './ajcc_common.js';
+import { calculateRCCStage } from './rcc_logic.js';
 
 const AJCC_T = new Map([
     ['x', 'Primary tumor cannot be assessed'],
@@ -33,9 +34,6 @@ const AJCC_M = new Map([
 ]);
 
 function generate_report(){
-    var t_stage = ["0"];
-    var n_stage = ["0"];
-    var m_stage = ["0"];
     var report = "1. ";
 
     // Protocol
@@ -56,6 +54,7 @@ Range: diaphragm to the pelvis cavity`;
     report += "\n\n";
 
     // Tumor location / size
+    let t_dia = parseFloat($('#txt_ts_dia').val());
     report += "2. Tumor location / size\n";
     if ($('#cb_ts_na').is(':checked')) {
         report += "--- Not assessable";
@@ -64,19 +63,7 @@ Range: diaphragm to the pelvis cavity`;
         if ($('.cb_tl:checked').length) {
             report += join_checkbox_values($('.cb_tl:checked')) + "\n";
         }
-        let t_dia = parseFloat($('#txt_ts_dia').val());
         report += `Size: ${t_dia} cm (largest diameter of the biggest tumor)`;
-
-        if (t_dia > 10) {
-            t_stage.push('2b');
-        } else if (t_dia > 7) {
-            t_stage.push('2a');
-        } else if (t_dia > 4) {
-            t_stage.push('1b');
-        } else {
-            t_stage.push('1a');
-        }
-        //console.log(t_stage);
     }
     report += "\n\n";
 
@@ -89,18 +76,14 @@ Range: diaphragm to the pelvis cavity`;
             report += "--- Yes:\n";
             if ($('.cb_ti_t3a:checked').length) {
                 report += "* " + join_checkbox_values($('.cb_ti_t3a:checked'), "\n* ") + "\n";
-                t_stage.push("3a");
             }
             if ($('.cb_ti_t3bc:checked').length) {
-                t_stage.push("3b");
                 var ivc = [];
                 if ($("input[name='rb_ti_ivc']:checked").length) {
                     ivc.push($("input[name='rb_ti_ivc']:checked").next().text());
-                    t_stage.push($("input[name='rb_ti_ivc']:checked").val());
                 }
                 if ($('.cb_ti_t3c:checked').length) {
                     ivc.push($('.cb_ti_t3c:checked').next().text());
-                    t_stage.push("3c");
                 }
                 report += "* IVC: " + ivc.join(", ") + "\n";
             }
@@ -110,7 +93,6 @@ Range: diaphragm to the pelvis cavity`;
                     report += "\n* " + $('#txt_ti_others').val();
                 }
                 report += "\n";
-                t_stage.push("4");
             }
             //console.log(t_stage);
         }
@@ -127,8 +109,6 @@ Range: diaphragm to the pelvis cavity`;
         report += "--- Yes:\n";
         report += "* " + join_checkbox_values($('.cb_rn:checked'), "\n* ");
         report += "\n";
-        n_stage.push("1");
-        //console.log(n_stage);
     } /* else {
         report += "* No regional lymph node metastasis.\n";
     } */
@@ -150,8 +130,6 @@ Range: diaphragm to the pelvis cavity`;
         if ($('#cb_dm_others').is(':checked')) {
             report += "* " + $('#txt_dm_others').val() + "\n";
         }
-        m_stage.push("1");
-        //console.log(m_stage);
     } /* else {
         report += "* No distant metastasis in the scanned range.\n";
     } */
@@ -160,6 +138,26 @@ Range: diaphragm to the pelvis cavity`;
         report += "* " + join_checkbox_values($('.cb_dm:not("#cb_dm_others"):not(:checked)')) + "\n";
     }
     report += "\n";
+
+    // Calculate staging via Logic
+    const data = {
+        tumorSize: t_dia,
+        isNotAssessable: $('#cb_ts_na').is(':checked'),
+        invasion: {
+            t3a: $('.cb_ti_t3a:checked').length > 0,
+            t3bc: $('.cb_ti_t3bc:checked').length > 0,
+            t3c: $('.cb_ti_t3c:checked').length > 0,
+            t4: $('.cb_ti_t4:checked').length > 0,
+            ivcLevel: $("input[name='rb_ti_ivc']:checked").val() || ''
+        },
+        hasNodes: $('.cb_rn:checked').length > 0,
+        hasMetastasis: $('.cb_dm:checked').length > 0
+    };
+
+    const stageResult = calculateRCCStage(data);
+    const t_stage = stageResult.t;
+    const n_stage = stageResult.n;
+    const m_stage = stageResult.m;
 
     // Other Findings
     report += "6. Other findings\n\n\n";
