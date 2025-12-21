@@ -1,67 +1,66 @@
 <!-- Theme Initialization Script (Prevents Flash of Unstyled Content) -->
-    <script>
-      (function() {
-        var savedTheme = localStorage.getItem('theme');
-        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-          document.documentElement.setAttribute('data-theme', 'dark');
-        }
-      })();
-    </script>
-    <style>
-      /* Critical CSS to prevent FOUC */
-      body { /* Apply to body regardless of theme */
-        font-size: .875rem; /* Set base font size immediately */
-        line-height: 1.5; /* Prevent line-height jump */
-      }
-      .sidebar { /* Light mode critical styles for sidebar */
-        background-color: #f8f9fa !important; /* Matches --sidebar-bg from :root */
-      }
-      .sidebar .nav-link {
-        color: #333; /* Matches default color for .sidebar .nav-link */
-      }
-      html[data-theme="dark"] body {
-        background-color: #121212;
-        color: #e0e0e0;
-      }
-      html[data-theme="dark"] .sidebar {
-        background-color: #1e1e1e !important;
-      }
-      html[data-theme="dark"] .sidebar .nav-link {
-        color: #b0b0b0;
-      }
-      /* Page Loader */
-      #global-loader {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 10000;
-        background-color: #ffffff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: opacity 0.3s ease-out;
-      }
-      html[data-theme="dark"] #global-loader {
-        background-color: #121212;
-      }
-      .loader-spinner {
-        width: 40px;
-        height: 40px;
-        border: 4px solid rgba(0, 0, 0, 0.1);
-        border-left-color: #007bff;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-      }
-      html[data-theme="dark"] .loader-spinner {
-        border-color: rgba(255, 255, 255, 0.1);
-        border-left-color: #3794ff;
-      }
-      @keyframes spin {
-        to { transform: rotate(360deg); }
-      }
-    </style>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script>
+  (function() {
+    var savedTheme = localStorage.getItem('theme');
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+<style>
+  /* Critical CSS to prevent FOUC */
+  body { /* Apply to body regardless of theme */
+    font-size: .875rem; /* Set base font size immediately */
+    line-height: 1.5; /* Prevent line-height jump */
+  }
+  .sidebar { /* Light mode critical styles for sidebar */
+    background-color: #f8f9fa !important; /* Matches --sidebar-bg from :root */
+  }
+  .sidebar .nav-link {
+    color: #333; /* Matches default color for .sidebar .nav-link */
+  }
+  html[data-theme="dark"] body {
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+  html[data-theme="dark"] .sidebar {
+    background-color: #1e1e1e !important;
+  }
+  html[data-theme="dark"] .sidebar .nav-link {
+    color: #b0b0b0;
+  }
+  /* Page Loader */
+  #global-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease-out;
+  }
+  html[data-theme="dark"] #global-loader {
+    background-color: #121212;
+  }
+  .loader-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  html[data-theme="dark"] .loader-spinner {
+    border-color: rgba(255, 255, 255, 0.1);
+    border-left-color: #3794ff;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+<!-- Bootstrap CSS is now imported in common.js -->
