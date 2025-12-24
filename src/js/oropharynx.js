@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/oropharynx.html');
 }
 
-import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage} from './ajcc_common.js';
+import { join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage } from './ajcc_common.js';
 
 const AJCC_T_HPV = new Map([
     ['x', 'Primary tumor cannot be assessed'],
@@ -51,7 +51,7 @@ const AJCC_M = new Map([
     ['1', 'Distant metastasis'],
 ]);
 
-function generate_report(){
+function generate_report() {
     var t_stage = [];
     var n_stage = ["0"];
     var m_stage = ["0"];
@@ -171,13 +171,13 @@ function generate_report(){
     report += "4. Regional nodal metastasis\n";
     report += "    [" + (has_rln ? " " : "+") + "] No regional nodal metastasis\n";
     report += "    [" + (has_rln ? "+" : " ") + "] Yes, if yes:\n";
-    $('.lb_rn').each(function(){
+    $('.lb_rn').each(function () {
         let cb_rn = $(this).attr('for');
         if ($(this).hasClass('has_parts')) {
             let check_or_not = $('.' + cb_rn + ':checked').length > 0 ? "+" : " ";
             report += `        [${check_or_not}] ` + $(this).text() + ":\n            ";
             let parts = $('.' + cb_rn);
-            parts.each(function(i, e){
+            parts.each(function (i, e) {
                 if (i && !(i % 7)) {
                     report += "\n            ";
                 }
@@ -204,12 +204,12 @@ function generate_report(){
     if (is_hpv) {
         if ((has_rln && n_length > 6.0)) {
             n_stage.push("3");
-        } else if ((    $('.cb_rn_r:checked').length && $('.cb_rn_l:checked').length)           // bilateral
-                    || ($('#cb_tl_r').is(':checked') && $('.cb_rn_l:checked').length)       // tumor right, LAP left
-                    || ($('#cb_tl_l').is(':checked') && $('.cb_rn_r:checked').length)) {    // tumor left, LAP right
+        } else if (($('.cb_rn_r:checked').length && $('.cb_rn_l:checked').length)           // bilateral
+            || ($('#cb_tl_r').is(':checked') && $('.cb_rn_l:checked').length)       // tumor right, LAP left
+            || ($('#cb_tl_l').is(':checked') && $('.cb_rn_r:checked').length)) {    // tumor left, LAP right
             n_stage.push("2");
         } else if (($('#cb_tl_r').is(':checked') && $('.cb_rn_r:checked').length)           // tumor right, LAP right
-                    || ($('#cb_tl_l').is(':checked') && $('.cb_rn_l:checked').length)) {    // tumor left, LAP left
+            || ($('#cb_tl_l').is(':checked') && $('.cb_rn_l:checked').length)) {    // tumor left, LAP left
             n_stage.push("1");
         }
     } else {    // non-viral
@@ -218,9 +218,9 @@ function generate_report(){
                 n_stage.push("3b");
             } else if (n_length > 6.0) {
                 n_stage.push("3a");
-            } else if ((    $('.cb_rn_r:checked').length && $('.cb_rn_l:checked').length)       // bilateral
-                        || ($('#cb_tl_r').is(':checked') && $('.cb_rn_l:checked').length)       // tumor right, LAP left
-                        || ($('#cb_tl_l').is(':checked') && $('.cb_rn_r:checked').length)) {    // tumor left, LAP right
+            } else if (($('.cb_rn_r:checked').length && $('.cb_rn_l:checked').length)       // bilateral
+                || ($('#cb_tl_r').is(':checked') && $('.cb_rn_l:checked').length)       // tumor right, LAP left
+                || ($('#cb_tl_l').is(':checked') && $('.cb_rn_r:checked').length)) {    // tumor left, LAP right
                 n_stage.push("2c");
             } else if (!has_sin) {          // multiple ipsilateral
                 n_stage.push("2b");
@@ -259,9 +259,9 @@ function generate_report(){
     report += "6. Other findings\n\n\n";
 
     // AJCC staging reference text
-    let t = t_stage.sort()[t_stage.length-1];
-    let n = n_stage.sort()[n_stage.length-1];
-    let m = m_stage.sort()[m_stage.length-1];
+    let t = t_stage.sort()[t_stage.length - 1];
+    let n = n_stage.sort()[n_stage.length - 1];
+    let m = m_stage.sort()[m_stage.length - 1];
     let FORM_TITLE = (is_hpv ? "HPV-Mediated Oropharyngeal Cancer Staging Form" : "Oropharyngeal Cancer (p16-) Staging Form");
     let AJCC_TITLE = (is_hpv ? "HPV-Mediated Oropharyngeal Carcinoma" : "Oropharyngeal Carcinoma (p16-)");
     let AJCC_T = (is_hpv ? AJCC_T_HPV : AJCC_T_NONHPV);
@@ -273,14 +273,14 @@ function generate_report(){
     $('#reportModalLong').modal('show');
 }
 
-$('#cb_tp_ts_nm').change(function() {
-    if($("form.was-validated").length) {
+$('#cb_tp_ts_nm').change(function () {
+    if ($("form.was-validated").length) {
 
     }
 });
 
 // auto- increase or decrease lymph node numbers
-$('.cb_rn').change(function(){
+$('.cb_rn').change(function () {
     let rln_num = +$('#txt_rln_num').val();
     if (this.checked) {
         $('#txt_rln_num').val(rln_num + 1);
@@ -308,8 +308,22 @@ $('#ajccModalLong').on('show.bs.modal', function () {
     $('body > *:not(#ajccModalLong)').attr('inert', 'true'); // 禁用背景內容
 });
 
+
 $('#ajccModalLong').on('hidden.bs.modal', function () {
     $('body > *:not(#ajccModalLong)').removeAttr('inert'); // 恢復互動
+});
+
+$('#cb_rn_hpv').change(function () {
+    let is_hpv = $(this).is(':checked');
+    let AJCC_T = (is_hpv ? AJCC_T_HPV : AJCC_T_NONHPV);
+    let AJCC_N = (is_hpv ? AJCC_N_HPV : AJCC_N_NONHPV);
+
+    let AJCC_TITLE = (is_hpv ? "HPV-Mediated Oropharyngeal Carcinoma" : "Oropharyngeal Carcinoma (p16-)");
+    let ajccTitleHtml = `AJCC Definitions for ${AJCC_TITLE} <span class='badge badge-secondary ml-2' style='font-size: 60%; vertical-align: super;'>8th</span>`;
+
+    let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
+    $('#ajccModalLongTitle').html(ajccTitleHtml);
+    $('#ajccModalBody').html(ajcc_table);
 });
 
 
