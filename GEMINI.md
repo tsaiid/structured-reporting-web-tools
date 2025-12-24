@@ -16,6 +16,7 @@
   - `public/`: Static HTML entry points (or templates).
   - `dist/`: Output directory (do not edit manually).
 - **Styling**: Keep it lightweight (Vanilla CSS or Bootstrap if configured). Focus on high contrast and readability for medical reading rooms (dim light environments).
+- Use pnpm as package manager.
 
 ## 3. Coding Guidelines (開發準則)
 
