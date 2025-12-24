@@ -1,3 +1,4 @@
+import '@picocss/pico/css/pico.min.css';
 import '../css/nhi_lung_rads.css';
 
 const $ = (id) => document.getElementById(id);
