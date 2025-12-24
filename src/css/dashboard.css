@@ -7,6 +7,8 @@
   --input-bg: #ffffff;
   --input-text: #495057;
   --modal-content-bg: #ffffff;
+  --scrollbar-thumb: #bdbdbd;
+  --scrollbar-thumb-hover: #a8a8a8;
 }
 
 html[data-theme="dark"] {
@@ -19,6 +21,8 @@ html[data-theme="dark"] {
   --input-text: #e0e0e0;
   --modal-content-bg: #2c2c2c;
   --input-group-text-bg: var(--card-bg);
+  --scrollbar-thumb: #3a3a3a;
+  --scrollbar-thumb-hover: #555;
 }
 
 /* Custom breakpoint for sidebar labels */
@@ -336,4 +340,47 @@ input:checked+.slider .icon-sun {
 
 input:checked+.slider .icon-moon {
   opacity: 1;
+}
+
+/* Custom Scrollbar (Global Auto-hiding) */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Default state: hidden (transparent) */
+::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 20px;
+  border: 3px solid transparent;
+}
+
+/* Show on hover of the scrollable container */
+*:hover::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  border: 3px solid var(--bg-color);
+}
+
+/* Hover state of the scrollbar thumb itself */
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover) !important;
+  border: 3px solid var(--bg-color);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+*:hover {
+  scrollbar-color: var(--scrollbar-thumb) transparent;
 }
