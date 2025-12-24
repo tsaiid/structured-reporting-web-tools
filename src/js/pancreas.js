@@ -166,7 +166,7 @@ function generate_report(){
 
     $('#reportModalLongTitle').html("Pancreatic Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
-    $('#reportModalLong').modal('show');
+    document.getElementById('reportModalLong').showModal();
 }
 
 $('#cb_tp_ts_nm').change(function() {

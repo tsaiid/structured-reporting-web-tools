@@ -1,34 +1,30 @@
-  <div class="modal fade" id="aboutModalLong" tabindex="-2" role="dialog" aria-labelledby="aboutModal" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="aboutModalLongTitle">About This Project</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+<dialog id="aboutModalLong" class="p-0 rounded-lg shadow-xl backdrop:bg-black/50 w-full max-w-2xl m-auto">
+    <div class="flex flex-col max-h-[90vh] bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+        <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
+            <h5 class="text-xl font-bold" id="aboutModalLongTitle">About This Project</h5>
+            <button type="button" class="text-gray-500 hover:text-black dark:hover:text-white text-2xl leading-none" onclick="document.getElementById('aboutModalLong').close()">&times;</button>
         </div>
-        <div id="aboutModalBody" class="modal-body">
+        <div id="aboutModalBody" class="p-4 overflow-y-auto prose dark:prose-invert">
           <p>網頁版的 cancer staging form, 特色為：</p>
-          <ul>
+          <ul class="list-disc ml-5">
             <li>綜合放射線醫學會建議 20 項癌症（additional 版）之格式及 AJCC Cancer Staging Form Supplement 修改而成</li>
             <li>在填寫完畢後連動產生正確的 TNM staging</li>
             <li>可在各癌的頁面內列出完整 staging criteria</li>
           </ul>
-          <h6 class="h6 mt-4">Author</h6>
-          <p><i class="fas fa-at"></i> 蔡依達 / 陽交大附醫放射科醫師 <a class="text-dark" href="https://www.facebook.com/ittsai"><i
-                class="fab fa-facebook-square"></i></a> <a class="text-dark" href="https://twitter.com/tsaiid"><i
+          <h6 class="text-lg font-semibold mt-4">Author</h6>
+          <p><i class="fas fa-at"></i> 蔡依達 / 陽交大附醫放射科醫師 <a class="text-blue-600 dark:text-blue-400" href="https://www.facebook.com/ittsai"><i
+                class="fab fa-facebook-square"></i></a> <a class="text-blue-600 dark:text-blue-400" href="https://twitter.com/tsaiid"><i
                 class="fab fa-twitter-square"></i></a></p>
-          <h6 class="h6 mt-4">License</h6>
+          <h6 class="text-lg font-semibold mt-4">License</h6>
           <p><i class="fas fa-file-contract"></i> MIT</p>
-          <h6 class="h6 mt-4">Sources</h6>
-          <p><a class="text-dark" href="https://github.com/tsaiid/structured-reporting-web-tools"><i
+          <h6 class="text-lg font-semibold mt-4">Sources</h6>
+          <p><a class="text-blue-600 dark:text-blue-400" href="https://github.com/tsaiid/structured-reporting-web-tools"><i
                 class="fab fa-github"></i> Hosted on GitHub</a></p>
-          <p>如有疑問，請至 <a class="text-dark" href="https://github.com/tsaiid/structured-reporting-web-tools/issues">GitHub
+          <p>如有疑問，請至 <a class="text-blue-600 dark:text-blue-400" href="https://github.com/tsaiid/structured-reporting-web-tools/issues">GitHub
               Issues</a> 回報。</p>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <div class="p-4 border-t border-gray-200 dark:border-gray-700 flex justify-end">
+            <button type="button" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors" onclick="document.getElementById('aboutModalLong').close()">Close</button>
         </div>
-      </div>
     </div>
-  </div>
+</dialog>

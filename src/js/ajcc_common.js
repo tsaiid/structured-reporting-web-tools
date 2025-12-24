@@ -88,6 +88,10 @@ export function generate_ajcc_table(t, n, m) {
     let t_table = "";
     let n_table = "";
     let m_table = "";
+    const rowClass = "border-b border-gray-200 dark:border-gray-700";
+    const headClass = "px-4 py-2 font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap align-top";
+    const cellClass = "px-4 py-2 text-gray-700 dark:text-gray-300 align-top";
+
     t.forEach(function (v, k, m) {
         let k_span = k;
         if (k.match(/^\d\w+\d$/)) {
@@ -96,9 +100,9 @@ export function generate_ajcc_table(t, n, m) {
             k_span = `<span class="ml-2">${k_span}</span>`;
         }
         t_table += `
-    <tr>
-      <th scope="row">${k_span}</th>
-      <td>${v}</td>
+    <tr class="${rowClass}">
+      <th scope="row" class="${headClass}">${k_span}</th>
+      <td class="${cellClass}">${v}</td>
     </tr>`;
     });
     n.forEach(function (v, k, m) {
@@ -109,9 +113,9 @@ export function generate_ajcc_table(t, n, m) {
             k_span = `<span class="ml-2">${k_span}</span>`;
         }
         n_table += `
-    <tr>
-      <th scope="row">${k_span}</th>
-      <td>${v}</td>
+    <tr class="${rowClass}">
+      <th scope="row" class="${headClass}">${k_span}</th>
+      <td class="${cellClass}">${v}</td>
     </tr>`;
     });
     m.forEach(function (v, k, m) {
@@ -122,48 +126,59 @@ export function generate_ajcc_table(t, n, m) {
             k_span = `<span class="ml-2">${k_span}</span>`;
         }
         m_table += `
-    <tr>
-      <th scope="row">${k_span}</th>
-      <td>${v}</td>
+    <tr class="${rowClass}">
+      <th scope="row" class="${headClass}">${k_span}</th>
+      <td class="${cellClass}">${v}</td>
     </tr>`;
     });
 
+    const tableWrapperClass = "w-full mb-6 overflow-x-auto";
+    const tableClass = "w-full text-sm text-left border-collapse";
+    const theadClass = "bg-gray-100 dark:bg-gray-800 text-xs uppercase text-gray-700 dark:text-gray-300";
+    const thClass = "px-4 py-3 border-b border-gray-200 dark:border-gray-700";
+
     let ajcc_table = `
-<table class="table table-sm" id="ajcc_t">
-  <thead>
+<div class="${tableWrapperClass}">
+<table class="${tableClass}" id="ajcc_t">
+  <thead class="${theadClass}">
     <tr>
-      <th scope="col">T Category</th>
-      <th scope="col">T Criteria</th>
+      <th scope="col" class="${thClass} w-32">T Category</th>
+      <th scope="col" class="${thClass}">T Criteria</th>
     </tr>
   </thead>
   <tbody>
     ${t_table}
   </tbody>
 </table>
+</div>
 
-<table class="table table-sm" id="ajcc_n">
-  <thead>
+<div class="${tableWrapperClass}">
+<table class="${tableClass}" id="ajcc_n">
+  <thead class="${theadClass}">
     <tr>
-      <th scope="col">N Category</th>
-      <th scope="col">N Criteria</th>
+      <th scope="col" class="${thClass} w-32">N Category</th>
+      <th scope="col" class="${thClass}">N Criteria</th>
     </tr>
   </thead>
   <tbody>
     ${n_table}
   </tbody>
 </table>
+</div>
 
-<table class="table table-sm" id="ajcc_m">
-  <thead>
+<div class="${tableWrapperClass}">
+<table class="${tableClass}" id="ajcc_m">
+  <thead class="${theadClass}">
     <tr>
-      <th scope="col">M Category</th>
-      <th scope="col">M Criteria</th>
+      <th scope="col" class="${thClass} w-32">M Category</th>
+      <th scope="col" class="${thClass}">M Criteria</th>
     </tr>
   </thead>
   <tbody>
     ${m_table}
   </tbody>
 </table>
+</div>
 `;
     return ajcc_table;
 }
@@ -243,7 +258,10 @@ export function setupReportPage({
     // 3. AJCC Button Click
     $(ajccButtonId).on('click', function (event) {
         event.preventDefault();
-        $(ajccModalId).modal('show');
+        const modal = document.querySelector(ajccModalId);
+        if (modal) {
+            modal.showModal();
+        }
     });
 
     // 4. Document Ready - Populate AJCC Table

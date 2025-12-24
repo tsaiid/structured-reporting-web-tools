@@ -207,7 +207,7 @@ Post-contrast imaging: axial imaging, unilateral (lesion side only);
 
     $('#reportModalLongTitle').html("OGS for Spine");
     $('#reportModalBody pre code').html(report);
-    $('#reportModalLong').modal('show');
+    document.getElementById('reportModalLong').showModal();
 }
 
 $('#cb_tp_ts_nm').change(function() {

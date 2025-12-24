@@ -142,7 +142,7 @@ Post-contrast imaging: axial imaging, unilateral (lesion side only);
 
     $('#reportModalLongTitle').html("OGS for Appendicular Skeleton, Trunk, Skull and Facial Bones Staging Form");
     $('#reportModalBody pre code').html(report);
-    $('#reportModalLong').modal('show');
+    document.getElementById('reportModalLong').showModal();
 }
 
 $('#cb_tp_ts_nm').change(function() {

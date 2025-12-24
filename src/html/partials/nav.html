@@ -1,19 +1,20 @@
 <div id="global-loader">
   <div class="loader-spinner"></div>
 </div>
-<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="../">Structured Report</a>
-  <ul class="navbar-nav px-3 ml-auto">
-    <li class="nav-item text-nowrap d-flex align-items-center">
-      <button class="btn btn-sm text-light mr-2" style="opacity: 0.8;" id="link_about">About</button>
-      <div class="theme-switch-wrapper">
-        <label class="theme-switch" for="checkbox_dark_mode" aria-label="Toggle Dark Mode">
-          <input type="checkbox" id="checkbox_dark_mode" />
-          <div class="slider round">
-            <div class="knob">
-              <i class="fas fa-sun icon-sun"></i>
-              <i class="fas fa-moon icon-moon"></i>
-            </div>
+<nav class="fixed top-0 z-50 w-full bg-gray-900 text-white flex items-center justify-between px-4 py-2 shadow-md h-12">
+  <a class="text-lg font-bold flex items-center gap-2" href="../">
+    Structured Report
+  </a>
+  <ul class="flex items-center gap-4">
+    <li class="flex items-center gap-2">
+      <button class="text-sm bg-transparent border border-gray-600 text-gray-300 rounded px-2 py-1 hover:bg-gray-800 hover:text-white transition-colors" id="link_about">About</button>
+      <div class="theme-switch-wrapper relative inline-block w-12 h-6 group">
+        <label class="theme-switch block cursor-pointer rounded-full overflow-hidden relative w-full h-full" for="checkbox_dark_mode" aria-label="Toggle Dark Mode">
+          <input type="checkbox" id="checkbox_dark_mode" class="sr-only peer" />
+          <div class="slider round absolute inset-0 bg-gray-600 transition-all duration-400 peer-checked:bg-blue-600"></div>
+          <div class="knob absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full transition-transform duration-400 peer-checked:translate-x-[1.375rem] flex items-center justify-center text-[10px] text-gray-800 shadow-sm z-10 leading-none">
+            <i class="fas fa-sun icon-sun absolute"></i>
+            <i class="fas fa-moon icon-moon absolute"></i>
           </div>
         </label>
       </div>

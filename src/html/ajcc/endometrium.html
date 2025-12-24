@@ -23,19 +23,18 @@
     <%= require('../partials/vendors_css.html').default %>
 </head>
 
-<body>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
 
   <%= require('../partials/nav.html').default %>
 
-    <div class="container-fluid">
-      <div class="row">
+    
         <%= require('../partials/sidebar.html').default %>
 
-          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <div
-              class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-              <h1 class="h3">Endometrial Cancer Staging Form <span class="badge badge-secondary ml-2"
-                  style="font-size: 50%; vertical-align: super;">AJCC 8th</span></h1>
+          <main role="main" class="md:ml-48 lg:ml-56 pt-12 min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+<div class="p-6 max-w-7xl mx-auto">
+            <div class="flex justify-between items-center pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
+              <h1 class="text-2xl font-bold flex items-center gap-2">Endometrial Cancer Staging Form <span class="badge badge-secondary ml-2"
+                  >AJCC 8th</span></h1>
 
               <%= require('../partials/toolbar_buttons.html').default %>
             </div>
@@ -43,7 +42,7 @@
             <div class="row">
               <div class="col">
                 <!-- Imaging Modality -->
-                <h2 class="h4">Imaging Modality</h2>
+                <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">Imaging Modality</h2>
                 <form class="">
                   <div class="form-check form-check-inline mb-2 mr-sm-2">
                     <input class="form-check-input" type="radio" name="protocol_radios" id="radio_ct" value="ct">
@@ -154,7 +153,7 @@
               <!-- second column -->
               <div class="col">
                 <!-- Regional Lymph Node -->
-                <h2 class="h4">Regional Lymph Node</h2>
+                <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">Regional Lymph Node</h2>
                 <form class="form-inline">
                   <div class="form-check mb-2 mr-sm-2">
                     <label class="form-check-label lb_rn has_parts" for="cb_rn_pm">Parametrial</label>
@@ -243,7 +242,7 @@
 
                 <!-- Distant Metastasis -->
                 <h2 class="h4 mt-4">Distant Metastasis</h2>
-                <h3 class="h5 mt-2">Non-regional lymph node</h3>
+                <h3 class="text-md font-semibold mb-2 text-gray-700 dark:text-gray-300  mt-2">Non-regional lymph node</h3>
                 <form class="form-inline">
                   <div class="form-check mb-2 mr-sm-2">
                     <label class="form-check-label" for="cb_dm_nrl_i">Inguinal</label>
@@ -272,7 +271,7 @@
                       aria-label="Text input with checkbox for other regional lymphadenopathy" id="txt_dm_nrl_others">
                   </div>
                 </form>
-                <h3 class="h5 mt-2">Others</h3>
+                <h3 class="text-md font-semibold mb-2 text-gray-700 dark:text-gray-300  mt-2">Others</h3>
                 <form class="">
                   <div class="form-check form-check-inline mb-2 mr-sm-2">
                     <input class="form-check-input cb_dm" type="checkbox" id="cb_dm_pc" value="peritoneal cavity">
@@ -308,9 +307,8 @@
                 </form>
               </div>
             </div>
-          </main>
-      </div>
-    </div>
+          </div>
+</main>
 
     <!-- AJCC Definitions Modal -->
     <%= require('../partials/ajcc_modal.html').default %>

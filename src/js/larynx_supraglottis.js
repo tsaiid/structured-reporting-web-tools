@@ -183,7 +183,7 @@ SEQUENCES:
 
     $('#reportModalLongTitle').html("Laryngeal Cancer (Supraglottis) Staging Form");
     $('#reportModalBody pre code').html(report);
-    $('#reportModalLong').modal('show');
+    document.getElementById('reportModalLong').showModal();
 }
 
 $('#cb_tp_ts_nm').change(function() {

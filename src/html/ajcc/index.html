@@ -23,18 +23,17 @@
     <%= require('../partials/vendors_css.html').default %>
 </head>
 
-<body>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
 
   <%= require('../partials/nav.html').default %>
 
-    <div class="container-fluid">
-      <div class="row">
+    
         <%= require('../partials/sidebar.html').default %>
 
-          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <div
-              class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-              <h1 class="h3">Structure Report of AJCC Cancer Staging Form</h1>
+          <main role="main" class="md:ml-48 lg:ml-56 pt-12 min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+<div class="p-6 max-w-7xl mx-auto">
+            <div class="flex justify-between items-center pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
+              <h1 class="text-2xl font-bold flex items-center gap-2">Structure Report of AJCC Cancer Staging Form</h1>
 
               <!--
           <div class="btn-toolbar mb-2 mb-md-0">
@@ -53,34 +52,34 @@
             </div>
 
             <div class="row">
-              <div class="col">
-                <p>網頁版的 cancer staging form</p>
-                <h2 class="h5">特色</h2>
-                <ol>
-                  <li>綜合<a href="https://www.rsroc.org.tw/news/news_detail.asp?news_id=761">放射線醫學會建議 20 項癌症（additional
-                      版）</a>之格式及 AJCC Cancer Staging Form Supplement 修改而成</li>
+              <div class="col space-y-4">
+                <p class="text-lg">網頁版的 cancer staging form</p>
+                <h2 class="text-xl font-bold border-b pb-2 mt-6 mb-4 text-gray-800 dark:text-gray-200">特色</h2>
+                <ol class="list-decimal list-inside space-y-2 pl-4 text-gray-700 dark:text-gray-300">
+                  <li>綜合 <a href="https://www.rsroc.org.tw/news/news_detail.asp?news_id=761" class="text-blue-600 dark:text-blue-400 hover:underline">放射線醫學會建議 20 項癌症（additional 版）</a> 之格式及 AJCC Cancer Staging Form Supplement 修改而成</li>
                   <li>在填寫完畢後連動產生正確的 TNM staging</li>
                   <li>可在各癌的頁面內列出完整 staging criteria</li>
                 </ol>
-                <h2 class="h5 mt-4">使用方法</h2>
-                <p>建議使用桌面瀏覽器，且螢幕解析度寬度大於 760 px</p>
-                <p>勾選填寫完畢後，點下畫面右上角的 "Show &amp; Copy" 可以預覽，且會將內文複製到剪貼簿裡，再貼入 RIS 中</p>
-                <h2 class="h5 mt-4">備註</h2>
-                <ol>
+                <h2 class="text-xl font-bold border-b pb-2 mt-6 mb-4 text-gray-800 dark:text-gray-200">使用方法</h2>
+                <div class="space-y-2 text-gray-700 dark:text-gray-300">
+                  <p>建議使用桌面瀏覽器，且螢幕解析度寬度大於 760 px</p>
+                  <p>勾選填寫完畢後，點下畫面右上角的 "Show &amp; Copy" 可以預覽，且會將內文複製到剪貼簿裡，再貼入 RIS 中</p>
+                </div>
+                <h2 class="text-xl font-bold border-b pb-2 mt-6 mb-4 text-gray-800 dark:text-gray-200">備註</h2>
+                <ol class="list-decimal list-inside space-y-2 pl-4 text-gray-700 dark:text-gray-300">
                   <li>包含 Larynx, Pancreas, GIST, RCC, Osteogenic sarcoma 等 20 餘項癌症</li>
                   <li>最底下的部分參考亞東醫院制式的 staging 表格</li>
                   <li>Cholangiocarcinoma 再分出 intrahepatic, perihilar, 及 distal bile duct 三項</li>
                   <li>Gastric cancer 的 tumor invasion depth 增加對應 T3 的選項 (Tumor confined in the gastric wall, but with
                     perigastric micronodules or dense, band-like stranding)</li>
-                  <li>Cervical cancer 已更新為 AJCC 第 9 版 <small>(2021/9)</small></li>
-                  <li>Lung cancer 已更新為 AJCC 第 9 版 <small>(2025/3)</small></li>
-                  <li>NPC 已更新為 AJCC 第 9 版 <small>(2025/12)</small></li>
+                  <li>Cervical cancer 已更新為 AJCC 第 9 版 <small class="text-gray-500 dark:text-gray-400">(2021/9)</small></li>
+                  <li>Lung cancer 已更新為 AJCC 第 9 版 <small class="text-gray-500 dark:text-gray-400">(2025/3)</small></li>
+                  <li>NPC 已更新為 AJCC 第 9 版 <small class="text-gray-500 dark:text-gray-400">(2025/12)</small></li>
                 </ol>
               </div>
             </div>
-          </main>
-      </div>
-    </div>
+          </div>
+</main>
 
     <!-- Report Modal -->
     <%= require('../partials/report_modal.html').default %>

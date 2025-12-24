@@ -206,7 +206,7 @@ function generate_report(){
 
     $('#reportModalLongTitle').html("Urinary Bladder Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
-    $('#reportModalLong').modal('show');
+    document.getElementById('reportModalLong').showModal();
 }
 
 $('.cb_ti_t4a, input[name="radio_gender"]').change(function() {

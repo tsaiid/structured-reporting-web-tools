@@ -142,7 +142,7 @@ Dynamic contrast–enhanced axial imaging at arterial phase, venous phase
 
     $('#reportModalLongTitle').html("Gastrointestinal Stromal Tumor Staging Form");
     $('#reportModalBody pre code').html(report);
-    $('#reportModalLong').modal('show');
+    document.getElementById('reportModalLong').showModal();
 }
 
 $('#cb_tp_ts_nm').change(function() {

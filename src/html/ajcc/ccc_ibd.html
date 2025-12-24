@@ -23,24 +23,23 @@
     <%= require('../partials/vendors_css.html').default %>
 </head>
 
-<body>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
 
   <%= require('../partials/nav.html').default %>
 
-    <div class="container-fluid">
-      <div class="row">
+    
         <%= require('../partials/sidebar.html').default %>
 
-          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <div
-              class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-              <h1 class="h3">
+          <main role="main" class="md:ml-48 lg:ml-56 pt-12 min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+<div class="p-6 max-w-7xl mx-auto">
+            <div class="flex justify-between items-center pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
+              <h1 class="text-2xl font-bold flex items-center gap-2">
                 Cholangiocarcinoma: Intrahepatic Bile Duct
                 <small class="text-muted">
                   (peripheral to the 2nd order bile ducts)
                 </small>
                 Staging Form
-                <span class="badge badge-secondary ml-2" style="font-size: 50%; vertical-align: super;">AJCC 8th</span>
+                <span class="badge badge-secondary ml-2" >AJCC 8th</span>
               </h1>
 
               <%= require('../partials/toolbar_buttons.html').default %>
@@ -49,7 +48,7 @@
             <div class="row">
               <div class="col">
                 <!-- Tumor Size -->
-                <h2 class="h4">Tumor Size</h2>
+                <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">Tumor Size</h2>
                 <form class="form-inline needs-validation" id="form_tumor_size" novalidate>
                   <div class="input-group input-group-sm col-md-6 pl-0 mb-2 mr-sm-2">
                     <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" step="0.1" class="form-control"
@@ -201,7 +200,7 @@
               <!-- second column -->
               <div class="col">
                 <!-- Regional Lymph Node -->
-                <h2 class="h4">Regional Lymph Node</h2>
+                <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">Regional Lymph Node</h2>
                 <form class="">
                   <div>
                     <div class="form-check form-check-inline mb-2 mr-sm-2">
@@ -277,9 +276,8 @@
 
               </div>
             </div>
-          </main>
-      </div>
-    </div>
+          </div>
+</main>
 
     <!-- AJCC Definitions Modal -->
     <%= require('../partials/ajcc_modal.html').default %>
