@@ -1,0 +1,649 @@
+/* --- 基礎變數調整 --- */
+:root {
+  --nav-height: 80px;
+  --nav-bg-light: rgba(255, 255, 255, 0.95);
+  --nav-bg-dark: rgba(19, 23, 31, 0.95);
+  --border-radius: 8px;
+}
+
+body {
+  padding-top: calc(var(--nav-height) + 20px);
+  padding-bottom: 100px;
+}
+
+/* --- Sticky Navbar --- */
+.sticky-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--nav-height);
+  z-index: 900;
+  background-color: var(--nav-bg-light);
+  border-bottom: 1px solid var(--pico-muted-border-color);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+}
+
+[data-theme="dark"] .sticky-nav {
+  background-color: var(--nav-bg-dark);
+}
+
+.nav-content {
+  width: 100%;
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-title-group h1 {
+  font-size: 1.75rem;
+  margin: 0;
+  line-height: 1.1;
+  color: var(--pico-h1-color);
+  font-weight: 800;
+}
+
+.nav-title-group p {
+  font-size: 0.85rem;
+  margin: 0;
+  color: var(--pico-muted-color);
+  display: block;
+  margin-top: 2px;
+}
+
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 100%;
+}
+
+/* --- Theme Capsule Switch --- */
+.theme-capsule {
+  position: relative;
+  display: inline-flex !important;
+  width: 64px !important;
+  height: 34px !important;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--pico-muted-border-color);
+  border-radius: 50px;
+  cursor: pointer;
+  background-color: transparent;
+  transition: all 0.3s ease;
+  margin-bottom: 0;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.theme-capsule:hover {
+  border-color: var(--pico-primary);
+  background-color: var(--pico-background-color);
+}
+
+.theme-capsule input {
+  appearance: none;
+  -webkit-appearance: none;
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+.capsule-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 34px;
+}
+
+.capsule-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+    opacity 0.3s;
+}
+
+.capsule-icon svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.icon-sun {
+  opacity: 1;
+  transform: translateY(0);
+  color: #f59e0b;
+}
+
+.icon-moon {
+  opacity: 0;
+  transform: translateY(30px) rotate(-90deg);
+  color: #fbbf24;
+}
+
+.theme-capsule input:checked ~ .capsule-content .icon-sun {
+  opacity: 0;
+  transform: translateY(-30px) rotate(90deg);
+}
+
+.theme-capsule input:checked ~ .capsule-content .icon-moon {
+  opacity: 1;
+  transform: translateY(0) rotate(0deg);
+}
+
+[data-theme="dark"] .theme-capsule {
+  border-color: #546e7a;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .theme-capsule:hover {
+  border-color: var(--pico-primary);
+}
+
+.btn-about {
+  background: transparent;
+  border: 2px solid var(--pico-muted-border-color);
+  color: var(--pico-muted-color);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-weight: 800;
+  font-size: 1.1rem;
+  transition: all 0.2s;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+.btn-about:hover {
+  border-color: var(--pico-primary);
+  color: var(--pico-primary);
+  background-color: var(--pico-card-background-color);
+}
+
+/* --- [關鍵修正] Dark Mode 樣式隔離 --- */
+/* 目標：只調整文字輸入框的顏色，絕對不碰 Radio/Checkbox */
+
+/* 定義選擇器：排除 radio, checkbox, button, submit */
+[data-theme="dark"]
+  input:not([type="radio"]):not([type="checkbox"]):not(
+    [type="submit"]
+  ):not([type="button"]),
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  background-color: #1e252e !important;
+  border-color: #4a5a6a !important;
+  color: #ffffff !important;
+}
+
+/* 定義 Focus 狀態：同樣排除 radio, checkbox */
+[data-theme="dark"]
+  input:not([type="radio"]):not([type="checkbox"]):focus,
+[data-theme="dark"] select:focus {
+  border-color: var(--pico-primary) !important;
+  background-color: #26303b !important;
+  box-shadow: 0 0 0 2px rgba(2, 117, 216, 0.2);
+  /* 模仿 Pico 原生 Focus */
+}
+
+/* 針對 Radio/Checkbox 我們什麼都不做，讓 Pico 原生樣式接管，這樣最穩定 */
+
+/* --- [關鍵修正] 對齊系統 (Alignment) --- */
+.inline-label-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  /* 容器內垂直置中 */
+  gap: 1rem;
+  margin-bottom: var(--pico-spacing);
+}
+
+.inline-label-group > span {
+  display: flex;
+  align-items: center;
+  /* span 內垂直置中 */
+  height: 100%;
+}
+
+/* 標籤文字間距與高度修正 */
+.label-text,
+.inline-label-group > span > span:first-child {
+  margin-right: 0.75rem;
+  line-height: 1;
+  /* 避免文字行高撐開高度導致不對齊 */
+  padding-top: 1px;
+  /* 微調視覺重心 */
+}
+
+/* 讓包含 Input 的 Label (Good, Acceptable) 變成 Flex 容器 */
+.inline-label-group label,
+.horizontal-radios label,
+.horizontal-checkboxes label {
+  display: inline-flex !important;
+  align-items: center !important;
+  /* 確保 Input 與文字中線對齊 */
+  margin-bottom: 0 !important;
+  cursor: pointer;
+}
+
+/* 移除 Input 自身的多餘 Margin，完全交給 Flex 控制 */
+input[type="checkbox"],
+input[type="radio"] {
+  margin: 0 0.5rem 0 0 !important;
+  transform: none !important;
+  /* 移除任何位移 */
+}
+
+/* 通用 Input 設定 */
+input.form-input,
+input[type="number"],
+input[type="text"],
+select {
+  font-size: 0.9em;
+  padding: 0.2rem 0.4rem;
+  height: auto;
+  margin: 0 0.25em;
+  width: auto;
+  display: inline-block;
+}
+
+.unit-label {
+  color: var(--pico-muted-color);
+  margin-left: 0.5rem;
+  font-size: 0.9em;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Error Styles */
+.input-error {
+  border: 2px solid #e53935 !important;
+  box-shadow: 0 0 5px rgba(229, 57, 53, 0.5);
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .input-error {
+  border-color: #ff5252 !important;
+  box-shadow: 0 0 8px rgba(255, 82, 82, 0.8) !important;
+  background-color: rgba(255, 82, 82, 0.1) !important;
+}
+
+/* General Layout */
+.sticky-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--pico-background-color);
+  border-top: 1px solid var(--pico-primary);
+  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.15);
+  padding: 1rem;
+  z-index: 100;
+  transition:
+    opacity 0.3s,
+    transform 0.3s;
+  opacity: 0;
+  transform: translateY(100%);
+  visibility: hidden;
+}
+
+.sticky-footer.visible {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  gap: 1rem;
+}
+
+.footer-container button {
+  margin-bottom: 0;
+}
+
+.nested-section {
+  padding-left: 1.5rem;
+  border-left: 3px solid var(--pico-primary);
+  margin-top: 0.5rem;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.horizontal-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.se-im-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.se-im-row label {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+article.nodule-block {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border: 1px solid var(--pico-muted-border-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  background-color: var(--pico-card-background-color);
+  border-radius: var(--border-radius);
+  position: relative;
+}
+
+.nodule-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--pico-muted-border-color);
+  padding-bottom: 0.5rem;
+}
+
+.nodule-title {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: var(--pico-primary);
+}
+
+.btn-delete {
+  background-color: transparent;
+  border: 1px solid var(--pico-del-color);
+  color: var(--pico-del-color);
+  padding: 0.3rem 0.8rem;
+  font-size: 0.8em;
+  cursor: pointer;
+  margin-bottom: 0;
+  transition: all 0.2s;
+}
+
+.btn-delete:hover {
+  background-color: var(--pico-del-color);
+  color: white;
+  border-color: var(--pico-del-color);
+}
+
+.nodule-split-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--pico-muted-border-color);
+  padding-bottom: 1rem;
+}
+
+.nodule-input-label {
+  font-weight: bold;
+  font-size: 1rem;
+  color: var(--pico-h1-color);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.density-inline-group {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.density-inline-group label {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 0;
+  white-space: nowrap;
+  font-size: 0.9em;
+}
+
+.size-input-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  white-space: nowrap;
+  margin-bottom: 0.5rem;
+}
+
+.nodule-row-full {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.lobe-inline-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lobe-label {
+  white-space: nowrap;
+  margin-right: 1rem;
+  font-weight: bold;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.horizontal-radios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.solid-part-container {
+  margin-top: 0.2rem;
+  margin-left: 0;
+  padding-left: 2rem;
+}
+
+#modal_output {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background-color: var(--pico-muted-background-color);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  font-family: var(--pico-font-family-monospace);
+}
+
+dialog article {
+  width: 90vw;
+  max-width: 1000px;
+}
+
+#delete_modal article {
+  max-width: 400px;
+  text-align: center;
+}
+
+#about_modal article {
+  max-width: 600px;
+  text-align: left;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.lobe-checkbox-container {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  vertical-align: middle;
+  margin-left: 1rem;
+}
+
+.lobe-checkbox-container span label {
+  margin-bottom: 0;
+  font-size: 0.9em;
+  display: inline-flex;
+  align-items: center;
+}
+
+fieldset {
+  margin-bottom: var(--pico-spacing);
+  border: none;
+  padding: 0;
+}
+
+/* Fieldset 內的 label 也要 Flex 對齊 */
+fieldset label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+legend {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 576px) {
+  .nav-title-group p {
+    display: none;
+  }
+
+  .nav-title-group h1 {
+    font-size: 1.2rem;
+  }
+
+  .nav-content {
+    padding: 0 0.5rem;
+  }
+
+  .theme-capsule {
+    width: 48px;
+    height: 30px;
+  }
+
+  .btn-about {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
+
+  .capsule-icon {
+    font-size: 1rem;
+  }
+}
+
+/* --- [新增] 結節互斥區塊樣式 --- */
+.nodule-findings-group {
+  background-color: var(--pico-card-background-color);
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  margin-top: 0.5rem;
+  transition:
+    opacity 0.3s ease,
+    filter 0.3s ease;
+}
+
+/* 當 No lung nodule 被勾選時，這個區塊會變淡且無法點擊 */
+.nodule-findings-group.disabled-group {
+  opacity: 0.5;
+  pointer-events: none;
+  /* 禁止滑鼠互動 */
+  filter: grayscale(0.5);
+  /* 稍微去色，強化禁用感 */
+}
+
+.nodule-findings-group fieldset {
+  margin-bottom: 0;
+  /* 修正容器內的 fieldset 間距 */
+}
+
+/* --- [新增] Other Findings 專用排版 --- */
+.finding-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 0.8rem;
+  /* 統一且舒適的行距 */
+  gap: 0.75rem;
+}
+
+.finding-row > span,
+.finding-row > label {
+  margin-bottom: 0 !important;
+  /* line-height: 1.2; Removed */
+  /* padding-top: 2px; Removed */
+}
+
+.finding-row .form-input {
+  margin: 0 !important;
+  width: 300px;
+  /* Fixed width */
+  max-width: 100%;
+}
+
+/* Coronary 專用微調 */
+.coronary-options {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.coronary-options label {
+  margin-bottom: 0 !important;
+  display: inline-flex;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .finding-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+  }
+
+  .finding-row .form-input {
+    width: 100%;
+  }
+
+  .coronary-options {
+    justify-content: flex-start;
+  }
+}

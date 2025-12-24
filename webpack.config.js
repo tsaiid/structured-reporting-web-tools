@@ -21,6 +21,7 @@ const entries = ajccPages.reduce((acc, page) => {
 
 // Add Landing Page Entry
 entries['landing'] = './src/js/landing.js';
+entries['nhi_lung_rads'] = './src/js/nhi_lung_rads.js';
 
 // 動態產生 HtmlWebpackPlugin 實例
 const htmlPlugins = ajccPages.map(page => {
@@ -136,7 +137,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/html/nhi_lung_rads.html',
       filename: 'nhi-lung-rads/index.html', // Output to dist/nhi-lung-rads/
-      chunks: [], // No JS chunks for this page currently based on your previous config
+      chunks: ['nhi_lung_rads'],
     }),
 
     // Landing Page
