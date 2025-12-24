@@ -1,446 +1,1114 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Structured report for lung cancer staging"
+    />
+    <meta name="author" content="I-Ta Tsai" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Structured report for lung cancer staging">
-  <meta name="author" content="I-Ta Tsai">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Structure Report for Lung Cancer Staging</title>
 
-  <title>Structure Report for Lung Cancer Staging</title>
-
-  <!-- Google Analytics -->
-  <%= require('../partials/google_analytics.html').default %>
+    <!-- Google Analytics -->
+    <%= require('../partials/google_analytics.html').default %>
 
     <!-- Vendors: jquery, clipboard.js (Bootstrap CSS removed) -->
     <%= require('../partials/vendors_css.html').default %>
-</head>
+  </head>
 
-<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+  <body
+    class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200"
+  >
+    <%= require('../partials/nav.html').default %> <%=
+    require('../partials/sidebar.html').default %>
 
-  <%= require('../partials/nav.html').default %>
+    <main role="main" class="md:ml-48 lg:ml-56 pt-12 min-h-screen">
+      <div class="p-6 max-w-7xl mx-auto">
+        <div
+          class="flex justify-between items-center pb-4 mb-4 border-b border-gray-200 dark:border-gray-700"
+        >
+          <h1 class="text-2xl font-bold flex items-center gap-2">
+            Lung Cancer Staging Form
+            <span
+              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 align-super"
+              >AJCC 9th</span
+            >
+          </h1>
 
-  <%= require('../partials/sidebar.html').default %>
-
-  <main role="main" class="md:ml-48 lg:ml-56 pt-12 min-h-screen">
-    <div class="p-6 max-w-7xl mx-auto">
-      <div class="flex justify-between items-center pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
-        <h1 class="text-2xl font-bold flex items-center gap-2">Lung Cancer Staging Form 
-          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 align-super">AJCC 9th</span>
-        </h1>
-
-        <%= require('../partials/toolbar_buttons.html').default %>
-      </div>
-
-      <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
-        <!-- First Column -->
-        <div class="space-y-8">
-          <!-- Imaging Modality -->
-          <section>
-            <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">Imaging Modality</h2>
-            <form class="flex gap-4">
-              <div class="flex items-center">
-                <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" name="protocol_radios" id="radio_ct" value="ct" checked>
-                <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="radio_ct">CT</label>
-              </div>
-              <div class="flex items-center">
-                <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" name="protocol_radios" id="radio_mr" value="mr">
-                <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="radio_mr">MRI</label>
-              </div>
-            </form>
-          </section>
-
-          <!-- Tumor Location -->
-          <section>
-            <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">Tumor Location</h2>
-            <form class="needs-validation space-y-2" id="form_tumor_location" novalidate>
-              <div class="flex flex-wrap gap-4">
-                <div class="flex items-center">
-                  <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tp_tl" type="checkbox" id="cb_tp_tl_rul" value="RUL">
-                  <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="cb_tp_tl_rul">RUL</label>
-                </div>
-                <div class="flex items-center">
-                  <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tp_tl" type="checkbox" id="cb_tp_tl_rml" value="RML">
-                  <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="cb_tp_tl_rml">RML</label>
-                </div>
-                <div class="flex items-center">
-                  <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tp_tl" type="checkbox" id="cb_tp_tl_rll" value="RLL">
-                  <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="cb_tp_tl_rll">RLL</label>
-                </div>
-                <div class="flex items-center">
-                  <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tp_tl" type="checkbox" id="cb_tp_tl_lul" value="LUL">
-                  <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="cb_tp_tl_lul">LUL</label>
-                </div>
-                <div class="flex items-center">
-                  <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tp_tl" type="checkbox" id="cb_tp_tl_lll" value="LLL">
-                  <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="cb_tp_tl_lll">LLL</label>
-                </div>
-              </div>
-              
-              <div class="flex items-center gap-2 max-w-md">
-                <div class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md">
-                  <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tp_tl" aria-label="Checkbox for other tumor locations" id="cb_tp_tl_others" value="">
-                  <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Others</span>
-                </div>
-                <input type="text" class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5" aria-label="Text input with checkbox for other tumor locations" id="txt_tp_tl_others">
-              </div>
-            </form>
-          </section>
-
-          <!-- Tumor Size -->
-          <section>
-            <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">Tumor Size</h2>
-            <form class="needs-validation flex flex-wrap items-center gap-4" id="form_tumor_size" novalidate>
-              <div class="flex items-center max-w-xs">
-                <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" step="0.1" class="h-10 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-l-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" aria-label="Greatest dimension of tumor in cm" id="txt_tp_ts_diameter" placeholder="Greatest dimension" required>
-                <div class="h-10 inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-r-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
-                  cm
-                </div>
-                <!-- Tooltip logic might need custom implementation or relying on browser validation UI -->
-              </div>
-              <div class="flex items-center">
-                <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" id="cb_tp_ts_nm" value="1">
-                <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="cb_tp_ts_nm">Non-measurable</label>
-              </div>
-            </form>
-          </section>
-
-          <!-- Tumor Invasion -->
-          <section>
-            <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">Tumor Invasion</h2>
-            <div class="space-y-4">
-              <!-- T2a -->
-              <div class="flex gap-4">
-                <div class="w-12 flex-none font-bold text-gray-700 dark:text-gray-300 pt-1">T2a</div>
-                <div class="flex-1">
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t2a" type="checkbox" id="cb_tp_ti_mb" value="main bronchus">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_mb">Main bronchus</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t2a" type="checkbox" id="cb_tp_ti_vp" value="visceral pleura">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_vp">Visceral pleura</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t2a" type="checkbox" id="cb_tp_ti_al" value="adjacent lobe">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_al">Adjacent lobe</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t2a" type="checkbox" id="cb_tp_ti_fa" value="atelectasis to hilum (focal or total)">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_fa">Atelectasis to hilum (focal or total)</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- T3 -->
-              <div class="flex gap-4">
-                <div class="w-12 flex-none font-bold text-gray-700 dark:text-gray-300 pt-1">T3</div>
-                <div class="flex-1">
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3" type="checkbox" id="cb_tp_ti_pp" value="parietal pleura">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_pp">Parietal pleura</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3" type="checkbox" id="cb_tp_ti_cw" value="chest wall">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_cw">Chest wall (including superior sulcus tumors)</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3" type="checkbox" id="cb_tp_ti_pc" value="pericardium">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_pc">Pericardium</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3" type="checkbox" id="cb_tp_ti_pn" value="phrenic nerve">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_pn">Phrenic nerve</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3" type="checkbox" id="cb_tp_ti_av" value="azygos vein">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_av">Azygos vein</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3" type="checkbox" id="cb_tp_ti_tnr" value="thoracic nerve root">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_tnr">Thoracic nerve roots or stellate ganglion</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3" type="checkbox" id="cb_tp_ti_sln" value="separate tumor nodule(s) in same lobe">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_sln">Separate tumor nodule(s) in same lobe</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- T4 -->
-              <div class="flex gap-4">
-                <div class="w-12 flex-none font-bold text-gray-700 dark:text-gray-300 pt-1">T4</div>
-                <div class="flex-1">
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_men" value="mediastinum">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_men">Mediastinum</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_thy" value="thymus">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_thy">Thymus</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_tr" value="trachea">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_tr">Trachea</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_car" value="carina">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_car">Carina</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_rln" value="recurrent laryngeal nerve">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_rln">Recurrent laryngeal nerve</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_vn" value="vagus nerve">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_vn">Vagus nerve</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_eso" value="esophagus">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_eso">Esophagus</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_dia" value="diaphragm">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_dia">Diaphragm</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_h" value="heart">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_h">Heart</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_gv" value="great vessels">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_gv">Great vessels</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_saa" value="supra-aortic arteries">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_saa">Supra-aortic arteries</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_bcv" value="brachiocephalic vein">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_bcv">Brachiocephalic vein</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_scv" value="subclavian vessels">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_scv">Subclavian vessels</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_vb" value="vertebral body">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_vb">Vertebral body</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_l" value="lamina">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_l">Lamina</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_sc" value="spinal canal">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_sc">Spinal canal</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_cnr" value="cervical nerve roots">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_cnr">Cervical nerve roots</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_bp" value="brachial plexus">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_bp">Brachial plexus</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4" type="checkbox" id="cb_tp_ti_sdn" value="separate tumor nodule(s) in a different ipsilateral lobe">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_tp_ti_sdn">Separate tumor nodule(s) in a different ipsilateral lobe</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+          <%= require('../partials/toolbar_buttons.html').default %>
         </div>
 
-        <!-- Second Column -->
-        <div class="space-y-8">
-          <!-- Regional Lymph Node -->
-          <section>
-            <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">Regional Lymph Node</h2>
-            <div class="space-y-4">
-              <!-- N1 -->
-              <div class="flex gap-4">
-                <div class="w-12 flex-none font-bold text-gray-700 dark:text-gray-300 pt-1">
-                  <label class="lb_rn has_parts cursor-pointer" for="cb_rn_n1">N1</label>
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+          <!-- First Column -->
+          <div class="space-y-8">
+            <!-- Imaging Modality -->
+            <section>
+              <h2
+                class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
+              >
+                Imaging Modality
+              </h2>
+              <form class="flex gap-4">
+                <div class="flex items-center">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    type="radio"
+                    name="protocol_radios"
+                    id="radio_ct"
+                    value="ct"
+                    checked
+                  />
+                  <label
+                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    for="radio_ct"
+                    >CT</label
+                  >
                 </div>
-                <div class="flex-1">
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn cb_rn_n1" type="checkbox" id="cb_rn_ip" value="ipsilateral peribronchial">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_rn_ip">ipsilateral peribronchial</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn cb_rn_n1" type="checkbox" id="cb_rn_ih" value="ipsilateral hilar">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_rn_ih">ipsilateral hilar</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn cb_rn_n1" type="checkbox" id="cb_rn_ii" value="ipsilateral intrapulmonary">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_rn_ii">ipsilateral intrapulmonary</label>
-                    </div>
-                  </div>
+                <div class="flex items-center">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    type="radio"
+                    name="protocol_radios"
+                    id="radio_mr"
+                    value="mr"
+                  />
+                  <label
+                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    for="radio_mr"
+                    >MRI</label
+                  >
                 </div>
-              </div>
+              </form>
+            </section>
 
-              <!-- N2 -->
-              <div class="flex gap-4">
-                <div class="w-12 flex-none font-bold text-gray-700 dark:text-gray-300 pt-1">
-                  <label class="lb_rn has_parts cursor-pointer" for="cb_rn_n2">N2</label>
-                </div>
-                <div class="flex-1 space-y-3">
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn cb_rn_n2" type="checkbox" id="cb_rn_im" value="ipsilateral mediastinal">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_rn_im">ipsilateral mediastinal</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn cb_rn_n2" type="checkbox" id="cb_rn_sbc" value="subcarinal">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_rn_sbc">subcarinal</label>
-                    </div>
+            <!-- Tumor Location -->
+            <section>
+              <h2
+                class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
+              >
+                Tumor Location
+              </h2>
+              <form
+                class="needs-validation space-y-2"
+                id="form_tumor_location"
+                novalidate
+              >
+                <div class="flex flex-wrap gap-4">
+                  <div class="flex items-center">
+                    <input
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tp_tl"
+                      type="checkbox"
+                      id="cb_tp_tl_rul"
+                      value="RUL"
+                    />
+                    <label
+                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      for="cb_tp_tl_rul"
+                      >RUL</label
+                    >
                   </div>
-                  <div class="bg-gray-50 dark:bg-gray-800 p-2 rounded border border-gray-200 dark:border-gray-700">
-                    <div class="flex flex-col gap-2">
-                      <div class="flex items-center">
-                        <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" name="radio_n2" id="radio_n2a" value="2a">
-                        <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="radio_n2a">N2a: Single N2 station involvement</label>
+                  <div class="flex items-center">
+                    <input
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tp_tl"
+                      type="checkbox"
+                      id="cb_tp_tl_rml"
+                      value="RML"
+                    />
+                    <label
+                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      for="cb_tp_tl_rml"
+                      >RML</label
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tp_tl"
+                      type="checkbox"
+                      id="cb_tp_tl_rll"
+                      value="RLL"
+                    />
+                    <label
+                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      for="cb_tp_tl_rll"
+                      >RLL</label
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tp_tl"
+                      type="checkbox"
+                      id="cb_tp_tl_lul"
+                      value="LUL"
+                    />
+                    <label
+                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      for="cb_tp_tl_lul"
+                      >LUL</label
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tp_tl"
+                      type="checkbox"
+                      id="cb_tp_tl_lll"
+                      value="LLL"
+                    />
+                    <label
+                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      for="cb_tp_tl_lll"
+                      >LLL</label
+                    >
+                  </div>
+                </div>
+
+                <div class="flex items-center max-w-md">
+                  <div
+                    class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md"
+                  >
+                    <input
+                      type="checkbox"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tp_tl"
+                      aria-label="Checkbox for other tumor locations"
+                      id="cb_tp_tl_others"
+                      value=""
+                    />
+                    <span class="ml-2 text-sm text-gray-700 dark:text-gray-300"
+                      >Others</span
+                    >
+                  </div>
+                  <input
+                    type="text"
+                    class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                    aria-label="Text input with checkbox for other tumor locations"
+                    id="txt_tp_tl_others"
+                  />
+                </div>
+              </form>
+            </section>
+
+            <!-- Tumor Size -->
+            <section>
+              <h2
+                class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
+              >
+                Tumor Size
+              </h2>
+              <form
+                class="needs-validation flex flex-wrap items-center gap-4"
+                id="form_tumor_size"
+                novalidate
+              >
+                <div class="flex items-center max-w-xs">
+                  <input
+                    type="number"
+                    pattern="[0-9]+([\,|\.][0-9]+)?"
+                    step="0.1"
+                    class="h-10 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-l-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    aria-label="Greatest dimension of tumor in cm"
+                    id="txt_tp_ts_diameter"
+                    placeholder="Greatest dimension"
+                    required
+                  />
+                  <div
+                    class="h-10 inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-r-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
+                  >
+                    cm
+                  </div>
+                  <!-- Tooltip logic might need custom implementation or relying on browser validation UI -->
+                </div>
+                <div class="flex items-center">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    type="checkbox"
+                    id="cb_tp_ts_nm"
+                    value="1"
+                  />
+                  <label
+                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    for="cb_tp_ts_nm"
+                    >Non-measurable</label
+                  >
+                </div>
+              </form>
+            </section>
+
+            <!-- Tumor Invasion -->
+            <section>
+              <h2
+                class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
+              >
+                Tumor Invasion
+              </h2>
+              <div class="space-y-4">
+                <!-- T2a -->
+                <div class="flex gap-4">
+                  <div
+                    class="w-12 flex-none font-bold text-gray-700 dark:text-gray-300 pt-1"
+                  >
+                    T2a
+                  </div>
+                  <div class="flex-1">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t2a"
+                          type="checkbox"
+                          id="cb_tp_ti_mb"
+                          value="main bronchus"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_mb"
+                          >Main bronchus</label
+                        >
                       </div>
-                      <div class="flex items-center">
-                        <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" name="radio_n2" id="radio_n2b" value="2b">
-                        <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="radio_n2b">N2b: Multiple N2 station involvement</label>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t2a"
+                          type="checkbox"
+                          id="cb_tp_ti_vp"
+                          value="visceral pleura"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_vp"
+                          >Visceral pleura</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t2a"
+                          type="checkbox"
+                          id="cb_tp_ti_al"
+                          value="adjacent lobe"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_al"
+                          >Adjacent lobe</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t2a"
+                          type="checkbox"
+                          id="cb_tp_ti_fa"
+                          value="atelectasis to hilum (focal or total)"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_fa"
+                          >Atelectasis to hilum (focal or total)</label
+                        >
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- N3 -->
-              <div class="flex gap-4">
-                <div class="w-12 flex-none font-bold text-gray-700 dark:text-gray-300 pt-1">
-                  <label class="lb_rn has_parts cursor-pointer" for="cb_rn_n3">N3</label>
+                <!-- T3 -->
+                <div class="flex gap-4">
+                  <div
+                    class="w-12 flex-none font-bold text-gray-700 dark:text-gray-300 pt-1"
+                  >
+                    T3
+                  </div>
+                  <div class="flex-1">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3"
+                          type="checkbox"
+                          id="cb_tp_ti_pp"
+                          value="parietal pleura"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_pp"
+                          >Parietal pleura</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3"
+                          type="checkbox"
+                          id="cb_tp_ti_cw"
+                          value="chest wall"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_cw"
+                          >Chest wall (including superior sulcus tumors)</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3"
+                          type="checkbox"
+                          id="cb_tp_ti_pc"
+                          value="pericardium"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_pc"
+                          >Pericardium</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3"
+                          type="checkbox"
+                          id="cb_tp_ti_pn"
+                          value="phrenic nerve"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_pn"
+                          >Phrenic nerve</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3"
+                          type="checkbox"
+                          id="cb_tp_ti_av"
+                          value="azygos vein"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_av"
+                          >Azygos vein</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3"
+                          type="checkbox"
+                          id="cb_tp_ti_tnr"
+                          value="thoracic nerve root"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_tnr"
+                          >Thoracic nerve roots or stellate ganglion</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3"
+                          type="checkbox"
+                          id="cb_tp_ti_sln"
+                          value="separate tumor nodule(s) in same lobe"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_sln"
+                          >Separate tumor nodule(s) in same lobe</label
+                        >
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="flex-1">
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn cb_rn_n3" type="checkbox" id="cb_rn_cm" value="contralateral mediastinal">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_rn_cm">contralateral mediastinal</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn cb_rn_n3" type="checkbox" id="cb_rn_ch" value="contralateral hilar">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_rn_ch">contralateral hilar</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn cb_rn_n3" type="checkbox" id="cb_rn_ics" value="ipsilateral or contralateral scalene">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_rn_ics">ipsilateral or contralateral scalene</label>
-                    </div>
-                    <div class="flex items-start">
-                      <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn cb_rn_n3" type="checkbox" id="cb_rn_spc" value="ipsilateral or contralateral supraclavicular">
-                      <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_rn_spc">ipsilateral or contralateral supraclavicular</label>
+
+                <!-- T4 -->
+                <div class="flex gap-4">
+                  <div
+                    class="w-12 flex-none font-bold text-gray-700 dark:text-gray-300 pt-1"
+                  >
+                    T4
+                  </div>
+                  <div class="flex-1">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          type="checkbox"
+                          id="cb_tp_ti_men"
+                          value="mediastinum"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_men"
+                          >Mediastinum</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          type="checkbox"
+                          id="cb_tp_ti_thy"
+                          value="thymus"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_thy"
+                          >Thymus</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          type="checkbox"
+                          id="cb_tp_ti_tr"
+                          value="trachea"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_tr"
+                          >Trachea</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          type="checkbox"
+                          id="cb_tp_ti_car"
+                          value="carina"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_car"
+                          >Carina</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          type="checkbox"
+                          id="cb_tp_ti_rln"
+                          value="recurrent laryngeal nerve"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_rln"
+                          >Recurrent laryngeal nerve</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          type="checkbox"
+                          id="cb_tp_ti_vn"
+                          value="vagus nerve"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_vn"
+                          >Vagus nerve</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          type="checkbox"
+                          id="cb_tp_ti_eso"
+                          value="esophagus"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_eso"
+                          >Esophagus</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          type="checkbox"
+                          id="cb_tp_ti_dia"
+                          value="diaphragm"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_dia"
+                          >Diaphragm</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          type="checkbox"
+                          id="cb_tp_ti_h"
+                          value="heart"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_h"
+                          >Heart</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          type="checkbox"
+                          id="cb_tp_ti_gv"
+                          value="great vessels"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_gv"
+                          >Great vessels</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          type="checkbox"
+                          id="cb_tp_ti_saa"
+                          value="supra-aortic arteries"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_saa"
+                          >Supra-aortic arteries</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          type="checkbox"
+                          id="cb_tp_ti_bcv"
+                          value="brachiocephalic vein"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_bcv"
+                          >Brachiocephalic vein</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          type="checkbox"
+                          id="cb_tp_ti_scv"
+                          value="subclavian vessels"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_scv"
+                          >Subclavian vessels</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          type="checkbox"
+                          id="cb_tp_ti_vb"
+                          value="vertebral body"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_vb"
+                          >Vertebral body</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          type="checkbox"
+                          id="cb_tp_ti_l"
+                          value="lamina"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_l"
+                          >Lamina</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          type="checkbox"
+                          id="cb_tp_ti_sc"
+                          value="spinal canal"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_sc"
+                          >Spinal canal</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          type="checkbox"
+                          id="cb_tp_ti_cnr"
+                          value="cervical nerve roots"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_cnr"
+                          >Cervical nerve roots</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          type="checkbox"
+                          id="cb_tp_ti_bp"
+                          value="brachial plexus"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_bp"
+                          >Brachial plexus</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          type="checkbox"
+                          id="cb_tp_ti_sdn"
+                          value="separate tumor nodule(s) in a different ipsilateral lobe"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_tp_ti_sdn"
+                          >Separate tumor nodule(s) in a different ipsilateral
+                          lobe</label
+                        >
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </div>
 
-          <!-- Distant Metastasis -->
-          <section>
-            <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">Distant Metastasis</h2>
-            
-            <h3 class="text-md font-semibold mt-4 mb-2 text-gray-700 dark:text-gray-300">M1a</h3>
-            <form class="space-y-2">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                <div class="flex items-start">
-                  <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1a" type="checkbox" id="cb_dm_scn" value="separate tumor nodule(s) in a contralateral lobe">
-                  <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_dm_scn">Separate tumor nodule(s) in a contralateral lobe</label>
+          <!-- Second Column -->
+          <div class="space-y-8">
+            <!-- Regional Lymph Node -->
+            <section>
+              <h2
+                class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
+              >
+                Regional Lymph Node
+              </h2>
+              <div class="space-y-4">
+                <!-- N1 -->
+                <div class="flex gap-4">
+                  <div
+                    class="w-12 flex-none font-bold text-gray-700 dark:text-gray-300 pt-1"
+                  >
+                    <label class="lb_rn has_parts cursor-pointer" for="cb_rn_n1"
+                      >N1</label
+                    >
+                  </div>
+                  <div class="flex-1">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn cb_rn_n1"
+                          type="checkbox"
+                          id="cb_rn_ip"
+                          value="ipsilateral peribronchial"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_rn_ip"
+                          >ipsilateral peribronchial</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn cb_rn_n1"
+                          type="checkbox"
+                          id="cb_rn_ih"
+                          value="ipsilateral hilar"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_rn_ih"
+                          >ipsilateral hilar</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn cb_rn_n1"
+                          type="checkbox"
+                          id="cb_rn_ii"
+                          value="ipsilateral intrapulmonary"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_rn_ii"
+                          >ipsilateral intrapulmonary</label
+                        >
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="flex items-start">
-                  <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1a" type="checkbox" id="cb_dm_pn" value="pleural nodules">
-                  <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_dm_pn">Pleural nodules</label>
-                </div>
-                <div class="flex items-start">
-                  <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1a" type="checkbox" id="cb_dm_pcn" value="pericardial nodules">
-                  <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_dm_pcn">Pericardial nodules</label>
-                </div>
-                <div class="flex items-start">
-                  <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1a" type="checkbox" id="cb_dm_pe" value="malignant pleural effusion">
-                  <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_dm_pe">Malignant pleural effusion</label>
-                </div>
-                <div class="flex items-start">
-                  <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1a" type="checkbox" id="cb_dm_pce" value="malignant pericardial effusion">
-                  <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="cb_dm_pce">Malignant pericardial effusion</label>
-                </div>
-              </div>
-            </form>
 
-            <h3 class="text-md font-semibold mt-6 mb-2 text-gray-700 dark:text-gray-300">
-              Extrathoracic Metastasis
-              <small class="text-gray-500 dark:text-gray-400 font-normal ml-2">
-                (single: M1b, multiple: M1c)
-              </small>
-            </h3>
-            <form class="space-y-4">
-              <div class="flex flex-wrap gap-4">
-                <div class="flex items-center">
-                  <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1bc" type="checkbox" id="cb_dm_et_liv" value="liver">
-                  <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="cb_dm_et_liv">Liver</label>
+                <!-- N2 -->
+                <div class="flex gap-4">
+                  <div
+                    class="w-12 flex-none font-bold text-gray-700 dark:text-gray-300 pt-1"
+                  >
+                    <label class="lb_rn has_parts cursor-pointer" for="cb_rn_n2"
+                      >N2</label
+                    >
+                  </div>
+                  <div class="flex-1 space-y-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn cb_rn_n2"
+                          type="checkbox"
+                          id="cb_rn_im"
+                          value="ipsilateral mediastinal"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_rn_im"
+                          >ipsilateral mediastinal</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn cb_rn_n2"
+                          type="checkbox"
+                          id="cb_rn_sbc"
+                          value="subcarinal"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_rn_sbc"
+                          >subcarinal</label
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="bg-gray-50 dark:bg-gray-800 p-2 rounded border border-gray-200 dark:border-gray-700"
+                    >
+                      <div class="flex flex-col gap-2">
+                        <div class="flex items-center">
+                          <input
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                            type="radio"
+                            name="radio_n2"
+                            id="radio_n2a"
+                            value="2a"
+                          />
+                          <label
+                            class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                            for="radio_n2a"
+                            >N2a: Single N2 station involvement</label
+                          >
+                        </div>
+                        <div class="flex items-center">
+                          <input
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                            type="radio"
+                            name="radio_n2"
+                            id="radio_n2b"
+                            value="2b"
+                          />
+                          <label
+                            class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                            for="radio_n2b"
+                            >N2b: Multiple N2 station involvement</label
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="flex items-center">
-                  <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1bc" type="checkbox" id="cb_dm_et_ad" value="adrenal">
-                  <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="cb_dm_et_ad">Adrenal</label>
-                </div>
-                <div class="flex items-center">
-                  <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1bc" type="checkbox" id="cb_dm_et_b" value="bone">
-                  <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="cb_dm_et_b">Bone</label>
-                </div>
-              </div>
-              
-              <div class="flex items-center gap-2 max-w-md">
-                <div class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md">
-                  <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1bc" aria-label="Checkbox for other distant metastasis" id="cb_dm_others" value="">
-                  <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Others</span>
-                </div>
-                <input type="text" class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5" aria-label="Text input with checkbox for other distant metastasis" id="txt_dm_others">
-              </div>
 
-              <div class="bg-gray-50 dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-700 space-y-2">
-                <div class="flex items-start">
-                  <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" name="radio_m1bc" id="radio_m1b" value="1b">
-                  <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="radio_m1b">Single extrathoracic metastasis in a single organ (M1b)</label>
-                </div>
-                <div class="flex items-start">
-                  <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" name="radio_m1bc" id="radio_m1c1" value="1c1">
-                  <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="radio_m1c1">Multiple extrathoracic metastases in a single organ system (M1c1)</label>
-                </div>
-                <div class="flex items-start">
-                  <input class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" name="radio_m1bc" id="radio_m1c2" value="1c2">
-                  <label class="ml-2 text-sm text-gray-900 dark:text-gray-300" for="radio_m1c2">Multiple extrathoracic metastases in multiple organ systems (M1c2)</label>
+                <!-- N3 -->
+                <div class="flex gap-4">
+                  <div
+                    class="w-12 flex-none font-bold text-gray-700 dark:text-gray-300 pt-1"
+                  >
+                    <label class="lb_rn has_parts cursor-pointer" for="cb_rn_n3"
+                      >N3</label
+                    >
+                  </div>
+                  <div class="flex-1">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn cb_rn_n3"
+                          type="checkbox"
+                          id="cb_rn_cm"
+                          value="contralateral mediastinal"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_rn_cm"
+                          >contralateral mediastinal</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn cb_rn_n3"
+                          type="checkbox"
+                          id="cb_rn_ch"
+                          value="contralateral hilar"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_rn_ch"
+                          >contralateral hilar</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn cb_rn_n3"
+                          type="checkbox"
+                          id="cb_rn_ics"
+                          value="ipsilateral or contralateral scalene"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_rn_ics"
+                          >ipsilateral or contralateral scalene</label
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <input
+                          class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn cb_rn_n3"
+                          type="checkbox"
+                          id="cb_rn_spc"
+                          value="ipsilateral or contralateral supraclavicular"
+                        />
+                        <label
+                          class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                          for="cb_rn_spc"
+                          >ipsilateral or contralateral supraclavicular</label
+                        >
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </form>
-          </section>
+            </section>
+
+            <!-- Distant Metastasis -->
+            <section>
+              <h2
+                class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
+              >
+                Distant Metastasis
+              </h2>
+
+              <h3
+                class="text-md font-semibold mt-4 mb-2 text-gray-700 dark:text-gray-300"
+              >
+                M1a
+              </h3>
+              <form class="space-y-2">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  <div class="flex items-start">
+                    <input
+                      class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1a"
+                      type="checkbox"
+                      id="cb_dm_scn"
+                      value="separate tumor nodule(s) in a contralateral lobe"
+                    />
+                    <label
+                      class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                      for="cb_dm_scn"
+                      >Separate tumor nodule(s) in a contralateral lobe</label
+                    >
+                  </div>
+                  <div class="flex items-start">
+                    <input
+                      class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1a"
+                      type="checkbox"
+                      id="cb_dm_pn"
+                      value="pleural nodules"
+                    />
+                    <label
+                      class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                      for="cb_dm_pn"
+                      >Pleural nodules</label
+                    >
+                  </div>
+                  <div class="flex items-start">
+                    <input
+                      class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1a"
+                      type="checkbox"
+                      id="cb_dm_pcn"
+                      value="pericardial nodules"
+                    />
+                    <label
+                      class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                      for="cb_dm_pcn"
+                      >Pericardial nodules</label
+                    >
+                  </div>
+                  <div class="flex items-start">
+                    <input
+                      class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1a"
+                      type="checkbox"
+                      id="cb_dm_pe"
+                      value="malignant pleural effusion"
+                    />
+                    <label
+                      class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                      for="cb_dm_pe"
+                      >Malignant pleural effusion</label
+                    >
+                  </div>
+                  <div class="flex items-start">
+                    <input
+                      class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1a"
+                      type="checkbox"
+                      id="cb_dm_pce"
+                      value="malignant pericardial effusion"
+                    />
+                    <label
+                      class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                      for="cb_dm_pce"
+                      >Malignant pericardial effusion</label
+                    >
+                  </div>
+                </div>
+              </form>
+
+              <h3
+                class="text-md font-semibold mt-6 mb-2 text-gray-700 dark:text-gray-300"
+              >
+                Extrathoracic Metastasis
+                <small
+                  class="text-gray-500 dark:text-gray-400 font-normal ml-2"
+                >
+                  (single: M1b, multiple: M1c)
+                </small>
+              </h3>
+              <form class="space-y-4">
+                <div class="flex flex-wrap gap-4">
+                  <div class="flex items-center">
+                    <input
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1bc"
+                      type="checkbox"
+                      id="cb_dm_et_liv"
+                      value="liver"
+                    />
+                    <label
+                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      for="cb_dm_et_liv"
+                      >Liver</label
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1bc"
+                      type="checkbox"
+                      id="cb_dm_et_ad"
+                      value="adrenal"
+                    />
+                    <label
+                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      for="cb_dm_et_ad"
+                      >Adrenal</label
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1bc"
+                      type="checkbox"
+                      id="cb_dm_et_b"
+                      value="bone"
+                    />
+                    <label
+                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      for="cb_dm_et_b"
+                      >Bone</label
+                    >
+                  </div>
+                </div>
+
+                <div class="flex items-center max-w-md">
+                  <div
+                    class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md"
+                  >
+                    <input
+                      type="checkbox"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1bc"
+                      aria-label="Checkbox for other distant metastasis"
+                      id="cb_dm_others"
+                      value=""
+                    />
+                    <span class="ml-2 text-sm text-gray-700 dark:text-gray-300"
+                      >Others</span
+                    >
+                  </div>
+                  <input
+                    type="text"
+                    class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                    aria-label="Text input with checkbox for other distant metastasis"
+                    id="txt_dm_others"
+                  />
+                </div>
+
+                <div
+                  class="bg-gray-50 dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-700 space-y-2"
+                >
+                  <div class="flex items-start">
+                    <input
+                      class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      type="radio"
+                      name="radio_m1bc"
+                      id="radio_m1b"
+                      value="1b"
+                    />
+                    <label
+                      class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                      for="radio_m1b"
+                      >Single extrathoracic metastasis in a single organ
+                      (M1b)</label
+                    >
+                  </div>
+                  <div class="flex items-start">
+                    <input
+                      class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      type="radio"
+                      name="radio_m1bc"
+                      id="radio_m1c1"
+                      value="1c1"
+                    />
+                    <label
+                      class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                      for="radio_m1c1"
+                      >Multiple extrathoracic metastases in a single organ
+                      system (M1c1)</label
+                    >
+                  </div>
+                  <div class="flex items-start">
+                    <input
+                      class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      type="radio"
+                      name="radio_m1bc"
+                      id="radio_m1c2"
+                      value="1c2"
+                    />
+                    <label
+                      class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                      for="radio_m1c2"
+                      >Multiple extrathoracic metastases in multiple organ
+                      systems (M1c2)</label
+                    >
+                  </div>
+                </div>
+              </form>
+            </section>
+          </div>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
 
-  <!-- AJCC Definitions Modal -->
-  <%= require('../partials/ajcc_modal.html').default %>
+    <!-- AJCC Definitions Modal -->
+    <%= require('../partials/ajcc_modal.html').default %>
 
-  <!-- Report Modal -->
-  <%= require('../partials/report_modal.html').default %>
+    <!-- Report Modal -->
+    <%= require('../partials/report_modal.html').default %>
 
-  <!-- About Modal -->
-  <%= require('../partials/about_modal.html').default %>
+    <!-- About Modal -->
+    <%= require('../partials/about_modal.html').default %>
 
-  <!-- Vendors: jquery, clipboard.js -->
-  <%= require('../partials/vendors_js.html').default %>
-</body>
-
+    <!-- Vendors: jquery, clipboard.js -->
+    <%= require('../partials/vendors_js.html').default %>
+  </body>
 </html>

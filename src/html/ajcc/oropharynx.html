@@ -27,7 +27,7 @@
 
   <%= require('../partials/nav.html').default %>
 
-    
+
         <%= require('../partials/sidebar.html').default %>
 
           <main role="main" class="md:ml-48 lg:ml-56 pt-12 min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
@@ -102,16 +102,12 @@
                     <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_ow" value="oropharyngeal walls">
                     <label class="form-check-label" for="cb_tl_ow">Oropharyngeal walls</label>
                   </div>
-                  <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text">
-                        <input type="checkbox" class="cb_tl" aria-label="Checkbox for other tumor locations"
-                          id="cb_tl_others" value="">
-                      </div>
-                      <span class="input-group-text">Others</span>
+                  <div class="flex items-center max-w-md mb-2">
+                    <div class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md">
+                      <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tl" aria-label="Checkbox for other tumor locations" id="cb_tl_others" value="">
+                      <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Others</span>
                     </div>
-                    <input type="text" class="form-control"
-                      aria-label="Text input with checkbox for other tumor locations" id="txt_tl_others">
+                    <input type="text" class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5" aria-label="Text input with checkbox for other tumor locations" id="txt_tl_others">
                   </div>
                 </form>
                 <form class="form-inline">
@@ -211,16 +207,12 @@
                         value="encasement of carotid artery">
                       <label class="form-check-label" for="cb_ti_eca">Encasement of carotid artery</label>
                     </div>
-                    <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
-                      <div class="input-group-prepend">
-                        <div class="input-group-text">
-                          <input type="checkbox" class="cb_ti" aria-label="Checkbox for other tumor invasion"
-                            id="cb_ti_others" value="">
-                        </div>
-                        <span class="input-group-text">Others</span>
+                    <div class="flex items-center max-w-md mb-2">
+                      <div class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md">
+                        <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti" aria-label="Checkbox for other tumor invasion" id="cb_ti_others" value="">
+                        <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Others</span>
                       </div>
-                      <input type="text" class="form-control"
-                        aria-label="Text input with checkbox for other tumor invasion" id="txt_ti_others">
+                      <input type="text" class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5" aria-label="Text input with checkbox for other tumor invasion" id="txt_ti_others">
                     </div>
                   </div>
                 </div>
@@ -426,16 +418,12 @@
                     <input class="form-check-input cb_dm cb_dm_m1ab" type="checkbox" id="cb_dm_b" value="bone">
                     <label class="form-check-label" for="cb_dm_b">Bone</label>
                   </div>
-                  <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text">
-                        <input type="checkbox" class="cb_dm cb_dm_m1ab"
-                          aria-label="Checkbox for other distant metastasis" id="cb_dm_others" value="">
-                      </div>
-                      <span class="input-group-text">Others</span>
+                  <div class="flex items-center max-w-md mb-2">
+                    <div class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md">
+                      <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1ab" aria-label="Checkbox for other distant metastasis" id="cb_dm_others" value="">
+                      <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Others</span>
                     </div>
-                    <input type="text" class="form-control"
-                      aria-label="Text input with checkbox for other distant metastasis" id="txt_dm_others">
+                    <input type="text" class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5" aria-label="Text input with checkbox for other distant metastasis" id="txt_dm_others">
                   </div>
                 </form>
 

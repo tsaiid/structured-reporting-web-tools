@@ -1,249 +1,420 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Structured report for Bone: Pelvis staging"
+    />
+    <meta name="author" content="I-Ta Tsai" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Structured report for Bone: Pelvis staging">
-  <meta name="author" content="I-Ta Tsai">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Structure Report for Bone: Pelvis Staging</title>
 
-  <title>Structure Report for Bone: Pelvis Staging</title>
-
-  <!-- For IE 6/7/8 Responsive -->
-  <!--[if lt IE 9]>
+    <!-- For IE 6/7/8 Responsive -->
+    <!--[if lt IE 9]>
       <script src="js/respond.min.js"></script>
       <script src="js/html5shiv.js"></script>
     <![endif]-->
 
-  <!-- Google Analytics -->
-  <%= require('../partials/google_analytics.html').default %>
+    <!-- Google Analytics -->
+    <%= require('../partials/google_analytics.html').default %>
 
     <!-- Vendors: jquery, bootstrap, clipboard.js -->
     <%= require('../partials/vendors_css.html').default %>
-</head>
+  </head>
 
-<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+  <body
+    class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200"
+  >
+    <%= require('../partials/nav.html').default %> <%=
+    require('../partials/sidebar.html').default %>
 
-  <%= require('../partials/nav.html').default %>
+    <main
+      role="main"
+      class="md:ml-48 lg:ml-56 pt-12 min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200"
+    >
+      <div class="p-6 max-w-7xl mx-auto">
+        <div
+          class="flex justify-between items-center pb-4 mb-4 border-b border-gray-200 dark:border-gray-700"
+        >
+          <h1 class="text-2xl font-bold flex items-center gap-2">
+            OGS of Pelvis Staging Form
+            <span class="badge badge-secondary ml-2">AJCC 8th</span>
+          </h1>
 
-    
-        <%= require('../partials/sidebar.html').default %>
+          <%= require('../partials/toolbar_buttons.html').default %>
+        </div>
 
-          <main role="main" class="md:ml-48 lg:ml-56 pt-12 min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
-<div class="p-6 max-w-7xl mx-auto">
-            <div class="flex justify-between items-center pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
-              <h1 class="text-2xl font-bold flex items-center gap-2">OGS of Pelvis Staging Form <span class="badge badge-secondary ml-2"
-                  >AJCC 8th</span></h1>
+        <div class="row">
+          <div class="col">
+            <!-- Tumor Location -->
+            <h2
+              class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
+            >
+              Tumor Location
+            </h2>
+            <form class="form-inline">
+              <div class="form-check mb-2 mr-sm-2">
+                <label class="form-check-label" for="radio_tl"
+                  >Laterality</label
+                >
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input
+                  class="form-check-input radio_tl"
+                  type="radio"
+                  id="radio_tl_r"
+                  name="radio_tl"
+                  value="right"
+                />
+                <label class="form-check-label" for="radio_tl_r">right</label>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input
+                  class="form-check-input radio_tl"
+                  type="radio"
+                  id="radio_tl_l"
+                  name="radio_tl"
+                  value="left"
+                />
+                <label class="form-check-label" for="radio_tl_l">left</label>
+              </div>
+            </form>
+            <form class="">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input
+                  class="form-check-input cb_tl cb_tl_ps"
+                  type="checkbox"
+                  id="cb_tl_s"
+                  value="Sacrum"
+                />
+                <label class="form-check-label" for="cb_tl_s">Sacrum</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input
+                  class="form-check-input cb_tl cb_tl_ps"
+                  type="checkbox"
+                  id="cb_tl_iw"
+                  value="Iliac wing"
+                />
+                <label class="form-check-label" for="cb_tl_iw"
+                  >Iliac wing</label
+                >
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input
+                  class="form-check-input cb_tl cb_tl_ps"
+                  type="checkbox"
+                  id="cb_tl_pr"
+                  value="Pubic rami, symphysis, and ischium"
+                />
+                <label class="form-check-label" for="cb_tl_pr"
+                  >Pubic rami, symphysis, and ischium</label
+                >
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input
+                  class="form-check-input cb_tl cb_tl_ps"
+                  type="checkbox"
+                  id="cb_tl_ap"
+                  value="Acetabulum/periacetabulum"
+                />
+                <label class="form-check-label" for="cb_tl_ap"
+                  >Acetabulum/periacetabulum</label
+                >
+              </div>
+            </form>
 
-              <%= require('../partials/toolbar_buttons.html').default %>
+            <!-- Tumor Size -->
+            <h2 class="h4 mt-4">Tumor Size</h2>
+            <form
+              class="form-inline needs-validation"
+              id="form_tumor_size"
+              novalidate
+            >
+              <div
+                class="input-group input-group-sm col-md-6 pl-0 mb-2 mr-sm-2"
+              >
+                <input
+                  type="number"
+                  pattern="[0-9]+([\,|\.][0-9]+)?"
+                  step="0.1"
+                  class="form-control"
+                  aria-label="Greatest diameter of tumor in cm"
+                  id="txt_ts_len"
+                  placeholder="Greatest dimension of the largest tumor"
+                  required
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text">cm</span>
+                </div>
+                <div class="invalid-tooltip">Please enter a number.</div>
+              </div>
+              <div class="form-check mb-2 mr-sm-2">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="cb_ts_nm"
+                  value="1"
+                />
+                <label class="form-check-label" for="cb_ts_nm"
+                  >Non-measurable</label
+                >
+                <div class="valid-tooltip">Or, check Non-measurable.</div>
+              </div>
+            </form>
+
+            <!-- Tumor Invasion -->
+            <h2 class="h4 mt-4">Tumor Invasion</h2>
+            <form class="">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input
+                  class="form-check-input cb_ti"
+                  type="checkbox"
+                  id="cb_ti_ee"
+                  value="Extraosseous extension"
+                />
+                <label class="form-check-label" for="cb_ti_ee"
+                  >Extraosseous extension</label
+                >
+              </div>
+            </form>
+            <form class="">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input
+                  class="form-check-input cb_ti cb_ti_t4 cb_ti_t4a"
+                  type="checkbox"
+                  id="cb_ti_csi"
+                  value="Crossing the sacroiliac joint and extending medial to the sacral neuroforamen"
+                />
+                <label class="form-check-label" for="cb_ti_csi"
+                  >Crossing the sacroiliac joint and extending medial to the
+                  sacral neuroforamen</label
+                >
+              </div>
+            </form>
+            <form class="">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input
+                  class="form-check-input cb_ti cb_ti_t4 cb_ti_t4b"
+                  type="checkbox"
+                  id="cb_ti_eiv"
+                  value="Encasement of external iliac vessels"
+                />
+                <label class="form-check-label" for="cb_ti_eiv"
+                  >Encasement of external iliac vessels</label
+                >
+              </div>
+            </form>
+            <form class="">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input
+                  class="form-check-input cb_ti cb_ti_t4 cb_ti_t4b"
+                  type="checkbox"
+                  id="cb_ti_tt"
+                  value="Presence of gross tumor thrombus in major pelvic vessels"
+                />
+                <label class="form-check-label" for="cb_ti_tt"
+                  >Presence of gross tumor thrombus in major pelvic
+                  vessels</label
+                >
+              </div>
+            </form>
+          </div>
+
+          <!-- second column -->
+          <div class="col">
+            <!-- Regional Lymph Node -->
+            <h2
+              class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
+            >
+              Regional Lymph Node
+            </h2>
+            <form class="">
+              <div class="flex items-center max-w-md mb-2">
+                <div
+                  class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md"
+                >
+                  <input
+                    type="checkbox"
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn"
+                    aria-label="Checkbox for other regional lymphadenopathy"
+                    id="cb_rn_others"
+                    value=""
+                  />
+                  <label
+                    class="ml-2 text-sm text-gray-700 dark:text-gray-300"
+                    for="cb_rn_others"
+                    >Location</label
+                  >
+                </div>
+                <input
+                  type="text"
+                  class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                  aria-label="Text input with checkbox for other regional lymphadenopathy"
+                  id="txt_rn_others"
+                />
+              </div>
+            </form>
+
+            <!-- Distant Metastasis -->
+            <h2 class="h4 mt-4">Distant Metastasis</h2>
+            <form class="">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input
+                  class="form-check-input cb_dm cb_dm_m1a"
+                  type="checkbox"
+                  id="cb_dm_lu"
+                  value="lung"
+                />
+                <label class="form-check-label" for="cb_dm_lu">Lung</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input
+                  class="form-check-input cb_dm cb_dm_m1b"
+                  type="checkbox"
+                  id="cb_dm_b"
+                  value="bone"
+                />
+                <label class="form-check-label" for="cb_dm_b">Bone</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input
+                  class="form-check-input cb_dm cb_dm_m1b"
+                  type="checkbox"
+                  id="cb_dm_li"
+                  value="liver"
+                />
+                <label class="form-check-label" for="cb_dm_li">Liver</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input
+                  class="form-check-input cb_dm cb_dm_m1b"
+                  type="checkbox"
+                  id="cb_dm_ad"
+                  value="adrenal"
+                />
+                <label class="form-check-label" for="cb_dm_ad">Adrenal</label>
+              </div>
+              <div class="flex items-center max-w-md mb-2">
+                <div
+                  class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md"
+                >
+                  <input
+                    type="checkbox"
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1b"
+                    aria-label="Checkbox for other distant metastasis"
+                    id="cb_dm_others"
+                    value=""
+                  />
+                  <span class="ml-2 text-sm text-gray-700 dark:text-gray-300"
+                    >Others</span
+                  >
+                </div>
+                <input
+                  type="text"
+                  class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                  aria-label="Text input with checkbox for other distant metastasis"
+                  id="txt_dm_others"
+                />
+              </div>
+            </form>
+
+            <!-- Scanning Protocol -->
+            <h2 class="h4 mt-4">Scanning Protocol</h2>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="protocol_radios"
+                id="radio_ct"
+                value="ct"
+                checked
+              />
+              <label class="form-check-label" for="radio_ct"> CT </label>
+              <form class="form-inline">
+                <div class="form-group mb-2 mr-sm-2">
+                  <div id="ref_rln_num" class="text-muted">Contrast</div>
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input
+                    class="form-check-input cb_sp"
+                    type="checkbox"
+                    id="cb_sp_ncct"
+                    value="ncct"
+                    checked
+                  />
+                  <label class="form-check-label" for="cb_sp_ncct"
+                    >without</label
+                  >
+                </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input
+                    class="form-check-input cb_sp"
+                    type="checkbox"
+                    id="cb_sp_cect"
+                    value="cect"
+                    checked
+                  />
+                  <label class="form-check-label" for="cb_sp_cect">with</label>
+                </div>
+              </form>
             </div>
-
-            <div class="row">
-              <div class="col">
-                <!-- Tumor Location -->
-                <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">Tumor Location</h2>
-                <form class="form-inline">
-                  <div class="form-check mb-2 mr-sm-2">
-                    <label class="form-check-label" for="radio_tl">Laterality</label>
-                  </div>
-                  <div class="form-check mb-2 mr-sm-2">
-                    <input class="form-check-input radio_tl" type="radio" id="radio_tl_r" name="radio_tl" value="right">
-                    <label class="form-check-label" for="radio_tl_r">right</label>
-                  </div>
-                  <div class="form-check mb-2 mr-sm-2">
-                    <input class="form-check-input radio_tl" type="radio" id="radio_tl_l" name="radio_tl" value="left">
-                    <label class="form-check-label" for="radio_tl_l">left</label>
-                  </div>
-                </form>
-                <form class="">
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_tl cb_tl_ps" type="checkbox" id="cb_tl_s" value="Sacrum">
-                    <label class="form-check-label" for="cb_tl_s">Sacrum</label>
-                  </div>
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_tl cb_tl_ps" type="checkbox" id="cb_tl_iw" value="Iliac wing">
-                    <label class="form-check-label" for="cb_tl_iw">Iliac wing</label>
-                  </div>
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_tl cb_tl_ps" type="checkbox" id="cb_tl_pr"
-                      value="Pubic rami, symphysis, and ischium">
-                    <label class="form-check-label" for="cb_tl_pr">Pubic rami, symphysis, and ischium</label>
-                  </div>
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_tl cb_tl_ps" type="checkbox" id="cb_tl_ap"
-                      value="Acetabulum/periacetabulum">
-                    <label class="form-check-label" for="cb_tl_ap">Acetabulum/periacetabulum</label>
-                  </div>
-                </form>
-
-                <!-- Tumor Size -->
-                <h2 class="h4 mt-4">Tumor Size</h2>
-                <form class="form-inline needs-validation" id="form_tumor_size" novalidate>
-                  <div class="input-group input-group-sm col-md-6 pl-0 mb-2 mr-sm-2">
-                    <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" step="0.1" class="form-control"
-                      aria-label="Greatest diameter of tumor in cm" id="txt_ts_len"
-                      placeholder="Greatest dimension of the largest tumor" required>
-                    <div class="input-group-append">
-                      <span class="input-group-text">cm</span>
-                    </div>
-                    <div class="invalid-tooltip">
-                      Please enter a number.
-                    </div>
-                  </div>
-                  <div class="form-check mb-2 mr-sm-2">
-                    <input class="form-check-input" type="checkbox" id="cb_ts_nm" value="1">
-                    <label class="form-check-label" for="cb_ts_nm">Non-measurable</label>
-                    <div class="valid-tooltip">
-                      Or, check Non-measurable.
-                    </div>
-                  </div>
-                </form>
-
-                <!-- Tumor Invasion -->
-                <h2 class="h4 mt-4">Tumor Invasion</h2>
-                <form class="">
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_ti" type="checkbox" id="cb_ti_ee" value="Extraosseous extension">
-                    <label class="form-check-label" for="cb_ti_ee">Extraosseous extension</label>
-                  </div>
-                </form>
-                <form class="">
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_ti cb_ti_t4 cb_ti_t4a" type="checkbox" id="cb_ti_csi"
-                      value="Crossing the sacroiliac joint and extending medial to the sacral neuroforamen">
-                    <label class="form-check-label" for="cb_ti_csi">Crossing the sacroiliac joint and extending medial
-                      to the sacral neuroforamen</label>
-                  </div>
-                </form>
-                <form class="">
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_ti cb_ti_t4 cb_ti_t4b" type="checkbox" id="cb_ti_eiv"
-                      value="Encasement of external iliac vessels">
-                    <label class="form-check-label" for="cb_ti_eiv">Encasement of external iliac vessels</label>
-                  </div>
-                </form>
-                <form class="">
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_ti cb_ti_t4 cb_ti_t4b" type="checkbox" id="cb_ti_tt"
-                      value="Presence of gross tumor thrombus in major pelvic vessels">
-                    <label class="form-check-label" for="cb_ti_tt">Presence of gross tumor thrombus in major pelvic
-                      vessels</label>
-                  </div>
-                </form>
-              </div>
-
-              <!-- second column -->
-              <div class="col">
-                <!-- Regional Lymph Node -->
-                <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">Regional Lymph Node</h2>
-                <form class="">
-                  <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text">
-                        <input type="checkbox" class="cb_rn" aria-label="Checkbox for other regional lymphadenopathy"
-                          id="cb_rn_others" value="">
-                      </div>
-                      <label class="input-group-text form-check-label" for="cb_rn_others">Location</label>
-                    </div>
-                    <input type="text" class="form-control"
-                      aria-label="Text input with checkbox for other regional lymphadenopathy" id="txt_rn_others">
-                  </div>
-                </form>
-
-                <!-- Distant Metastasis -->
-                <h2 class="h4 mt-4">Distant Metastasis</h2>
-                <form class="">
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_dm cb_dm_m1a" type="checkbox" id="cb_dm_lu" value="lung">
-                    <label class="form-check-label" for="cb_dm_lu">Lung</label>
-                  </div>
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_dm cb_dm_m1b" type="checkbox" id="cb_dm_b" value="bone">
-                    <label class="form-check-label" for="cb_dm_b">Bone</label>
-                  </div>
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_dm cb_dm_m1b" type="checkbox" id="cb_dm_li" value="liver">
-                    <label class="form-check-label" for="cb_dm_li">Liver</label>
-                  </div>
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_dm cb_dm_m1b" type="checkbox" id="cb_dm_ad" value="adrenal">
-                    <label class="form-check-label" for="cb_dm_ad">Adrenal</label>
-                  </div>
-                  <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text">
-                        <input type="checkbox" class="cb_dm cb_dm_m1b"
-                          aria-label="Checkbox for other distant metastasis" id="cb_dm_others" value="">
-                      </div>
-                      <span class="input-group-text">Others</span>
-                    </div>
-                    <input type="text" class="form-control"
-                      aria-label="Text input with checkbox for other distant metastasis" id="txt_dm_others">
-                  </div>
-                </form>
-
-                <!-- Scanning Protocol -->
-                <h2 class="h4 mt-4">Scanning Protocol</h2>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="protocol_radios" id="radio_ct" value="ct" checked>
-                  <label class="form-check-label" for="radio_ct">
-                    CT
-                  </label>
-                  <form class="form-inline">
-                    <div class="form-group mb-2 mr-sm-2">
-                      <div id="ref_rln_num" class="text-muted">
-                        Contrast
-                      </div>
-                    </div>
-                    <div class="form-check mb-2 mr-sm-2">
-                      <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_ncct" value="ncct" checked>
-                      <label class="form-check-label" for="cb_sp_ncct">without</label>
-                    </div>
-                    <div class="form-check mb-2 mr-sm-2">
-                      <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_cect" value="cect" checked>
-                      <label class="form-check-label" for="cb_sp_cect">with</label>
-                    </div>
-                  </form>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="protocol_radios"
+                id="radio_mr"
+                value="mr"
+              />
+              <label class="form-check-label" for="radio_mr"> MR </label>
+              <form class="form-inline">
+                <div class="form-group mb-2 mr-sm-2">
+                  <div id="ref_rln_num" class="text-muted">Contrast</div>
                 </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="protocol_radios" id="radio_mr" value="mr">
-                  <label class="form-check-label" for="radio_mr">
-                    MR
-                  </label>
-                  <form class="form-inline">
-                    <div class="form-group mb-2 mr-sm-2">
-                      <div id="ref_rln_num" class="text-muted">
-                        Contrast
-                      </div>
-                    </div>
-                    <div class="form-check mb-2 mr-sm-2">
-                      <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_ncmr" value="ncmr" checked
-                        disabled>
-                      <label class="form-check-label" for="cb_sp_ncmr">without</label>
-                    </div>
-                    <div class="form-check mb-2 mr-sm-2">
-                      <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_cemr" value="cemr" checked>
-                      <label class="form-check-label" for="cb_sp_cemr">with</label>
-                    </div>
-                  </form>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input
+                    class="form-check-input cb_sp"
+                    type="checkbox"
+                    id="cb_sp_ncmr"
+                    value="ncmr"
+                    checked
+                    disabled
+                  />
+                  <label class="form-check-label" for="cb_sp_ncmr"
+                    >without</label
+                  >
                 </div>
-              </div>
+                <div class="form-check mb-2 mr-sm-2">
+                  <input
+                    class="form-check-input cb_sp"
+                    type="checkbox"
+                    id="cb_sp_cemr"
+                    value="cemr"
+                    checked
+                  />
+                  <label class="form-check-label" for="cb_sp_cemr">with</label>
+                </div>
+              </form>
             </div>
           </div>
-</main>
+        </div>
+      </div>
+    </main>
 
     <!-- AJCC Definitions Modal -->
     <%= require('../partials/ajcc_modal.html').default %>
 
-      <!-- Report Modal -->
-      <%= require('../partials/report_modal.html').default %>
+    <!-- Report Modal -->
+    <%= require('../partials/report_modal.html').default %>
 
-        <!-- About Modal -->
-        <%= require('../partials/about_modal.html').default %>
+    <!-- About Modal -->
+    <%= require('../partials/about_modal.html').default %>
 
-          <!-- Vendors: jquery, bootstrap, clipboard.js -->
-          <%= require('../partials/vendors_js.html').default %>
-</body>
-
+    <!-- Vendors: jquery, bootstrap, clipboard.js -->
+    <%= require('../partials/vendors_js.html').default %>
+  </body>
 </html>
