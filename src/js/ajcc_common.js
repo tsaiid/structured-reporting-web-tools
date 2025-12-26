@@ -272,5 +272,55 @@ export function setupReportPage({
             $(ajccModalTitleId).html(ajccTitleHtml);
             $(ajccModalBodyId).html(ajcc_table);
         }
+        initSidebar();
+    });
+}
+
+function initSidebar() {
+    const $list = $('#ajcc-sidebar-list');
+    const $toggleBtn = $('#ajcc-toggle');
+
+    // Check localStorage, default to expanded
+    // Note: 'ajcc_sidebar_state' can be 'expanded' or 'collapsed'
+    // Default is expanded if null
+    let isExpanded = localStorage.getItem('ajcc_sidebar_state') !== 'collapsed';
+
+    function updateState(expanded) {
+        if (expanded) {
+            // Set minus icon for expanded state
+            $toggleBtn.html('<i class="fas fa-folder-open"></i>');
+
+            // Show optional items
+            $list.find('.ajcc-optional').css({
+                'max-height': '50px',
+                'opacity': '1',
+                'margin-bottom': '',
+                'padding-top': '',
+                'padding-bottom': ''
+            });
+        } else {
+            // Set plus icon for collapsed state
+            $toggleBtn.html('<i class="fas fa-folder"></i>');
+
+            // Hide optional items
+            $list.find('.ajcc-optional').css({
+                'max-height': '0',
+                'opacity': '0',
+                'margin-bottom': '0',
+                'padding-top': '0',
+                'padding-bottom': '0'
+            });
+        }
+        isExpanded = expanded;
+    }
+
+    // Initial state set immediately
+    updateState(isExpanded);
+
+    $toggleBtn.on('click', function(e) {
+        e.preventDefault();
+        const newState = !isExpanded;
+        updateState(newState);
+        localStorage.setItem('ajcc_sidebar_state', newState ? 'expanded' : 'collapsed');
     });
 }

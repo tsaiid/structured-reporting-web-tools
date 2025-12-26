@@ -1,9 +1,12 @@
 <nav class="hidden md:block w-48 lg:w-56 fixed left-0 top-12 bottom-0 bg-gray-50 dark:bg-gray-900 overflow-y-auto border-r border-gray-200 dark:border-gray-700 z-40">
   <div class="p-3">
-    <h6 class="flex justify-between items-center text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider mb-2 px-2">
+    <h6 class="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider mb-2 px-2">
       <span>AJCC</span>
+      <button id="ajcc-toggle" class="hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none bg-transparent border-0 p-0 cursor-pointer" aria-label="Toggle AJCC items">
+        <i class="fas fa-folder-open"></i>
+      </button>
     </h6>
-    <ul class="space-y-0.5">
+    <ul class="space-y-0.5" id="ajcc-sidebar-list">
       <li>
         <a class="group flex items-center gap-2 px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors" href="oral.html">
           <i class="fas fa-file-medical text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300"></i>
@@ -28,19 +31,19 @@
           Nasopharynx
         </a>
       </li>
-      <li>
+      <li class="ajcc-optional transition-all duration-300 ease-in-out overflow-hidden">
         <a class="group flex items-center gap-2 px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors" href="larynx_supraglottis.html">
           <i class="fas fa-file-medical text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300"></i>
           <span class="truncate">Larynx (Supraglottis)</span>
         </a>
       </li>
-      <li>
+      <li class="ajcc-optional transition-all duration-300 ease-in-out overflow-hidden">
         <a class="group flex items-center gap-2 px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors" href="larynx_glottis.html">
           <i class="fas fa-file-medical text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300"></i>
           Larynx (Glottis)
         </a>
       </li>
-      <li>
+      <li class="ajcc-optional transition-all duration-300 ease-in-out overflow-hidden">
         <a class="group flex items-center gap-2 px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors" href="larynx_subglottis.html">
           <i class="fas fa-file-medical text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300"></i>
           <span class="truncate">Larynx (Subglottis)</span>
@@ -64,7 +67,7 @@
           Stomach
         </a>
       </li>
-      <li>
+      <li class="ajcc-optional transition-all duration-300 ease-in-out overflow-hidden">
         <a class="group flex items-center gap-2 px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors" href="gist.html">
           <i class="fas fa-file-medical text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300"></i>
           <span class="truncate">GIST</span>
@@ -106,7 +109,7 @@
           <span class="truncate">Colon / Rectum</span>
         </a>
       </li>
-      <li>
+      <li class="ajcc-optional transition-all duration-300 ease-in-out overflow-hidden">
         <a class="group flex items-center gap-2 px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors" href="rcc.html">
           <i class="fas fa-file-medical text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300"></i>
           <span class="truncate">RCC</span>
@@ -142,19 +145,19 @@
           Bladder
         </a>
       </li>
-      <li>
+      <li class="ajcc-optional transition-all duration-300 ease-in-out overflow-hidden">
         <a class="group flex items-center gap-2 px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors" href="ogs_trunk.html">
           <i class="fas fa-file-medical text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300"></i>
           <span class="truncate">OGS (Trunk/Ext)</span>
         </a>
       </li>
-      <li>
+      <li class="ajcc-optional transition-all duration-300 ease-in-out overflow-hidden">
         <a class="group flex items-center gap-2 px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors" href="ogs_spine.html">
           <i class="fas fa-file-medical text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300"></i>
           OGS (Spine)
         </a>
       </li>
-      <li>
+      <li class="ajcc-optional transition-all duration-300 ease-in-out overflow-hidden">
         <a class="group flex items-center gap-2 px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors" href="ogs_pelvis.html">
           <i class="fas fa-file-medical text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300"></i>
           OGS (Pelvis)

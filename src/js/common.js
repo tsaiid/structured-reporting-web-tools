@@ -7,9 +7,9 @@ import $ from 'jquery';
 
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
 import { faGithub, faFacebookSquare, faTwitterSquare } from "@fortawesome/free-brands-svg-icons";
-import { faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle, faFolder, faFolderOpen } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faGithub, faFacebookSquare, faTwitterSquare, faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle);
+library.add(faGithub, faFacebookSquare, faTwitterSquare, faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle, faFolder, faFolderOpen);
 dom.watch();
 
 // show about modal
