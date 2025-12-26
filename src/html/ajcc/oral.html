@@ -66,7 +66,7 @@
                   </div>
                 </form>
                 <form class="needs-validation form-inline" id="form_tumor_size" novalidate>
-                  <div class="flex items-center max-w-sm mb-2">
+                  <div class="flex items-center mb-2">
                     <label
                       class="h-10 inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600 whitespace-nowrap"
                       for="txt_ts_len"
@@ -77,7 +77,7 @@
                       type="number"
                       pattern="[0-9]+([\,|\.][0-9]+)?"
                       step="0.1"
-                      class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                      class="h-10 w-40 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm focus:ring-blue-500 focus:border-blue-500 p-2.5"
                       aria-label="Largest diameter in cm"
                       id="txt_ts_len"
                       placeholder="Largest diameter"
@@ -100,17 +100,17 @@
                 >
                   Tumor Location
                 </h2>
-                <div class="row">
-                  <div class="col t_sidebar_7">
+                <div class="row mb-4">
+                  <div class="col-sm-2 font-semibold text-gray-700 dark:text-gray-300 pt-1">
                     Laterality
                   </div>
-                  <div class="col">
-                    <form class="form-inline">
-                      <div class="form-check mb-2 mr-sm-2">
+                  <div class="col-sm-10">
+                    <form class="flex flex-row items-center gap-4 h-full">
+                      <div class="form-check mb-0">
                         <input class="form-check-input cb_tl_lat" type="checkbox" id="cb_tl_r" value="right">
                         <label class="form-check-label" for="cb_tl_r">Right</label>
                       </div>
-                      <div class="form-check mb-2 mr-sm-2">
+                      <div class="form-check mb-0">
                         <input class="form-check-input cb_tl_lat" type="checkbox" id="cb_tl_l" value="left">
                         <label class="form-check-label" for="cb_tl_l">Left</label>
                       </div>
@@ -118,11 +118,11 @@
                   </div>
                 </div>
 
-                <div class="row">
-                  <div class="col t_sidebar_7">
+                <div class="row mb-4">
+                  <div class="col-sm-2 font-semibold text-gray-700 dark:text-gray-300 pt-1">
                     Location
                   </div>
-                  <div class="col">
+                  <div class="col-sm-10">
                     <form class="needs-validation" id="form_tumor_location" novalidate>
                       <div class="form-check form-check-inline mb-2 mr-sm-2">
                         <input class="form-check-input cb_tl cb_tl_l" type="checkbox" id="cb_tl_ul" value="upper lip">
@@ -176,94 +176,93 @@
                 >
                   Tumor Invasion
                 </h2>
-                <div class="row">
-                  <div class="col t_sidebar_7">
-                    T4a (lip)
-                  </div>
-                  <div class="col">
-                    <div class="form-check form-check-inline mb-2 mr-sm-2">
-                      <input class="form-check-input cb_ti cb_ti_lip cb_ti_t4a" type="checkbox" id="cb_ti_ltcb"
-                        value="through cortical bone">
-                      <label class="form-check-label" for="cb_ti_ltcb">Through cortical bone</label>
+                <div class="space-y-3">
+                  <!-- T4a (lip) -->
+                  <div class="flex flex-col sm:flex-row border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden group">
+                    <div class="w-full sm:w-28 bg-gray-50 dark:bg-gray-800 px-3 py-2 flex items-center justify-center sm:border-r border-gray-200 dark:border-gray-700">
+                      <span class="font-bold text-blue-600 dark:text-blue-400 text-center">T4a (lip)</span>
                     </div>
-                    <div class="form-check form-check-inline mb-2 mr-sm-2">
-                      <input class="form-check-input cb_ti cb_ti_lip cb_ti_t4a" type="checkbox" id="cb_ti_lian"
-                        value="inferior alveolar nerve">
-                      <label class="form-check-label" for="cb_ti_lian">Inferior alveolar nerve</label>
-                    </div>
-                    <div class="form-check form-check-inline mb-2 mr-sm-2">
-                      <input class="form-check-input cb_ti cb_ti_lip cb_ti_t4a" type="checkbox" id="cb_ti_lfom"
-                        value="floor of mouth">
-                      <label class="form-check-label" for="cb_ti_lfom">Floor of mouth</label>
-                    </div>
-                    <div class="form-check form-check-inline mb-2 mr-sm-2">
-                      <input class="form-check-input cb_ti cb_ti_lip cb_ti_t4a" type="checkbox" id="cb_ti_lsof"
-                        value="skin of face">
-                      <label class="form-check-label" for="cb_ti_lsof">Skin of face</label>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col t_sidebar_7">
-                    T4a (oral)
-                  </div>
-                  <div class="col">
-                    <div class="form-check form-check-inline mb-2 mr-sm-2">
-                      <input class="form-check-input cb_ti cb_ti_oral cb_ti_t4a" type="checkbox" id="cb_ti_otcb"
-                        value="through cortical bone [mandible or maxilla]">
-                      <label class="form-check-label" for="cb_ti_otcb">Through cortical bone [mandible or
-                        maxilla]</label>
-                    </div>
-                    <div class="form-check form-check-inline mb-2 mr-sm-2">
-                      <input class="form-check-input cb_ti cb_ti_oral cb_ti_t4a" type="checkbox" id="cb_ti_oemt"
-                        value="extrinsic muscle of tongue">
-                      <label class="form-check-label" for="cb_ti_oemt">Extrinsic muscle of tongue</label>
-                    </div>
-                    <div class="form-check form-check-inline mb-2 mr-sm-2">
-                      <input class="form-check-input cb_ti cb_ti_oral cb_ti_t4a" type="checkbox" id="cb_ti_oms"
-                        value="maxillary sinus">
-                      <label class="form-check-label" for="cb_ti_oms">Maxillary sinus</label>
-                    </div>
-                    <div class="form-check form-check-inline mb-2 mr-sm-2">
-                      <input class="form-check-input cb_ti cb_ti_oral cb_ti_t4a" type="checkbox" id="cb_ti_osof"
-                        value="skin of face">
-                      <label class="form-check-label" for="cb_ti_osof">Skin of face</label>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col t_sidebar_7">
-                    T4b
-                  </div>
-                  <div class="col">
-                    <div class="form-check form-check-inline mb-2 mr-sm-2">
-                      <input class="form-check-input cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_ms"
-                        value="masticator space">
-                      <label class="form-check-label" for="cb_ti_ms">Masticator space</label>
-                    </div>
-                    <div class="form-check form-check-inline mb-2 mr-sm-2">
-                      <input class="form-check-input cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_pp"
-                        value="pterygoid plates">
-                      <label class="form-check-label" for="cb_ti_pp">Pterygoid plates</label>
-                    </div>
-                    <div class="form-check form-check-inline mb-2 mr-sm-2">
-                      <input class="form-check-input cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_sb" value="skull base">
-                      <label class="form-check-label" for="cb_ti_sb">Skull base</label>
-                    </div>
-                    <div class="form-check form-check-inline mb-2 mr-sm-2">
-                      <input class="form-check-input cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_eca"
-                        value="encasement of carotid artery">
-                      <label class="form-check-label" for="cb_ti_eca">Encasement of carotid artery</label>
-                    </div>
-                      <div class="flex items-center max-w-md mb-2">
-                        <div class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md">
-                          <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti" aria-label="Checkbox for other tumor invasion" id="cb_ti_others" value="">
-                          <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Others</span>
+                    <div class="flex-1 p-3">
+                      <form class="flex flex-wrap gap-x-6 gap-y-3">
+                        <div class="flex items-start">
+                          <input class="w-4 h-4 shrink-0 mt-1 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_lip cb_ti_t4a" type="checkbox" id="cb_ti_ltcb" value="through cortical bone">
+                          <label class="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_ltcb">Through cortical bone</label>
                         </div>
-                        <input type="text" class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5" aria-label="Text input with checkbox for other tumor invasion" id="txt_ti_others">
-                      </div>
+                        <div class="flex items-start">
+                          <input class="w-4 h-4 shrink-0 mt-1 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_lip cb_ti_t4a" type="checkbox" id="cb_ti_lian" value="inferior alveolar nerve">
+                          <label class="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_lian">Inferior alveolar nerve</label>
+                        </div>
+                        <div class="flex items-start">
+                          <input class="w-4 h-4 shrink-0 mt-1 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_lip cb_ti_t4a" type="checkbox" id="cb_ti_lfom" value="floor of mouth">
+                          <label class="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_lfom">Floor of mouth</label>
+                        </div>
+                        <div class="flex items-start">
+                          <input class="w-4 h-4 shrink-0 mt-1 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_lip cb_ti_t4a" type="checkbox" id="cb_ti_lsof" value="skin of face">
+                          <label class="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_lsof">Skin of face</label>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+
+                  <!-- T4a (oral) -->
+                  <div class="flex flex-col sm:flex-row border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden group">
+                    <div class="w-full sm:w-28 bg-gray-50 dark:bg-gray-800 px-3 py-2 flex items-center justify-center sm:border-r border-gray-200 dark:border-gray-700">
+                      <span class="font-bold text-blue-600 dark:text-blue-400 text-center">T4a (oral)</span>
+                    </div>
+                    <div class="flex-1 p-3">
+                      <form class="flex flex-wrap gap-x-6 gap-y-3">
+                        <div class="flex items-start">
+                          <input class="w-4 h-4 shrink-0 mt-1 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_oral cb_ti_t4a" type="checkbox" id="cb_ti_otcb" value="through cortical bone [mandible or maxilla]">
+                          <label class="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_otcb">Through cortical bone<br><span class="text-xs text-gray-500">[mandible or maxilla]</span></label>
+                        </div>
+                        <div class="flex items-start">
+                          <input class="w-4 h-4 shrink-0 mt-1 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_oral cb_ti_t4a" type="checkbox" id="cb_ti_oemt" value="extrinsic muscle of tongue">
+                          <label class="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_oemt">Extrinsic muscle of tongue</label>
+                        </div>
+                        <div class="flex items-start">
+                          <input class="w-4 h-4 shrink-0 mt-1 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_oral cb_ti_t4a" type="checkbox" id="cb_ti_oms" value="maxillary sinus">
+                          <label class="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_oms">Maxillary sinus</label>
+                        </div>
+                        <div class="flex items-start">
+                          <input class="w-4 h-4 shrink-0 mt-1 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_oral cb_ti_t4a" type="checkbox" id="cb_ti_osof" value="skin of face">
+                          <label class="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_osof">Skin of face</label>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+
+                  <!-- T4b -->
+                  <div class="flex flex-col sm:flex-row border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden group">
+                    <div class="w-full sm:w-28 bg-gray-50 dark:bg-gray-800 px-3 py-2 flex items-center justify-center sm:border-r border-gray-200 dark:border-gray-700">
+                      <span class="font-bold text-blue-600 dark:text-blue-400">T4b</span>
+                    </div>
+                    <div class="flex-1 p-3">
+                      <form class="flex flex-wrap gap-x-6 gap-y-3">
+                        <div class="flex items-start">
+                          <input class="w-4 h-4 shrink-0 mt-1 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_ms" value="masticator space">
+                          <label class="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_ms">Masticator space</label>
+                        </div>
+                        <div class="flex items-start">
+                          <input class="w-4 h-4 shrink-0 mt-1 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_pp" value="pterygoid plates">
+                          <label class="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_pp">Pterygoid plates</label>
+                        </div>
+                        <div class="flex items-start">
+                          <input class="w-4 h-4 shrink-0 mt-1 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_sb" value="skull base">
+                          <label class="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_sb">Skull base</label>
+                        </div>
+                        <div class="flex items-start">
+                          <input class="w-4 h-4 shrink-0 mt-1 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4b" type="checkbox" id="cb_ti_eca" value="encasement of carotid artery">
+                          <label class="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_eca">Encasement of carotid artery</label>
+                        </div>
+                        <div class="flex items-start w-full sm:w-auto">
+                           <div class="flex items-center h-8 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md">
+                            <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti" aria-label="Checkbox for other tumor invasion" id="cb_ti_others" value="">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Others</span>
+                          </div>
+                          <input type="text" class="h-8 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2" aria-label="Text input with checkbox for other tumor invasion" id="txt_ti_others">
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -272,143 +271,124 @@
               <div class="col">
                 <!-- Regional Lymph Node -->
                 <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">Regional Lymph Node</h2>
-                <h3 class="text-md font-semibold mb-2 text-gray-700 dark:text-gray-300  mt-2">Locations</h3>
-                <div class="row">
-                  <div class="col n_sidebar">
-                    <label class="lb_rn has_parts" for="cb_rn_r">Right</label>
+                <h3 class="text-md font-semibold mb-2 text-gray-700 dark:text-gray-300 mt-2">Locations</h3>
+                <div class="space-y-3 mb-4">
+                  <!-- Right -->
+                  <div class="flex flex-col sm:flex-row border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden group">
+                    <div class="w-full sm:w-20 bg-gray-50 dark:bg-gray-800 px-3 py-2 flex items-center justify-center sm:border-r border-gray-200 dark:border-gray-700">
+                      <label class="lb_rn has_parts font-bold text-blue-600 dark:text-blue-400 text-center cursor-pointer mb-0" for="cb_rn_r">Right</label>
+                    </div>
+                    <div class="flex-1 p-3">
+                      <form class="flex flex-wrap gap-x-4 gap-y-2 rn_item items-center">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_1" value="I">
+                          <label class="form-check-label" for="cb_rn_r_1">I</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_2" value="II">
+                          <label class="form-check-label" for="cb_rn_r_2">II</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_3" value="III">
+                          <label class="form-check-label" for="cb_rn_r_3">III</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp cb_rn_n3" type="checkbox" id="cb_rn_r_4" value="IV">
+                          <label class="form-check-label" for="cb_rn_r_4">IV</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_5" value="V">
+                          <label class="form-check-label" for="cb_rn_r_5">V</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_6" value="VI">
+                          <label class="form-check-label" for="cb_rn_r_6">VI</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp cb_rn_n3" type="checkbox" id="cb_rn_r_7" value="VII">
+                          <label class="form-check-label" for="cb_rn_r_7">VII</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_f" value="facial">
+                          <label class="form-check-label" for="cb_rn_r_f">facial</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_pp" value="parapharyngeal">
+                          <label class="form-check-label" for="cb_rn_r_pp">parapharyngeal</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_p" value="parotid">
+                          <label class="form-check-label" for="cb_rn_r_p">parotid</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_so" value="suboccipital">
+                          <label class="form-check-label" for="cb_rn_r_so">suboccipital</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_ra" value="retroauricular">
+                          <label class="form-check-label" for="cb_rn_r_ra">retroauricular</label>
+                        </div>
+                      </form>
+                    </div>
                   </div>
-                  <div class="col">
-                    <form class="form-inline rn_item">
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_1"
-                          value="I">
-                        <label class="form-check-label" for="cb_rn_r_1">I</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_2"
-                          value="II">
-                        <label class="form-check-label" for="cb_rn_r_2">II</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_3"
-                          value="III">
-                        <label class="form-check-label" for="cb_rn_r_3">III</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp cb_rn_n3" type="checkbox"
-                          id="cb_rn_r_4" value="IV">
-                        <label class="form-check-label" for="cb_rn_r_4">IV</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_5"
-                          value="V">
-                        <label class="form-check-label" for="cb_rn_r_5">V</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_6"
-                          value="VI">
-                        <label class="form-check-label" for="cb_rn_r_6">VI</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp cb_rn_n3" type="checkbox"
-                          id="cb_rn_r_7" value="VII">
-                        <label class="form-check-label" for="cb_rn_r_7">VII</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_f"
-                          value="facial">
-                        <label class="form-check-label" for="cb_rn_r_f">facial</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_pp"
-                          value="parapharyngeal">
-                        <label class="form-check-label" for="cb_rn_r_pp">parapharyngeal</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_p"
-                          value="parotid">
-                        <label class="form-check-label" for="cb_rn_r_p">parotid</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_so"
-                          value="suboccipital">
-                        <label class="form-check-label" for="cb_rn_r_so">suboccipital</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_ra"
-                          value="retroauricular">
-                        <label class="form-check-label" for="cb_rn_r_ra">retroauricular</label>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col n_sidebar">
-                    <label class="lb_rn has_parts" for="cb_rn_l">Left</label>
-                  </div>
-                  <div class="col">
-                    <form class="form-inline rn_item">
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_1"
-                          value="I">
-                        <label class="form-check-label" for="cb_rn_l_1">I</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_2"
-                          value="II">
-                        <label class="form-check-label" for="cb_rn_l_2">II</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_3"
-                          value="III">
-                        <label class="form-check-label" for="cb_rn_l_3">III</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp cb_rn_n3" type="checkbox"
-                          id="cb_rn_l_4" value="IV">
-                        <label class="form-check-label" for="cb_rn_l_4">IV</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_5"
-                          value="V">
-                        <label class="form-check-label" for="cb_rn_l_5">V</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_6"
-                          value="VI">
-                        <label class="form-check-label" for="cb_rn_l_6">VI</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp cb_rn_n3" type="checkbox"
-                          id="cb_rn_l_7" value="VII">
-                        <label class="form-check-label" for="cb_rn_l_7">VII</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_f"
-                          value="facial">
-                        <label class="form-check-label" for="cb_rn_l_f">facial</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_pp"
-                          value="parapharyngeal">
-                        <label class="form-check-label" for="cb_rn_l_pp">parapharyngeal</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_p"
-                          value="parotid">
-                        <label class="form-check-label" for="cb_rn_l_p">parotid</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_so"
-                          value="suboccipital">
-                        <label class="form-check-label" for="cb_rn_l_so">suboccipital</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_ra"
-                          value="retroauricular">
-                        <label class="form-check-label" for="cb_rn_l_ra">retroauricular</label>
-                      </div>
-                    </form>
+
+                  <!-- Left -->
+                  <div class="flex flex-col sm:flex-row border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden group">
+                    <div class="w-full sm:w-20 bg-gray-50 dark:bg-gray-800 px-3 py-2 flex items-center justify-center sm:border-r border-gray-200 dark:border-gray-700">
+                      <label class="lb_rn has_parts font-bold text-blue-600 dark:text-blue-400 text-center cursor-pointer mb-0" for="cb_rn_l">Left</label>
+                    </div>
+                    <div class="flex-1 p-3">
+                      <form class="flex flex-wrap gap-x-4 gap-y-2 rn_item items-center">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_1" value="I">
+                          <label class="form-check-label" for="cb_rn_l_1">I</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_2" value="II">
+                          <label class="form-check-label" for="cb_rn_l_2">II</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_3" value="III">
+                          <label class="form-check-label" for="cb_rn_l_3">III</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp cb_rn_n3" type="checkbox" id="cb_rn_l_4" value="IV">
+                          <label class="form-check-label" for="cb_rn_l_4">IV</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_5" value="V">
+                          <label class="form-check-label" for="cb_rn_l_5">V</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_6" value="VI">
+                          <label class="form-check-label" for="cb_rn_l_6">VI</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp cb_rn_n3" type="checkbox" id="cb_rn_l_7" value="VII">
+                          <label class="form-check-label" for="cb_rn_l_7">VII</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_f" value="facial">
+                          <label class="form-check-label" for="cb_rn_l_f">facial</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_pp" value="parapharyngeal">
+                          <label class="form-check-label" for="cb_rn_l_pp">parapharyngeal</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_p" value="parotid">
+                          <label class="form-check-label" for="cb_rn_l_p">parotid</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_so" value="suboccipital">
+                          <label class="form-check-label" for="cb_rn_l_so">suboccipital</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_ra" value="retroauricular">
+                          <label class="form-check-label" for="cb_rn_l_ra">retroauricular</label>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
                 <div class="row">

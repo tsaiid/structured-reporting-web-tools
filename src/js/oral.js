@@ -250,6 +250,8 @@ $('.cb_rn').change(function(){
 });
 
 let has_lip_initial = $('.cb_tl_l:checked').length > 0;
+
+// Toggle regional lymph node extra items (Removed)
 setupReportPage({
     generateReportFn: generate_report,
     ajccData: {
