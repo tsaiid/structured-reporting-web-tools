@@ -65,11 +65,12 @@
             >
               <div class="flex items-center max-w-sm mb-2">
                 <label
-                  class="h-10 inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600 whitespace-nowrap"
+                  class="h-10 w-20 inline-flex items-center justify-center text-sm text-gray-700 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600 whitespace-nowrap"
                   for="txt_tl_num"
                 >
                   Number
                 </label>
+
                 <input
                   type="text"
                   class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
@@ -80,11 +81,12 @@
               </div>
               <div class="flex items-center max-w-sm mb-2">
                 <label
-                  class="h-10 inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600 whitespace-nowrap"
+                  class="h-10 w-20 inline-flex items-center justify-center text-sm text-gray-700 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600 whitespace-nowrap"
                   for="txt_tl_loc"
                 >
                   Location
                 </label>
+
                 <input
                   type="text"
                   class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
@@ -144,7 +146,7 @@
             >
               Tumor Characteristics and Associated Liver Features
             </h2>
-            <form class="space-y-2">
+            <div class="space-y-3" id="tumor_characteristics_section">
               <div class="flex items-center">
                 <input
                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tc"
@@ -210,8 +212,7 @@
                   >Fatty liver</label
                 >
               </div>
-            </form>
-            <form class="mt-2 space-y-2">
+
               <div class="flex items-start">
                 <input
                   class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tc"
@@ -226,74 +227,67 @@
                   early wash-out)</label
                 >
               </div>
-            </form>
-            <form
-              class="mt-2 flex flex-col gap-2 needs-validation"
-              id=""
-              novalidate
-            >
-              <div class="flex items-center">
-                <input
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tc cb_tc_t4 cb_tc_pvt has_txt"
-                  type="checkbox"
-                  id="cb_tc_pvt"
-                  value="Portal vein thrombosis"
-                />
-                <label
-                  class="ml-2 text-sm text-gray-900 dark:text-gray-300"
-                  for="cb_tc_pvt"
-                  >Portal vein thrombosis</label
-                >
+
+              <div class="flex items-center gap-2">
+                <div class="flex items-center flex-shrink-0">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tc cb_tc_t4 cb_tc_pvt has_txt"
+                    type="checkbox"
+                    id="cb_tc_pvt"
+                    value="Portal vein thrombosis"
+                  />
+                  <label
+                    class="ml-2 text-sm text-gray-900 dark:text-gray-300 whitespace-nowrap"
+                    for="cb_tc_pvt"
+                    >Portal vein thrombosis</label
+                  >
+                </div>
+                <div class="flex items-center flex-1 min-w-0 max-w-xs">
+                  <label
+                    class="h-8 inline-flex items-center px-3 text-xs text-gray-700 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600 whitespace-nowrap"
+                    for="txt_tc_pvt"
+                  >
+                    Location
+                  </label>
+                  <input
+                    type="text"
+                    class="h-8 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-xs rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2"
+                    aria-label="Text input for portal vein thrombosis location"
+                    id="txt_tc_pvt"
+                  />
+                </div>
               </div>
-              <div class="flex items-center max-w-sm pl-6">
-                <label
-                  class="h-8 inline-flex items-center px-3 text-xs text-gray-700 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600 whitespace-nowrap"
-                  for="txt_tc_pvt"
-                >
-                  Location
-                </label>
-                <input
-                  type="text"
-                  class="h-8 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-xs rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2"
-                  aria-label="Text input for portal vein thrombosis location"
-                  id="txt_tc_pvt"
-                />
+
+              <div class="flex items-center gap-2">
+                <div class="flex items-center flex-shrink-0">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tc cb_tc_t4 has_txt"
+                    type="checkbox"
+                    id="cb_tc_hvi"
+                    value="Hepatic vein invasion"
+                  />
+                  <label
+                    class="ml-2 text-sm text-gray-900 dark:text-gray-300 whitespace-nowrap"
+                    for="cb_tc_hvi"
+                    >Hepatic vein invasion</label
+                  >
+                </div>
+                <div class="flex items-center flex-1 min-w-0 max-w-xs">
+                  <label
+                    class="h-8 inline-flex items-center px-3 text-xs text-gray-700 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600 whitespace-nowrap"
+                    for="txt_tc_hvi"
+                  >
+                    Location
+                  </label>
+                  <input
+                    type="text"
+                    class="h-8 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-xs rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2"
+                    aria-label="Text input for hepatic vein invasion location"
+                    id="txt_tc_hvi"
+                  />
+                </div>
               </div>
-            </form>
-            <form
-              class="mt-2 flex flex-col gap-2 needs-validation"
-              id=""
-              novalidate
-            >
-              <div class="flex items-center">
-                <input
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tc cb_tc_t4 has_txt"
-                  type="checkbox"
-                  id="cb_tc_hvi"
-                  value="Hepatic vein invasion"
-                />
-                <label
-                  class="ml-2 text-sm text-gray-900 dark:text-gray-300"
-                  for="cb_tc_hvi"
-                  >Hepatic vein invasion</label
-                >
-              </div>
-              <div class="flex items-center max-w-sm pl-6">
-                <label
-                  class="h-8 inline-flex items-center px-3 text-xs text-gray-700 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600 whitespace-nowrap"
-                  for="txt_tc_hvi"
-                >
-                  Location
-                </label>
-                <input
-                  type="text"
-                  class="h-8 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-xs rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2"
-                  aria-label="Text input for hepatic vein invasion location"
-                  id="txt_tc_hvi"
-                />
-              </div>
-            </form>
-            <form class="mt-2 space-y-2">
+
               <div class="flex items-center">
                 <input
                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tc cb_tc_t4"
@@ -307,40 +301,38 @@
                   >Perforation of visceral peritoneum</label
                 >
               </div>
-            </form>
-            <form
-              class="mt-2 flex flex-col gap-2 needs-validation"
-              id=""
-              novalidate
-            >
-              <div class="flex items-center">
-                <input
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tc cb_tc_t4 has_txt"
-                  type="checkbox"
-                  id="cb_tc_iao"
-                  value="Invasion of adjacent organs"
-                />
-                <label
-                  class="ml-2 text-sm text-gray-900 dark:text-gray-300"
-                  for="cb_tc_iao"
-                  >Invasion of adjacent organs</label
-                >
+
+              <div class="flex items-center gap-2">
+                <div class="flex items-center flex-shrink-0">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tc cb_tc_t4 has_txt"
+                    type="checkbox"
+                    id="cb_tc_iao"
+                    value="Invasion of adjacent organs"
+                  />
+                  <label
+                    class="ml-2 text-sm text-gray-900 dark:text-gray-300 whitespace-nowrap"
+                    for="cb_tc_iao"
+                    >Invasion of adjacent organs</label
+                  >
+                </div>
+                <div class="flex items-center flex-1 min-w-0 max-w-xs">
+                  <label
+                    class="h-8 inline-flex items-center px-3 text-xs text-gray-700 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600 whitespace-nowrap"
+                    for="txt_tc_iao"
+                  >
+                    Location
+                  </label>
+                  <input
+                    type="text"
+                    class="h-8 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-xs rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2"
+                    aria-label="Text input for invasion of adjacent organs"
+                    id="txt_tc_iao"
+                  />
+                </div>
               </div>
-              <div class="flex items-center max-w-sm pl-6">
-                <label
-                  class="h-8 inline-flex items-center px-3 text-xs text-gray-700 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600 whitespace-nowrap"
-                  for="txt_tc_iao"
-                >
-                  Location
-                </label>
-                <input
-                  type="text"
-                  class="h-8 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-xs rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2"
-                  aria-label="Text input for invasion of adjacent organs"
-                  id="txt_tc_iao"
-                />
-              </div>
-            </form>
+            </div>
+
           </div>
 
           <!-- second column -->
@@ -356,50 +348,60 @@
             >
               Locations
             </h3>
-            <form class="">
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
+            <div class="space-y-2">
+              <div class="flex items-center">
                 <input
-                  class="form-check-input cb_rn"
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn"
                   type="checkbox"
                   id="cb_rn_hh"
                   value="hepatic hilum"
                 />
-                <label class="form-check-label" for="cb_rn_hh"
+                <label
+                  class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                  for="cb_rn_hh"
                   >Hepatic hilum</label
                 >
               </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
+              <div class="flex items-center">
                 <input
-                  class="form-check-input cb_rn"
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn"
                   type="checkbox"
                   id="cb_rn_hl"
                   value="hepatoduodenal ligament"
                 />
-                <label class="form-check-label" for="cb_rn_hl"
+                <label
+                  class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                  for="cb_rn_hl"
                   >Hepatoduodenal ligament</label
                 >
               </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
+              <div class="flex items-center">
                 <input
-                  class="form-check-input cb_rn"
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn"
                   type="checkbox"
                   id="cb_rn_ip"
                   value="inferior phrenic"
                 />
-                <label class="form-check-label" for="cb_rn_ip"
+                <label
+                  class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                  for="cb_rn_ip"
                   >Inferior phrenic</label
                 >
               </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
+              <div class="flex items-center">
                 <input
-                  class="form-check-input cb_rn"
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn"
                   type="checkbox"
                   id="cb_rn_c"
                   value="caval"
                 />
-                <label class="form-check-label" for="cb_rn_c">Caval</label>
+                <label
+                  class="ml-2 text-sm text-gray-900 dark:text-gray-300"
+                  for="cb_rn_c"
+                  >Caval</label
+                >
               </div>
-              <div class="flex items-center max-w-md mb-2">
+              <div class="flex items-center max-w-md">
                 <div
                   class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md"
                 >
@@ -421,7 +423,8 @@
                   id="txt_rn_others"
                 />
               </div>
-            </form>
+            </div>
+
 
             <!-- Distant Metastasis -->
             <h2

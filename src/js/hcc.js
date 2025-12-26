@@ -96,7 +96,7 @@ function generate_report(){
     let rn_hl_check = $('#cb_rn_hl').is(':checked') ? "+" : " ";
     let rn_ip_check = $('#cb_rn_ip').is(':checked') ? "+" : " ";
     let rn_c_check = $('#cb_rn_c').is(':checked') ? "+" : " ";
-    let rn_others_check = $('#cb_rn_other').is(':checked') ? "+" : " ";
+    let rn_others_check = $('#cb_rn_others').is(':checked') ? "+" : " ";
     let txt_rn_others = $('#txt_rn_others').val() ? $('#txt_rn_others').val() : "___";
     report += `4. Regional nodal metastasis
     [${rn_no_check}] No or Equivocal
@@ -150,17 +150,7 @@ $('#cb_tp_ts_nm').change(function() {
     }
 });
 
-// auto- increase or decrease lymph node numbers
-$('.cb_rn').change(function(){
-    let rln_num = +$('#txt_rln_num').val();
-    if (this.checked) {
-        $('#txt_rln_num').val(rln_num + 1);
-    } else {
-        if (rln_num > 0) {
-            $('#txt_rln_num').val(rln_num - 1);
-        }
-    }
-});
+// (Auto-increment logic removed as txt_rln_num is not present in the current layout)
 
 setupReportPage({
     generateReportFn: generate_report,
