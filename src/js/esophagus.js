@@ -141,7 +141,7 @@ function generate_report(){
     let rn_cha_check = $('#cb_rn_cha').is(':checked') ? "+" : " ";
     let rn_sa_check = $('#cb_rn_sa').is(':checked') ? "+" : " ";
     let rn_c_check = $('#cb_rn_c').is(':checked') ? "+" : " ";
-    let rn_others_check = $('#cb_rn_other').is(':checked') ? "+" : " ";
+    let rn_others_check = $('#cb_rn_others').is(':checked') ? "+" : " ";
     let txt_rn_others = $('#txt_rn_others').val() ? $('#txt_rn_others').val() : "___";
     report += `
         Lower cervical          [${rn_rlc_check}] Right    [${rn_llc_check}] Left
