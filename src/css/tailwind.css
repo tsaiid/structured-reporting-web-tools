@@ -7,11 +7,11 @@
   .icon-sun {
     @apply text-yellow-500 opacity-100 transition-opacity duration-300;
   }
-  
+
   .icon-moon {
     @apply text-gray-700 opacity-0 transition-opacity duration-300;
   }
-  
+
   /* Checked (Dark Mode): Sun hidden, Moon visible */
   #checkbox_dark_mode:checked ~ .knob .icon-sun {
     opacity: 0 !important;
@@ -19,7 +19,7 @@
   #checkbox_dark_mode:checked ~ .knob .icon-moon {
     opacity: 1 !important;
   }
-  
+
   /* Compatibility / Helper Classes */
   .form-check {
     @apply flex items-center mb-2;
@@ -61,7 +61,7 @@
   .input-group > .form-control:last-child {
     @apply rounded-r-md;
   }
-  
+
   /* Grid System (Basic Compat) */
   .row {
     @apply flex flex-wrap -mx-4;
@@ -125,5 +125,71 @@
   }
   .btn-secondary {
       @apply inline-block px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors text-center;
+  }
+}
+
+/* Dracula Theme Integration */
+@theme {
+  --color-dracula-bg: #282a36;
+  --color-dracula-current: #44475a;
+  --color-dracula-fg: #f8f8f2;
+  --color-dracula-comment: #6272a4;
+  --color-dracula-cyan: #8be9fd;
+  --color-dracula-green: #50fa7b;
+  --color-dracula-orange: #ffb86c;
+  --color-dracula-pink: #ff79c6;
+  --color-dracula-purple: #bd93f9;
+  --color-dracula-red: #ff5555;
+  --color-dracula-yellow: #f1fa8c;
+}
+
+@layer base {
+  :root {
+    /* Dracula Light Mode Overrides */
+    /* Text / Greys: Map Dark Dracula colors to Grays for high contrast text */
+    --color-gray-900: #282a36; /* Dracula BG (Dark text) */
+    --color-gray-800: #44475a; /* Dracula Current Line */
+    --color-gray-700: #44475a;
+    --color-gray-600: #6272a4; /* Dracula Comment */
+    --color-gray-500: #6272a4;
+
+    /* Accents: Blue -> Dracula Purple/Pink */
+    --color-blue-700: #bd93f9;
+    --color-blue-600: #bd93f9; /* Dracula Purple */
+    --color-blue-500: #ff79c6; /* Dracula Pink */
+    --color-blue-400: #ff79c6;
+
+    /* Badges (Light backgrounds) */
+    --color-blue-100: #f8f8f2; /* Dracula FG (Off-white) - used as light bg */
+    --color-blue-50:  #ffffff;
+
+    /* Dark Text on Badges */
+    --color-blue-900: #282a36;
+    --color-blue-800: #44475a;
+  }
+
+  [data-theme="dark"] {
+    /* Override Gray Palette for Dracula Vibe */
+    /* Dark Mode: High numbers = Darker Backgrounds (for bg-gray-*), Low numbers = Lighter Text */
+
+    /* Backgrounds: Used in dark:bg-gray-900, dark:bg-gray-800, dark:bg-gray-700 */
+    --color-gray-900: #282a36; /* Main Background */
+    --color-gray-800: #383a59; /* Secondary Background */
+    --color-gray-700: #44475a; /* Inputs / Tertiary */
+    --color-gray-600: #6272a4; /* Borders */
+    --color-gray-500: #6272a4; /* Muted */
+
+    /* Text: Used in dark:text-gray-100, dark:text-gray-300 */
+    --color-gray-400: #aeb9d6;
+    --color-gray-300: #daddf2; /* Secondary Text */
+    --color-gray-200: #eaecf7;
+    --color-gray-100: #f8f8f2; /* Primary Text (Foreground) */
+    --color-gray-50:  #ffffff;
+
+    /* Override Blue Palette to Dracula Purple/Pink/Cyan */
+    --color-blue-700: #bd93f9; /* Purple */
+    --color-blue-600: #bd93f9; /* Purple */
+    --color-blue-500: #ff79c6; /* Pink */
+    --color-blue-400: #ff79c6; /* Pink */
   }
 }
