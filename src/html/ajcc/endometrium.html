@@ -61,7 +61,7 @@
             <form class="">
               <div class="form-check form-check-inline mb-2 mr-sm-2">
                 <input
-                  class="form-check-input"
+                  class="form-check-input shrink-0"
                   type="radio"
                   name="protocol_radios"
                   id="radio_ct"
@@ -71,7 +71,7 @@
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
                 <input
-                  class="form-check-input"
+                  class="form-check-input shrink-0"
                   type="radio"
                   name="protocol_radios"
                   id="radio_mr"
@@ -112,7 +112,7 @@
               </div>
               <div class="form-check mb-2 mr-sm-2">
                 <input
-                  class="form-check-input"
+                  class="form-check-input shrink-0"
                   type="checkbox"
                   id="cb_ts_nm"
                   value="1"
@@ -133,7 +133,7 @@
             <form class="">
               <div class="form-check form-check-inline mb-2 mr-sm-2">
                 <input
-                  class="form-check-input"
+                  class="form-check-input shrink-0"
                   type="checkbox"
                   id="cb_ti_na"
                   value=""
@@ -143,45 +143,45 @@
                 >
               </div>
             </form>
-            <form class="">
-              <fieldset class="form-group">
-                <div class="row">
-                  <legend class="col-form-label col-sm-2 pt-0">
-                    Uterine corpus
-                  </legend>
-                  <div class="col-sm-10">
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="radio"
-                        name="rb_ti_uc"
-                        id="rb_ti_lhm"
-                        value="1a"
-                      />
-                      <label class="form-check-label" for="rb_ti_lhm"
-                        >less than one half of the myometrium</label
-                      >
-                    </div>
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="radio"
-                        name="rb_ti_uc"
-                        id="rb_ti_mhm"
-                        value="1b"
-                      />
-                      <label class="form-check-label" for="rb_ti_mhm"
-                        >more than one half of the myometrium</label
-                      >
-                    </div>
-                  </div>
-                </div>
-              </fieldset>
-            </form>
+            <div
+              class="flex flex-col sm:flex-row items-stretch mb-2 border border-gray-300 dark:border-gray-600 rounded-md overflow-hidden"
+            >
+              <div
+                class="w-full sm:w-32 flex-shrink-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800 p-2 font-semibold text-sm text-gray-700 dark:text-gray-300 text-center border-b sm:border-b-0 sm:border-r border-gray-300 dark:border-gray-600"
+              >
+                Uterine corpus
+              </div>
+              <div class="flex-grow flex flex-col justify-center gap-2 p-3 bg-white dark:bg-gray-900">
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    class="form-radio text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 transition duration-150 ease-in-out"
+                    type="radio"
+                    name="rb_ti_uc"
+                    id="rb_ti_lhm"
+                    value="1a"
+                  />
+                  <span class="text-sm text-gray-700 dark:text-gray-300"
+                    >less than one half of the myometrium</span
+                  >
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    class="form-radio text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 transition duration-150 ease-in-out"
+                    type="radio"
+                    name="rb_ti_uc"
+                    id="rb_ti_mhm"
+                    value="1b"
+                  />
+                  <span class="text-sm text-gray-700 dark:text-gray-300"
+                    >more than one half of the myometrium</span
+                  >
+                </label>
+              </div>
+            </div>
             <form class="">
               <div class="form-check form-check-inline mb-2 mr-sm-2">
                 <input
-                  class="form-check-input cb_ti cb_ti_t2"
+                  class="form-check-input shrink-0 cb_ti cb_ti_t2"
                   type="checkbox"
                   id="cb_ti_cx"
                   value="stromal connective tissue of the cervix"
@@ -195,7 +195,7 @@
             <form class="">
               <div class="form-check form-check-inline mb-2 mr-sm-2">
                 <input
-                  class="form-check-input cb_ti cb_ti_t3a"
+                  class="form-check-input shrink-0 cb_ti cb_ti_t3a"
                   type="checkbox"
                   id="cb_ti_sa"
                   value="serosa and/or adnexa"
@@ -206,7 +206,7 @@
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
                 <input
-                  class="form-check-input cb_ti cb_ti_t3b"
+                  class="form-check-input shrink-0 cb_ti cb_ti_t3b"
                   type="checkbox"
                   id="cb_ti_pm"
                   value="parametrium"
@@ -217,7 +217,7 @@
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
                 <input
-                  class="form-check-input cb_ti cb_ti_t3b"
+                  class="form-check-input shrink-0 cb_ti cb_ti_t3b"
                   type="checkbox"
                   id="cb_ti_va"
                   value="vagina"
@@ -228,7 +228,7 @@
             <form class="">
               <div class="form-check form-check-inline mb-2 mr-sm-2">
                 <input
-                  class="form-check-input cb_ti cb_ti_t4"
+                  class="form-check-input shrink-0 cb_ti cb_ti_t4"
                   type="checkbox"
                   id="cb_ti_bd"
                   value="bladder"
@@ -239,7 +239,7 @@
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
                 <input
-                  class="form-check-input cb_ti cb_ti_t4"
+                  class="form-check-input shrink-0 cb_ti cb_ti_t4"
                   type="checkbox"
                   id="cb_ti_bw"
                   value="bowel"
@@ -283,171 +283,228 @@
             >
               Regional Lymph Node
             </h2>
-            <form class="form-inline">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label lb_rn has_parts" for="cb_rn_pm"
-                  >Parametrial</label
+            <div class="space-y-2">
+              <!-- Parametrial -->
+              <div
+                class="flex flex-wrap items-center border-b border-gray-200 dark:border-gray-700 py-2 last:border-0"
+              >
+                <div
+                  class="w-32 shrink-0 text-sm text-gray-700 dark:text-gray-300"
                 >
+                  Parametrial
+                </div>
+                <div class="flex items-center gap-4 ml-2">
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_rn cb_rn_pm"
+                      type="checkbox"
+                      id="cb_rn_rpm"
+                      value="right"
+                    />
+                    <span class="text-sm text-gray-700 dark:text-gray-300"
+                      >right</span
+                    >
+                  </label>
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_rn cb_rn_pm"
+                      type="checkbox"
+                      id="cb_rn_lpm"
+                      value="left"
+                    />
+                    <span class="text-sm text-gray-700 dark:text-gray-300"
+                      >left</span
+                    >
+                  </label>
+                </div>
               </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_rn cb_rn_pm"
-                  type="checkbox"
-                  id="cb_rn_rpm"
-                  value="right"
-                />
-                <label class="form-check-label" for="cb_rn_rpm">right</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_rn cb_rn_pm"
-                  type="checkbox"
-                  id="cb_rn_lpm"
-                  value="left"
-                />
-                <label class="form-check-label" for="cb_rn_lpm">left</label>
-              </div>
-            </form>
-            <form class="form-inline">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label lb_rn has_parts" for="cb_rn_ii"
-                  >Internal iliac</label
+
+              <!-- Internal iliac -->
+              <div
+                class="flex flex-wrap items-center border-b border-gray-200 dark:border-gray-700 py-2 last:border-0"
+              >
+                <div
+                  class="w-32 shrink-0 text-sm text-gray-700 dark:text-gray-300"
                 >
+                  Internal iliac
+                </div>
+                <div class="flex items-center gap-4 ml-2">
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_rn cb_rn_ii"
+                      type="checkbox"
+                      id="cb_rn_rii"
+                      value="right"
+                    />
+                    <span class="text-sm text-gray-700 dark:text-gray-300"
+                      >right</span
+                    >
+                  </label>
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_rn cb_rn_ii"
+                      type="checkbox"
+                      id="cb_rn_lii"
+                      value="left"
+                    />
+                    <span class="text-sm text-gray-700 dark:text-gray-300"
+                      >left</span
+                    >
+                  </label>
+                </div>
               </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_rn cb_rn_ii"
-                  type="checkbox"
-                  id="cb_rn_rii"
-                  value="right"
-                />
-                <label class="form-check-label" for="cb_rn_rii">right</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_rn cb_rn_ii"
-                  type="checkbox"
-                  id="cb_rn_lii"
-                  value="left"
-                />
-                <label class="form-check-label" for="cb_rn_lii">left</label>
-              </div>
-            </form>
-            <form class="form-inline">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label lb_rn has_parts" for="cb_rn_ei"
-                  >External iliac</label
+
+              <!-- External iliac -->
+              <div
+                class="flex flex-wrap items-center border-b border-gray-200 dark:border-gray-700 py-2 last:border-0"
+              >
+                <div
+                  class="w-32 shrink-0 text-sm text-gray-700 dark:text-gray-300"
                 >
+                  External iliac
+                </div>
+                <div class="flex items-center gap-4 ml-2">
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_rn cb_rn_ei"
+                      type="checkbox"
+                      id="cb_rn_rei"
+                      value="right"
+                    />
+                    <span class="text-sm text-gray-700 dark:text-gray-300"
+                      >right</span
+                    >
+                  </label>
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_rn cb_rn_ei"
+                      type="checkbox"
+                      id="cb_rn_lei"
+                      value="left"
+                    />
+                    <span class="text-sm text-gray-700 dark:text-gray-300"
+                      >left</span
+                    >
+                  </label>
+                </div>
               </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_rn cb_rn_ei"
-                  type="checkbox"
-                  id="cb_rn_rei"
-                  value="right"
-                />
-                <label class="form-check-label" for="cb_rn_rei">right</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_rn cb_rn_ei"
-                  type="checkbox"
-                  id="cb_rn_lei"
-                  value="left"
-                />
-                <label class="form-check-label" for="cb_rn_lei">left</label>
-              </div>
-            </form>
-            <form class="form-inline">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label lb_rn has_parts" for="cb_rn_ob"
-                  >Obturator</label
+
+              <!-- Obturator -->
+              <div
+                class="flex flex-wrap items-center border-b border-gray-200 dark:border-gray-700 py-2 last:border-0"
+              >
+                <div
+                  class="w-32 shrink-0 text-sm text-gray-700 dark:text-gray-300"
                 >
+                  Obturator
+                </div>
+                <div class="flex items-center gap-4 ml-2">
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_rn cb_rn_ob"
+                      type="checkbox"
+                      id="cb_rn_ro"
+                      value="right"
+                    />
+                    <span class="text-sm text-gray-700 dark:text-gray-300"
+                      >right</span
+                    >
+                  </label>
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_rn cb_rn_ob"
+                      type="checkbox"
+                      id="cb_rn_lo"
+                      value="left"
+                    />
+                    <span class="text-sm text-gray-700 dark:text-gray-300"
+                      >left</span
+                    >
+                  </label>
+                </div>
               </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_rn cb_rn_ob"
-                  type="checkbox"
-                  id="cb_rn_ro"
-                  value="right"
-                />
-                <label class="form-check-label" for="cb_rn_ro">right</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_rn cb_rn_ob"
-                  type="checkbox"
-                  id="cb_rn_lo"
-                  value="left"
-                />
-                <label class="form-check-label" for="cb_rn_lo">left</label>
-              </div>
-            </form>
-            <form class="form-inline">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label lb_rn has_parts" for="cb_rn_ci"
-                  >Common iliac</label
+
+              <!-- Common iliac -->
+              <div
+                class="flex flex-wrap items-center border-b border-gray-200 dark:border-gray-700 py-2 last:border-0"
+              >
+                <div
+                  class="w-32 shrink-0 text-sm text-gray-700 dark:text-gray-300"
                 >
+                  Common iliac
+                </div>
+                <div class="flex items-center gap-4 ml-2">
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_rn cb_rn_ci"
+                      type="checkbox"
+                      id="cb_rn_rci"
+                      value="right"
+                    />
+                    <span class="text-sm text-gray-700 dark:text-gray-300"
+                      >right</span
+                    >
+                  </label>
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_rn cb_rn_ci"
+                      type="checkbox"
+                      id="cb_rn_lci"
+                      value="left"
+                    />
+                    <span class="text-sm text-gray-700 dark:text-gray-300"
+                      >left</span
+                    >
+                  </label>
+                </div>
               </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_rn cb_rn_ci"
-                  type="checkbox"
-                  id="cb_rn_rci"
-                  value="right"
-                />
-                <label class="form-check-label" for="cb_rn_rci">right</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_rn cb_rn_ci"
-                  type="checkbox"
-                  id="cb_rn_lci"
-                  value="left"
-                />
-                <label class="form-check-label" for="cb_rn_lci">left</label>
-              </div>
-            </form>
-            <form class="form-inline">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label lb_rn has_parts" for="cb_rn_pa"
-                  >Paraaortic</label
+
+              <!-- Paraaortic -->
+              <div
+                class="flex flex-wrap items-center border-b border-gray-200 dark:border-gray-700 py-2 last:border-0"
+              >
+                <div
+                  class="w-32 shrink-0 text-sm text-gray-700 dark:text-gray-300"
                 >
+                  Paraaortic
+                </div>
+                <div class="flex flex-wrap items-center gap-4 ml-2">
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_rn cb_rn_n2 cb_rn_pa"
+                      type="checkbox"
+                      id="cb_rn_paim"
+                      value="inframesenteric"
+                    />
+                    <span class="text-sm text-gray-700 dark:text-gray-300"
+                      >Inframesenteric</span
+                    >
+                  </label>
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_rn cb_rn_n2 cb_rn_pa"
+                      type="checkbox"
+                      id="cb_rn_pair"
+                      value="infrarenal"
+                    />
+                    <span class="text-sm text-gray-700 dark:text-gray-300"
+                      >Infrarenal</span
+                    >
+                  </label>
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_rn cb_rn_n2 cb_rn_pa"
+                      type="checkbox"
+                      id="cb_rn_pasr"
+                      value="suprarenal"
+                    />
+                    <span class="text-sm text-gray-700 dark:text-gray-300"
+                      >Suprarenal</span
+                    >
+                  </label>
+                </div>
               </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_rn cb_rn_n2 cb_rn_pa"
-                  type="checkbox"
-                  id="cb_rn_paim"
-                  value="inframesenteric"
-                />
-                <label class="form-check-label" for="cb_rn_paim"
-                  >Inframesenteric</label
-                >
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_rn cb_rn_n2 cb_rn_pa"
-                  type="checkbox"
-                  id="cb_rn_pair"
-                  value="infrarenal"
-                />
-                <label class="form-check-label" for="cb_rn_pair"
-                  >Infrarenal</label
-                >
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_rn cb_rn_n2 cb_rn_pa"
-                  type="checkbox"
-                  id="cb_rn_pasr"
-                  value="suprarenal"
-                />
-                <label class="form-check-label" for="cb_rn_pasr"
-                  >Suprarenal</label
-                >
-              </div>
-            </form>
+            </div>
 
             <!-- Distant Metastasis -->
             <h2
@@ -460,33 +517,39 @@
             >
               Non-regional lymph node
             </h3>
-            <form class="form-inline">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label" for="cb_dm_nrl_i"
-                  >Inguinal</label
-                >
+            <div
+              class="flex flex-wrap items-center border-b border-gray-200 dark:border-gray-700 py-2 last:border-0"
+            >
+              <div
+                class="w-32 shrink-0 text-sm text-gray-700 dark:text-gray-300"
+              >
+                Inguinal
               </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_dm cb_dm_nrl"
-                  type="checkbox"
-                  id="cb_dm_nrl_i_r"
-                  value="right inguinal"
-                />
-                <label class="form-check-label" for="cb_dm_nrl_i_r"
-                  >right</label
-                >
+              <div class="flex items-center gap-4 ml-2">
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_dm cb_dm_nrl"
+                    type="checkbox"
+                    id="cb_dm_nrl_i_r"
+                    value="right inguinal"
+                  />
+                  <span class="text-sm text-gray-700 dark:text-gray-300"
+                    >right</span
+                  >
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_dm cb_dm_nrl"
+                    type="checkbox"
+                    id="cb_dm_nrl_i_l"
+                    value="left inguinal"
+                  />
+                  <span class="text-sm text-gray-700 dark:text-gray-300"
+                    >left</span
+                  >
+                </label>
               </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_dm cb_dm_nrl"
-                  type="checkbox"
-                  id="cb_dm_nrl_i_l"
-                  value="left inguinal"
-                />
-                <label class="form-check-label" for="cb_dm_nrl_i_l">left</label>
-              </div>
-            </form>
+            </div>
             <form class="form-inline">
               <div class="flex items-center max-w-md mb-2">
                 <div
@@ -519,7 +582,7 @@
             <form class="">
               <div class="form-check form-check-inline mb-2 mr-sm-2">
                 <input
-                  class="form-check-input cb_dm"
+                  class="form-check-input shrink-0 cb_dm"
                   type="checkbox"
                   id="cb_dm_pc"
                   value="peritoneal cavity"
@@ -530,7 +593,7 @@
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
                 <input
-                  class="form-check-input cb_dm"
+                  class="form-check-input shrink-0 cb_dm"
                   type="checkbox"
                   id="cb_dm_lu"
                   value="lung"
@@ -539,7 +602,7 @@
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
                 <input
-                  class="form-check-input cb_dm"
+                  class="form-check-input shrink-0 cb_dm"
                   type="checkbox"
                   id="cb_dm_li"
                   value="liver"
@@ -548,7 +611,7 @@
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
                 <input
-                  class="form-check-input cb_dm"
+                  class="form-check-input shrink-0 cb_dm"
                   type="checkbox"
                   id="cb_dm_ad"
                   value="adrenal"
@@ -557,7 +620,7 @@
               </div>
               <div class="form-check form-check-inline mb-2 mr-sm-2">
                 <input
-                  class="form-check-input cb_dm"
+                  class="form-check-input shrink-0 cb_dm"
                   type="checkbox"
                   id="cb_dm_b"
                   value="bone"
