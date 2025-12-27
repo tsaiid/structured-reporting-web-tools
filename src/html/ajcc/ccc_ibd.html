@@ -70,38 +70,40 @@
               Tumor Size
             </h2>
             <form
-              class="form-inline needs-validation"
+              class="needs-validation"
               id="form_tumor_size"
               novalidate
             >
-              <div class="flex items-center max-w-xs mb-2">
-                <input
-                  type="number"
-                  pattern="[0-9]+([\,|\.][0-9]+)?"
-                  step="0.1"
-                  class="h-10 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-l-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  aria-label="Greatest dimension of tumor in cm"
-                  id="txt_ts_len"
-                  placeholder="The largest tumor"
-                  required
-                />
-                <div
-                  class="h-10 inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
-                >
-                  cm
+              <div class="flex flex-wrap items-center gap-4 mb-2">
+                <div class="flex items-center max-w-xs">
+                  <input
+                    type="number"
+                    pattern="[0-9]+([\,|\.][0-9]+)?"
+                    step="0.1"
+                    class="h-10 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-l-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    aria-label="Greatest dimension of tumor in cm"
+                    id="txt_ts_len"
+                    placeholder="The largest tumor"
+                    required
+                  />
+                  <div
+                    class="h-10 inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
+                  >
+                    cm
+                  </div>
                 </div>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="cb_ts_nm"
-                  value="1"
-                />
-                <label class="form-check-label" for="cb_ts_nm"
-                  >Non-measurable</label
-                >
-                <div class="valid-tooltip">Or, check Non-measurable.</div>
+                <div class="flex items-center">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    type="checkbox"
+                    id="cb_ts_nm"
+                    value="1"
+                  />
+                  <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="cb_ts_nm"
+                    >Non-measurable</label
+                  >
+                  <div class="valid-tooltip hidden">Or, check Non-measurable.</div>
+                </div>
               </div>
             </form>
 
@@ -111,113 +113,163 @@
             >
               Tumor Location
             </h2>
-            <form class="form-inline">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label" for="cb_tl_ps"
-                  >Location:
-                </label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_tl"
-                  type="checkbox"
-                  id="cb_tl_s1"
-                  value="S1"
-                />
-                <label class="form-check-label" for="cb_tl_s1">S1</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_tl"
-                  type="checkbox"
-                  id="cb_tl_s2"
-                  value="S2"
-                />
-                <label class="form-check-label" for="cb_tl_s2">S2</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_tl"
-                  type="checkbox"
-                  id="cb_tl_s3"
-                  value="S3"
-                />
-                <label class="form-check-label" for="cb_tl_s3">S3</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_tl"
-                  type="checkbox"
-                  id="cb_tl_s4"
-                  value="S4"
-                />
-                <label class="form-check-label" for="cb_tl_s4">S4</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_tl"
-                  type="checkbox"
-                  id="cb_tl_s5"
-                  value="S5"
-                />
-                <label class="form-check-label" for="cb_tl_s5">S5</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_tl"
-                  type="checkbox"
-                  id="cb_tl_s6"
-                  value="S6"
-                />
-                <label class="form-check-label" for="cb_tl_s6">S6</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_tl"
-                  type="checkbox"
-                  id="cb_tl_s7"
-                  value="S7"
-                />
-                <label class="form-check-label" for="cb_tl_s7">S7</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_tl"
-                  type="checkbox"
-                  id="cb_tl_s8"
-                  value="S8"
-                />
-                <label class="form-check-label" for="cb_tl_s8">S8</label>
-              </div>
-            </form>
-            <form class="form-inline">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label" for="radio_tl">Number</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input radio_tn"
-                  type="radio"
-                  id="radio_tn_s"
-                  name="radio_tn"
-                  value="solitary"
-                  checked
-                />
-                <label class="form-check-label" for="radio_tn_s"
-                  >Solitary</label
-                >
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input radio_tn"
-                  type="radio"
-                  id="radio_tn_m"
-                  name="radio_tn"
-                  value="multiple"
-                />
-                <label class="form-check-label" for="radio_tn_m"
-                  >Multiple</label
-                >
+            <form>
+              <!-- Location -->
+              <div class="grid grid-cols-1 gap-4 mb-4">
+                <!-- Location Card -->
+                <div class="bg-gray-50 border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700 flex flex-col md:flex-row">
+                  <div class="flex-shrink-0 px-4 py-2 md:py-0 md:w-32 bg-gray-100 dark:bg-gray-700 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-600 rounded-t-lg md:rounded-l-lg md:rounded-tr-none flex items-center justify-start md:justify-center">
+                    <span class="font-bold text-gray-900 dark:text-gray-100">Location</span>
+                  </div>
+                  <div class="p-4 flex-grow flex items-center">
+                    <div class="flex flex-wrap gap-x-6 gap-y-2">
+                      <div class="flex items-center">
+                        <input
+                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tl"
+                          type="checkbox"
+                          id="cb_tl_s1"
+                          value="S1"
+                        />
+                        <label
+                          class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                          for="cb_tl_s1"
+                          >S1</label
+                        >
+                      </div>
+                      <div class="flex items-center">
+                        <input
+                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tl"
+                          type="checkbox"
+                          id="cb_tl_s2"
+                          value="S2"
+                        />
+                        <label
+                          class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                          for="cb_tl_s2"
+                          >S2</label
+                        >
+                      </div>
+                      <div class="flex items-center">
+                        <input
+                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tl"
+                          type="checkbox"
+                          id="cb_tl_s3"
+                          value="S3"
+                        />
+                        <label
+                          class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                          for="cb_tl_s3"
+                          >S3</label
+                        >
+                      </div>
+                      <div class="flex items-center">
+                        <input
+                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tl"
+                          type="checkbox"
+                          id="cb_tl_s4"
+                          value="S4"
+                        />
+                        <label
+                          class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                          for="cb_tl_s4"
+                          >S4</label
+                        >
+                      </div>
+                      <div class="flex items-center">
+                        <input
+                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tl"
+                          type="checkbox"
+                          id="cb_tl_s5"
+                          value="S5"
+                        />
+                        <label
+                          class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                          for="cb_tl_s5"
+                          >S5</label
+                        >
+                      </div>
+                      <div class="flex items-center">
+                        <input
+                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tl"
+                          type="checkbox"
+                          id="cb_tl_s6"
+                          value="S6"
+                        />
+                        <label
+                          class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                          for="cb_tl_s6"
+                          >S6</label
+                        >
+                      </div>
+                      <div class="flex items-center">
+                        <input
+                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tl"
+                          type="checkbox"
+                          id="cb_tl_s7"
+                          value="S7"
+                        />
+                        <label
+                          class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                          for="cb_tl_s7"
+                          >S7</label
+                        >
+                      </div>
+                      <div class="flex items-center">
+                        <input
+                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tl"
+                          type="checkbox"
+                          id="cb_tl_s8"
+                          value="S8"
+                        />
+                        <label
+                          class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                          for="cb_tl_s8"
+                          >S8</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Number Card -->
+                <div class="bg-gray-50 border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700 flex flex-col md:flex-row">
+                  <div class="flex-shrink-0 px-4 py-2 md:py-0 md:w-32 bg-gray-100 dark:bg-gray-700 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-600 rounded-t-lg md:rounded-l-lg md:rounded-tr-none flex items-center justify-start md:justify-center">
+                    <span class="font-bold text-gray-900 dark:text-gray-100">Number</span>
+                  </div>
+                  <div class="p-4 flex-grow flex items-center">
+                    <div class="flex flex-wrap gap-x-6 gap-y-2">
+                      <div class="flex items-center">
+                        <input
+                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 radio_tn"
+                          type="radio"
+                          name="radio_tn"
+                          id="radio_tn_s"
+                          value="solitary"
+                          checked
+                        />
+                        <label
+                          class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                          for="radio_tn_s"
+                          >Solitary</label
+                        >
+                      </div>
+                      <div class="flex items-center">
+                        <input
+                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 radio_tn"
+                          type="radio"
+                          name="radio_tn"
+                          id="radio_tn_m"
+                          value="multiple"
+                        />
+                        <label
+                          class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                          for="radio_tn_m"
+                          >Multiple</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </form>
 
@@ -227,92 +279,105 @@
             >
               Tumor Invasion
             </h2>
-            <div class="row">
-              <div class="col t_sidebar">T0</div>
-              <div class="col">
-                <form class="">
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+              <!-- T0 -->
+              <div class="flex border-b border-gray-200 dark:border-gray-700">
+                <div class="flex-shrink-0 w-12 md:w-16 bg-gray-100 dark:bg-gray-700 flex items-center justify-center border-r border-gray-200 dark:border-gray-700">
+                  <span class="font-bold text-gray-900 dark:text-gray-100">T0</span>
+                </div>
+                <div class="p-3 flex items-center">
+                  <div class="flex items-center">
                     <input
-                      class="form-check-input cb_ti cb_ti_t0"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t0"
                       type="checkbox"
                       id="cb_ti_t0"
                       value="No evidence of primary tumor"
                     />
-                    <label class="form-check-label" for="cb_ti_t0"
+                    <label
+                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      for="cb_ti_t0"
                       >No evidence of primary tumor</label
                     >
                   </div>
-                </form>
+                </div>
               </div>
-            </div>
 
-            <div class="row">
-              <div class="col t_sidebar">T2</div>
-              <div class="col">
-                <form class="">
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+              <!-- T2 -->
+              <div class="flex border-b border-gray-200 dark:border-gray-700">
+                <div class="flex-shrink-0 w-12 md:w-16 bg-gray-100 dark:bg-gray-700 flex items-center justify-center border-r border-gray-200 dark:border-gray-700">
+                  <span class="font-bold text-gray-900 dark:text-gray-100">T2</span>
+                </div>
+                <div class="p-3 flex items-center">
+                  <div class="flex items-center">
                     <input
-                      class="form-check-input cb_ti cb_ti_t2"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t2"
                       type="checkbox"
                       id="cb_ti_t2"
                       value="intrahepatic vascular invasion"
                     />
-                    <label class="form-check-label" for="cb_ti_t2"
+                    <label
+                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      for="cb_ti_t2"
                       >Intrahepatic vascular invasion</label
                     >
                   </div>
-                </form>
+                </div>
               </div>
-            </div>
 
-            <div class="row">
-              <div class="col t_sidebar">T3</div>
-              <div class="col">
-                <form class="">
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+              <!-- T3 -->
+              <div class="flex border-b border-gray-200 dark:border-gray-700">
+                <div class="flex-shrink-0 w-12 md:w-16 bg-gray-100 dark:bg-gray-700 flex items-center justify-center border-r border-gray-200 dark:border-gray-700">
+                  <span class="font-bold text-gray-900 dark:text-gray-100">T3</span>
+                </div>
+                <div class="p-3 flex items-center">
+                  <div class="flex items-center">
                     <input
-                      class="form-check-input cb_ti cb_ti_t3"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3"
                       type="checkbox"
                       id="cb_ti_t3"
                       value="tumor perforating the visceral peritoneum"
                     />
-                    <label class="form-check-label" for="cb_ti_t3"
+                    <label
+                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      for="cb_ti_t3"
                       >Tumor perforating the visceral peritoneum</label
                     >
                   </div>
-                </form>
+                </div>
               </div>
-            </div>
 
-            <div class="row">
-              <div class="col t_sidebar">T4</div>
-              <div class="col">
-                <form class="form-inline" id="">
-                  <div class="form-check mb-2 mr-sm-2">
+              <!-- T4 -->
+              <div class="flex">
+                <div class="flex-shrink-0 w-12 md:w-16 bg-gray-100 dark:bg-gray-700 flex items-center justify-center border-r border-gray-200 dark:border-gray-700">
+                  <span class="font-bold text-gray-900 dark:text-gray-100">T4</span>
+                </div>
+                <div class="p-3 flex-grow min-w-0">
+                  <div class="flex items-start mb-2">
                     <input
-                      class="form-check-input cb_ti cb_ti_t4"
+                      class="mt-0.5 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
                       type="checkbox"
                       id="cb_ti_t4"
                       value="tumor involving local extrahepatic structures by direct invasion"
                     />
-                    <label class="form-check-label" for="cb_ti_t4"
-                      >Tumor involving local extrahepatic structures by direct
-                      invasion</label
+                    <label
+                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      for="cb_ti_t4"
+                      >Tumor involving local extrahepatic structures by direct invasion</label
                     >
                   </div>
-                  <div class="flex items-center max-w-md mb-2 mr-sm-2">
+                  <div class="flex items-center w-full max-w-md ml-6 pr-4 md:pr-6">
                     <span
-                      class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md text-sm text-gray-700 dark:text-gray-300"
-                      >Location</span
+                      class="flex-shrink-0 inline-flex items-center h-9 px-3 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-l-md text-sm text-gray-700 dark:text-gray-300 border-r-0"
                     >
+                      Location
+                    </span>
                     <input
                       type="text"
-                      class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                      aria-label="Text input for tumor involving local extrahepatic structures by direct invasion"
                       id="txt_ti_t4"
+                      class="flex-1 min-w-0 h-9 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 px-2.5"
                     />
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>
