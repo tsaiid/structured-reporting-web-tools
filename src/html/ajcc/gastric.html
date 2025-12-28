@@ -178,11 +178,11 @@
               Tumor Size
             </h2>
             <form
-              class="form-inline needs-validation"
+              class="flex items-center gap-4 mb-4 needs-validation"
               id="form_tumor_size"
               novalidate
             >
-              <div class="flex items-center max-w-xs mb-2">
+              <div class="flex items-center w-48">
                 <input
                   type="number"
                   pattern="[0-9]+([\,|\.][0-9]+)?"
@@ -190,7 +190,7 @@
                   class="h-10 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-l-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   aria-label="Greatest diameter of tumor in cm"
                   id="txt_ts_len"
-                  placeholder="Greatest diameter"
+                  placeholder=""
                   required
                 />
                 <div
@@ -199,17 +199,16 @@
                   cm
                 </div>
               </div>
-              <div class="form-check mb-2 mr-sm-2">
+              <div class="flex items-center space-x-2">
                 <input
-                  class="form-check-input"
+                  class="form-checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   type="checkbox"
                   id="cb_ts_nm"
                   value="1"
                 />
-                <label class="form-check-label" for="cb_ts_nm"
+                <label class="text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ts_nm"
                   >Non-measurable</label
                 >
-                <div class="valid-tooltip">Or, check Non-measurable.</div>
               </div>
             </form>
 
@@ -320,33 +319,29 @@
             >
               Regional Lymph Node
             </h2>
-            <form class="form-inline">
-              <div class="form-group">
-                <div class="flex items-center max-w-sm mb-2">
-                  <label
-                    class="h-10 inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600 whitespace-nowrap"
-                    for="txt_rln_num"
-                  >
-                    Number
-                  </label>
-                  <input
-                    type="number"
-                    pattern="[0-9]+"
-                    step="1"
-                    class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                    aria-label="Number of suspicious lymph node"
-                    id="txt_rln_num"
-                    placeholder="0"
-                    value="0"
-                  />
-                </div>
+            <div class="flex items-center gap-4 mb-4">
+              <div class="flex items-center w-48">
+                <label
+                  class="h-10 inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600 whitespace-nowrap"
+                  for="txt_rln_num"
+                >
+                  Number
+                </label>
+                <input
+                  type="number"
+                  pattern="[0-9]+"
+                  step="1"
+                  class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                  aria-label="Number of suspicious lymph node"
+                  id="txt_rln_num"
+                  placeholder="0"
+                  value="0"
+                />
               </div>
-              <div class="form-group mb-2 mr-sm-2">
-                <small id="ref_rln_num" class="text-muted">
-                  1-2 (N1), 3-6 (N2), 7-15 (N3a) or ≥15 (N3b)
-                </small>
-              </div>
-            </form>
+              <span id="ref_rln_num" class="text-sm text-gray-500 dark:text-gray-400 italic">
+                1-2 (N1), 3-6 (N2), 7-15 (N3a) or ≥15 (N3b)
+              </span>
+            </div>
             <h3
               class="text-md font-semibold mb-2 text-gray-700 dark:text-gray-300 mt-2"
             >
