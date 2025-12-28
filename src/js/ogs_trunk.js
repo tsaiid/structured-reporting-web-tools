@@ -30,33 +30,14 @@ function generate_report(){
     var t_stage = ["0"];
     var n_stage = ["0"];
     var m_stage = ["0"];
-    var report = "1. ";
+    var report = `1. Imaging modality
+  - Imaging by `;
 
     // Protocol
-    if ($('input[name="protocol_radios"]:checked').val() == 'mr') {
-        report += `MR protocol
-Slice thickness: 4mm or less
-    Range: 3-5 cm above and below the lesion
-    請依據病灶部位挑選適當的掃描平面(coronal or sagittal)
-    Pre-contrast imaging:
-    coronal or sagittal  T1WI
-coronal or sagittal  T2WI with/without fat-suppression*
-axial               T2WIwith/without fat-suppression*
-*三個plane中，至少一個有脂肪抑制的脈衝序列
-Post-contrast imaging:
-coronal or sagittal  T1WI with/without fat-suppression
-axial             T1WI with/without fat-suppression
-  Screen for skip metastasis***
-若是下肢病灶 coronal STIR cover pelvis to feet
-若是上肢病灶 coronal STIR cover trunk and upper limbs
-     ***option`;
+    if ($('input[name="protocol_radios"]:checked').val() == 'ct') {
+        report += `(+) CT scan  ( ) MRI`;
     } else {
-        report += `CT protocol
-Slice thickness: 3mm for <3cm lesion, 5mm for >3cm lesion
-Range: 2-3cm above and below the lesion
-Pre-contrast imaging: axial imaging, bilateral (if bilateral can be scanned simultaneously)
-Post-contrast imaging: axial imaging, unilateral (lesion side only);
-                       coronal and sagittal reformation in bone window`;
+        report += `( ) CT scan  (+) MRI`;
     }
     report += "\n\n";
 
@@ -170,7 +151,7 @@ setupReportPage({
         N: AJCC_N,
         M: AJCC_M
     },
-    ajccTitleHtml: "AJCC Definitions for OGS for Appendicular Skeleton, Trunk, Skull and Facial Bones <span class='badge badge-secondary ml-2' style='font-size: 60%; vertical-align: super;'>8th</span>"
+    ajccTitleHtml: "AJCC Definitions for OGS for Appendicular Skeleton, Trunk, Skull and Facial Bones <span class='inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-300 ml-2' style='vertical-align: super;'>8th</span>"
 });
 
 
