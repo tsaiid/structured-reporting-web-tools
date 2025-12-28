@@ -89,11 +89,11 @@
               Tumor Size
             </h2>
             <form
-              class="needs-validation form-inline"
+              class="needs-validation flex flex-wrap items-center gap-4 mb-4"
               id="form_tumor_size"
               novalidate
             >
-              <div class="flex items-center max-w-xs mb-2">
+              <div class="flex items-center max-w-xs">
                 <input
                   type="number"
                   pattern="[0-9]+([\,|\.][0-9]+)?"
@@ -110,7 +110,7 @@
                   cm
                 </div>
               </div>
-              <div class="form-check mb-2 mr-sm-2">
+              <div class="flex items-center gap-2">
                 <input
                   class="form-check-input shrink-0"
                   type="checkbox"
@@ -120,7 +120,6 @@
                 <label class="form-check-label" for="cb_ts_nm"
                   >Non-measurable</label
                 >
-                <div class="valid-tooltip">Or, check Non-measurable.</div>
               </div>
             </form>
 
@@ -178,19 +177,19 @@
                 </label>
               </div>
             </div>
-            <form class="">
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
+            <form class="mb-2">
+              <label class="flex items-start gap-2 cursor-pointer">
                 <input
-                  class="form-check-input shrink-0 cb_ti cb_ti_t2"
+                  class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 mt-1 shrink-0 transition duration-150 ease-in-out cb_ti cb_ti_t2"
                   type="checkbox"
                   id="cb_ti_cx"
                   value="stromal connective tissue of the cervix"
                 />
-                <label class="form-check-label" for="cb_ti_cx"
+                <span class="text-sm text-gray-700 dark:text-gray-300"
                   >Stromal connective tissue of the cervix but does not extend
-                  beyond uterus</label
+                  beyond uterus</span
                 >
-              </div>
+              </label>
             </form>
             <form class="">
               <div class="form-check form-check-inline mb-2 mr-sm-2">
