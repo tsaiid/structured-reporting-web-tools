@@ -52,6 +52,36 @@
 
         <div class="row">
           <div class="col">
+            <!-- Imaging Modality -->
+            <h2
+              class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
+            >
+              Imaging Modality
+            </h2>
+            <form class="mb-6">
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="protocol_radios"
+                  id="radio_ct"
+                  value="ct"
+                  checked
+                />
+                <label class="form-check-label" for="radio_ct">CT</label>
+              </div>
+              <div class="form-check form-check-inline mb-2 mr-sm-2">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="protocol_radios"
+                  id="radio_mr"
+                  value="mr"
+                />
+                <label class="form-check-label" for="radio_mr">MRI</label>
+              </div>
+            </form>
+
             <!-- Tumor Location -->
             <h2
               class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
@@ -162,39 +192,40 @@
             >
               Tumor Size
             </h2>
-            <form class="needs-validation" id="form_tumor_size" novalidate>
-              <div class="row">
-                <div class="col-6">
-                  <div class="flex items-center max-w-xs mb-2">
-                    <input
-                      type="number"
-                      pattern="[0-9]+([\,|\.][0-9]+)?"
-                      step="0.1"
-                      class="h-10 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-l-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                      aria-label="Length of tumor in cm"
-                      id="txt_ts_len"
-                      placeholder="Largest diameter"
-                      required
-                    />
-                    <div
-                      class="h-10 inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
-                    >
-                      cm
-                    </div>
-                  </div>
+            <form class="flex flex-wrap items-center gap-4 mb-4 needs-validation" id="form_tumor_size" novalidate>
+              <div class="flex items-center max-w-xs">
+                <input
+                  type="number"
+                  pattern="[0-9]+([\,|\.][0-9]+)?"
+                  step="0.1"
+                  class="h-10 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-l-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  aria-label="Length of tumor in cm"
+                  id="txt_ts_len"
+                  placeholder="Largest diameter"
+                  required
+                />
+                <div
+                  class="h-10 inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
+                >
+                  cm
                 </div>
               </div>
-              <div class="form-check mb-2 mr-sm-2">
+
+              <div class="flex items-center space-x-2 relative">
                 <input
-                  class="form-check-input"
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   type="checkbox"
                   id="cb_ts_nm"
                   value="1"
                 />
-                <label class="form-check-label" for="cb_ts_nm"
+                <label
+                  class="text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer"
+                  for="cb_ts_nm"
                   >Non-measurable</label
                 >
-                <div class="valid-tooltip">Or, check Non-measurable.</div>
+                <div class="valid-tooltip absolute left-0 bottom-full mb-1 hidden">
+                  Or, check Non-measurable.
+                </div>
               </div>
             </form>
 
@@ -206,51 +237,55 @@
             </h2>
             <div class="row">
               <div class="col">
-                <div class="form-check mb-2 mr-sm-2">
+                <div class="flex items-center space-x-2 mb-2">
                   <input
-                    class="form-check-input cb_ti"
-                    type="checkbox"
+                    class="form-radio text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 radio_ti"
+                    type="radio"
+                    name="radio_ti"
                     id="cb_ti_na"
                     value="Not assessable"
                   />
-                  <label class="form-check-label" for="cb_ti_na"
+                  <label class="text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer" for="cb_ti_na"
                     >Tx: Tumor cannot be visualized in this imaging study</label
                   >
                 </div>
 
-                <div class="form-check mb-2 mr-sm-2">
+                <div class="flex items-center space-x-2 mb-2">
                   <input
-                    class="form-check-input cb_ti cb_ti_t2"
-                    type="checkbox"
+                    class="form-radio text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 radio_ti"
+                    type="radio"
+                    name="radio_ti"
                     id="cb_ti_mp"
                     value="Colonic or rectal wall"
                   />
-                  <label class="form-check-label" for="cb_ti_mp"
+                  <label class="text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer" for="cb_ti_mp"
                     >T2: Colonic or rectal wall</label
                   >
                 </div>
 
-                <div class="form-check mb-2 mr-sm-2">
+                <div class="flex items-center space-x-2 mb-2">
                   <input
-                    class="form-check-input cb_ti cb_ti_t3"
-                    type="checkbox"
+                    class="form-radio text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 radio_ti"
+                    type="radio"
+                    name="radio_ti"
                     id="cb_ti_pt"
                     value="Invades non-peritonealized pericolonic or perirectal tissues"
                   />
-                  <label class="form-check-label" for="cb_ti_pt"
+                  <label class="text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer" for="cb_ti_pt"
                     >T3: Invades non-peritonealized pericolonic or perirectal
                     tissues</label
                   >
                 </div>
 
-                <div class="form-check mb-2 mr-sm-2">
+                <div class="flex items-center space-x-2 mb-2">
                   <input
-                    class="form-check-input cb_ti cb_ti_t4a"
-                    type="checkbox"
+                    class="form-radio text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 radio_ti"
+                    type="radio"
+                    name="radio_ti"
                     id="cb_ti_vp"
                     value="Penetrates to the surface of the visceral peritoneum"
                   />
-                  <label class="form-check-label" for="cb_ti_vp"
+                  <label class="text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer" for="cb_ti_vp"
                     >T4a: Penetrates to the surface of the visceral
                     peritoneum</label
                   >
@@ -265,9 +300,10 @@
                     class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md"
                   >
                     <input
-                      type="checkbox"
-                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4b"
-                      aria-label="Checkbox for other tumor invasion"
+                      type="radio"
+                      name="radio_ti"
+                      class="form-radio w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 radio_ti"
+                      aria-label="Radio button for other tumor invasion"
                       id="cb_ti_others"
                       value=""
                     />
@@ -278,7 +314,7 @@
                   <input
                     type="text"
                     class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                    aria-label="Text input with checkbox for other tumor invasion"
+                    aria-label="Text input with radio button for other tumor invasion"
                     id="txt_ti_others"
                   />
                 </div>
@@ -294,33 +330,29 @@
             >
               Regional Lymph Node
             </h2>
-            <form class="form-inline">
-              <div class="form-group">
-                <div class="flex items-center max-w-sm mb-2">
-                  <label
-                    class="h-10 inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600 whitespace-nowrap"
-                    for="txt_rln_num"
-                  >
-                    Number
-                  </label>
-                  <input
-                    type="number"
-                    pattern="[0-9]+"
-                    step="1"
-                    class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                    aria-label="Number of suspicious lymph node"
-                    id="txt_rln_num"
-                    placeholder="0"
-                    value="0"
-                  />
-                </div>
+            <div class="flex items-center gap-4 mb-4">
+              <div class="flex items-center w-36">
+                <label
+                  class="h-10 inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600 whitespace-nowrap"
+                  for="txt_rln_num"
+                >
+                  Number
+                </label>
+                <input
+                  type="number"
+                  pattern="[0-9]+"
+                  step="1"
+                  class="h-10 w-full min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                  aria-label="Number of suspicious lymph node"
+                  id="txt_rln_num"
+                  placeholder="0"
+                  value="0"
+                />
               </div>
-              <div class="form-group mb-2 mr-sm-2">
-                <small id="ref_rln_num" class="text-muted">
-                  1 (N1a), 2-3 (N1b), 4-6 (N2a) or ≥7 (N2b)
-                </small>
-              </div>
-            </form>
+              <span class="text-sm text-gray-500 dark:text-gray-400 italic whitespace-nowrap">
+                1 (N1a), 2-3 (N1b), 4-6 (N2a) or ≥7 (N2b)
+              </span>
+            </div>
             <h3
               class="text-md font-semibold mb-2 text-gray-700 dark:text-gray-300 mt-2"
             >
@@ -524,35 +556,7 @@
               </div>
             </form>
 
-            <!-- Imaging Modality -->
-            <h2
-              class="text-lg font-bold mt-6 mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
-            >
-              Imaging Modality
-            </h2>
-            <form class="">
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="protocol_radios"
-                  id="radio_ct"
-                  value="ct"
-                  checked
-                />
-                <label class="form-check-label" for="radio_ct">CT</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="protocol_radios"
-                  id="radio_mr"
-                  value="mr"
-                />
-                <label class="form-check-label" for="radio_mr">MRI</label>
-              </div>
-            </form>
+
           </div>
         </div>
       </div>
