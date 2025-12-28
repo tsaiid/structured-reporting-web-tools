@@ -99,41 +99,44 @@
             >
               Tumor Size
             </h2>
-            <form
-              class="flex flex-wrap items-center gap-4 mb-4 needs-validation"
-              id="form_tumor_size"
-              novalidate
-            >
-              <div class="flex items-center max-w-xs">
-                <input
-                  type="number"
-                  pattern="[0-9]+([\,|\.][0-9]+)?"
-                  step="0.1"
-                  class="h-10 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-l-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  aria-label="Greatest dimension of tumor in cm"
-                  id="txt_ts_len"
-                  placeholder="The largest tumor"
-                  required
-                />
-                <div
-                  class="h-10 inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
-                >
-                  cm
+            <div class="mb-4">
+              <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">The largest tumor</p>
+              <form
+                class="flex flex-wrap items-center gap-4 needs-validation"
+                id="form_tumor_size"
+                novalidate
+              >
+                <div class="flex items-center max-w-xs">
+                  <input
+                    type="number"
+                    pattern="[0-9]+([\,|\.][0-9]+)?"
+                    step="0.1"
+                    class="h-10 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-l-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    aria-label="Greatest dimension of tumor in cm"
+                    id="txt_ts_len"
+                    placeholder=""
+                    required
+                  />
+                  <div
+                    class="h-10 inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
+                  >
+                    cm
+                  </div>
                 </div>
-              </div>
-              <div class="flex items-center space-x-2 relative">
-                <input
-                  class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0"
-                  type="checkbox"
-                  id="cb_ts_nm"
-                  value="1"
-                />
-                <label class="text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ts_nm"
-                  >Non-measurable</label
-                >
-                <div class="valid-tooltip absolute left-0 bottom-full mb-1 hidden">Or, check Non-measurable.</div>
-              </div>
-            </form>
+                <div class="flex items-center space-x-2 relative">
+                  <input
+                    class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0"
+                    type="checkbox"
+                    id="cb_ts_nm"
+                    value="1"
+                  />
+                  <label class="text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ts_nm"
+                    >Non-measurable</label
+                  >
+                  <div class="valid-tooltip absolute left-0 bottom-full mb-1 hidden">Or, check Non-measurable.</div>
+                </div>
+              </form>
+            </div>
 
             <!-- Tumor Invasion -->
             <h2
@@ -141,108 +144,98 @@
             >
               Tumor Invasion
             </h2>
-            <form
-              class="flex flex-wrap items-center gap-4 mb-2 needs-validation"
-              id="form_tumor_depth"
-              novalidate
-            >
-              <div class="flex items-center max-w-xs mb-0">
-                <input
-                  type="number"
-                  pattern="[0-9]+"
-                  step="1"
-                  class="h-10 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-l-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  aria-label="Maximum depth of tumor invasion in mm"
-                  id="txt_ti_dep"
-                  placeholder="Maximum depth of invasion"
-                  required
-                />
-                <div
-                  class="h-10 inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
-                >
-                  mm
+            <div class="mb-4">
+              <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Maximum depth of invasion</p>
+              <form
+                class="flex flex-wrap items-center gap-4 mb-2 needs-validation"
+                id="form_tumor_depth"
+                novalidate
+              >
+                <div class="flex items-center max-w-xs mb-0">
+                  <input
+                    type="number"
+                    pattern="[0-9]+"
+                    step="1"
+                    class="h-10 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-l-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    aria-label="Maximum depth of tumor invasion in mm"
+                    id="txt_ti_dep"
+                    placeholder=""
+                    required
+                  />
+                  <div
+                    class="h-10 inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
+                  >
+                    mm
+                  </div>
                 </div>
-              </div>
-              <div class="flex items-center space-x-2 relative">
-                <input
-                  class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0"
-                  type="checkbox"
-                  id="cb_ti_na"
-                  value="1"
-                />
-                <label class="text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_na"
-                  >Difficult to assess</label
-                >
-                <div class="valid-tooltip absolute left-0 bottom-full mb-1 hidden">Or, check Non-measurable.</div>
-              </div>
-            </form>
-            <div class="ml-2 mb-2 mr-sm-2">
-              <small id="ref_ti_dep" class="text-muted">
-                &lt; 5 mm (T1), 5–12 mm (T2), &gt; 12 mm (T3)
-              </small>
+                <div class="flex items-center space-x-2 relative">
+                  <input
+                    class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0"
+                    type="checkbox"
+                    id="cb_ti_na"
+                    value="1"
+                  />
+                  <label class="text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_na"
+                    >Difficult to assess</label
+                  >
+                  <div class="valid-tooltip absolute left-0 bottom-full mb-1 hidden">Or, check Non-measurable.</div>
+                </div>
+                <span id="ref_ti_dep" class="text-sm text-gray-500 dark:text-gray-400 italic">&lt; 5 mm (T1), 5–12 mm (T2), &gt; 12 mm (T3)</span>
+              </form>
             </div>
 
-            <div class="row pt-2">
-              <div class="col t_sidebar">T4</div>
-              <div class="col">
-                <form class="" id="">
-                  <div class="form-check mb-2 mr-sm-2">
-                    <input
-                      class="form-check-input cb_ti cb_ti_t4"
-                      type="checkbox"
-                      id="cb_ti_ca"
-                      value="celiac axis"
-                    />
-                    <label class="form-check-label" for="cb_ti_ca"
-                      >Celiac axis</label
-                    >
-                  </div>
-                  <div class="form-check mb-2 mr-sm-2">
-                    <input
-                      class="form-check-input cb_ti cb_ti_t4"
-                      type="checkbox"
-                      id="cb_ti_sma"
-                      value="superior mesenteric artery"
-                    />
-                    <label class="form-check-label" for="cb_ti_sma"
-                      >Superior mesenteric artery</label
-                    >
-                  </div>
-                  <div class="form-check mb-2 mr-sm-2">
-                    <input
-                      class="form-check-input cb_ti cb_ti_t4"
-                      type="checkbox"
-                      id="cb_ti_cha"
-                      value="common hepatic artery"
-                    />
-                    <label class="form-check-label" for="cb_ti_cha"
-                      >Common hepatic artery</label
-                    >
-                  </div>
-                  <div class="flex items-center max-w-md mb-2">
-                    <div
-                      class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md"
-                    >
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+              <div class="flex">
+                <div class="flex-shrink-0 w-12 md:w-16 bg-gray-100 dark:bg-gray-700 flex items-center justify-center border-r border-gray-200 dark:border-gray-700">
+                  <span class="font-bold text-gray-900 dark:text-gray-100">T4</span>
+                </div>
+                <div class="p-3 flex-grow min-w-0">
+                  <div class="flex flex-col gap-y-3">
+                    <div class="flex items-center">
                       <input
-                        type="checkbox"
                         class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
-                        aria-label="Checkbox for other tumor invasion"
-                        id="cb_ti_others"
-                        value=""
+                        type="checkbox"
+                        id="cb_ti_ca"
+                        value="celiac axis"
                       />
-                      <span
-                        class="ml-2 text-sm text-gray-700 dark:text-gray-300"
-                        >Adjacent organs</span
-                      >
+                      <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="cb_ti_ca">Celiac axis</label>
                     </div>
-                    <input
-                      type="text"
-                      class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                      aria-label="Text input with checkbox for other tumor invasion"
-                      id="txt_ti_others"
-                    />
+                    <div class="flex items-center">
+                      <input
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                        type="checkbox"
+                        id="cb_ti_sma"
+                        value="superior mesenteric artery"
+                      />
+                      <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="cb_ti_sma">Superior mesenteric artery</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                        type="checkbox"
+                        id="cb_ti_cha"
+                        value="common hepatic artery"
+                      />
+                      <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="cb_ti_cha">Common hepatic artery</label>
+                    </div>
+                    <div class="flex items-center w-full max-w-md">
+                      <div class="flex-shrink-0 inline-flex items-center h-9 px-3 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-l-md text-sm text-gray-700 dark:text-gray-300 border-r-0">
+                        <input
+                          type="checkbox"
+                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                          id="cb_ti_others"
+                          value=""
+                        />
+                        <span class="ml-2">Adjacent organs</span>
+                      </div>
+                      <input
+                        type="text"
+                        id="txt_ti_others"
+                        class="flex-1 min-w-0 h-9 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 px-2.5"
+                      />
+                    </div>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>
