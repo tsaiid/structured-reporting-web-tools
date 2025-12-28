@@ -58,219 +58,118 @@
             >
               Tumor Location / Size
             </h2>
-            <form class="form-inline">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label" for="radio_tl">Number</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_tn"
-                  type="checkbox"
-                  id="cb_tn_s"
-                  value="solitary"
-                />
-                <label class="form-check-label" for="cb_tn_s">Solitary</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_tn"
-                  type="checkbox"
-                  id="cb_tn_m"
-                  value="multiple"
-                />
-                <label class="form-check-label" for="cb_tn_m">Multiple</label>
-              </div>
-            </form>
-            <form class="form-inline">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label" for="">Location: </label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_tl"
-                  type="checkbox"
-                  id="cb_tl_na"
-                  value="not assessable"
-                />
-                <label class="form-check-label" for="cb_tl_pwt"
-                  >Not assessable</label
-                >
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_tl"
-                  type="checkbox"
-                  id="cb_tl_pwt"
-                  value="posterior wall or trigone"
-                />
-                <label class="form-check-label" for="cb_tl_pwt"
-                  >Posterior wall or Trigone</label
-                >
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_tl"
-                  type="checkbox"
-                  id="cb_tl_rlw"
-                  value="right lateral wall"
-                />
-                <label class="form-check-label" for="cb_tl_rlw"
-                  >Right lateral wall</label
-                >
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_tl"
-                  type="checkbox"
-                  id="cb_tl_llw"
-                  value="left lateral wall"
-                />
-                <label class="form-check-label" for="cb_tl_llw"
-                  >Left lateral wall</label
-                >
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_tl"
-                  type="checkbox"
-                  id="cb_tl_aw"
-                  value="anterior wall"
-                />
-                <label class="form-check-label" for="cb_tl_aw"
-                  >Anterior wall</label
-                >
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_tl"
-                  type="checkbox"
-                  id="cb_tl_dsw"
-                  value="dome or superior wall"
-                />
-                <label class="form-check-label" for="cb_tl_dsw"
-                  >Dome or Superior wall</label
-                >
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_tl"
-                  type="checkbox"
-                  id="cb_tl_iwn"
-                  value="inferior wall or neck"
-                />
-                <label class="form-check-label" for="cb_tl_iwn"
-                  >Inferior wall or Neck</label
-                >
-              </div>
-            </form>
-            <form
-              class="needs-validation form-inline"
-              id="form_tumor_size"
-              novalidate
-            >
-              <div class="flex items-center max-w-xs mb-2">
-                <input
-                  type="number"
-                  pattern="[0-9]+([\,|\.][0-9]+)?"
-                  step="0.1"
-                  class="h-10 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-l-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  aria-label="Greatest diameter in cm"
-                  id="txt_ts_len"
-                  placeholder="Largest tumor size"
-                  required
-                />
-                <div
-                  class="h-10 inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
-                >
-                  cm
+            <div class="space-y-2">
+              <!-- Number Row -->
+              <div class="flex flex-wrap items-center border-b border-gray-200 dark:border-gray-700 py-2 last:border-0">
+                <div class="w-32 shrink-0 text-sm text-gray-700 dark:text-gray-300">Number</div>
+                <div class="flex items-center gap-4 ml-2">
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input class="w-4 h-4 text-blue-600 focus:ring-blue-500 bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600" type="radio" name="radio_tn" id="cb_tn_s" value="solitary" checked />
+                    <span class="text-sm text-gray-700 dark:text-gray-300">Solitary</span>
+                  </label>
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input class="w-4 h-4 text-blue-600 focus:ring-blue-500 bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600" type="radio" name="radio_tn" id="cb_tn_m" value="multiple" />
+                    <span class="text-sm text-gray-700 dark:text-gray-300">Multiple</span>
+                  </label>
                 </div>
               </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0"
-                  type="checkbox"
-                  id="cb_ts_nm"
-                  value="1"
-                />
-                <label class="form-check-label" for="cb_ts_nm"
-                  >Non-measurable</label
-                >
-                <div class="valid-tooltip">Or, check Non-measurable.</div>
+
+              <!-- Location Row -->
+              <div class="flex flex-wrap items-start border-b border-gray-200 dark:border-gray-700 py-2 last:border-0">
+                <div class="w-32 shrink-0 text-sm text-gray-700 dark:text-gray-300 pt-1">Location</div>
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-2 ml-2 flex-1">
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_tl" type="checkbox" id="cb_tl_na" value="not assessable" />
+                    <span class="text-sm text-gray-700 dark:text-gray-300">Not assessable</span>
+                  </label>
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_tl" type="checkbox" id="cb_tl_pwt" value="posterior wall or trigone" />
+                    <span class="text-sm text-gray-700 dark:text-gray-300">Posterior wall or Trigone</span>
+                  </label>
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_tl" type="checkbox" id="cb_tl_rlw" value="right lateral wall" />
+                    <span class="text-sm text-gray-700 dark:text-gray-300">Right lateral wall</span>
+                  </label>
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_tl" type="checkbox" id="cb_tl_llw" value="left lateral wall" />
+                    <span class="text-sm text-gray-700 dark:text-gray-300">Left lateral wall</span>
+                  </label>
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_tl" type="checkbox" id="cb_tl_aw" value="anterior wall" />
+                    <span class="text-sm text-gray-700 dark:text-gray-300">Anterior wall</span>
+                  </label>
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_tl" type="checkbox" id="cb_tl_dsw" value="dome or superior wall" />
+                    <span class="text-sm text-gray-700 dark:text-gray-300">Dome or Superior wall</span>
+                  </label>
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_tl" type="checkbox" id="cb_tl_iwn" value="inferior wall or neck" />
+                    <span class="text-sm text-gray-700 dark:text-gray-300">Inferior wall or Neck</span>
+                  </label>
+                </div>
               </div>
-            </form>
-            <form class="form-inline">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label" for=""
-                  >Largest Tumor Location:
-                </label>
+
+              <!-- Largest Tumor Section -->
+              <div class="mt-4">
+                <div class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-1">Largest Tumor</div>
+                <!-- Size Row -->
+                <div class="flex flex-wrap items-center border-b border-gray-200 dark:border-gray-700 py-2 last:border-0">
+                  <div class="w-32 shrink-0 text-sm text-gray-700 dark:text-gray-300">Size</div>
+                  <div class="flex flex-wrap items-center gap-4 ml-2 flex-1">
+                    <div class="flex items-center max-w-[150px]">
+                      <input
+                        type="number"
+                        pattern="[0-9]+([\,|\.][0-9]+)?"
+                        step="0.1"
+                        class="h-9 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-l-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
+                        aria-label="Greatest diameter in cm"
+                        id="txt_ts_len"
+                      />
+                      <div
+                        class="h-9 inline-flex items-center px-2 text-sm text-gray-900 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
+                      >
+                        cm
+                      </div>
+                    </div>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                      <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0" type="checkbox" id="cb_ts_nm" value="1" />
+                      <span class="text-sm text-gray-700 dark:text-gray-300">Non-measurable</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Location Row -->
+                <div class="flex flex-wrap items-start border-b border-gray-200 dark:border-gray-700 py-2 last:border-0">
+                  <div class="w-32 shrink-0 text-sm text-gray-700 dark:text-gray-300 pt-1">Location</div>
+                  <div class="flex flex-wrap items-center gap-x-4 gap-y-2 ml-2 flex-1">
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                      <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_tl_l" type="checkbox" id="cb_tl_l_pwt" value="posterior wall or trigone" />
+                      <span class="text-sm text-gray-700 dark:text-gray-300">Posterior wall or Trigone</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                      <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_tl_l" type="checkbox" id="cb_tl_l_rlw" value="right lateral wall" />
+                      <span class="text-sm text-gray-700 dark:text-gray-300">Right lateral wall</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                      <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_tl_l" type="checkbox" id="cb_tl_l_llw" value="left lateral wall" />
+                      <span class="text-sm text-gray-700 dark:text-gray-300">Left lateral wall</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                      <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_tl_l" type="checkbox" id="cb_tl_l_aw" value="anterior wall" />
+                      <span class="text-sm text-gray-700 dark:text-gray-300">Anterior wall</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                      <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_tl_l" type="checkbox" id="cb_tl_l_dsw" value="dome or superior wall" />
+                      <span class="text-sm text-gray-700 dark:text-gray-300">Dome or Superior wall</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                      <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_tl_l" type="checkbox" id="cb_tl_l_iwn" value="inferior wall or neck" />
+                      <span class="text-sm text-gray-700 dark:text-gray-300">Inferior wall or Neck</span>
+                    </label>
+                  </div>
+                </div>
               </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_tl_l"
-                  type="checkbox"
-                  id="cb_tl_l_pwt"
-                  value="posterior wall or trigone"
-                />
-                <label class="form-check-label" for="cb_tl_l_pwt"
-                  >Posterior wall or Trigone</label
-                >
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_tl_l"
-                  type="checkbox"
-                  id="cb_tl_l_rlw"
-                  value="right lateral wall"
-                />
-                <label class="form-check-label" for="cb_tl_l_rlw"
-                  >Right lateral wall</label
-                >
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_tl_l"
-                  type="checkbox"
-                  id="cb_tl_l_llw"
-                  value="left lateral wall"
-                />
-                <label class="form-check-label" for="cb_tl_l_llw"
-                  >Left lateral wall</label
-                >
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_tl_l"
-                  type="checkbox"
-                  id="cb_tl_l_aw"
-                  value="anterior wall"
-                />
-                <label class="form-check-label" for="cb_tl_l_aw"
-                  >Anterior wall</label
-                >
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_tl_l"
-                  type="checkbox"
-                  id="cb_tl_l_dsw"
-                  value="dome or superior wall"
-                />
-                <label class="form-check-label" for="cb_tl_l_dsw"
-                  >Dome or Superior wall</label
-                >
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_tl_l"
-                  type="checkbox"
-                  id="cb_tl_l_iwn"
-                  value="inferior wall or neck"
-                />
-                <label class="form-check-label" for="cb_tl_l_iwn"
-                  >Inferior wall or Neck</label
-                >
-              </div>
-            </form>
+            </div>
 
             <!-- Tumor Invasion -->
             <h2
@@ -278,167 +177,88 @@
             >
               Tumor Invasion
             </h2>
-            <form class="">
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0"
-                  type="checkbox"
-                  id="cb_ti_na"
-                  value="not assessable"
-                />
-                <label class="form-check-label" for="cb_ti_mp"
-                  >Not assessable</label
-                >
+            <div class="space-y-1">
+              <label class="flex items-center space-x-2 cursor-pointer">
+                <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0" type="checkbox" id="cb_ti_na" value="not assessable" />
+                <span class="text-sm text-gray-700 dark:text-gray-300">Not assessable</span>
+              </label>
+
+              <label class="flex items-center space-x-2 cursor-pointer">
+                <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_ti cb_ti_t2" type="checkbox" id="cb_ti_mp" value="muscularis propria" />
+                <span class="text-sm text-gray-700 dark:text-gray-300">Muscularis propria</span>
+              </label>
+
+              <label class="flex items-center space-x-2 cursor-pointer">
+                <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_ti cb_ti_t3" type="checkbox" id="cb_ti_pvt" value="perivesical soft tissue" />
+                <span class="text-sm text-gray-700 dark:text-gray-300">Perivesical soft tissue</span>
+              </label>
+
+              <div class="pt-2">
+                <span class="text-sm font-bold text-gray-700 dark:text-gray-300">Tumor invasion to adjacent organs (T4a):</span>
+                <div class="space-y-1 ml-4 mt-1">
+                  <!-- Male Row -->
+                  <div class="flex items-center">
+                    <div class="w-24 shrink-0">
+                      <label class="flex items-center space-x-2 cursor-pointer">
+                        <input class="w-4 h-4 text-blue-600 focus:ring-blue-500 bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600" type="radio" name="radio_gender" id="radil_ti_m" value="male" checked />
+                        <span class="text-sm font-medium text-gray-900 dark:text-gray-300">Male</span>
+                      </label>
+                    </div>
+                    <div class="flex items-center gap-4 ml-2 flex-1">
+                      <label class="flex items-center space-x-2 cursor-pointer">
+                        <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_ti cb_ti_t4 cb_ti_t4a" type="checkbox" id="cb_ti_p" value="prostate" />
+                        <span class="text-sm text-gray-700 dark:text-gray-300">Prostate</span>
+                      </label>
+                      <label class="flex items-center space-x-2 cursor-pointer">
+                        <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_ti cb_ti_t4 cb_ti_t4a" type="checkbox" id="cb_ti_sv" value="seminal vesicles" />
+                        <span class="text-sm text-gray-700 dark:text-gray-300">Seminal vesicles</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Female Row -->
+                  <div class="flex items-center">
+                    <div class="w-24 shrink-0">
+                      <label class="flex items-center space-x-2 cursor-pointer">
+                        <input class="w-4 h-4 text-blue-600 focus:ring-blue-500 bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600" type="radio" name="radio_gender" id="radil_ti_f" value="female" />
+                        <span class="text-sm font-medium text-gray-900 dark:text-gray-300">Female</span>
+                      </label>
+                    </div>
+                    <div class="flex items-center gap-4 ml-2 flex-1">
+                      <label class="flex items-center space-x-2 cursor-pointer">
+                        <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_ti cb_ti_t4 cb_ti_t4a" type="checkbox" id="cb_ti_u" value="uterus" />
+                        <span class="text-sm text-gray-700 dark:text-gray-300">Uterus</span>
+                      </label>
+                      <label class="flex items-center space-x-2 cursor-pointer">
+                        <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_ti cb_ti_t4 cb_ti_t4a" type="checkbox" id="cb_ti_v" value="vagina" />
+                        <span class="text-sm text-gray-700 dark:text-gray-300">Vagina</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </form>
-            <form class="">
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_ti cb_ti_t2"
-                  type="checkbox"
-                  id="cb_ti_mp"
-                  value="muscularis propria"
-                />
-                <label class="form-check-label" for="cb_ti_mp"
-                  >Muscularis propria</label
-                >
-              </div>
-            </form>
-            <form class="">
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_ti cb_ti_t3"
-                  type="checkbox"
-                  id="cb_ti_pvt"
-                  value="perivesical soft tissue"
-                />
-                <label class="form-check-label" for="cb_ti_pvt"
-                  >Perivesical soft tissue</label
-                >
-              </div>
-            </form>
-            <form class="">
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <label class="form-check-label" for=""
-                  >Tumor invasion to adjacent organs (T4a):
+
+              <div class="flex items-center gap-4 pt-1">
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_ti cb_ti_mr cb_ti_t4 cb_ti_t4b" type="checkbox" id="cb_ti_pw" value="pelvic wall" />
+                  <span class="text-sm text-gray-700 dark:text-gray-300">Pelvic wall</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_ti cb_ti_mr cb_ti_t4 cb_ti_t4b" type="checkbox" id="cb_ti_aw" value="abdominal wall" />
+                  <span class="text-sm text-gray-700 dark:text-gray-300">Abdominal wall</span>
                 </label>
               </div>
-            </form>
-            <form class="ml-4">
-              <div>
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input
-                    class="form-check-input shrink-0"
-                    type="radio"
-                    name="radio_gender"
-                    id="radil_ti_m"
-                    value="male"
-                    checked
-                  />
-                  <label class="form-check-label" for="radil_ti_m">Male</label>
-                </div>
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input
-                    class="form-check-input shrink-0 cb_ti cb_ti_t4 cb_ti_t4a"
-                    type="checkbox"
-                    id="cb_ti_p"
-                    value="prostate"
-                  />
-                  <label class="form-check-label" for="cb_ti_p">Prostate</label>
-                </div>
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input
-                    class="form-check-input shrink-0 cb_ti cb_ti_t4 cb_ti_t4a"
-                    type="checkbox"
-                    id="cb_ti_sv"
-                    value="seminal vesicles"
-                  />
-                  <label class="form-check-label" for="cb_ti_sv"
-                    >Seminal vesicles</label
-                  >
-                </div>
-              </div>
-              <div>
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input
-                    class="form-check-input shrink-0"
-                    type="radio"
-                    name="radio_gender"
-                    id="radil_ti_f"
-                    value="female"
-                  />
-                  <label class="form-check-label" for="radil_ti_f"
-                    >Female</label
-                  >
-                </div>
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input
-                    class="form-check-input shrink-0 cb_ti cb_ti_t4 cb_ti_t4a"
-                    type="checkbox"
-                    id="cb_ti_u"
-                    value="uterus"
-                  />
-                  <label class="form-check-label" for="cb_ti_u">Uterus</label>
-                </div>
-                <div class="form-check form-check-inline mb-2 mr-sm-2">
-                  <input
-                    class="form-check-input shrink-0 cb_ti cb_ti_t4 cb_ti_t4a"
-                    type="checkbox"
-                    id="cb_ti_v"
-                    value="vagina"
-                  />
-                  <label class="form-check-label" for="cb_ti_v">Vagina</label>
-                </div>
-              </div>
-            </form>
-            <form class="">
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_ti cb_ti_mr cb_ti_t4 cb_ti_t4b"
-                  type="checkbox"
-                  id="cb_ti_pw"
-                  value="pelvic wall"
-                />
-                <label class="form-check-label" for="cb_ti_pw"
-                  >Pelvic wall</label
-                >
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_ti cb_ti_mr cb_ti_t4 cb_ti_t4b"
-                  type="checkbox"
-                  id="cb_ti_aw"
-                  value="abdominal wall"
-                />
-                <label class="form-check-label" for="cb_ti_aw"
-                  >Abdominal wall</label
-                >
-              </div>
-              <div>
-                <div class="flex items-center max-w-md mb-2">
-                  <div
-                    class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md"
-                  >
-                    <input
-                      type="checkbox"
-                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4 cb_ti_t4b"
-                      aria-label="Checkbox for other tumor invasion"
-                      id="cb_ti_others"
-                      value=""
-                    />
-                    <span class="ml-2 text-sm text-gray-700 dark:text-gray-300"
-                      >Others</span
-                    >
+
+              <div class="pt-1">
+                <div class="flex items-center max-w-md">
+                  <div class="flex items-center h-9 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md">
+                    <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4 cb_ti_t4b" id="cb_ti_others" value="" />
+                    <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Others</span>
                   </div>
-                  <input
-                    type="text"
-                    class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                    aria-label="Text input with checkbox for other tumor invasion"
-                    id="txt_ti_others"
-                  />
+                  <input type="text" class="h-9 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2" id="txt_ti_others" />
                 </div>
               </div>
-            </form>
+            </div>
           </div>
 
           <!-- second column -->
@@ -461,8 +281,9 @@
                 <div class="flex items-center gap-4 ml-2">
                   <label class="flex items-center space-x-2 cursor-pointer">
                     <input
-                      class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_rn_n"
-                      type="checkbox"
+                      class="w-4 h-4 text-blue-600 focus:ring-blue-500 bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600"
+                      type="radio"
+                      name="radio_rn_n"
                       id="cb_rn_s"
                       value="single"
                     />
@@ -472,8 +293,9 @@
                   </label>
                   <label class="flex items-center space-x-2 cursor-pointer">
                     <input
-                      class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_rn_n"
-                      type="checkbox"
+                      class="w-4 h-4 text-blue-600 focus:ring-blue-500 bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600"
+                      type="radio"
+                      name="radio_rn_n"
                       id="cb_rn_m"
                       value="multiple"
                     />
@@ -751,29 +573,21 @@
             >
               Others
             </h2>
-            <form class="form-inline">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label" for="">Hydronephrosis</label>
+            <div class="space-y-2">
+              <div class="flex flex-wrap items-center border-b border-gray-200 dark:border-gray-700 py-2 last:border-0">
+                <div class="w-32 shrink-0 text-sm text-gray-700 dark:text-gray-300">Hydronephrosis</div>
+                <div class="flex items-center gap-4 ml-2">
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_o cb_o_hn" type="checkbox" id="cb_o_hn_r" value="right" />
+                    <span class="text-sm text-gray-700 dark:text-gray-300">right</span>
+                  </label>
+                  <label class="flex items-center space-x-2 cursor-pointer">
+                    <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 cb_o cb_o_hn" type="checkbox" id="cb_o_hn_l" value="left" />
+                    <span class="text-sm text-gray-700 dark:text-gray-300">left</span>
+                  </label>
+                </div>
               </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_o cb_o_hn"
-                  type="checkbox"
-                  id="cb_o_hn_r"
-                  value="right"
-                />
-                <label class="form-check-label" for="cb_o_hn_r">right</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input shrink-0 cb_o cb_o_hn"
-                  type="checkbox"
-                  id="cb_o_hn_l"
-                  value="left"
-                />
-                <label class="form-check-label" for="cb_o_hn_l">left</label>
-              </div>
-            </form>
+            </div>
 
             <!-- Imaging Modality -->
             <h2
