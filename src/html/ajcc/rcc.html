@@ -50,221 +50,181 @@
           <%= require('../partials/toolbar_buttons.html').default %>
         </div>
 
-        <div class="row">
-          <div class="col">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="space-y-6">
+
             <!-- Tumor Location -->
-            <h2
-              class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
-            >
-              Tumor Location
-            </h2>
-            <form class="needs-validation" id="form_tumor_location" novalidate>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_tl"
-                  type="checkbox"
-                  id="cb_tl_r"
-                  value="right kidney"
-                />
-                <label class="form-check-label" for="cb_tl_r"
-                  >Right kidney</label
-                >
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_tl"
-                  type="checkbox"
-                  id="cb_tl_l"
-                  value="left kidney"
-                />
-                <label class="form-check-label" for="cb_tl_l"
-                  >Left kidney</label
-                >
-              </div>
-            </form>
+            <section>
+              <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">
+                Tumor Location
+              </h2>
+              <form class="flex flex-wrap gap-4" id="form_tumor_location">
+                <div class="flex items-center space-x-2">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tl"
+                    type="checkbox"
+                    id="cb_tl_r"
+                    value="right kidney"
+                  />
+                  <label class="text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer" for="cb_tl_r">Right kidney</label>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tl"
+                    type="checkbox"
+                    id="cb_tl_l"
+                    value="left kidney"
+                  />
+                  <label class="text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer" for="cb_tl_l">Left kidney</label>
+                </div>
+              </form>
+            </section>
 
             <!-- Tumor Size -->
-            <h2
-              class="text-lg font-bold mt-6 mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
-            >
-              Tumor Size
-            </h2>
-            <form
-              class="needs-validation form-inline"
-              id="form_tumor_size"
-              novalidate
-            >
-              <div class="flex items-center max-w-xs mb-2">
-                <input
-                  type="number"
-                  pattern="[0-9]+([\,|\.][0-9]+)?"
-                  step="0.1"
-                  class="h-10 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-l-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  aria-label="Greatest diameter in cm"
-                  id="txt_ts_dia"
-                  placeholder="Greatest diameter"
-                  required
-                />
-                <div
-                  class="h-10 inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
-                >
-                  cm
+            <section>
+              <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">
+                Tumor Size
+              </h2>
+              <form class="flex flex-wrap items-center gap-4" id="form_tumor_size">
+                <div class="flex items-center max-w-xs">
+                  <input
+                    type="number"
+                    pattern="[0-9]+([\,|\.][0-9]+)?"
+                    step="0.1"
+                    class="h-10 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-l-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    aria-label="Greatest diameter in cm"
+                    id="txt_ts_dia"
+                    placeholder="Greatest diameter"
+                    required
+                  />
+                  <div class="h-10 inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                    cm
+                  </div>
                 </div>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="cb_ts_nm"
-                  value="1"
-                />
-                <label class="form-check-label" for="cb_ts_nm"
-                  >Non-measurable</label
-                >
-                <div class="valid-tooltip">Or, check Non-measurable.</div>
-              </div>
-            </form>
+                <div class="flex items-center space-x-2">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    type="checkbox"
+                    id="cb_ts_nm"
+                    value="1"
+                  />
+                  <label class="text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer" for="cb_ts_nm">Non-measurable</label>
+                </div>
+              </form>
+            </section>
 
             <!-- Tumor Invasion -->
-            <h2
-              class="text-lg font-bold mt-6 mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
-            >
-              Tumor Invasion
-            </h2>
-            <form class="">
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="cb_ti_na"
-                  value=""
-                />
-                <label class="form-check-label" for="cb_ti_na"
-                  >Not assessable</label
-                >
-              </div>
-            </form>
-            <form class="form-inline ti_item">
-              <div class="form-check mb-2 mr-sm-2">
-                <label class="form-check-label cb_ti_title" for=""
-                  >Beyond the kidney but not beyond Gerota fascia</label
-                >
-              </div>
-              <div class="form-check mb-2 mr-sm-2 ml-4">
-                <input
-                  class="form-check-input cb_ti cb_ti_t3a"
-                  type="checkbox"
-                  id="cb_ti_prf"
-                  value="perirenal fat"
-                />
-                <label class="form-check-label" for="cb_ti_prf"
-                  >perirenal fat</label
-                >
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_ti cb_ti_t3a"
-                  type="checkbox"
-                  id="cb_ti_rsf"
-                  value="renal sinus fat"
-                />
-                <label class="form-check-label" for="cb_ti_rsf"
-                  >renal sinus fat</label
-                >
-              </div>
-            </form>
-            <form class="">
-              <fieldset class="form-group">
-                <div class="row">
-                  <legend class="col-form-label col-sm-3 pt-0">
-                    Vascular extension
-                  </legend>
-                  <div class="col-sm-9">
-                    <div class="form-check">
+            <section>
+              <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">
+                Tumor Invasion
+              </h2>
+              <div class="space-y-4">
+                <div class="flex items-center space-x-2 mb-2">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    type="checkbox"
+                    id="cb_ti_na"
+                    value=""
+                  />
+                  <label class="text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer" for="cb_ti_na">Not assessable</label>
+                </div>
+
+                <!-- Card 1 -->
+                <div class="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <h3 class="text-sm font-bold text-blue-600 dark:text-blue-400 mb-3 border-b border-gray-200 dark:border-gray-700 pb-1">Beyond the kidney but not beyond Gerota fascia</h3>
+                  <div class="flex flex-wrap gap-4">
+                    <div class="flex items-center space-x-2">
                       <input
-                        class="form-check-input cb_ti cb_ti_t3a"
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3a"
+                        type="checkbox"
+                        id="cb_ti_prf"
+                        value="perirenal fat"
+                      />
+                      <label class="text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_prf">Perirenal fat</label>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                      <input
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3a"
+                        type="checkbox"
+                        id="cb_ti_rsf"
+                        value="renal sinus fat"
+                      />
+                      <label class="text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_rsf">Renal sinus fat</label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <h3 class="text-sm font-bold text-blue-600 dark:text-blue-400 mb-3 border-b border-gray-200 dark:border-gray-700 pb-1">Vascular extension</h3>
+                  <div class="space-y-2">
+                    <div class="flex items-center space-x-2">
+                      <input
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3a"
                         type="checkbox"
                         id="cb_ti_rv"
                         value="renal vein or its segmental branches"
                       />
-                      <label class="form-check-label" for="cb_ti_rv"
-                        >renal vein or its segmental branches</label
-                      >
+                      <label class="text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_rv">Renal vein or its segmental branches</label>
                     </div>
-                    <div class="form-check">
+                    <div class="flex items-center space-x-2">
                       <input
-                        class="form-check-input cb_ti cb_ti_t3bc"
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3bc"
                         type="checkbox"
                         id="cb_ti_ivc"
                         value="IVC"
                       />
-                      <label class="form-check-label" for="cb_ti_ivc"
-                        >IVC</label
-                      >
+                      <label class="text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_ivc">IVC</label>
                     </div>
-                    <div class="offset-md-1">
-                      <div class="form-check">
+                    <div class="ml-6 space-y-2">
+                      <div class="flex items-center space-x-2">
                         <input
-                          class="form-check-input"
+                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                           type="radio"
                           name="rb_ti_ivc"
                           id="rb_ti_ivc_b"
                           value="3b"
                         />
-                        <label class="form-check-label" for="rb_ti_ivc_b"
-                          >below the diaphragm</label
-                        >
+                        <label class="text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="rb_ti_ivc_b">Below the diaphragm</label>
                       </div>
-                      <div class="form-check">
+                      <div class="flex items-center space-x-2">
                         <input
-                          class="form-check-input"
+                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                           type="radio"
                           name="rb_ti_ivc"
                           id="rb_ti_ivc_a"
                           value="3c"
                         />
-                        <label class="form-check-label" for="rb_ti_ivc_a"
-                          >above the diaphragm</label
-                        >
+                        <label class="text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="rb_ti_ivc_a">Above the diaphragm</label>
                       </div>
-                      <div class="form-check">
+                      <div class="flex items-center space-x-2">
                         <input
-                          class="form-check-input cb_ti_t3c"
+                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti_t3c"
                           type="checkbox"
                           id="cb_ti_ivc_w"
                           value="the wall of vena cava"
                         />
-                        <label class="form-check-label" for="cb_ti_ivc_w"
-                          >the wall of vena cava</label
-                        >
+                        <label class="text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_ivc_w">The wall of vena cava</label>
                       </div>
                     </div>
                   </div>
                 </div>
-              </fieldset>
-            </form>
-            <form class="">
-              <fieldset class="form-group">
-                <div class="row">
-                  <legend class="col-form-label col-sm-3 pt-0">
-                    Beyond Gerota fascia
-                  </legend>
-                  <div class="col-sm-9">
-                    <div class="form-check">
+
+                <!-- Card 3 -->
+                <div class="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <h3 class="text-sm font-bold text-blue-600 dark:text-blue-400 mb-3 border-b border-gray-200 dark:border-gray-700 pb-1">Beyond Gerota fascia</h3>
+                  <div class="space-y-4">
+                    <div class="flex items-center space-x-2">
                       <input
-                        class="form-check-input cb_ti cb_ti_t4"
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
                         type="checkbox"
                         id="cb_ti_iag"
                         value="ipsilateral adrenal gland"
                       />
-                      <label class="form-check-label" for="cb_ti_iag"
-                        >ipsilateral adrenal gland</label
-                      >
+                      <label class="text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ti_iag">Ipsilateral adrenal gland</label>
                     </div>
-                    <div class="flex items-center max-w-md mt-1 mb-2">
-                      <div
-                        class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md"
-                      >
+                    <div class="flex items-center max-w-md">
+                      <div class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md">
                         <input
                           type="checkbox"
                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
@@ -272,10 +232,7 @@
                           id="cb_ti_others"
                           value=""
                         />
-                        <span
-                          class="ml-2 text-sm text-gray-700 dark:text-gray-300"
-                          >Others</span
-                        >
+                        <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Others</span>
                       </div>
                       <input
                         type="text"
@@ -286,216 +243,152 @@
                     </div>
                   </div>
                 </div>
-              </fieldset>
-            </form>
+              </div>
+            </section>
           </div>
 
-          <!-- second column -->
-          <div class="col">
+          <div class="space-y-6">
             <!-- Regional Lymph Node -->
-            <h2
-              class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
-            >
-              Regional Lymph Node
-            </h2>
-            <form class="">
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_rn"
-                  type="checkbox"
-                  id="cb_rn_rh"
-                  value="renal hilar"
-                />
-                <label class="form-check-label" for="cb_rn_rh"
-                  >Renal hilar</label
-                >
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_rn"
-                  type="checkbox"
-                  id="cb_rn_pc"
-                  value="paracaval"
-                />
-                <label class="form-check-label" for="cb_rn_pc">Paracaval</label>
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_rn"
-                  type="checkbox"
-                  id="cb_rn_ac"
-                  value="aortocaval"
-                />
-                <label class="form-check-label" for="cb_rn_ac"
-                  >Aortocaval</label
-                >
-              </div>
-              <div class="form-check mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_rn"
-                  type="checkbox"
-                  id="cb_rn_pa"
-                  value="paraaortic"
-                />
-                <label class="form-check-label" for="cb_rn_pa"
-                  >Paraaortic</label
-                >
-              </div>
-            </form>
+            <section>
+              <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">
+                Regional Lymph Node
+              </h2>
+              <form class="space-y-2">
+                <div class="flex items-center space-x-2">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn"
+                    type="checkbox"
+                    id="cb_rn_rh"
+                    value="renal hilar"
+                  />
+                  <label class="text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer" for="cb_rn_rh">Renal hilar</label>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn"
+                    type="checkbox"
+                    id="cb_rn_pc"
+                    value="paracaval"
+                  />
+                  <label class="text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer" for="cb_rn_pc">Paracaval</label>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn"
+                    type="checkbox"
+                    id="cb_rn_ac"
+                    value="aortocaval"
+                  />
+                  <label class="text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer" for="cb_rn_ac">Aortocaval</label>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn"
+                    type="checkbox"
+                    id="cb_rn_pa"
+                    value="paraaortic"
+                  />
+                  <label class="text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer" for="cb_rn_pa">Paraaortic</label>
+                </div>
+              </form>
+            </section>
 
             <!-- Distant Metastasis -->
-            <h2
-              class="text-lg font-bold mt-6 mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
-            >
-              Distant Metastasis
-            </h2>
-            <form class="">
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_dm cb_dm_m1c"
-                  type="checkbox"
-                  id="cb_dm_li"
-                  value="liver"
-                />
-                <label class="form-check-label" for="cb_dm_li">Liver</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_dm cb_dm_m1c"
-                  type="checkbox"
-                  id="cb_dm_ad"
-                  value="adrenal"
-                />
-                <label class="form-check-label" for="cb_dm_ad">Adrenal</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_dm cb_dm_m1c"
-                  type="checkbox"
-                  id="cb_dm_lu"
-                  value="lung"
-                />
-                <label class="form-check-label" for="cb_dm_lu">Lung</label>
-              </div>
-              <div class="form-check form-check-inline mb-2 mr-sm-2">
-                <input
-                  class="form-check-input cb_dm cb_dm_m1b"
-                  type="checkbox"
-                  id="cb_dm_b"
-                  value="bone"
-                />
-                <label class="form-check-label" for="cb_dm_b">Bone</label>
-              </div>
-              <div class="flex items-center max-w-md mb-2">
-                <div
-                  class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md"
-                >
+            <section>
+              <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">
+                Distant Metastasis
+              </h2>
+              <form class="space-y-2">
+                <div class="flex flex-wrap gap-4">
+                  <div class="flex items-center space-x-2">
+                    <input
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1c"
+                      type="checkbox"
+                      id="cb_dm_li"
+                      value="liver"
+                    />
+                    <label class="text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer" for="cb_dm_li">Liver</label>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <input
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1c"
+                      type="checkbox"
+                      id="cb_dm_ad"
+                      value="adrenal"
+                    />
+                    <label class="text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer" for="cb_dm_ad">Adrenal</label>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <input
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1c"
+                      type="checkbox"
+                      id="cb_dm_lu"
+                      value="lung"
+                    />
+                    <label class="text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer" for="cb_dm_lu">Lung</label>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <input
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1b"
+                      type="checkbox"
+                      id="cb_dm_b"
+                      value="bone"
+                    />
+                    <label class="text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer" for="cb_dm_b">Bone</label>
+                  </div>
+                </div>
+                <div class="flex items-center max-w-md">
+                  <div class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md">
+                    <input
+                      type="checkbox"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1c"
+                      aria-label="Checkbox for other distant metastasis"
+                      id="cb_dm_others"
+                      value=""
+                    />
+                    <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Others</span>
+                  </div>
                   <input
-                    type="checkbox"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1c"
-                    aria-label="Checkbox for other distant metastasis"
-                    id="cb_dm_others"
-                    value=""
+                    type="text"
+                    class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                    aria-label="Text input with checkbox for other distant metastasis"
+                    id="txt_dm_others"
                   />
-                  <span class="ml-2 text-sm text-gray-700 dark:text-gray-300"
-                    >Others</span
-                  >
                 </div>
-                <input
-                  type="text"
-                  class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                  aria-label="Text input with checkbox for other distant metastasis"
-                  id="txt_dm_others"
-                />
-              </div>
-            </form>
+              </form>
+            </section>
 
-            <!-- Scanning Protocol -->
-            <h2
-              class="text-lg font-bold mt-6 mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
-            >
-              Scanning Protocol
-            </h2>
-            <form class="">
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="protocol_radios"
-                  id="radio_ct"
-                  value="ct"
-                  checked
-                />
-                <label class="form-check-label" for="radio_ct"> CT </label>
-                <div class="row">
-                  <div class="col-auto ml-2 mt-2">
-                    <div class="form-check form-check-inline mb-2 mr-sm-2">
-                      <input
-                        class="form-check-input cb_sp"
-                        type="checkbox"
-                        id="cb_sp_ncct"
-                        value="ncct"
-                        checked
-                      />
-                      <label class="form-check-label" for="cb_sp_ncct"
-                        >without contrast</label
-                      >
-                    </div>
-                    <div class="form-check form-check-inline mb-2 mr-sm-2">
-                      <input
-                        class="form-check-input cb_sp"
-                        type="checkbox"
-                        id="cb_sp_cect"
-                        value="cect"
-                        checked
-                      />
-                      <label class="form-check-label" for="cb_sp_cect"
-                        >with contrast</label
-                      >
-                    </div>
+            <!-- Imaging Modality -->
+            <section>
+              <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">
+                Imaging Modality
+              </h2>
+              <form class="mb-4">
+                <div class="flex flex-wrap gap-4">
+                  <div class="flex items-center space-x-2">
+                    <input
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      type="radio"
+                      name="protocol_radios"
+                      id="radio_ct"
+                      value="ct"
+                      checked
+                    />
+                    <label class="text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer" for="radio_ct">CT</label>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <input
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      type="radio"
+                      name="protocol_radios"
+                      id="radio_mr"
+                      value="mr"
+                    />
+                    <label class="text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer" for="radio_mr">MRI</label>
                   </div>
                 </div>
-              </div>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="protocol_radios"
-                  id="radio_mr"
-                  value="mr"
-                />
-                <label class="form-check-label" for="radio_mr"> MR </label>
-                <div class="row">
-                  <div class="col-auto ml-2 mt-2">
-                    <div class="form-check form-check-inline mb-2 mr-sm-2">
-                      <input
-                        class="form-check-input cb_sp"
-                        type="checkbox"
-                        id="cb_sp_ncmr"
-                        value="ncmr"
-                        checked
-                        disabled
-                      />
-                      <label class="form-check-label" for="cb_sp_ncmr"
-                        >without contrast</label
-                      >
-                    </div>
-                    <div class="form-check form-check-inline mb-2 mr-sm-2">
-                      <input
-                        class="form-check-input cb_sp"
-                        type="checkbox"
-                        id="cb_sp_cemr"
-                        value="cemr"
-                        checked
-                      />
-                      <label class="form-check-label" for="cb_sp_cemr"
-                        >with contrast</label
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </form>
+              </form>
+            </section>
           </div>
         </div>
       </div>
