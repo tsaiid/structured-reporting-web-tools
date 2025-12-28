@@ -6,10 +6,10 @@ import $ from 'jquery';
 
 
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
-import { faGithub, faFacebookSquare, faTwitterSquare } from "@fortawesome/free-brands-svg-icons";
-import { faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle, faFolder, faFolderOpen } from "@fortawesome/free-solid-svg-icons";
+import { faGithub, faFacebookSquare, faXTwitter, faInstagram, faThreads, faYoutube } from "@fortawesome/free-brands-svg-icons";
+import { faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle, faFolder, faFolderOpen, faGlobe } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faGithub, faFacebookSquare, faTwitterSquare, faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle, faFolder, faFolderOpen);
+library.add(faGithub, faFacebookSquare, faXTwitter, faInstagram, faThreads, faYoutube, faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle, faFolder, faFolderOpen, faGlobe);
 dom.watch();
 
 // show about modal
