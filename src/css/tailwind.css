@@ -22,16 +22,28 @@
 
   /* Compatibility / Helper Classes */
   .form-check {
-    @apply flex items-center mb-2;
+    @apply flex mb-2;
   }
   .form-check-inline {
-    @apply inline-flex items-center mr-4 mb-2;
+    @apply inline-flex mr-4 mb-2;
   }
   .form-check-input {
-    @apply w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mt-1;
+    @apply w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mt-px flex-shrink-0;
   }
   .form-check-label {
     @apply ml-2 text-sm text-gray-900 dark:text-gray-300;
+  }
+
+  /* 通用 checkbox 對齊：確保 items-start 容器中的 checkbox 對齊文字第一行 */
+  /* 使用 mt-px 讓 checkbox 稍微下移以對齊文字 cap-height */
+  .items-start > input[type="checkbox"],
+  .items-start > input[type="radio"] {
+    @apply flex-shrink-0 mt-px;
+  }
+  /* items-center 容器中的 checkbox/radio 不需要額外 margin，保持垂直置中 */
+  .items-center > input[type="checkbox"],
+  .items-center > input[type="radio"] {
+    @apply flex-shrink-0 mt-0;
   }
   .form-control {
     @apply bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5;
