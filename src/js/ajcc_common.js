@@ -279,6 +279,37 @@ export function initSidebar() {
     const $sidebarCollapseToggle = $('#sidebar-collapse-toggle');
     const $sidebarNav = $('#main-sidebar');
 
+    // --- Identify Active Page ---
+    const currentPath = window.location.pathname;
+    let $activeLink = $();
+    $list.find('a').each(function() {
+        const href = $(this).attr('href');
+        if (href && currentPath.endsWith(href)) {
+            $activeLink = $(this);
+            return false; // break
+        }
+    });
+
+    /**
+     * Toggles the visual highlight (background and icon color) of the active item.
+     * @param {boolean} show - Whether to show the highlight logic.
+     */
+    function toggleHighlight(show) {
+        if (!$activeLink.length) return;
+
+        const $icon = $activeLink.find('i');
+        if (show) {
+            $activeLink.addClass('bg-gray-200 dark:bg-gray-800');
+            $icon.removeClass('text-gray-400 dark:text-gray-500')
+                 .addClass('text-gray-600 dark:text-gray-300');
+        } else {
+            $activeLink.removeClass('bg-gray-200 dark:bg-gray-800');
+            // Revert icon to default (non-hover) state
+            $icon.addClass('text-gray-400 dark:text-gray-500')
+                 .removeClass('text-gray-600 dark:text-gray-300');
+        }
+    }
+
     // --- 1. AJCC Optional Items Toggle ---
     let isAjccExpanded = localStorage.getItem('ajcc_sidebar_state') !== 'collapsed';
 
@@ -323,10 +354,16 @@ export function initSidebar() {
             $body.addClass('sidebar-collapsed');
             $sidebarCollapseToggle.html('<i class="fas fa-angle-double-right" id="sidebar-collapse-icon"></i>');
             $sidebarCollapseToggle.attr('title', '展開 Sidebar');
+
+            // Hide highlight when collapsed
+            toggleHighlight(false);
         } else {
             $body.removeClass('sidebar-collapsed');
             $sidebarCollapseToggle.html('<i class="fas fa-angle-double-left" id="sidebar-collapse-icon"></i>');
             $sidebarCollapseToggle.attr('title', '收合 Sidebar');
+
+            // Show highlight when expanded
+            toggleHighlight(true);
         }
         isSidebarCollapsed = collapsed;
     }
@@ -335,12 +372,19 @@ export function initSidebar() {
     $sidebarNav.on('mouseenter', function() {
         if (isSidebarCollapsed && !ignoreHover) {
             $(this).addClass('hover-expanded');
+            // Temporarily show highlight when hover-expanded
+            toggleHighlight(true);
         }
     });
 
     $sidebarNav.on('mouseleave', function() {
         $(this).removeClass('hover-expanded');
         ignoreHover = false; // Reset when mouse leaves
+
+        // If sidebar is supposedly collapsed, hide highlight again
+        if (isSidebarCollapsed) {
+            toggleHighlight(false);
+        }
     });
 
     // Initial state
