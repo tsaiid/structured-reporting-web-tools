@@ -455,9 +455,15 @@ body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) .flex.items-center.just
 
 /* Hover Expansion (JavaScript controlled) */
 body.sidebar-collapsed .sidebar-nav.hover-expanded {
-  width: 14rem !important; /* w-56 */
+  width: 12rem !important; /* w-48 by default (md) */
   box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
   z-index: 50;
+}
+
+@media (min-width: 1024px) {
+  body.sidebar-collapsed .sidebar-nav.hover-expanded {
+    width: 14rem !important; /* w-56 on lg */
+  }
 }
 
 /* Fade in ALL text elements AFTER sidebar width transition */
@@ -471,12 +477,11 @@ body.sidebar-collapsed .sidebar-nav.hover-expanded #ajcc-toggle {
 }
 
 /* Special handling for SVG icons to ensure fade-in works */
+/* Special handling for SVG icons to ensure fade-in works */
 body.sidebar-collapsed .sidebar-nav.hover-expanded a svg {
   opacity: 1 !important;
   visibility: visible;
-  width: 1em;
-  height: 1em;
-  margin-right: 0.5rem;
+  /* width/height removed to match "expanded" natural size */
   transition: opacity 0.3s ease 0.2s, visibility 0.3s ease 0.2s;
 }
 
