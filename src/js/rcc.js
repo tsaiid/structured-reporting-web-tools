@@ -34,29 +34,21 @@ const AJCC_M = new Map([
 ]);
 
 function generate_report(){
-    var report = "1. ";
+    var report = `1. Imaging modality
+  - Imaging by `;
 
     // Protocol
-    if ($('input[name="protocol_radios"]:checked').val() == 'mr') {
-        report += `MR protocol
-Sagittal and Axial FSE T2WI
-Axial FSE T1WI with FS, pre- and post- contrast
-Axial T1WI with contrast, abdominal survey
-(Coronal FSE T2WI)
-(Axial T2WI, lower abdominal survey)`;
+    if ($('input[name="protocol_radios"]:checked').val() == 'ct') {
+        report += `(+) CT scan  ( ) MRI`;
     } else {
-        report += `CT protocol
-Without and with contrast medium at nephrographic phase
-Axial section slice thickness/interval: 5/5mm
-Coronal section slice thickness/interval: 5/5mm
-Range: diaphragm to the pelvis cavity`;
+        report += `( ) CT scan  (+) MRI`;
     }
     report += "\n\n";
 
     // Tumor location / size
     let t_dia = parseFloat($('#txt_ts_dia').val());
     report += "2. Tumor location / size\n";
-    if ($('#cb_ts_na').is(':checked')) {
+    if ($('#cb_ts_nm').is(':checked')) {
         report += "--- Not assessable";
     } else {
         report += "Location: ";
@@ -142,7 +134,7 @@ Range: diaphragm to the pelvis cavity`;
     // Calculate staging via Logic
     const data = {
         tumorSize: t_dia,
-        isNotAssessable: $('#cb_ts_na').is(':checked'),
+        isNotAssessable: $('#cb_ts_nm').is(':checked'),
         invasion: {
             t3a: $('.cb_ti_t3a:checked').length > 0,
             t3bc: $('.cb_ti_t3bc:checked').length > 0,
@@ -170,7 +162,7 @@ Range: diaphragm to the pelvis cavity`;
 
     $('#reportModalLongTitle').html("Renal Cell Carcinoma Staging Form");
     $('#reportModalBody pre code').html(report);
-    $('#reportModalLong').modal('show');
+    document.getElementById('reportModalLong').showModal();
 }
 
 $('#cb_tp_ts_nm').change(function() {
@@ -186,7 +178,7 @@ setupReportPage({
         N: AJCC_N,
         M: AJCC_M
     },
-    ajccTitleHtml: "AJCC Definitions for Renal Cell Carcinoma <span class='badge badge-secondary ml-2' style='font-size: 60%; vertical-align: super;'>8th</span>"
+    ajccTitleHtml: "AJCC Definitions for Renal Cell Carcinoma <span class='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-100 ml-2' style='font-size: 60%; vertical-align: super;'>8th</span>"
 });
 
 

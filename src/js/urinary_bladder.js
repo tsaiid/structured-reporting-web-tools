@@ -40,9 +40,9 @@ function generate_report(){
 
     // Protocol
     if ($('input[name="protocol_radios"]:checked').val() == 'ct') {
-        report += `[+] CT scan  [ ] MRI`;
+        report += `(+) CT scan  ( ) MRI`;
     } else {
-        report += `[ ] CT scan  [+] MRI`;
+        report += `( ) CT scan  (+) MRI`;
     }
     report += "\n\n";
 
@@ -145,12 +145,12 @@ function generate_report(){
     report += "4. Regional nodal metastasis\n";
     report += "    [" + (has_rln ? " " : "+") + "] No or Equivocal\n";
     report += "    [" + (has_rln ? "+" : " ") + "] Yes, if yes:\n";
-    report += `    Numbers: [${cb_rn_s_check}] single   [${cb_rn_m_check}] multiple\n`;
+    report += `        Numbers: (${cb_rn_s_check}) single   (${cb_rn_m_check}) multiple\n`;
     $('.lb_rn').each(function(){
         let cb_rn = $(this).attr('for');
         if ($(this).hasClass('has_parts')) {
             let check_or_not = $('.' + cb_rn + ':checked').length > 0 ? "+" : " ";
-            report += `        [${check_or_not}] ` + $(this).text() + ": ";
+            report += `        [${check_or_not}] ` + $(this).text().trim() + ": ";
             let parts = $('.' + cb_rn);
             parts.each(function(i, e){
                 let check_or_not = $(this).is(':checked') ? "+" : " ";
@@ -162,7 +162,7 @@ function generate_report(){
             report += "\n";
         } else {
             let check_or_not = $('#' + cb_rn).is(':checked') ? "+" : " ";
-            report += `        [${check_or_not}] ` + $(this).text() + "\n";
+            report += `        [${check_or_not}] ` + $(this).text().trim() + "\n";
         }
     });
     report += "\n";
@@ -206,7 +206,7 @@ function generate_report(){
 
     $('#reportModalLongTitle').html("Urinary Bladder Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
-    $('#reportModalLong').modal('show');
+    document.getElementById('reportModalLong').showModal();
 }
 
 $('.cb_ti_t4a, input[name="radio_gender"]').change(function() {

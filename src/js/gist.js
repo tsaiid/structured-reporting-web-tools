@@ -26,25 +26,14 @@ const AJCC_M = new Map([
 ]);
 
 function generate_report(){
-    var report = "1. ";
+    var report = `1. Imaging modality
+  - Imaging by `;
 
     // Protocol
-    if ($('input[name="protocol_radios"]:checked').val() == 'mr') {
-        report += `MR protocol
-Slice thickness: 5 mm or less
-Range: abdomen
-T1 in-phase/opposed phase, axial
-T2 axial or coronal
-Dynamic T1 fat saturation, axial
-T1 fat saturation, coronal
-DWI, axial`;
+    if ($('input[name="protocol_radios"]:checked').val() == 'ct') {
+        report += `(+) CT scan  ( ) MRI`;
     } else {
-        report += `CT protocol
-Slice thickness: 5 mm or less
-Range: abdomen
-Contrast enhanced imaging, axial image
-Dynamic contrast–enhanced axial imaging at arterial phase, venous phase
-(+venous phase coronal reformation optionally)`;
+        report += `( ) CT scan  (+) MRI`;
     }
     report += "\n\n";
 
@@ -142,7 +131,7 @@ Dynamic contrast–enhanced axial imaging at arterial phase, venous phase
 
     $('#reportModalLongTitle').html("Gastrointestinal Stromal Tumor Staging Form");
     $('#reportModalBody pre code').html(report);
-    $('#reportModalLong').modal('show');
+    document.getElementById('reportModalLong').showModal();
 }
 
 $('#cb_tp_ts_nm').change(function() {

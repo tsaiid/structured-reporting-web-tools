@@ -1,241 +1,383 @@
-<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Structured report for gastrointestinal stromal tumor staging"
+    />
+    <meta name="author" content="I-Ta Tsai" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Structured report for gastrointestinal stromal tumor staging">
-  <meta name="author" content="I-Ta Tsai">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Structure Report for Gastrointestinal Stromal Tumor Staging</title>
 
-  <title>Structure Report for Gastrointestinal Stromal Tumor Staging</title>
-
-  <!-- For IE 6/7/8 Responsive -->
-  <!--[if lt IE 9]>
+    <!-- For IE 6/7/8 Responsive -->
+    <!--[if lt IE 9]>
       <script src="js/respond.min.js"></script>
       <script src="js/html5shiv.js"></script>
     <![endif]-->
 
-  <!-- Google Analytics -->
-  <%= require('../partials/google_analytics.html').default %>
+    <!-- Google Analytics -->
+    <%= require('../partials/google_analytics.html').default %>
 
     <!-- Vendors: jquery, bootstrap, clipboard.js -->
     <%= require('../partials/vendors_css.html').default %>
-</head>
+  </head>
 
-<body>
+  <body
+    class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200"
+  >
+    <%= require('../partials/nav.html').default %> <%=
+    require('../partials/sidebar.html').default %>
 
-  <%= require('../partials/nav.html').default %>
+    <main
+      role="main"
+      class="md:ml-48 lg:ml-56 pt-12 min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200"
+    >
+      <div class="p-6 max-w-7xl mx-auto">
+        <div
+          class="flex justify-between items-center pb-4 mb-4 border-b border-gray-200 dark:border-gray-700"
+        >
+          <h1 class="text-2xl font-bold flex items-center gap-2">
+            Gastrointestinal Stromal Tumor Staging Form
+            <span
+              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-blue-100 align-super"
+              >AJCC 8<sup>th</sup></span
+            >
+          </h1>
 
-    <div class="container-fluid">
-      <div class="row">
-        <%= require('../partials/sidebar.html').default %>
+          <%= require('../partials/toolbar_buttons.html').default %>
+        </div>
 
-          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <div
-              class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-              <h1 class="h3">Gastrointestinal Stromal Tumor Staging Form <span class="badge badge-secondary ml-2"
-                  style="font-size: 50%; vertical-align: super;">AJCC 8th</span></h1>
-
-              <%= require('../partials/toolbar_buttons.html').default %>
-            </div>
-
-            <div class="row">
-              <div class="col">
-                <!-- Scanning Protocol -->
-                <h2 class="h4">Scanning Protocol</h2>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="protocol_radios" id="radio_ct" value="ct" checked>
-                  <label class="form-check-label" for="radio_ct">
-                    CT
-                  </label>
-                  <form class="form-inline">
-                    <div class="form-group mb-2 mr-sm-2">
-                      <div id="ref_rln_num" class="text-muted">
-                        Contrast
-                      </div>
-                    </div>
-                    <div class="form-check mb-2 mr-sm-2">
-                      <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_ncct" value="ncct" checked>
-                      <label class="form-check-label" for="cb_sp_ncct">without</label>
-                    </div>
-                    <div class="form-check mb-2 mr-sm-2">
-                      <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_cect" value="cect" checked>
-                      <label class="form-check-label" for="cb_sp_cect">with</label>
-                    </div>
-                  </form>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="protocol_radios" id="radio_mr" value="mr">
-                  <label class="form-check-label" for="radio_mr">
-                    MR
-                  </label>
-                  <form class="form-inline">
-                    <div class="form-group mb-2 mr-sm-2">
-                      <div id="ref_rln_num" class="text-muted">
-                        Contrast
-                      </div>
-                    </div>
-                    <div class="form-check mb-2 mr-sm-2">
-                      <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_ncmr" value="ncmr" checked
-                        disabled>
-                      <label class="form-check-label" for="cb_sp_ncmr">without</label>
-                    </div>
-                    <div class="form-check mb-2 mr-sm-2">
-                      <input class="form-check-input cb_sp" type="checkbox" id="cb_sp_cemr" value="cemr" checked>
-                      <label class="form-check-label" for="cb_sp_cemr">with</label>
-                    </div>
-                  </form>
-                </div>
-
-                <!-- Tumor Location -->
-                <h2 class="h4 mt-4">Tumor Location</h2>
-                <form class="needs-validation" id="form_tumor_location" novalidate>
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_s" value="stomach">
-                    <label class="form-check-label" for="cb_tl_s">Stomach</label>
-                  </div>
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_si" value="small intestine">
-                    <label class="form-check-label" for="cb_tl_si">Small intestine</label>
-                  </div>
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_li" value="large intestine">
-                    <label class="form-check-label" for="cb_tl_li">Large intestine</label>
-                  </div>
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_tl" type="checkbox" id="cb_tl_p" value="peritoneum">
-                    <label class="form-check-label" for="cb_tl_p">Peritoneum</label>
-                  </div>
-                  <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text">
-                        <input type="checkbox" class="cb_tl" aria-label="Checkbox for other tumor locations"
-                          id="cb_tl_others" value="">
-                      </div>
-                      <span class="input-group-text">Others</span>
-                    </div>
-                    <input type="text" class="form-control"
-                      aria-label="Text input with checkbox for other tumor locations" id="txt_tl_others">
-                  </div>
-                </form>
-
-                <!-- Tumor Size -->
-                <h2 class="h4 mt-4">Tumor Size</h2>
-                <form class="form-inline needs-validation" id="form_tumor_size" novalidate>
-                  <div class="input-group input-group-sm col-md-6 pl-0 mb-2 mr-sm-2">
-                    <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" step="0.1" class="form-control"
-                      aria-label="Greatest diameter of tumor in cm" id="txt_ts_len"
-                      placeholder="Greatest dimension of the largest tumor" required>
-                    <div class="input-group-append">
-                      <span class="input-group-text">cm</span>
-                    </div>
-                    <div class="invalid-tooltip">
-                      Please enter a number.
-                    </div>
-                  </div>
-                  <div class="form-check mb-2 mr-sm-2">
-                    <input class="form-check-input" type="checkbox" id="cb_ts_nm" value="1">
-                    <label class="form-check-label" for="cb_ts_nm">Non-measurable</label>
-                    <div class="valid-tooltip">
-                      Or, check Non-measurable.
-                    </div>
-                  </div>
-                </form>
-
-                <!-- Tumor Invasion -->
-                <h2 class="h4 mt-4">Tumor Invasion</h2>
-                <form class="">
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radios_ti" id="radio_ti_na" value="">
-                    <label class="form-check-label" for="radio_ti_na">Not assessable</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radios_ti" id="radio_ti_no" value="" checked>
-                    <label class="form-check-label" for="radio_ti_no">No</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radios_ti" id="radio_ti_o" value="ti">
-                    <label class="form-check-label" for="radio_ti_o">Yes</label>
-                    <div class="input-group input-group-sm col-md-10 pl-0 mb-2 mr-sm-2">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">Location</span>
-                      </div>
-                      <input type="text" class="form-control" aria-label="Text input for invasion of adjacent organs"
-                        id="txt_ti_loc">
-                    </div>
-                  </div>
-                </form>
+        <div class="grid grid-cols-1 2col:grid-cols-2 gap-8">
+          <div>
+            <!-- Imaging Modality -->
+            <h2
+              class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
+            >
+              Imaging Modality
+            </h2>
+            <div class="flex flex-wrap gap-4 mb-4">
+              <div class="flex items-start">
+                <input
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  type="radio"
+                  name="protocol_radios"
+                  id="radio_ct"
+                  value="ct"
+                  checked
+                />
+                <label class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="radio_ct">CT</label>
               </div>
-
-              <!-- second column -->
-              <div class="col">
-                <!-- Regional Lymph Node -->
-                <h2 class="h4">Regional Lymph Node</h2>
-                <h3 class="h5 mt-2">Locations</h3>
-                <form class="">
-                  <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text">
-                        <input type="checkbox" class="cb_rn" aria-label="Checkbox for other regional lymphadenopathy"
-                          id="cb_rn_others" value="">
-                      </div>
-                      <span class="input-group-text">Others</span>
-                    </div>
-                    <input type="text" class="form-control"
-                      aria-label="Text input with checkbox for other regional lymphadenopathy" id="txt_rn_others">
-                  </div>
-                </form>
-
-                <!-- Distant Metastasis -->
-                <h2 class="h4 mt-4">Distant Metastasis</h2>
-                <form class="">
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_dm cb_dm_m1ab" type="checkbox" id="cb_dm_li" value="liver">
-                    <label class="form-check-label" for="cb_dm_li">Liver</label>
-                  </div>
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_dm cb_dm_m1ab" type="checkbox" id="cb_dm_ad" value="adrenal">
-                    <label class="form-check-label" for="cb_dm_ad">Adrenal</label>
-                  </div>
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_dm cb_dm_m1ab" type="checkbox" id="cb_dm_lu" value="lung">
-                    <label class="form-check-label" for="cb_dm_lu">Lung</label>
-                  </div>
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
-                    <input class="form-check-input cb_dm cb_dm_m1ab" type="checkbox" id="cb_dm_b" value="bone">
-                    <label class="form-check-label" for="cb_dm_b">Bone</label>
-                  </div>
-                  <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text">
-                        <input type="checkbox" class="cb_dm cb_dm_m1ab"
-                          aria-label="Checkbox for other distant metastasis" id="cb_dm_others" value="">
-                      </div>
-                      <span class="input-group-text">Others</span>
-                    </div>
-                    <input type="text" class="form-control"
-                      aria-label="Text input with checkbox for other distant metastasis" id="txt_dm_others">
-                  </div>
-                </form>
-
+              <div class="flex items-start">
+                <input
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  type="radio"
+                  name="protocol_radios"
+                  id="radio_mr"
+                  value="mr"
+                />
+                <label class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="radio_mr">MRI</label>
               </div>
             </div>
-          </main>
+
+            <!-- Tumor Location -->
+            <h2
+              class="text-lg font-bold mt-6 mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
+            >
+              Tumor Location
+            </h2>
+            <form class="needs-validation" id="form_tumor_location" novalidate>
+              <div class="flex flex-wrap gap-x-6 gap-y-2 mb-4">
+                <div class="flex items-start">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tl"
+                    type="checkbox"
+                    id="cb_tl_s"
+                    value="stomach"
+                  />
+                  <label class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_tl_s">Stomach</label>
+                </div>
+                <div class="flex items-start">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tl"
+                    type="checkbox"
+                    id="cb_tl_si"
+                    value="small intestine"
+                  />
+                  <label class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_tl_si"
+                    >Small intestine</label
+                  >
+                </div>
+                <div class="flex items-start">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tl"
+                    type="checkbox"
+                    id="cb_tl_li"
+                    value="large intestine"
+                  />
+                  <label class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_tl_li"
+                    >Large intestine</label
+                  >
+                </div>
+                <div class="flex items-start">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tl"
+                    type="checkbox"
+                    id="cb_tl_p"
+                    value="peritoneum"
+                  />
+                  <label class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_tl_p">Peritoneum</label>
+                </div>
+              </div>
+              <div class="flex items-center max-w-md mb-2">
+                <div
+                  class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md"
+                >
+                  <input
+                    type="checkbox"
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_tl"
+                    aria-label="Checkbox for other tumor locations"
+                    id="cb_tl_others"
+                    value=""
+                  />
+                  <span class="ml-2 text-sm text-gray-700 dark:text-gray-300"
+                    >Others</span
+                  >
+                </div>
+                <input
+                  type="text"
+                  class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                  aria-label="Text input with checkbox for other tumor locations"
+                  id="txt_tl_others"
+                />
+              </div>
+            </form>
+
+            <!-- Tumor Size -->
+            <h2
+              class="text-lg font-bold mt-6 mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
+            >
+              Tumor Size
+            </h2>
+            <form
+              class="flex flex-wrap items-center gap-4 mb-4 needs-validation"
+              id="form_tumor_size"
+              novalidate
+            >
+              <div class="flex items-start w-full sm:w-64">
+                <input
+                  type="number"
+                  pattern="[0-9]+([\,|\.][0-9]+)?"
+                  step="0.1"
+                  class="h-10 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-l-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  aria-label="Greatest diameter of tumor in cm"
+                  id="txt_ts_len"
+                  placeholder="Greatest dimension"
+                  required
+                />
+                <div
+                  class="h-10 inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
+                >
+                  cm
+                </div>
+              </div>
+              <div class="flex items-start">
+                <input
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  type="checkbox"
+                  id="cb_ts_nm"
+                  value="1"
+                />
+                <label class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ts_nm"
+                  >Non-measurable</label
+                >
+              </div>
+            </form>
+
+            <!-- Tumor Invasion -->
+            <h2
+              class="text-lg font-bold mt-6 mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
+            >
+              Tumor Invasion
+            </h2>
+            <form class="space-y-2">
+              <div class="flex items-start">
+                <input
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  type="radio"
+                  name="radios_ti"
+                  id="radio_ti_na"
+                  value=""
+                />
+                <label class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="radio_ti_na"
+                  >Not assessable</label
+                >
+              </div>
+              <div class="flex items-start">
+                <input
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  type="radio"
+                  name="radios_ti"
+                  id="radio_ti_no"
+                  value=""
+                  checked
+                />
+                <label class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="radio_ti_no">No</label>
+              </div>
+              <div class="flex flex-col gap-2">
+                <div class="flex items-start">
+                  <input
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    type="radio"
+                    name="radios_ti"
+                    id="radio_ti_o"
+                    value="ti"
+                  />
+                  <label class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="radio_ti_o">Yes</label>
+                </div>
+                <div class="flex items-center max-w-md ml-6">
+                  <span
+                    class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap"
+                    >Location</span
+                  >
+                  <input
+                    type="text"
+                    class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                    aria-label="Text input for invasion of adjacent organs"
+                    id="txt_ti_loc"
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- second column -->
+          <div class="space-y-6">
+            <!-- Regional Lymph Node -->
+            <section>
+              <h2
+                class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
+              >
+                Regional Lymph Node
+              </h2>
+              <h3
+                class="text-md font-semibold mb-2 text-gray-700 dark:text-gray-300"
+              >
+                Locations
+              </h3>
+              <form>
+                <div class="flex items-center max-w-md">
+                  <div
+                    class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md"
+                  >
+                    <input
+                      type="checkbox"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_rn"
+                      aria-label="Checkbox for other regional lymphadenopathy"
+                      id="cb_rn_others"
+                      value=""
+                    />
+                    <span class="ml-2 text-sm text-gray-700 dark:text-gray-300"
+                      >Others</span
+                    >
+                  </div>
+                  <input
+                    type="text"
+                    class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                    aria-label="Text input with checkbox for other regional lymphadenopathy"
+                    id="txt_rn_others"
+                  />
+                </div>
+              </form>
+            </section>
+
+            <!-- Distant Metastasis -->
+            <section>
+              <h2
+                class="text-lg font-bold mt-6 mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
+              >
+                Distant Metastasis
+              </h2>
+              <form class="space-y-4">
+                <div class="flex flex-wrap gap-x-6 gap-y-2">
+                  <div class="flex items-start">
+                    <input
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1ab"
+                      type="checkbox"
+                      id="cb_dm_li"
+                      value="liver"
+                    />
+                    <label class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_dm_li">Liver</label>
+                  </div>
+                  <div class="flex items-start">
+                    <input
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1ab"
+                      type="checkbox"
+                      id="cb_dm_ad"
+                      value="adrenal"
+                    />
+                    <label class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_dm_ad">Adrenal</label>
+                  </div>
+                  <div class="flex items-start">
+                    <input
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1ab"
+                      type="checkbox"
+                      id="cb_dm_lu"
+                      value="lung"
+                    />
+                    <label class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_dm_lu">Lung</label>
+                  </div>
+                  <div class="flex items-start">
+                    <input
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1ab"
+                      type="checkbox"
+                      id="cb_dm_b"
+                      value="bone"
+                    />
+                    <label class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_dm_b">Bone</label>
+                  </div>
+                </div>
+                <div class="flex items-center max-w-md">
+                  <div
+                    class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md"
+                  >
+                    <input
+                      type="checkbox"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm cb_dm_m1ab"
+                      aria-label="Checkbox for other distant metastasis"
+                      id="cb_dm_others"
+                      value=""
+                    />
+                    <span class="ml-2 text-sm text-gray-700 dark:text-gray-300"
+                      >Others</span
+                    >
+                  </div>
+                  <input
+                    type="text"
+                    class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                    aria-label="Text input with checkbox for other distant metastasis"
+                    id="txt_dm_others"
+                  />
+                </div>
+              </form>
+            </section>
+          </div>
+        </div>
       </div>
-    </div>
+    </main>
 
     <!-- AJCC Definitions Modal -->
     <%= require('../partials/ajcc_modal.html').default %>
 
-      <!-- Report Modal -->
-      <%= require('../partials/report_modal.html').default %>
+    <!-- Report Modal -->
+    <%= require('../partials/report_modal.html').default %>
 
-        <!-- About Modal -->
-        <%= require('../partials/about_modal.html').default %>
+    <!-- About Modal -->
+    <%= require('../partials/about_modal.html').default %>
 
-          <!-- Vendors: jquery, bootstrap, clipboard.js -->
-          <%= require('../partials/vendors_js.html').default %>
-</body>
-
+    <!-- Vendors: jquery, bootstrap, clipboard.js -->
+    <%= require('../partials/vendors_js.html').default %>
+  </body>
 </html>

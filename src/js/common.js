@@ -1,20 +1,31 @@
 // font awesome
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap';
+import '../css/tailwind.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap';
 import $ from 'jquery';
 
 
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
-import { faGithub, faFacebookSquare, faTwitterSquare } from "@fortawesome/free-brands-svg-icons";
-import { faFileContract, faAt, faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
+import { faGithub, faFacebookSquare, faXTwitter, faInstagram, faThreads, faYoutube } from "@fortawesome/free-brands-svg-icons";
+import { faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle, faFolder, faFolderOpen, faGlobe, faAngleDoubleLeft, faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faGithub, faFacebookSquare, faTwitterSquare, faFileContract, faAt, faSun, faMoon);
+library.add(faGithub, faFacebookSquare, faXTwitter, faInstagram, faThreads, faYoutube, faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle, faFolder, faFolderOpen, faGlobe, faAngleDoubleLeft, faAngleDoubleRight);
 dom.watch();
+
+// redirect to legacy version
+$('#link_legacy').on('click', function (event) {
+    event.preventDefault();
+    const fileName = window.location.pathname.split('/').pop() || 'index.html';
+    window.location.href = '../legacy/ajcc/' + fileName;
+});
 
 // show about modal
 $('#link_about').on('click', function (event) {
     event.preventDefault(); // To prevent following the link (optional)
-    $('#aboutModalLong').modal('show');
+    const modal = document.querySelector('#aboutModalLong');
+    if (modal) {
+        modal.showModal();
+    }
 });
 
 // Dark Mode Logic
@@ -71,4 +82,20 @@ $(window).on('load', function () {
             loader.remove();
         }, 300); // Matches transition duration
     }, 100);
+});
+
+// Global behavior: Close dialog when clicking outside (backdrop)
+document.addEventListener('click', (event) => {
+    if (event.target.tagName === 'DIALOG') {
+        const rect = event.target.getBoundingClientRect();
+        const isInDialog = (
+            rect.top <= event.clientY &&
+            event.clientY <= rect.top + rect.height &&
+            rect.left <= event.clientX &&
+            event.clientX <= rect.left + rect.width
+        );
+        if (!isInDialog) {
+            event.target.close();
+        }
+    }
 });

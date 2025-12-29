@@ -67,17 +67,15 @@ function generate_report(){
     const n_stage = staging.n;
     const m_stage = staging.m;
 
-    // Protocol
-    var report = `1. MR protocol
-SEQUENCES:
-- Axial T1WI and T2WI with fat suppression;
-`;
-    if ($('#cb_sp_cemr').is(':checked')) {
-        report += '- Axial, coronal and sagittal post Gd-enhanced T1WI with fat suppression';
+    // 1. Imaging Modality
+    var report = `1. Imaging modality
+  - Imaging by `;
+    if ($('input[name="protocol_radios"]:checked').val() == 'ct') {
+        report += `(+) CT scan  ( ) MRI`;
     } else {
-        report += '- Axial, coronal and sagittal T1WI with fat suppression';
+        report += `( ) CT scan  (+) MRI`;
     }
-    report += '\n\n';
+    report += "\n\n";
 
     // Tumor location
     report += "2. Tumor location\n";
@@ -183,7 +181,7 @@ SEQUENCES:
 
     $('#reportModalLongTitle').html("Laryngeal Cancer (Supraglottis) Staging Form");
     $('#reportModalBody pre code').html(report);
-    $('#reportModalLong').modal('show');
+    document.getElementById('reportModalLong').showModal();
 }
 
 $('#cb_tp_ts_nm').change(function() {

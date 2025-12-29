@@ -44,9 +44,9 @@ function generate_report(){
 
     // Protocol
     if ($('input[name="protocol_radios"]:checked').val() == 'ct') {
-        report += `[+] CT scan  [ ] MRI`;
+        report += `(+) CT scan  ( ) MRI`;
     } else {
-        report += `[ ] CT scan  [+] MRI`;
+        report += `( ) CT scan  (+) MRI`;
     }
     report += "\n\n";
 
@@ -85,11 +85,11 @@ function generate_report(){
     let ti_others_check = $('#cb_ti_others').is(':checked') ? "+" : " ";
     let txt_ti_others = $('#txt_ti_others').val() ? $('#txt_ti_others').val() : "___";
     report += `3. Tumor invasion
-    [${ti_na_check}] Tx: Tumor cannot be visualized in this imaging study
-    [${ti_mp_check}] T2: Colonic or rectal wall
-    [${ti_pt_check}] T3: Invades non-peritonealized pericolonic or perirectal tissues
-    [${ti_vp_check}] T4a: Penetrates to the surface of the visceral peritoneum
-    [${ti_others_check}] T4b: Adjacent organs: ${txt_ti_others}
+    (${ti_na_check}) Tx: Tumor cannot be visualized in this imaging study
+    (${ti_mp_check}) T2: Colonic or rectal wall
+    (${ti_pt_check}) T3: Invades non-peritonealized pericolonic or perirectal tissues
+    (${ti_vp_check}) T4a: Penetrates to the surface of the visceral peritoneum
+    (${ti_others_check}) T4b: Adjacent organs: ${txt_ti_others}
 
 `;
 
@@ -99,10 +99,10 @@ function generate_report(){
         isNonMeasurable: has_ts_nm,
         tumorSize: t_length,
         invasion: {
-            t4b: $('.cb_ti_t4b:checked').length > 0,
-            t4a: $('.cb_ti_t4a:checked').length > 0,
-            t3: $('.cb_ti_t3:checked').length > 0,
-            t2: $('.cb_ti_t2:checked').length > 0
+            t4b: $('#cb_ti_others').is(':checked'),
+            t4a: $('#cb_ti_vp').is(':checked'),
+            t3: $('#cb_ti_pt').is(':checked'),
+            t2: $('#cb_ti_mp').is(':checked')
         },
         nodesCount: ($('.cb_rn:checked').length && $('#txt_rln_num').val() > 0) ? parseInt($('#txt_rln_num').val()) : 0,
         metastasis: {
@@ -175,7 +175,7 @@ function generate_report(){
 
     $('#reportModalLongTitle').html("Colorectal Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
-    $('#reportModalLong').modal('show');
+    document.getElementById('reportModalLong').showModal();
 }
 
 $('#cb_tp_ts_nm').change(function() {

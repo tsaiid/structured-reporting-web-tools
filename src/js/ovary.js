@@ -47,9 +47,9 @@ function generate_report(){
 
     // Protocol
     if ($('input[name="protocol_radios"]:checked').val() == 'ct') {
-        report += `[+] CT scan  [ ] MRI`;
+        report += `(+) CT scan  ( ) MRI`;
     } else {
-        report += `[ ] CT scan  [+] MRI`;
+        report += `( ) CT scan  (+) MRI`;
     }
     report += "\n\n";
 
@@ -216,7 +216,7 @@ function generate_report(){
 
     $('#reportModalLongTitle').html("Ovarian Cancer Staging Form");
     $('#reportModalBody pre code').html(report);
-    $('#reportModalLong').modal('show');
+    document.getElementById('reportModalLong').showModal();
 }
 
 $('#cb_tp_ts_nm').change(function() {

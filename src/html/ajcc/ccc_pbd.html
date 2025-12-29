@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh">
 
 <head>
@@ -23,24 +23,31 @@
     <%= require('../partials/vendors_css.html').default %>
 </head>
 
-<body>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
 
   <%= require('../partials/nav.html').default %>
 
-    <div class="container-fluid">
-      <div class="row">
+
         <%= require('../partials/sidebar.html').default %>
 
-          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <div
-              class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-              <h1 class="h3">
-                Cholangiocarcinoma: Perihilar Bile Duct
-                <small class="text-muted">
-                  (extrahepatic duct to cystic duct origin)
-                </small>
+          <main role="main" class="md:ml-48 lg:ml-56 pt-12 min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+<div class="p-6 max-w-7xl mx-auto">
+            <div class="flex justify-between items-center pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
+              <h1 class="text-2xl font-bold">
+                <span class="hidden xl:inline">Cholangiocarcinoma</span><span class="xl:hidden">CCC</span>: <span class="hidden xl:inline">Perihilar Bile Duct</span><span class="xl:hidden">Perihilar BD</span><div class="relative group inline-block align-super ml-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-gray-400 hover:text-blue-500 transition-colors cursor-help">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                  </svg>
+                  <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 text-sm font-medium text-white bg-gray-900 dark:bg-gray-700 rounded-lg shadow-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-50">
+                    extrahepatic duct to cystic duct origin
+                    <div class="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 border-4 border-transparent border-t-gray-900 dark:border-t-gray-700"></div>
+                  </div>
+                </div>
                 Staging Form
-                <span class="badge badge-secondary ml-2" style="font-size: 50%; vertical-align: super;">AJCC 8th</span>
+                <span
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-blue-100 align-super ml-2"
+                  >AJCC 8<sup>th</sup></span
+                >
               </h1>
 
               <%= require('../partials/toolbar_buttons.html').default %>
@@ -49,222 +56,285 @@
             <div class="row">
               <div class="col">
                 <!-- Tumor Size -->
-                <h2 class="h4">Tumor Size</h2>
-                <form class="form-inline needs-validation" id="form_tumor_size" novalidate>
-                  <div class="input-group input-group-sm col-md-6 pl-0 mb-2 mr-sm-2">
-                    <input type="number" pattern="[0-9]+([\,|\.][0-9]+)?" step="0.1" class="form-control"
-                      aria-label="Greatest dimension of tumor in cm" id="txt_ts_len" placeholder="The largest tumor"
-                      required>
-                    <div class="input-group-append">
-                      <span class="input-group-text">cm</span>
-                    </div>
-                    <div class="invalid-tooltip">
-                      Please enter a number.
+                <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">Tumor Size</h2>
+                <form class="flex flex-wrap items-center gap-4 mb-4 needs-validation" id="form_tumor_size" novalidate>
+                  <div class="flex items-center max-w-xs">
+                    <input
+                      type="number"
+                      pattern="[0-9]+([\,|\.][0-9]+)?"
+                      step="0.1"
+                      class="h-10 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-l-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      aria-label="Greatest dimension of tumor in cm"
+                      id="txt_ts_len"
+                      placeholder="The largest tumor"
+                      required
+                    />
+                    <div
+                      class="h-10 inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
+                    >
+                      cm
                     </div>
                   </div>
-                  <div class="form-check mb-2 mr-sm-2">
-                    <input class="form-check-input" type="checkbox" id="cb_ts_nm" value="1">
-                    <label class="form-check-label" for="cb_ts_nm">Non-measurable</label>
-                    <div class="valid-tooltip">
+                  <div class="flex items-center space-x-2 relative">
+                    <input class="form-checkbox text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0" type="checkbox" id="cb_ts_nm" value="1">
+                    <label class="text-sm text-gray-700 dark:text-gray-300 cursor-pointer" for="cb_ts_nm">Non-measurable</label>
+                    <div class="valid-tooltip absolute left-0 bottom-full mb-1 hidden">
                       Or, check Non-measurable.
                     </div>
                   </div>
                 </form>
 
                 <!-- Tumor Location -->
-                <h2 class="h4 mt-4">Tumor Location</h2>
-                <form class="form-inline">
-                  <div class="form-check mb-2 mr-sm-2">
-                    <label class="form-check-label" for="">Location: </label>
-                  </div>
-                  <div class="form-check mb-2 mr-sm-2">
-                    <input class="form-check-input radio_tl" type="radio" id="radio_tl_r" name="radio_tl" value="right">
-                    <label class="form-check-label" for="radio_tl_r">Right</label>
-                  </div>
-                  <div class="form-check mb-2 mr-sm-2">
-                    <input class="form-check-input radio_tl" type="radio" id="radio_tl_l" name="radio_tl" value="left">
-                    <label class="form-check-label" for="radio_tl_l">Left</label>
-                  </div>
-                  <div class="form-check mb-2 mr-sm-2">
-                    <input class="form-check-input radio_tl" type="radio" id="radio_tl_b" name="radio_tl"
-                      value="CHD bifurcation" checked>
-                    <label class="form-check-label" for="radio_tl_b">CHD bifurcation</label>
-                  </div>
-                </form>
+                <h2
+                  class="text-lg font-bold mt-6 mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
+                >
+                  Tumor Location
+                </h2>
+                <div class="flex flex-wrap items-center gap-4 mb-4">
+                  <span class="font-bold text-gray-700 dark:text-gray-300">Location</span>
+                  <label class="flex items-start space-x-2 cursor-pointer">
+                    <input class="form-radio text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 radio_tl" type="radio" id="radio_tl_r" name="radio_tl" value="right">
+                    <span class="text-sm text-gray-700 dark:text-gray-300">Right</span>
+                  </label>
+                  <label class="flex items-start space-x-2 cursor-pointer">
+                    <input class="form-radio text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 radio_tl" type="radio" id="radio_tl_l" name="radio_tl" value="left">
+                    <span class="text-sm text-gray-700 dark:text-gray-300">Left</span>
+                  </label>
+                  <label class="flex items-start space-x-2 cursor-pointer">
+                    <input class="form-radio text-blue-600 focus:ring-blue-500 w-4 h-4 shrink-0 radio_tl" type="radio" id="radio_tl_b" name="radio_tl" value="CHD bifurcation" checked>
+                    <span class="text-sm text-gray-700 dark:text-gray-300">CHD bifurcation</span>
+                  </label>
+                </div>
 
                 <!-- Tumor Invasion -->
-                <h2 class="h4 mt-4">Tumor Invasion</h2>
-                <div class="row">
-                  <div class="col t_sidebar">
-                    T0
-                  </div>
-                  <div class="col">
-                    <form class="">
-                      <div class="form-check form-check-inline mb-2 mr-sm-2">
-                        <input class="form-check-input cb_ti cb_ti_t0" type="checkbox" id="cb_ti_t0"
-                          value="No evidence of primary tumor">
-                        <label class="form-check-label" for="cb_ti_t0">No evidence of primary tumor</label>
-                      </div>
-                    </form>
-                  </div>
+                <h2
+                  class="text-lg font-bold mt-6 mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
+                >
+                  Tumor Invasion
+                </h2>
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+              <!-- T0 -->
+              <div class="flex border-b border-gray-200 dark:border-gray-700">
+                <div class="flex-shrink-0 w-12 md:w-16 bg-gray-100 dark:bg-gray-700 flex items-center justify-center border-r border-gray-200 dark:border-gray-700">
+                  <span class="font-bold text-gray-900 dark:text-gray-100">T0</span>
                 </div>
-
-                <div class="row">
-                  <div class="col t_sidebar">
-                    T1
-                  </div>
-                  <div class="col">
-                    <form class="">
-                      <form class="">
-                        <div class="form-check form-check-inline mb-2 mr-sm-2">
-                          <input class="form-check-input cb_ti cb_ti_t1" type="checkbox" id="cb_ti_t1"
-                            value="Tumor confines in the bile duct">
-                          <label class="form-check-label" for="cb_ti_t1">Tumor confines in the bile duct</label>
-                        </div>
-                      </form>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col t_sidebar">
-                    T2a
-                  </div>
-                  <div class="col">
-                    <form class="">
-                      <div class="form-check form-check-inline mb-2 mr-sm-2">
-                        <input class="form-check-input cb_ti cb_ti_t2a" type="checkbox" id="cb_ti_t2a"
-                          value="Tumor invades beyond the wall of the bile duct to surrounding adipose tissue">
-                        <label class="form-check-label" for="cb_ti_t2a">Tumor invades beyond the wall of the bile duct
-                          to surrounding adipose tissue</label>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col t_sidebar">
-                    T2b
-                  </div>
-                  <div class="col">
-                    <form class="">
-                      <div class="form-check form-check-inline mb-2 mr-sm-2">
-                        <input class="form-check-input cb_ti cb_ti_t2b" type="checkbox" id="cb_ti_t2b"
-                          value="Tumor invades adjacent hepatic parenchyma">
-                        <label class="form-check-label" for="cb_ti_t2b">Tumor invades adjacent hepatic
-                          parenchyma</label>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col t_sidebar">
-                    T3
-                  </div>
-                  <div class="col">
-                    <form class="">
-                      <div class="form-check form-check-inline mb-2 mr-sm-2">
-                        <input class="form-check-input cb_ti cb_ti_t3" type="checkbox" id="cb_ti_t3"
-                          value="Unilateral branches of the portal vein or hepatic artery">
-                        <label class="form-check-label" for="cb_ti_t3">Unilateral branches of the portal vein or hepatic
-                          artery</label>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col t_sidebar">
-                    T4
-                  </div>
-                  <div class="col">
-                    <form class="" id="">
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_t4_mpv"
-                          value="Main portal vein or portal branches bilaterally">
-                        <label class="form-check-label" for="cb_ti_t4_mpv">Main portal vein or portal branches
-                          bilaterally</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_t4_cha"
-                          value="Common hepatic artery">
-                        <label class="form-check-label" for="cb_ti_t4_cha">Common hepatic artery</label>
-                      </div>
-                      <div class="form-check mb-2 mr-sm-2">
-                        <input class="form-check-input cb_ti cb_ti_t4" type="checkbox" id="cb_ti_t4_u2bd"
-                          value="Unilateral 2nd-order branch bile duct and contralateral portal vein or hepatic artery">
-                        <label class="form-check-label" for="cb_ti_t4_u2bd">Unilateral 2nd-order branch bile duct and
-                          contralateral portal vein or hepatic artery</label>
-                      </div>
-                    </form>
+                <div class="p-3 flex items-center">
+                  <div class="flex items-start">
+                    <input
+                      class="flex-shrink-0 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t0"
+                      type="checkbox"
+                      id="cb_ti_t0"
+                      value="No evidence of primary tumor"
+                    />
+                    <label
+                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      for="cb_ti_t0"
+                      >No evidence of primary tumor</label
+                    >
                   </div>
                 </div>
               </div>
 
+              <!-- T1 -->
+              <div class="flex border-b border-gray-200 dark:border-gray-700">
+                <div class="flex-shrink-0 w-12 md:w-16 bg-gray-100 dark:bg-gray-700 flex items-center justify-center border-r border-gray-200 dark:border-gray-700">
+                  <span class="font-bold text-gray-900 dark:text-gray-100">T1</span>
+                </div>
+                <div class="p-3 flex items-center">
+                  <div class="flex items-start">
+                    <input
+                      class="flex-shrink-0 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t1"
+                      type="checkbox"
+                      id="cb_ti_t1"
+                      value="Tumor confines in the bile duct"
+                    />
+                    <label
+                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      for="cb_ti_t1"
+                      >Tumor confines in the bile duct</label
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- T2a -->
+              <div class="flex border-b border-gray-200 dark:border-gray-700">
+                <div class="flex-shrink-0 w-12 md:w-16 bg-gray-100 dark:bg-gray-700 flex items-center justify-center border-r border-gray-200 dark:border-gray-700">
+                  <span class="font-bold text-gray-900 dark:text-gray-100">T2a</span>
+                </div>
+                <div class="p-3 flex items-center">
+                  <div class="flex items-start">
+                    <input
+                      class="flex-shrink-0 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t2a"
+                      type="checkbox"
+                      id="cb_ti_t2a"
+                      value="Tumor invades beyond the wall of the bile duct to surrounding adipose tissue"
+                    />
+                    <label
+                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      for="cb_ti_t2a"
+                      >Tumor invades beyond the wall of the bile duct to surrounding adipose tissue</label
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- T2b -->
+              <div class="flex border-b border-gray-200 dark:border-gray-700">
+                <div class="flex-shrink-0 w-12 md:w-16 bg-gray-100 dark:bg-gray-700 flex items-center justify-center border-r border-gray-200 dark:border-gray-700">
+                  <span class="font-bold text-gray-900 dark:text-gray-100">T2b</span>
+                </div>
+                <div class="p-3 flex items-center">
+                  <div class="flex items-start">
+                    <input
+                      class="flex-shrink-0 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t2b"
+                      type="checkbox"
+                      id="cb_ti_t2b"
+                      value="Tumor invades adjacent hepatic parenchyma"
+                    />
+                    <label
+                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      for="cb_ti_t2b"
+                      >Tumor invades adjacent hepatic parenchyma</label
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- T3 -->
+              <div class="flex border-b border-gray-200 dark:border-gray-700">
+                <div class="flex-shrink-0 w-12 md:w-16 bg-gray-100 dark:bg-gray-700 flex items-center justify-center border-r border-gray-200 dark:border-gray-700">
+                  <span class="font-bold text-gray-900 dark:text-gray-100">T3</span>
+                </div>
+                <div class="p-3 flex items-center">
+                  <div class="flex items-start">
+                    <input
+                      class="flex-shrink-0 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t3"
+                      type="checkbox"
+                      id="cb_ti_t3"
+                      value="Unilateral branches of the portal vein or hepatic artery"
+                    />
+                    <label
+                      class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      for="cb_ti_t3"
+                      >Unilateral branches of the portal vein or hepatic artery</label
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- T4 -->
+              <div class="flex">
+                <div class="flex-shrink-0 w-12 md:w-16 bg-gray-100 dark:bg-gray-700 flex items-center justify-center border-r border-gray-200 dark:border-gray-700">
+                  <span class="font-bold text-gray-900 dark:text-gray-100">T4</span>
+                </div>
+                <div class="p-3 flex-grow min-w-0">
+                  <div class="flex flex-col gap-2">
+                    <div class="flex items-start">
+                      <input
+                        class="flex-shrink-0 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                        type="checkbox"
+                        id="cb_ti_t4_mpv"
+                        value="Main portal vein or portal branches bilaterally"
+                      />
+                      <label
+                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                        for="cb_ti_t4_mpv"
+                        >Main portal vein or portal branches bilaterally</label
+                      >
+                    </div>
+                    <div class="flex items-start">
+                      <input
+                        class="flex-shrink-0 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                        type="checkbox"
+                        id="cb_ti_t4_cha"
+                        value="Common hepatic artery"
+                      />
+                      <label
+                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                        for="cb_ti_t4_cha"
+                        >Common hepatic artery</label
+                      >
+                    </div>
+                    <div class="flex items-start">
+                      <input
+                        class="flex-shrink-0 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti cb_ti_t4"
+                        type="checkbox"
+                        id="cb_ti_t4_u2bd"
+                        value="Unilateral 2nd-order branch bile duct and contralateral portal vein or hepatic artery"
+                      />
+                      <label
+                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                        for="cb_ti_t4_u2bd"
+                        >Unilateral 2nd-order branch bile duct and contralateral portal vein or hepatic artery</label
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
               <!-- second column -->
               <div class="col">
                 <!-- Regional Lymph Node -->
-                <h2 class="h4">Regional Lymph Node</h2>
-                <form class="form-inline">
-                  <div class="form-group">
-                    <div class="input-group input-group-sm mb-2 mr-sm-2">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">Number</span>
-                      </div>
-                      <input type="number" pattern="[0-9]+" step="1" class="form-control"
-                        aria-label="Number of suspicious lymph node" id="txt_rln_num" placeholder="0" value="0">
+                <h2 class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2">Regional Lymph Node</h2>
+                <div class="space-y-2 mb-4">
+                  <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+                    <div class="flex items-center max-w-sm">
+                      <label class="h-10 inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600 whitespace-nowrap" for="txt_rln_num">
+                        Number
+                      </label>
+                      <input type="number" pattern="[0-9]+" step="1" class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5" id="txt_rln_num" placeholder="0" value="0">
                     </div>
+                    <span class="text-sm text-gray-500 dark:text-gray-400 italic">1-3 (N1), ≥4 (N2)</span>
                   </div>
-                  <div class="form-group mb-2 mr-sm-2">
-                    <small id="ref_rln_num" class="text-muted">
-                      1-3 (N1), ≥4 (N2)
-                    </small>
-                  </div>
-                  <div class="form-group mb-2 mr-sm-2">
-                    <small id="ref_rln_loc" class="text-muted">
-                      typically involving the hilar, cystic duct, common bile duct, hepatic artery, posterior
-                      pancreatoduodenal, and portal vein
-                    </small>
-                  </div>
-                </form>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 italic leading-relaxed">
+                    typically involving the hilar, cystic duct, common bile duct, hepatic artery, posterior pancreatoduodenal, and portal vein
+                  </p>
+                </div>
 
                 <!-- Distant Metastasis -->
-                <h2 class="h4 mt-4">Distant Metastasis</h2>
+                <h2
+                  class="text-lg font-bold mt-6 mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
+                >
+                  Distant Metastasis
+                </h2>
                 <form class="">
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                  <div class="form-check form-check-inline items-start mb-2 mr-sm-2">
                     <input class="form-check-input cb_dm" type="checkbox" id="cb_dm_ad" value="adrenal">
                     <label class="form-check-label" for="cb_dm_ad">Adrenal</label>
                   </div>
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                  <div class="form-check form-check-inline items-start mb-2 mr-sm-2">
                     <input class="form-check-input cb_dm" type="checkbox" id="cb_dm_lu" value="lung">
                     <label class="form-check-label" for="cb_dm_lu">Lung</label>
                   </div>
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                  <div class="form-check form-check-inline items-start mb-2 mr-sm-2">
                     <input class="form-check-input cb_dm" type="checkbox" id="cb_dm_b" value="bone">
                     <label class="form-check-label" for="cb_dm_b">Bone</label>
                   </div>
-                  <div class="input-group input-group-sm col-10 pl-0 mb-2 mr-sm-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text">
-                        <input type="checkbox" class="cb_dm" aria-label="Checkbox for other distant metastasis"
-                          id="cb_dm_others" value="">
-                      </div>
-                      <span class="input-group-text">Others</span>
+                  <div class="flex items-center max-w-md mb-2">
+                    <div class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md">
+                      <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_dm" aria-label="Checkbox for other distant metastasis" id="cb_dm_others" value="">
+                      <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Others</span>
                     </div>
-                    <input type="text" class="form-control"
-                      aria-label="Text input with checkbox for other distant metastasis" id="txt_dm_others">
+                    <input type="text" class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5" aria-label="Text input with checkbox for other distant metastasis" id="txt_dm_others">
                   </div>
                 </form>
 
                 <!-- Imaging Modality -->
-                <h2 class="h4 mt-4">Imaging Modality</h2>
+                <h2
+                  class="text-lg font-bold mt-6 mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
+                >
+                  Imaging Modality
+                </h2>
                 <form class="">
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                  <div class="form-check form-check-inline items-start mb-2 mr-sm-2">
                     <input class="form-check-input" type="radio" name="protocol_radios" id="radio_ct" value="ct"
                       checked>
                     <label class="form-check-label" for="radio_ct">CT</label>
                   </div>
-                  <div class="form-check form-check-inline mb-2 mr-sm-2">
+                  <div class="form-check form-check-inline items-start mb-2 mr-sm-2">
                     <input class="form-check-input" type="radio" name="protocol_radios" id="radio_mr" value="mr">
                     <label class="form-check-label" for="radio_mr">MRI</label>
                   </div>
@@ -272,9 +342,8 @@
 
               </div>
             </div>
-          </main>
-      </div>
-    </div>
+          </div>
+</main>
 
     <!-- AJCC Definitions Modal -->
     <%= require('../partials/ajcc_modal.html').default %>

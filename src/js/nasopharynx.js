@@ -39,9 +39,9 @@ function generate_report(){
     var report = `1. Imaging modality
   - Imaging by `;
     if ($('input[name="protocol_radios"]:checked').val() == 'ct') {
-        report += `[+] CT scan  [ ] MRI`;
+        report += `(+) CT scan  ( ) MRI`;
     } else {
-        report += `[ ] CT scan  [+] MRI`;
+        report += `( ) CT scan  (+) MRI`;
     }
     report += "\n\n";
 
@@ -218,7 +218,7 @@ function generate_report(){
 
     $('#reportModalLongTitle').html("Nasopharyngeal Carcinoma Staging Form (AJCC 9th)");
     $('#reportModalBody pre code').html(report);
-    $('#reportModalLong').modal('show');
+    document.getElementById('reportModalLong').showModal();
 }
 
 // ... event listeners remain the same ...

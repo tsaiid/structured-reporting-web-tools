@@ -11,11 +11,13 @@
 
 - **Core**: HTML5, CSS3, Vanilla JavaScript (ES6+).
 - **Build System**: Webpack (Note: Ensure `webpack.config.js` is respected when adding new assets).
+- **Package Manager**: **pnpm** (Strictly enforced. Do not use npm or yarn).
+- **Development Tools**: Prefer `ripgrep` (rg) for code searching/grepping.
 - **Structure**:
   - `src/`: Contains source JavaScript logic and templates.
   - `public/`: Static HTML entry points (or templates).
   - `dist/`: Output directory (do not edit manually).
-- **Styling**: Keep it lightweight (Vanilla CSS or Bootstrap if configured). Focus on high contrast and readability for medical reading rooms (dim light environments).
+- **Styling**: Keep it lightweight (Tailwind CSS or Pico CSS if configured). Focus on high contrast and readability for medical reading rooms (dim light environments).
 
 ## 3. Coding Guidelines (開發準則)
 

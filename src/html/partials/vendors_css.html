@@ -10,26 +10,14 @@
 </script>
 <style>
   /* Critical CSS to prevent FOUC */
-  body { /* Apply to body regardless of theme */
-    font-size: .875rem; /* Set base font size immediately */
-    line-height: 1.5; /* Prevent line-height jump */
+  /* Moved most styles to Tailwind, keeping theme logic for now */
+  :root {
+      --sidebar-bg: #f8f9fa;
   }
-  .sidebar { /* Light mode critical styles for sidebar */
-    background-color: #f8f9fa !important; /* Matches --sidebar-bg from :root */
+  [data-theme="dark"] {
+      --sidebar-bg: #1e1e1e;
   }
-  .sidebar .nav-link {
-    color: #333; /* Matches default color for .sidebar .nav-link */
-  }
-  html[data-theme="dark"] body {
-    background-color: #121212;
-    color: #e0e0e0;
-  }
-  html[data-theme="dark"] .sidebar {
-    background-color: #1e1e1e !important;
-  }
-  html[data-theme="dark"] .sidebar .nav-link {
-    color: #b0b0b0;
-  }
+
   /* Page Loader */
   #global-loader {
     position: fixed;
@@ -63,4 +51,4 @@
     to { transform: rotate(360deg); }
   }
 </style>
-<!-- Bootstrap CSS is now imported in common.js -->
+
