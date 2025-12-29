@@ -64,10 +64,10 @@
 
   /* Grid System (Basic Compat) */
   .row {
-    @apply flex flex-wrap -mx-4;
+    @apply flex flex-wrap -mx-4 gap-y-8;
   }
   .col {
-    @apply px-4 flex-1;
+    @apply px-4 w-full 2col:flex-1;
   }
   /* Very rough approx for col-md-*, etc. better to refactor properly but this helps */
   [class*="col-"] {
@@ -141,6 +141,7 @@
   --color-dracula-purple: #bd93f9;
   --color-dracula-red: #ff5555;
   --color-dracula-yellow: #f1fa8c;
+  --breakpoint-2col: 1000px;
 }
 
 @layer base {
