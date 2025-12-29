@@ -70,9 +70,9 @@ function generate_report(){
     var report = `1. Imaging modality
   - Imaging by `;
     if ($('input[name="protocol_radios"]:checked').val() == 'ct') {
-        report += `[+] CT scan  [ ] MRI`;
+        report += `(+) CT scan  ( ) MRI`;
     } else {
-        report += `[ ] CT scan  [+] MRI`;
+        report += `( ) CT scan  (+) MRI`;
     }
     report += "\n\n";
 
