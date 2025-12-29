@@ -384,3 +384,103 @@ input:checked+.slider .icon-moon {
 *:hover {
   scrollbar-color: var(--scrollbar-thumb) transparent;
 }
+
+/*
+ * Sidebar Collapse & Hover Expand Logic
+ */
+.sidebar-nav {
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-x: hidden !important;
+}
+
+main[role="main"] {
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* When collapsed */
+body.sidebar-collapsed .sidebar-nav {
+  width: 3.5rem !important; /* w-14 */
+}
+
+body.sidebar-collapsed main[role="main"] {
+  margin-left: 3.5rem !important;
+}
+
+/* Hide text elements AND icons when collapsed */
+.sidebar-nav .sidebar-label,
+.sidebar-nav h6 span,
+.sidebar-nav #ajcc-toggle,
+.sidebar-nav a svg {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.sidebar-nav .sidebar-label,
+.sidebar-nav h6 span {
+  white-space: nowrap;
+  display: inline-block;
+}
+
+/* Initially hidden state when collapsed */
+body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) .sidebar-label,
+body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) h6 span,
+body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) #ajcc-toggle,
+body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) a svg {
+  opacity: 0 !important;
+  visibility: hidden;
+  width: 0;
+  overflow: hidden;
+  transition: opacity 0.1s ease, visibility 0.1s ease;
+}
+
+/* Ensure consistent anchor box model */
+body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) a {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+  font-size: 0;
+}
+
+body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) h6 {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+  margin-bottom: 0;
+}
+
+body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) .flex.items-center.justify-between {
+  justify-content: center;
+}
+
+/* Hover Expansion (JavaScript controlled) */
+body.sidebar-collapsed .sidebar-nav.hover-expanded {
+  width: 14rem !important; /* w-56 */
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+}
+
+/* Fade in ALL text elements AFTER sidebar width transition */
+body.sidebar-collapsed .sidebar-nav.hover-expanded .sidebar-label,
+body.sidebar-collapsed .sidebar-nav.hover-expanded h6 span,
+body.sidebar-collapsed .sidebar-nav.hover-expanded #ajcc-toggle {
+  opacity: 1 !important;
+  visibility: visible;
+  width: auto;
+  transition: opacity 0.3s ease 0.2s, visibility 0.3s ease 0.2s;
+}
+
+/* Special handling for SVG icons to ensure fade-in works */
+body.sidebar-collapsed .sidebar-nav.hover-expanded a svg {
+  opacity: 1 !important;
+  visibility: visible;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.5rem;
+  transition: opacity 0.3s ease 0.2s, visibility 0.3s ease 0.2s;
+}
+
+/* Transition for icons inside links */
+.sidebar-nav .group i {
+  transition: margin 0.3s;
+}

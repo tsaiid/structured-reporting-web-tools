@@ -213,7 +213,6 @@ export function setupReportPage({
     reportModalTitleId = '#reportModalLongTitle',
     reportModalBodySelector = '#reportModalBody pre code'
 }) {
-    // 1. Copy Button Click - Trigger Generation
     // 1. Copy Button Click - Trigger Generation and Copy
     $(copyButtonId).on('click', function (event) {
         event.preventDefault();
@@ -252,10 +251,7 @@ export function setupReportPage({
         }
     });
 
-    // 2. ClipboardJS Setup - REMOVED
-    // Replaced with native navigator.clipboard in the click handler above
-
-    // 3. AJCC Button Click
+    // 2. AJCC Button Click
     $(ajccButtonId).on('click', function (event) {
         event.preventDefault();
         const modal = document.querySelector(ajccModalId);
@@ -264,7 +260,7 @@ export function setupReportPage({
         }
     });
 
-    // 4. Document Ready - Populate AJCC Table
+    // 3. Document Ready - Populate AJCC Table
     $(document).ready(function () {
         // console.log("setupReportPage: Document loaded");
         if (ajccData && ajccData.T && ajccData.N && ajccData.M) {
@@ -279,18 +275,16 @@ export function setupReportPage({
 export function initSidebar() {
     const $list = $('#ajcc-sidebar-list');
     const $toggleBtn = $('#ajcc-toggle');
+    const $body = $('body');
+    const $sidebarCollapseToggle = $('#sidebar-collapse-toggle');
+    const $sidebarNav = $('#main-sidebar');
 
-    // Check localStorage, default to expanded
-    // Note: 'ajcc_sidebar_state' can be 'expanded' or 'collapsed'
-    // Default is expanded if null
-    let isExpanded = localStorage.getItem('ajcc_sidebar_state') !== 'collapsed';
+    // --- 1. AJCC Optional Items Toggle ---
+    let isAjccExpanded = localStorage.getItem('ajcc_sidebar_state') !== 'collapsed';
 
-    function updateState(expanded) {
+    function updateAjccState(expanded) {
         if (expanded) {
-            // Set minus icon for expanded state
             $toggleBtn.html('<i class="fas fa-folder-open"></i>');
-
-            // Show optional items
             $list.find('.ajcc-optional').css({
                 'max-height': '50px',
                 'opacity': '1',
@@ -299,10 +293,7 @@ export function initSidebar() {
                 'padding-bottom': ''
             });
         } else {
-            // Set plus icon for collapsed state
             $toggleBtn.html('<i class="fas fa-folder"></i>');
-
-            // Hide optional items
             $list.find('.ajcc-optional').css({
                 'max-height': '0',
                 'opacity': '0',
@@ -311,16 +302,61 @@ export function initSidebar() {
                 'padding-bottom': '0'
             });
         }
-        isExpanded = expanded;
+        isAjccExpanded = expanded;
     }
 
-    // Initial state set immediately
-    updateState(isExpanded);
+    updateAjccState(isAjccExpanded);
 
     $toggleBtn.on('click', function(e) {
         e.preventDefault();
-        const newState = !isExpanded;
-        updateState(newState);
+        const newState = !isAjccExpanded;
+        updateAjccState(newState);
         localStorage.setItem('ajcc_sidebar_state', newState ? 'expanded' : 'collapsed');
+    });
+
+    // --- 2. Full Sidebar Collapse Logic ---
+    let isSidebarCollapsed = localStorage.getItem('sidebar_collapsed_locked') === 'true';
+    let ignoreHover = false;
+
+    function updateSidebarCollapseState(collapsed) {
+        if (collapsed) {
+            $body.addClass('sidebar-collapsed');
+            $sidebarCollapseToggle.html('<i class="fas fa-angle-double-right" id="sidebar-collapse-icon"></i>');
+            $sidebarCollapseToggle.attr('title', '展開 Sidebar');
+        } else {
+            $body.removeClass('sidebar-collapsed');
+            $sidebarCollapseToggle.html('<i class="fas fa-angle-double-left" id="sidebar-collapse-icon"></i>');
+            $sidebarCollapseToggle.attr('title', '收合 Sidebar');
+        }
+        isSidebarCollapsed = collapsed;
+    }
+
+    // Hover Expansion Logic
+    $sidebarNav.on('mouseenter', function() {
+        if (isSidebarCollapsed && !ignoreHover) {
+            $(this).addClass('hover-expanded');
+        }
+    });
+
+    $sidebarNav.on('mouseleave', function() {
+        $(this).removeClass('hover-expanded');
+        ignoreHover = false; // Reset when mouse leaves
+    });
+
+    // Initial state
+    updateSidebarCollapseState(isSidebarCollapsed);
+
+    $sidebarCollapseToggle.on('click', function(e) {
+        e.preventDefault();
+        const newState = !isSidebarCollapsed;
+
+        if (newState === true) {
+            // Force remove hover-expanded and prevent it from coming back until mouse leaves
+            $sidebarNav.removeClass('hover-expanded');
+            ignoreHover = true; // Set lock
+        }
+
+        updateSidebarCollapseState(newState);
+        localStorage.setItem('sidebar_collapsed_locked', newState);
     });
 }
