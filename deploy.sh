@@ -34,7 +34,7 @@ fi
 # --exclude '.git': protect the git repository metadata
 # --exclude 'ajcc8', 'ajcc9', 'vendor': preserve legacy directories not managed by this build
 echo -e "${GREEN}2. Syncing files to deployment target...${NC}"
-rsync -av --delete --exclude '.git' --exclude 'ajcc8' --exclude 'ajcc9' --exclude 'vendor' "$DIST_DIR/" "$TARGET_DIR/"
+rsync -av --delete --exclude '.git' --exclude 'ajcc8' --exclude 'ajcc9' --exclude 'vendor' --exclude 'legacy' "$DIST_DIR/" "$TARGET_DIR/"
 
 # 4. Git operations in target repo
 echo -e "${GREEN}3. Committing and pushing changes...${NC}"

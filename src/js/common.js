@@ -16,7 +16,7 @@ dom.watch();
 $('#link_legacy').on('click', function (event) {
     event.preventDefault();
     const fileName = window.location.pathname.split('/').pop() || 'index.html';
-    window.location.href = 'legacy/' + fileName;
+    window.location.href = '../legacy/ajcc/' + fileName;
 });
 
 // show about modal
