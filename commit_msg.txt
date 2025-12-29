@@ -1,6 +1,0 @@
-style: 調整 AJCC 頁面響應式佈局與標準化斷點
-
-- 新增自定義 Tailwind 斷點 `2col` (1000px)，統一單雙欄切換門檻。
-- 修改 `.row` 與 `.col` 類別，確保小螢幕堆疊時自動產生垂直間距 (gap-y-8)，解決區塊緊貼問題。
-- 更新 lung.html, gist.html, rcc.html 及 ogs 系列頁面，標準化為 1000px 切換雙欄。
-- 確保在兩欄模式下 Regional Lymph Node 與左側內容頂部對齊。
