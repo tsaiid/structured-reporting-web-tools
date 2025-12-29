@@ -276,7 +276,7 @@ export function setupReportPage({
     });
 }
 
-function initSidebar() {
+export function initSidebar() {
     const $list = $('#ajcc-sidebar-list');
     const $toggleBtn = $('#ajcc-toggle');
 
