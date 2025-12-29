@@ -12,6 +12,13 @@ import { faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle, faFol
 library.add(faGithub, faFacebookSquare, faXTwitter, faInstagram, faThreads, faYoutube, faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle, faFolder, faFolderOpen, faGlobe, faAngleDoubleLeft, faAngleDoubleRight);
 dom.watch();
 
+// redirect to legacy version
+$('#link_legacy').on('click', function (event) {
+    event.preventDefault();
+    const fileName = window.location.pathname.split('/').pop() || 'index.html';
+    window.location.href = 'legacy/' + fileName;
+});
+
 // show about modal
 $('#link_about').on('click', function (event) {
     event.preventDefault(); // To prevent following the link (optional)
