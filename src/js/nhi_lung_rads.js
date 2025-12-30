@@ -904,6 +904,7 @@ window.updateAirwayParent = updateAirwayParent;
 window.clearAirwayChildren = clearAirwayChildren;
 window.handleCategoryChange = handleCategoryChange;
 window.updateCat0Radio = updateCat0Radio;
+window.updateNoduleCount = updateNoduleCount;
 window.promptDelete = promptDelete;
 window.confirmDelete = confirmDelete;
 window.handlePriorDateInput = handlePriorDateInput;
