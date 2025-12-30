@@ -489,3 +489,49 @@ body.sidebar-collapsed .sidebar-nav.hover-expanded a svg {
 .sidebar-nav .group i {
   transition: margin 0.3s;
 }
+
+/* ========================================
+ * 手機版：覆寫 sidebar-collapsed 狀態
+ * 讓 sidebar 在手機版 (< 768px) 總是展開顯示
+ * ======================================== */
+@media (max-width: 767.98px) {
+  /* 忽略 collapsed 的固定定位和窄寬度設定 */
+  body.sidebar-collapsed .sidebar-nav {
+    width: 100% !important;
+    position: static !important;
+  }
+
+  /* 忽略 collapsed 隱藏文字的效果 */
+  body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) .sidebar-label,
+  body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) h6 span,
+  body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) #ajcc-toggle,
+  body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) a svg {
+    opacity: 1 !important;
+    visibility: visible !important;
+    width: auto !important;
+    overflow: visible !important;
+  }
+
+  body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) a {
+    justify-content: flex-start !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    font-size: 0.875rem !important;
+  }
+
+  body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) h6 {
+    justify-content: flex-start !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) .flex.items-center.justify-between {
+    justify-content: space-between !important;
+  }
+
+  /* 忽略 main margin-left */
+  body.sidebar-collapsed main[role="main"] {
+    margin-left: 0 !important;
+  }
+}
