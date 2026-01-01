@@ -323,33 +323,29 @@
             >
               Regional Lymph Node
             </h2>
-            <form class="form-inline">
-              <div class="form-group">
-                <div class="flex items-center max-w-sm mb-2">
-                  <label
-                    class="h-10 inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600 whitespace-nowrap"
-                    for="txt_rln_num"
-                  >
-                    Number
-                  </label>
-                  <input
-                    type="number"
-                    pattern="[0-9]+"
-                    step="1"
-                    class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                    aria-label="Number of suspicious lymph node"
-                    id="txt_rln_num"
-                    placeholder="0"
-                    value="0"
-                  />
-                </div>
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
+              <div class="flex items-center max-w-sm">
+                <label
+                  class="h-10 inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600 whitespace-nowrap"
+                  for="txt_rln_num"
+                >
+                  Number
+                </label>
+                <input
+                  type="number"
+                  pattern="[0-9]+"
+                  step="1"
+                  class="h-10 flex-1 min-w-0 bg-white dark:bg-gray-700 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-r-md focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                  aria-label="Number of suspicious lymph node"
+                  id="txt_rln_num"
+                  placeholder="0"
+                  value="0"
+                />
               </div>
-              <div class="form-group mb-2 mr-sm-2">
-                <small id="ref_rln_num" class="text-muted">
-                  1-3 (N1), ≥4 (N2)
-                </small>
-              </div>
-            </form>
+              <span class="text-sm text-gray-500 dark:text-gray-400 italic"
+                >1-3 (N1), ≥4 (N2)</span
+              >
+            </div>
             <h3
               class="text-md font-semibold mb-2 text-gray-700 dark:text-gray-300 mt-2"
             >
