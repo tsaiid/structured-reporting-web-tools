@@ -1,6 +1,20 @@
 <!-- 手機版：static + 顯示在最下方 (order-2 by flex container)；桌面版：fixed 在左側 -->
-<nav id="main-sidebar" class="sidebar-nav w-full md:w-48 lg:w-56 static md:fixed left-0 md:top-12 bottom-0 bg-gray-50 dark:bg-gray-900 overflow-y-auto border-t md:border-t-0 md:border-r border-gray-200 dark:border-gray-700 z-40 order-2 md:order-0">
-  <div class="p-3">
+<nav id="main-sidebar" class="sidebar-nav w-full md:w-48 lg:w-56 static md:fixed left-0 md:top-12 bottom-0 bg-gray-50 dark:bg-gray-900 border-t md:border-t-0 md:border-r border-gray-200 dark:border-gray-700 z-40 order-2 md:order-0 flex flex-col">
+  <!-- 頂部固定區：不裁切內容，確保 Tooltip 正常顯示 -->
+  <div class="flex-none flex items-center justify-start p-2 relative">
+    <div class="relative group">
+      <button id="sidebar-collapse-toggle" class="w-10 h-10 flex items-center justify-center text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
+        <i class="fas fa-bars fa-lg" id="sidebar-collapse-icon"></i>
+      </button>
+      <!-- Tailwind Tooltip: 立即顯現, 定位在按鈕右侧 -->
+      <span id="sidebar-tooltip" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-none whitespace-nowrap z-50">
+        收合選單
+      </span>
+    </div>
+  </div>
+
+  <!-- 內容滾動區 -->
+  <div class="flex-1 overflow-y-auto p-3 pt-0">
     <div class="flex items-center justify-between mb-2 px-2">
       <h6 class="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider mb-0">
         <span>AJCC</span>
@@ -8,9 +22,6 @@
           <i class="fas fa-folder-open"></i>
         </button>
       </h6>
-      <button id="sidebar-collapse-toggle" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 focus:outline-none bg-transparent border-0 p-0 cursor-pointer transition-transform duration-300" title="收合 Sidebar">
-        <i class="fas fa-angle-double-left" id="sidebar-collapse-icon"></i>
-      </button>
     </div>
     <ul class="space-y-0.5" id="ajcc-sidebar-list">
       <li>

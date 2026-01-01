@@ -390,7 +390,7 @@ input:checked+.slider .icon-moon {
  */
 .sidebar-nav {
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow-x: hidden !important;
+  overflow: visible;
 }
 
 main[role="main"] {
@@ -399,11 +399,17 @@ main[role="main"] {
 
 /* When collapsed */
 body.sidebar-collapsed .sidebar-nav {
-  width: 3.5rem !important; /* w-14 */
+  width: 4rem !important; /* w-16: 64px */
 }
 
 body.sidebar-collapsed main[role="main"] {
-  margin-left: 3.5rem !important;
+  margin-left: 4rem !important;
+}
+
+/* Force toggle button to have NO transition so it moves instantly with the parent or stays fixed */
+#sidebar-collapse-toggle {
+  transition: none !important;
+  position: relative;
 }
 
 /* Hide text elements AND icons when collapsed */
@@ -451,6 +457,18 @@ body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) h6 {
 
 body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) .flex.items-center.justify-between {
   justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) .flex.items-center.justify-start {
+  justify-content: flex-start;
+  padding: 0.5rem; /* Matches p-2 */
+}
+
+/* No manual margin needed if parent padding matches */
+body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) #sidebar-collapse-toggle {
+  margin-left: 0;
 }
 
 /* Hover Expansion (JavaScript controlled) */

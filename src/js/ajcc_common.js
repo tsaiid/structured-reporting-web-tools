@@ -350,17 +350,16 @@ export function initSidebar() {
     let ignoreHover = false;
 
     function updateSidebarCollapseState(collapsed) {
+        const $tooltip = $('#sidebar-tooltip');
         if (collapsed) {
             $body.addClass('sidebar-collapsed');
-            $sidebarCollapseToggle.html('<i class="fas fa-angle-double-right" id="sidebar-collapse-icon"></i>');
-            $sidebarCollapseToggle.attr('title', '展開 Sidebar');
+            $tooltip.text('展開選單');
 
             // Hide highlight when collapsed
             toggleHighlight(false);
         } else {
             $body.removeClass('sidebar-collapsed');
-            $sidebarCollapseToggle.html('<i class="fas fa-angle-double-left" id="sidebar-collapse-icon"></i>');
-            $sidebarCollapseToggle.attr('title', '收合 Sidebar');
+            $tooltip.text('收合選單');
 
             // Show highlight when expanded
             toggleHighlight(true);
