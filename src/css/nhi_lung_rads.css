@@ -290,6 +290,21 @@ select {
 }
 
 /* General Layout */
+.container {
+  max-width: 1152px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 1rem !important; /* 與 .nav-content 相同的 padding (L/R: 16px) */
+  box-sizing: border-box;
+}
+
+main.container > article {
+  width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  border-radius: var(--border-radius) !important; /* 始終保持圓角 */
+}
+
 .sticky-footer {
   position: fixed;
   bottom: 0;
@@ -551,6 +566,10 @@ legend {
 
   .nav-content {
     padding: 0 0.5rem;
+  }
+
+  .container {
+    padding: 0 0.5rem !important; /* 同步縮小 padding (L/R: 8px)，維持對齊並保留圓角視覺空間 */
   }
 
   .theme-capsule {
