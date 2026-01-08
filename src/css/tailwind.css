@@ -142,28 +142,19 @@
   /* AJCC 頁面響應式佈局：手機版 sidebar 顯示在最下方 */
   /* body 作為 flex container，手機版 flex-col；桌面版 block */
   body:has(.sidebar-nav) {
-    @apply flex flex-col md:block pt-12;
+    @apply flex flex-col md:block;
   }
   /* Sidebar 在手機版顯示在最下方 */
   .sidebar-nav {
     @apply order-2 md:order-0;
   }
   /* Main content 在手機版顯示在上方，且覆寫 HTML 中的 pt-12 */
+  /* Main content 在手機版顯示在上方，且覆寫 HTML 中的 pt-12 */
   body:has(.sidebar-nav) > main {
     @apply order-1 md:order-0;
-    /* 手機版移除多餘的 padding-top (body 已有 pt-12 留給 nav bar) */
-    padding-top: 0 !important;
   }
-  @media (min-width: 768px) {
-    body:has(.sidebar-nav) > main {
-      /* 桌面版使用 HTML 原本的 padding，這裡不覆寫 */
-      padding-top: unset !important;
-    }
-  }
-  /* 手機版隱藏 sidebar 收合按鈕 */
-  #sidebar-collapse-toggle {
-    @apply hidden md:inline-block;
-  }
+
+
 }
 
 
