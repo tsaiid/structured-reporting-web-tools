@@ -1,0 +1,144 @@
+/* Gastric Lymph Node Helper CSS */
+
+#modal_ln_helper {
+    margin: auto;
+}
+
+#modal_ln_helper .modal-dialog {
+    max-width: 800px; /* Wide enough for the map */
+}
+
+.ln-map-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.ln-map-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.ln-station-btn {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 2px solid #666;
+    color: #333;
+    font-size: 11px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.ln-station-btn:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-color: #000;
+    transform: translate(-50%, -50%) scale(1.1);
+    z-index: 50;
+}
+
+.ln-station-btn.selected {
+    background-color: #3b82f6; /* Tailwind Blue 500 */
+    border-color: #1d4ed8; /* Tailwind Blue 700 */
+    color: white;
+}
+
+/* Tooltip on hover */
+.ln-station-btn::after {
+    content: attr(data-name);
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 20;
+    font-weight: normal;
+}
+
+.ln-station-btn:hover::after {
+    opacity: 1;
+}
+
+/* Distant Nodes (13, 14a, 15, 16) - Purple Theme */
+.ln-station-btn[data-type="distant"] {
+    border-color: #7e22ce; /* Purple 700 */
+    color: #581c87; /* Purple 900 */
+    background-color: rgba(250, 245, 255, 0.8); /* Purple 50 */
+}
+.ln-station-btn[data-type="distant"].selected {
+    background-color: #9333ea; /* Purple 600 */
+    border-color: #581c87;
+    color: white;
+}
+
+.ln-station-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #ddd;
+}
+
+.ln-station-btn.dashed {
+    border-style: dashed;
+    background-color: rgba(255, 255, 255, 0.5); /* Slightly more transparent */
+}
+
+.ln-station-btn.dashed.selected {
+    background-color: #3b82f6; /* Tailwind Blue 500 */
+    color: white;
+}
+
+.ln-station-btn[data-type="distant"].dashed.selected {
+    background-color: #9333ea; /* Purple 600 */
+    border-color: #581c87;
+    color: white;
+}
+
+/* Approximate positions - User needs to adjust based on the image stomach_lymph_node_stations.webp */
+
+/* Perigastric */
+.ln-station-1  { top: 31%; left: 54%; } /* Right Cardia */
+.ln-station-2  { top: 28%; left: 62%; } /* Left Cardia */
+.ln-station-3  { top: 35%; left: 45%; } /* Lesser Curvature */
+/* 4sa was 4sb */
+.ln-station-4sa { top: 28%; left: 80%; } /* 4sa - Short Gastric */
+/* 4sb was 4 */
+.ln-station-4sb { top: 56%; left: 70%; } /* 4sb - Greater Curvature */
+.ln-station-4d  { top: 62%; left: 39%; } /* 4d - Right Gastroepiploic */
+.ln-station-5  { top: 47%; left: 36%; } /* Suprapyloric */
+.ln-station-6  { top: 60%; left: 34%; } /* Infrapyloric */
+
+/* Extra-perigastric */
+.ln-station-7  { top: 38%; left: 51%; } /* Left Gastric Artery */
+.ln-station-8  { top: 45%; left: 44%; } /* Common Hepatic Artery */
+.ln-station-9  { top: 44%; left: 50%; } /* Celiac Artery */
+.ln-station-10 { top: 35%; left: 85%; } /* Splenic Hilum */
+.ln-station-11 { top: 40%; left: 70%; } /* Splenic Artery */
+.ln-station-12 { top: 40%; left: 35%; } /* Hepatic Pedicle */
+.ln-station-14v { top: 66%; left: 42%; } /* SMV (Regional) */
+
+/* Distant */
+.ln-station-13 { top: 55%; left: 28%; } /* Retropancreatic */
+.ln-station-13b { top: 68%; left: 32%; } /* Retropancreatic (Duplicate) */
+.ln-station-14a { top: 53%; left: 49.5%; } /* SMA (Distant) */
+.ln-station-15 { top: 75%; left: 39.5%; } /* Middle Colic (Distant) */
+.ln-station-16 { top: 60%; left: 54%; } /* Para-aortic (Distant) */
+.ln-station-16b { top: 60%; left: 46.5%; } /* Para-aortic (Distant Duplicate) */

@@ -318,6 +318,11 @@
               class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
             >
               Regional Lymph Node
+              <button type="button" class="ml-2 text-blue-600 hover:text-blue-800 focus:outline-none" id="btn_ln_helper" title="Lymph Node Map Helper">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 7m0 13V7" />
+                </svg>
+              </button>
             </h2>
             <div class="flex items-center gap-4 mb-4">
               <div class="flex items-start w-48">
@@ -484,13 +489,14 @@
                 <input
                   class="form-check-input cb_rn"
                   type="checkbox"
-                  id="cb_rn_mca"
-                  value="middle colic artery (15)"
+                  id="cb_rn_smv"
+                  value="superior mesenteric vein (14v)"
                 />
-                <label class="form-check-label" for="cb_rn_mca"
-                  >Middle colic artery (15)</label
+                <label class="form-check-label" for="cb_rn_smv"
+                  >Superior mesenteric vein (14v)</label
                 >
               </div>
+
               <div class="flex items-center max-w-md mb-2">
                 <div
                   class="flex items-center h-10 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md"
@@ -543,10 +549,21 @@
                   class="form-check-input cb_dm cb_dm_nrn"
                   type="checkbox"
                   id="cb_dm_nrn_mr"
-                  value="Mesenteric root (14)"
+                  value="Superior mesenteric artery (14a)"
                 />
                 <label class="form-check-label" for="cb_dm_nrn_mr"
-                  >Mesenteric root (14)</label
+                  >Superior mesenteric artery (14a)</label
+                >
+              </div>
+              <div class="form-check form-check-inline items-start mb-2 mr-sm-2">
+                <input
+                  class="form-check-input cb_dm cb_dm_nrn"
+                  type="checkbox"
+                  id="cb_dm_nrn_mca"
+                  value="Middle colic artery (15)"
+                />
+                <label class="form-check-label" for="cb_dm_nrn_mca"
+                  >Middle colic artery (15)</label
                 >
               </div>
               <div class="form-check form-check-inline items-start mb-2 mr-sm-2">
@@ -642,5 +659,64 @@
 
     <!-- Vendors: jquery, bootstrap, clipboard.js -->
     <%= require('../partials/vendors_js.html').default %>
+
+    <!-- Lymph Node Helper Modal -->
+    <dialog id="modal_ln_helper" class="p-0 rounded-lg shadow-xl backdrop:bg-gray-900/50 dark:bg-gray-800 dark:text-gray-100 max-w-4xl w-full">
+        <div class="flex flex-col max-h-[90vh]">
+            <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+                <h3 class="text-xl font-semibold">
+                    Lymph Node Map Helper
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" onclick="document.getElementById('modal_ln_helper').close()">
+                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto">
+                <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                    <p>Select involved lymph node stations on the map below.</p>
+                </div>
+
+                <div class="ln-map-container bg-white rounded-lg shadow-inner overflow-hidden">
+                    <img src="../assets/images/stomach_lymph_node_stations.webp" alt="Gastric Lymph Node Stations" class="ln-map-img">
+
+                    <!-- Regional -->
+                    <div class="ln-station-btn ln-station-1" data-station="1" data-uid="1" data-name="Right Paracardial (1)">1</div>
+                    <div class="ln-station-btn ln-station-2" data-station="2" data-uid="2" data-name="Left Paracardial (2)">2</div>
+                    <div class="ln-station-btn ln-station-3" data-station="3" data-uid="3" data-name="Lesser Curvature (3)">3</div>
+                    <div class="ln-station-btn ln-station-4sa" data-station="4" data-uid="4sa" data-name="Short Gastric (4sa)">4sa</div>
+                    <div class="ln-station-btn ln-station-4sb" data-station="4" data-uid="4sb" data-name="Left Gastroepiploic (4sb)">4sb</div>
+                    <div class="ln-station-btn ln-station-4d" data-station="4" data-uid="4d" data-name="Right Gastroepiploic (4d)">4d</div>
+                    <div class="ln-station-btn ln-station-5" data-station="5" data-uid="5" data-name="Suprapyloric (5)">5</div>
+                    <div class="ln-station-btn ln-station-6" data-station="6" data-uid="6" data-name="Infrapyloric (6)">6</div>
+                    <div class="ln-station-btn ln-station-7" data-station="7" data-uid="7" data-name="Left Gastric Artery (7)">7</div>
+                    <div class="ln-station-btn ln-station-8" data-station="8" data-uid="8" data-name="Common Hepatic Artery (8)">8</div>
+                    <div class="ln-station-btn ln-station-9" data-station="9" data-uid="9" data-name="Celiac Artery (9)">9</div>
+                    <div class="ln-station-btn ln-station-10" data-station="10" data-uid="10" data-name="Splenic Hilum (10)">10</div>
+                    <div class="ln-station-btn ln-station-11 dashed" data-station="11" data-uid="11" data-name="Splenic Artery (11)">11</div>
+                    <div class="ln-station-btn ln-station-12" data-station="12" data-uid="12" data-name="Hepatic Pedicle (12)">12</div>
+                    <div class="ln-station-btn ln-station-14v" data-station="14v" data-uid="14v" data-name="Sup. Mesenteric Vein (14v)">14v</div>
+
+                     <!-- Distant -->
+                    <div class="ln-station-btn ln-station-13 dashed" data-station="13" data-uid="13" data-type="distant" data-name="Retropancreatic (13)">13</div>
+                    <div class="ln-station-btn ln-station-13b dashed" data-station="13" data-uid="13b" data-type="distant" data-name="Retropancreatic (13)">13</div>
+                    <div class="ln-station-btn ln-station-14a" data-station="14a" data-uid="14a" data-type="distant" data-name="Sup. Mesenteric Artery (14a)">14a</div>
+                    <div class="ln-station-btn ln-station-15" data-station="15" data-uid="15" data-type="distant" data-name="Middle Colic Artery (15)">15</div>
+                    <div class="ln-station-btn ln-station-16" data-station="16" data-uid="16" data-type="distant" data-name="Para-aortic (16)">16</div>
+                    <div class="ln-station-btn ln-station-16b" data-station="16" data-uid="16b" data-type="distant" data-name="Para-aortic (16)">16</div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-700">
+                <button id="btn_ln_submit" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Apply to Form
+                </button>
+                <button id="btn_ln_clear" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                    Clear Selection
+                </button>
+            </div>
+        </div>
+    </dialog>
   </body>
 </html>

@@ -5,6 +5,10 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/gastric.html');
 }
 
+import '../css/gastric_helper.css';
+import '../image/stomach_lymph_node_stations.webp';
+import './gastric_logic_helper.js';
+
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage} from './ajcc_common.js';
 import { calculateGastricStage } from './gastric_logic.js';
 
@@ -102,7 +106,7 @@ function generate_report(){
     let rn_sh_check = $('#cb_rn_sh').is(':checked') ? "+" : " ";
     let rn_sa_check = $('#cb_rn_sa').is(':checked') ? "+" : " ";
     let rn_hp_check = $('#cb_rn_hp').is(':checked') ? "+" : " ";
-    let rn_mca_check = $('#cb_rn_mca').is(':checked') ? "+" : " ";
+    let rn_smv_check = $('#cb_rn_smv').is(':checked') ? "+" : " ";
     let rn_others_check = $('#cb_rn_others').is(':checked') ? "+" : " ";
     let txt_rn_others = $('#txt_rn_others').val() ? $('#txt_rn_others').val() : "___";
     report += `4. Regional nodal metastasis
@@ -112,7 +116,7 @@ function generate_report(){
         [${rn_gc_check}] Greater curvature (4)    [${rn_sp_check}] Suprapyloric (5)           [${rn_ip_check}] Infrapyloric (6)
         [${rn_lga_check}] Left gastric artery (7)  [${rn_cha_check}] Common hepatic artery (8)  [${rn_ca_check}] Celiac artery (9)
         [${rn_sh_check}] Splenic hilum (10)       [${rn_sa_check}] Splenic artery (11)        [${rn_hp_check}] Hepatic pedicle (12)
-        [${rn_mca_check}] Middle colic artery(15)  [${rn_others_check}] Others: ${txt_rn_others}
+        [${rn_smv_check}] Superior mesenteric vein (14v)  [${rn_others_check}] Others: ${txt_rn_others}
 
 `;
 
