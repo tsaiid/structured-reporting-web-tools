@@ -5,8 +5,12 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/lung.html');
 }
 
+import '../css/lung_helper.css';
+import '../image/lung_lymph_node_stations.png';
+
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage} from './ajcc_common.js';
 import { calculateLungStage, getMaxStageNumber } from './lung_logic.js';
+import './lung_logic_helper.js';
 
 const AJCC_T = new Map([
     ['x', 'Primary tumor cannot be assessed'],

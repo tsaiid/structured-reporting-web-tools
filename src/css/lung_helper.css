@@ -1,0 +1,98 @@
+/* Lung Lymph Node Helper CSS */
+
+#modal_ln_helper {
+    margin: auto;
+}
+
+#modal_ln_helper .modal-dialog {
+    max-width: 800px; /* Wide enough for the map */
+}
+
+.ln-map-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.ln-map-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.ln-station-btn {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 2px solid #666;
+    color: #333;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.ln-station-btn:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-color: #000;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.ln-station-btn.selected {
+    background-color: #3b82f6; /* Tailwind Blue 500 */
+    border-color: #1d4ed8; /* Tailwind Blue 700 */
+    color: white;
+}
+
+.ln-station-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #ddd;
+}
+
+/* Approximate positions - User may need to adjust */
+/* Image Left = Patient Right */
+/* Image Right = Patient Left */
+
+/* Superior Mediastinal */
+.ln-station-1  { top: 9%;  left: 50%; } /* Low Cervical/Supraclavicular */
+.ln-station-1b { top: 3.8%;  left: 26.5%; } /* Extra 1 */
+.ln-station-1c { top: 4.3%;  left: 62.2%; } /* Extra 1c (Approximated based on symmetry) */
+
+.ln-station-2R { top: 19%; left: 45%; } /* Upper Paratracheal Right */
+.ln-station-2L { top: 20.5%; left: 58.5%; } /* Upper Paratracheal Left */
+.ln-station-3a { top: 35%; left: 65%; } /* Pre-vascular */
+.ln-station-4R { top: 30.3%; left: 45.8%; } /* Lower Paratracheal Right */
+.ln-station-4Rb { top: 48.5%; left: 49%; } /* Extra 4R */
+.ln-station-4L { top: 27%; left: 57%; } /* Lower Paratracheal Left */
+.ln-station-4Lb { top: 43.2%; left: 57.5%; } /* Extra 4L */
+
+/* Aortic Nodes (Left side only) */
+.ln-station-5  { top: 45%; left: 68.5%; } /* Subaortic */
+.ln-station-6  { top: 31%; left: 74.5%; } /* Para-aortic */
+
+/* Inferior Mediastinal */
+.ln-station-7  { top: 63%; left: 49.5%; } /* Subcarinal */
+
+/* Paraesophageal (8) */
+.ln-station-8R { top: 73%; left: 46%; } /* Right Paraesophageal */
+.ln-station-8L { top: 78.5%; left: 53.8%; } /* Left Paraesophageal */
+
+/* Pulmonary Ligament (9) */
+.ln-station-9R { top: 88%; left: 40.5%; } /* Right Pulmonary Ligament */
+.ln-station-9L { top: 90%; left: 57%; } /* Left Pulmonary Ligament */
+
+/* Hilar & Interlobar */
+.ln-station-10R { top: 56%; left: 43%; } /* Hilar Right */
+.ln-station-10L { top: 59%; left: 56.5%; } /* Hilar Left */
+.ln-station-11R { top: 67.8%; left: 26.5%; } /* Interlobar Right */
+.ln-station-11L { top: 66.5%; left: 73.5%; } /* Interlobar Left */
