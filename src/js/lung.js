@@ -6,7 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import '../css/lung_helper.css';
-import '../image/lung_lymph_node_stations.png';
+import '../image/lung_lymph_node_stations.webp';
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage} from './ajcc_common.js';
 import { calculateLungStage, getMaxStageNumber } from './lung_logic.js';
