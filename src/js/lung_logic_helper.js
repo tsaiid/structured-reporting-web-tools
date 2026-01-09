@@ -10,12 +10,18 @@ $('#btn_ln_helper').click(function() {
     let hasRight = $('#cb_tp_tl_rul').is(':checked') || $('#cb_tp_tl_rml').is(':checked') || $('#cb_tp_tl_rll').is(':checked');
     let hasLeft = $('#cb_tp_tl_lul').is(':checked') || $('#cb_tp_tl_lll').is(':checked');
 
+    // Helper for showing custom alert
+    function showAlert(message) {
+        $('#alertModalMessage').text(message);
+        document.getElementById('alertModal').showModal();
+    }
+
     if (hasRight && hasLeft) {
-        alert("Bilateral tumor location selected. Please select one side to use the helper.");
+        showAlert("Bilateral tumor location selected. Please select one side to use the helper.");
         return;
     }
     if (!hasRight && !hasLeft) {
-        alert("Please select a Tumor Location (RUL, RML, RLL, etc.) first.");
+        showAlert("Please select a Tumor Location (RUL, RML, RLL, etc.) first.");
         return;
     }
 
