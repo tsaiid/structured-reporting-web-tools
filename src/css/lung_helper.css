@@ -30,7 +30,7 @@
     transform: translate(-50%, -50%);
     /* 使用 clamp() 讓按鈕隨容器大小縮放：最小 18px，最大 32px */
     width: clamp(18px, 5.5%, 32px);
-    height: clamp(18px, 5.5%, 32px);
+    aspect-ratio: 1;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.7);
     border: 2px solid #666;

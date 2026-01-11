@@ -11,27 +11,33 @@
 
 .neck-ln-map-container {
     position: relative;
-    width: 100%;
+    width: fit-content;
     max-width: 800px;
+    /* 限制最大高度：90vh (modal max-height) - header (~78px) - footer (~78px) - padding (~48px) - 說明文字區 (~80px) */
+    max-height: calc(90vh - 280px);
     margin: 0 auto;
 }
 
 .neck-ln-map-img {
-    width: 100%;
+    width: auto;
     height: auto;
+    max-width: 100%;
+    max-height: calc(90vh - 280px);
     display: block;
 }
 
 .neck-ln-station-btn {
     position: absolute;
     transform: translate(-50%, -50%);
-    width: 32px;
-    height: 32px;
+    /* 使用 clamp() 讓按鈕隨容器大小縮放：最小 18px，最大 32px */
+    width: clamp(18px, 4.5%, 32px);
+    aspect-ratio: 1;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.7);
     border: 2px solid #666;
     color: #333;
-    font-size: 9px;
+    /* 字體大小也隨按鈕縮放，最小值需足夠大以保持可讀性 */
+    font-size: clamp(8px, 1.3%, 9px);
     font-weight: bold;
     display: flex;
     align-items: center;
@@ -119,9 +125,9 @@
 .neck-ln-station-btn.ln-l-IX,
 .neck-ln-station-btn.ln-l-XA,
 .neck-ln-station-btn.ln-l-XB {
-    width: 26px;
-    height: 26px;
-    font-size: 8px;
+    width: clamp(16px, 3.5%, 26px);
+    aspect-ratio: 1;
+    font-size: clamp(7px, 1.1%, 8px);
 }
 
 /* ==============================

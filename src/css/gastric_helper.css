@@ -10,27 +10,33 @@
 
 .ln-map-container {
     position: relative;
-    width: 100%;
+    width: fit-content;
     max-width: 600px;
+    /* 限制最大高度：90vh (modal max-height) - header (~78px) - footer (~78px) - padding (~48px) - 說明文字區 (~50px) */
+    max-height: calc(90vh - 250px);
     margin: 0 auto;
 }
 
 .ln-map-img {
-    width: 100%;
+    width: auto;
     height: auto;
+    max-width: 100%;
+    max-height: calc(90vh - 250px);
     display: block;
 }
 
 .ln-station-btn {
     position: absolute;
     transform: translate(-50%, -50%);
-    width: 28px;
-    height: 28px;
+    /* 使用 clamp() 讓按鈕隨容器大小縮放：最小 16px，最大 28px */
+    width: clamp(16px, 5%, 28px);
+    aspect-ratio: 1;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.7);
     border: 2px solid #666;
     color: #333;
-    font-size: 11px;
+    /* 字體大小也隨按鈕縮放，最小值需足夠大以保持可讀性 */
+    font-size: clamp(8px, 1.8%, 11px);
     font-weight: bold;
     display: flex;
     align-items: center;
