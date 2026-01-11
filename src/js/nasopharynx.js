@@ -5,6 +5,11 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/nasopharynx.html');
 }
 
+// Nasopharynx Neck Lymph Node Helper
+import '../css/nasopharynx_helper.css';
+import '../image/neck_lymph_node_stations.webp';
+import './nasopharynx_logic_helper.js';
+
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage} from './ajcc_common.js';
 import { calculateNasopharynxStage } from './nasopharynx_logic.js';
 
@@ -177,6 +182,17 @@ function generate_report(){
     report += "\n\n";
 
     // Calculate staging via Logic
+    // 計算 N stage：
+    // - cb_rn_r / cb_rn_l: 右側/左側 checkbox
+    // - cb_rn_above / cb_rn_below: cricoid 上/下
+    // - cb_rn_n3: below cricoid (N3 criteria)
+    // - cb_rn_rp: retropharyngeal (VIIA)
+    const rightChecked = $('.cb_rn_r:checked').length > 0;
+    const leftChecked = $('.cb_rn_l:checked').length > 0;
+    const rightNonRPChecked = $('.cb_rn_r:not(.cb_rn_rp):checked').length > 0;
+    const leftNonRPChecked = $('.cb_rn_l:not(.cb_rn_rp):checked').length > 0;
+    const rpOnlyChecked = $('.cb_rn_rp:checked').length > 0 && !rightNonRPChecked && !leftNonRPChecked;
+
     const data = {
         isNonMeasurable: has_ts_nm,
         invasion: {
@@ -188,11 +204,11 @@ function generate_report(){
         nodes: {
             isPositive: is_rn_positive,
             maxSize: n_length,
-            hasN3Location: $('.cb_rn_n3:checked').length > 0,
+            hasN3Location: $('.cb_rn_n3:checked').length > 0, // below cricoid → N3
             hasENE: has_ene,
-            isBilateral: $('.cb_rn_r_nrp:checked').length && $('.cb_rn_l_nrp:checked').length,
-            isUnilateral: ($('.cb_rn_r:checked').length ^ $('.cb_rn_l:checked').length),
-            isRPOnly: $('.cb_rn_n1:checked').length > 0
+            isBilateral: rightNonRPChecked && leftNonRPChecked, // 雙側 cervical (非 RP)
+            isUnilateral: (rightChecked || leftChecked) && !(rightNonRPChecked && leftNonRPChecked), // 單側
+            isRPOnly: rpOnlyChecked // 僅 retropharyngeal
         },
         metastasis: {
             isPositive: has_dm,
@@ -211,7 +227,7 @@ function generate_report(){
     // AJCC staging reference text
     let t = t_stage.sort()[t_stage.length-1];
     let n = n_stage.sort()[n_stage.length-1];
-    let m = m_stage.sort()[m_stage.length-1]; 
+    let m = m_stage.sort()[m_stage.length-1];
 
     // Pass '9' as the version number
     report += ajcc_template_with_parent("Nasopharyngeal Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 9);

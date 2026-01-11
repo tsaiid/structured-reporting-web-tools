@@ -1,4 +1,6 @@
 export function calculateNasopharynxStage(data) {
+    // AJCC 9th Edition Nasopharyngeal Cancer Staging
+    //
     // data structure expected:
     // {
     //   isNonMeasurable: boolean,
@@ -6,14 +8,19 @@ export function calculateNasopharynxStage(data) {
     //   nodes: {
     //     isPositive: boolean,
     //     maxSize: number,
-    //     hasN3Location: boolean, // below cricoid
-    //     hasENE: boolean,
-    //     isBilateral: boolean,
-    //     isUnilateral: boolean,
-    //     isRPOnly: boolean
+    //     hasN3Location: boolean, // below cricoid: IVA, IVB, VB, VC
+    //     hasENE: boolean,        // advanced radiologic extranodal extension
+    //     isBilateral: boolean,   // bilateral cervical (non-RP)
+    //     isUnilateral: boolean,  // unilateral cervical
+    //     isRPOnly: boolean       // only retropharyngeal (VIIA)
     //   },
     //   metastasis: { isPositive: boolean, isMoreThan3: boolean }
     // }
+    //
+    // N Stage (AJCC 9th):
+    // N1: Unilateral cervical and/or uni/bilateral retropharyngeal, ≤ 6 cm, above cricoid, no ENE
+    // N2: Bilateral cervical, ≤ 6 cm, above cricoid, no ENE
+    // N3: > 6 cm, OR below cricoid, OR ENE
 
     var t_stage = ["0"];
     var n_stage = ["0"];

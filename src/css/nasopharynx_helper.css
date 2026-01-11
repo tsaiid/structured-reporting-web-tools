@@ -1,0 +1,202 @@
+/* Nasopharynx Neck Lymph Node Helper CSS */
+/* 頸部淋巴結地圖輔助工具樣式 */
+
+#modal_neck_ln_helper {
+    margin: auto;
+}
+
+#modal_neck_ln_helper .modal-dialog {
+    max-width: 900px; /* 足夠容納左右兩側圖片 */
+}
+
+.neck-ln-map-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.neck-ln-map-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.neck-ln-station-btn {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 2px solid #666;
+    color: #333;
+    font-size: 9px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.neck-ln-station-btn:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-color: #000;
+    transform: translate(-50%, -50%) scale(1.1);
+    z-index: 50;
+}
+
+.neck-ln-station-btn.selected {
+    background-color: #3b82f6; /* Tailwind Blue 500 */
+    border-color: #1d4ed8; /* Tailwind Blue 700 */
+    color: white;
+}
+
+/* Tooltip on hover */
+.neck-ln-station-btn::after {
+    content: attr(data-name);
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 100;
+    font-weight: normal;
+}
+
+.neck-ln-station-btn:hover::after {
+    opacity: 1;
+}
+
+/* Below Cricoid Stations (IVA, IVB, VB, VC) - Orange Theme for N3 */
+.neck-ln-station-btn[data-below-cricoid="true"] {
+    border-color: #c2410c; /* Orange 700 */
+    color: #7c2d12; /* Orange 900 */
+    background-color: rgba(255, 247, 237, 0.8); /* Orange 50 */
+}
+
+.neck-ln-station-btn[data-below-cricoid="true"].selected {
+    background-color: #ea580c; /* Orange 600 */
+    border-color: #7c2d12;
+    color: white;
+}
+
+.neck-ln-station-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #ddd;
+}
+
+/* VIIA, VIIB 虛線邊框 */
+.neck-ln-station-btn.ln-r-VIIA,
+.neck-ln-station-btn.ln-r-VIIB,
+.neck-ln-station-btn.ln-l-VIIA,
+.neck-ln-station-btn.ln-l-VIIB {
+    border-style: dashed;
+}
+
+/* VIIA, VIIB, VIII, IX, XA, XB 較小的圓圈 */
+.neck-ln-station-btn.ln-r-VIIA,
+.neck-ln-station-btn.ln-r-VIIB,
+.neck-ln-station-btn.ln-r-VIII,
+.neck-ln-station-btn.ln-r-IX,
+.neck-ln-station-btn.ln-r-XA,
+.neck-ln-station-btn.ln-r-XB,
+.neck-ln-station-btn.ln-l-VIIA,
+.neck-ln-station-btn.ln-l-VIIB,
+.neck-ln-station-btn.ln-l-VIII,
+.neck-ln-station-btn.ln-l-IX,
+.neck-ln-station-btn.ln-l-XA,
+.neck-ln-station-btn.ln-l-XB {
+    width: 26px;
+    height: 26px;
+    font-size: 8px;
+}
+
+/* ==============================
+   STATION POSITIONS
+   注意：圖片右側對應人體左側
+   ============================== */
+
+/* ----- 右側 (圖片左側) ----- */
+/* 右側 IA - Submental (中線偏右) */
+.neck-ln-station-btn.ln-r-IA { top: 43%; left: 34%; }
+/* 右側 IB - Submandibular */
+.neck-ln-station-btn.ln-r-IB { top: 38%; left: 30%; }
+/* 右側 IIA - Upper jugular anterior */
+.neck-ln-station-btn.ln-r-IIA { top: 47%; left: 18.5%; }
+/* 右側 IIB - Upper jugular posterior */
+.neck-ln-station-btn.ln-r-IIB { top: 49%; left: 13.5%; }
+/* 右側 III - Mid jugular */
+.neck-ln-station-btn.ln-r-III { top: 61%; left: 17%; }
+/* 右側 IVA - Lower jugular */
+.neck-ln-station-btn.ln-r-IVA { top: 80%; left: 20.5%; }
+/* 右側 IVB - Medial supraclavicular */
+.neck-ln-station-btn.ln-r-IVB { top: 95%; left: 21%; }
+/* 右側 VA - Upper posterior triangle */
+.neck-ln-station-btn.ln-r-VA { top: 59%; left: 9.5%; }
+/* 右側 VB - Lower posterior triangle */
+.neck-ln-station-btn.ln-r-VB { top: 78%; left: 14%; }
+/* 右側 VC - Lateral supraclavicular */
+.neck-ln-station-btn.ln-r-VC { top: 87%; left: 12%; }
+/* 右側 VI - Anterior cervical */
+.neck-ln-station-btn.ln-r-VI { top: 72%; left: 27%; }
+/* 右側 VIIA - Retropharyngeal */
+.neck-ln-station-btn.ln-r-VIIA { top: 49%; left: 23%; }
+/* 右側 VIIB - Retrostyloid */
+.neck-ln-station-btn.ln-r-VIIB { top: 40%; left: 18%; }
+/* 右側 VIII - Parotid */
+.neck-ln-station-btn.ln-r-VIII { top: 35%; left: 12%; }
+/* 右側 IX - Bucco-facial */
+.neck-ln-station-btn.ln-r-IX { top: 27%; left: 19.5%; }
+/* 右側 XA - Retro-auricular */
+.neck-ln-station-btn.ln-r-XA { top: 46%; left: 9%; }
+/* 右側 XB - Occipital */
+.neck-ln-station-btn.ln-r-XB { top: 50%; left: 6%; }
+
+/* ----- 左側 (圖片右側) ----- */
+/* 左側 IA - Submental (中線偏左) */
+.neck-ln-station-btn.ln-l-IA { top: 43%; left: 66%; }
+/* 左側 IB - Submandibular */
+.neck-ln-station-btn.ln-l-IB { top: 38%; left: 70%; }
+/* 左側 IIA - Upper jugular anterior */
+.neck-ln-station-btn.ln-l-IIA { top: 47%; left: 81.5%; }
+/* 左側 IIB - Upper jugular posterior */
+.neck-ln-station-btn.ln-l-IIB { top: 49%; left: 86.5%; }
+/* 左側 III - Mid jugular */
+.neck-ln-station-btn.ln-l-III { top: 61%; left: 83%; }
+/* 左側 IVA - Lower jugular */
+.neck-ln-station-btn.ln-l-IVA { top: 80%; left: 79.5%; }
+/* 左側 IVB - Medial supraclavicular */
+.neck-ln-station-btn.ln-l-IVB { top: 95%; left: 79%; }
+/* 左側 VA - Upper posterior triangle */
+.neck-ln-station-btn.ln-l-VA { top: 59%; left: 90.5%; }
+/* 左側 VB - Lower posterior triangle */
+.neck-ln-station-btn.ln-l-VB { top: 78%; left: 86%; }
+/* 左側 VC - Lateral supraclavicular */
+.neck-ln-station-btn.ln-l-VC { top: 87%; left: 88%; }
+/* 左側 VI - Anterior cervical */
+.neck-ln-station-btn.ln-l-VI { top: 72%; left: 73%; }
+/* 左側 VIIA - Retropharyngeal */
+.neck-ln-station-btn.ln-l-VIIA { top: 49%; left: 77%; }
+/* 左側 VIIB - Retrostyloid */
+.neck-ln-station-btn.ln-l-VIIB { top: 40%; left: 82%; }
+/* 左側 VIII - Parotid */
+.neck-ln-station-btn.ln-l-VIII { top: 35%; left: 88%; }
+/* 左側 IX - Bucco-facial */
+.neck-ln-station-btn.ln-l-IX { top: 27%; left: 80.5%; }
+/* 左側 XA - Retro-auricular */
+.neck-ln-station-btn.ln-l-XA { top: 46%; left: 91%; }
+/* 左側 XB - Occipital */
+.neck-ln-station-btn.ln-l-XB { top: 50%; left: 94%; }

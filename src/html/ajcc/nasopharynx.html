@@ -275,6 +275,11 @@
               class="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-2"
             >
               Regional Lymph Node
+              <button type="button" class="ml-2 text-blue-600 hover:text-blue-800 focus:outline-none" id="btn_neck_ln_helper" title="Lymph Node Map Helper">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 7m0 13V7" />
+                </svg>
+              </button>
             </h2>
             <h3
               class="text-md font-semibold mb-2 text-gray-700 dark:text-gray-300 mt-2"
@@ -289,57 +294,78 @@
                 </div>
                 <div class="flex-1 p-3 flex items-center">
                   <form class="flex flex-wrap gap-x-4 gap-y-2 rn_item items-start">
+                    <!-- Above cricoid stations -->
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_r cb_rn_n1" type="checkbox" id="cb_rn_r_rp" value="retropharyngeal">
-                      <label class="form-check-label" for="cb_rn_r_rp">Retropharyngeal</label>
+                      <input class="form-check-input cb_rn cb_rn_r cb_rn_above" type="checkbox" id="cb_rn_r_IA" value="IA" title="Submental">
+                      <label class="form-check-label" for="cb_rn_r_IA">IA</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_1" value="I">
-                      <label class="form-check-label" for="cb_rn_r_1">I</label>
+                      <input class="form-check-input cb_rn cb_rn_r cb_rn_above" type="checkbox" id="cb_rn_r_IB" value="IB" title="Submandibular">
+                      <label class="form-check-label" for="cb_rn_r_IB">IB</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_2" value="II">
-                      <label class="form-check-label" for="cb_rn_r_2">II</label>
+                      <input class="form-check-input cb_rn cb_rn_r cb_rn_above" type="checkbox" id="cb_rn_r_IIA" value="IIA" title="Upper jugular (anterior)">
+                      <label class="form-check-label" for="cb_rn_r_IIA">IIA</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_3" value="III">
-                      <label class="form-check-label" for="cb_rn_r_3">III</label>
+                      <input class="form-check-input cb_rn cb_rn_r cb_rn_above" type="checkbox" id="cb_rn_r_IIB" value="IIB" title="Upper jugular (posterior)">
+                      <label class="form-check-label" for="cb_rn_r_IIB">IIB</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp cb_rn_n3" type="checkbox" id="cb_rn_r_4" value="IV">
-                      <label class="form-check-label" for="cb_rn_r_4">IV</label>
+                      <input class="form-check-input cb_rn cb_rn_r cb_rn_above" type="checkbox" id="cb_rn_r_III" value="III" title="Mid jugular">
+                      <label class="form-check-label" for="cb_rn_r_III">III</label>
+                    </div>
+                    <!-- Below cricoid stations (N3) -->
+                    <div class="form-check form-check-inline items-start">
+                      <input class="form-check-input cb_rn cb_rn_r cb_rn_below cb_rn_n3" type="checkbox" id="cb_rn_r_IVA" value="IVA" title="Lower jugular (below cricoid)">
+                      <label class="form-check-label text-orange-600 dark:text-orange-400" for="cb_rn_r_IVA">IVA</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_5" value="V">
-                      <label class="form-check-label" for="cb_rn_r_5">V</label>
+                      <input class="form-check-input cb_rn cb_rn_r cb_rn_below cb_rn_n3" type="checkbox" id="cb_rn_r_IVB" value="IVB" title="Medial supraclavicular (below cricoid)">
+                      <label class="form-check-label text-orange-600 dark:text-orange-400" for="cb_rn_r_IVB">IVB</label>
+                    </div>
+                    <!-- Above cricoid stations -->
+                    <div class="form-check form-check-inline items-start">
+                      <input class="form-check-input cb_rn cb_rn_r cb_rn_above" type="checkbox" id="cb_rn_r_VA" value="VA" title="Upper posterior triangle">
+                      <label class="form-check-label" for="cb_rn_r_VA">VA</label>
+                    </div>
+                    <!-- Below cricoid stations (N3) -->
+                    <div class="form-check form-check-inline items-start">
+                      <input class="form-check-input cb_rn cb_rn_r cb_rn_below cb_rn_n3" type="checkbox" id="cb_rn_r_VB" value="VB" title="Lower posterior triangle (below cricoid)">
+                      <label class="form-check-label text-orange-600 dark:text-orange-400" for="cb_rn_r_VB">VB</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_6" value="VI">
-                      <label class="form-check-label" for="cb_rn_r_6">VI</label>
+                      <input class="form-check-input cb_rn cb_rn_r cb_rn_below cb_rn_n3" type="checkbox" id="cb_rn_r_VC" value="VC" title="Lateral supraclavicular (below cricoid)">
+                      <label class="form-check-label text-orange-600 dark:text-orange-400" for="cb_rn_r_VC">VC</label>
+                    </div>
+                    <!-- Above cricoid stations -->
+                    <div class="form-check form-check-inline items-start">
+                      <input class="form-check-input cb_rn cb_rn_r cb_rn_above" type="checkbox" id="cb_rn_r_VI" value="VI" title="Anterior cervical">
+                      <label class="form-check-label" for="cb_rn_r_VI">VI</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp cb_rn_n3" type="checkbox" id="cb_rn_r_7" value="VII">
-                      <label class="form-check-label" for="cb_rn_r_7">VII</label>
+                      <input class="form-check-input cb_rn cb_rn_r cb_rn_above cb_rn_rp" type="checkbox" id="cb_rn_r_VIIA" value="VIIA" title="Retropharyngeal">
+                      <label class="form-check-label" for="cb_rn_r_VIIA">VIIA</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_f" value="facial">
-                      <label class="form-check-label" for="cb_rn_r_f">facial</label>
+                      <input class="form-check-input cb_rn cb_rn_r cb_rn_above" type="checkbox" id="cb_rn_r_VIIB" value="VIIB" title="Retrostyloid">
+                      <label class="form-check-label" for="cb_rn_r_VIIB">VIIB</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_pp" value="parapharyngeal">
-                      <label class="form-check-label" for="cb_rn_r_pp">parapharyngeal</label>
+                      <input class="form-check-input cb_rn cb_rn_r cb_rn_above" type="checkbox" id="cb_rn_r_VIII" value="VIII" title="Parotid">
+                      <label class="form-check-label" for="cb_rn_r_VIII">VIII</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_p" value="parotid">
-                      <label class="form-check-label" for="cb_rn_r_p">parotid</label>
+                      <input class="form-check-input cb_rn cb_rn_r cb_rn_above" type="checkbox" id="cb_rn_r_IX" value="IX" title="Bucco-facial">
+                      <label class="form-check-label" for="cb_rn_r_IX">IX</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_so" value="suboccipital">
-                      <label class="form-check-label" for="cb_rn_r_so">suboccipital</label>
+                      <input class="form-check-input cb_rn cb_rn_r cb_rn_above" type="checkbox" id="cb_rn_r_XA" value="XA" title="Retro-auricular">
+                      <label class="form-check-label" for="cb_rn_r_XA">XA</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_r cb_rn_r_nrp" type="checkbox" id="cb_rn_r_ra" value="retroauricular">
-                      <label class="form-check-label" for="cb_rn_r_ra">retroauricular</label>
+                      <input class="form-check-input cb_rn cb_rn_r cb_rn_above" type="checkbox" id="cb_rn_r_XB" value="XB" title="Occipital">
+                      <label class="form-check-label" for="cb_rn_r_XB">XB</label>
                     </div>
                   </form>
                 </div>
@@ -352,57 +378,78 @@
                 </div>
                 <div class="flex-1 p-3 flex items-center">
                   <form class="flex flex-wrap gap-x-4 gap-y-2 rn_item items-start">
+                    <!-- Above cricoid stations -->
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_l cb_rn_n1" type="checkbox" id="cb_rn_l_rp" value="retropharyngeal">
-                      <label class="form-check-label" for="cb_rn_l_rp">Retropharyngeal</label>
+                      <input class="form-check-input cb_rn cb_rn_l cb_rn_above" type="checkbox" id="cb_rn_l_IA" value="IA" title="Submental">
+                      <label class="form-check-label" for="cb_rn_l_IA">IA</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_1" value="I">
-                      <label class="form-check-label" for="cb_rn_l_1">I</label>
+                      <input class="form-check-input cb_rn cb_rn_l cb_rn_above" type="checkbox" id="cb_rn_l_IB" value="IB" title="Submandibular">
+                      <label class="form-check-label" for="cb_rn_l_IB">IB</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_2" value="II">
-                      <label class="form-check-label" for="cb_rn_l_2">II</label>
+                      <input class="form-check-input cb_rn cb_rn_l cb_rn_above" type="checkbox" id="cb_rn_l_IIA" value="IIA" title="Upper jugular (anterior)">
+                      <label class="form-check-label" for="cb_rn_l_IIA">IIA</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_3" value="III">
-                      <label class="form-check-label" for="cb_rn_l_3">III</label>
+                      <input class="form-check-input cb_rn cb_rn_l cb_rn_above" type="checkbox" id="cb_rn_l_IIB" value="IIB" title="Upper jugular (posterior)">
+                      <label class="form-check-label" for="cb_rn_l_IIB">IIB</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp cb_rn_n3" type="checkbox" id="cb_rn_l_4" value="IV">
-                      <label class="form-check-label" for="cb_rn_l_4">IV</label>
+                      <input class="form-check-input cb_rn cb_rn_l cb_rn_above" type="checkbox" id="cb_rn_l_III" value="III" title="Mid jugular">
+                      <label class="form-check-label" for="cb_rn_l_III">III</label>
+                    </div>
+                    <!-- Below cricoid stations (N3) -->
+                    <div class="form-check form-check-inline items-start">
+                      <input class="form-check-input cb_rn cb_rn_l cb_rn_below cb_rn_n3" type="checkbox" id="cb_rn_l_IVA" value="IVA" title="Lower jugular (below cricoid)">
+                      <label class="form-check-label text-orange-600 dark:text-orange-400" for="cb_rn_l_IVA">IVA</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_5" value="V">
-                      <label class="form-check-label" for="cb_rn_l_5">V</label>
+                      <input class="form-check-input cb_rn cb_rn_l cb_rn_below cb_rn_n3" type="checkbox" id="cb_rn_l_IVB" value="IVB" title="Medial supraclavicular (below cricoid)">
+                      <label class="form-check-label text-orange-600 dark:text-orange-400" for="cb_rn_l_IVB">IVB</label>
+                    </div>
+                    <!-- Above cricoid stations -->
+                    <div class="form-check form-check-inline items-start">
+                      <input class="form-check-input cb_rn cb_rn_l cb_rn_above" type="checkbox" id="cb_rn_l_VA" value="VA" title="Upper posterior triangle">
+                      <label class="form-check-label" for="cb_rn_l_VA">VA</label>
+                    </div>
+                    <!-- Below cricoid stations (N3) -->
+                    <div class="form-check form-check-inline items-start">
+                      <input class="form-check-input cb_rn cb_rn_l cb_rn_below cb_rn_n3" type="checkbox" id="cb_rn_l_VB" value="VB" title="Lower posterior triangle (below cricoid)">
+                      <label class="form-check-label text-orange-600 dark:text-orange-400" for="cb_rn_l_VB">VB</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_6" value="VI">
-                      <label class="form-check-label" for="cb_rn_l_6">VI</label>
+                      <input class="form-check-input cb_rn cb_rn_l cb_rn_below cb_rn_n3" type="checkbox" id="cb_rn_l_VC" value="VC" title="Lateral supraclavicular (below cricoid)">
+                      <label class="form-check-label text-orange-600 dark:text-orange-400" for="cb_rn_l_VC">VC</label>
+                    </div>
+                    <!-- Above cricoid stations -->
+                    <div class="form-check form-check-inline items-start">
+                      <input class="form-check-input cb_rn cb_rn_l cb_rn_above" type="checkbox" id="cb_rn_l_VI" value="VI" title="Anterior cervical">
+                      <label class="form-check-label" for="cb_rn_l_VI">VI</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp cb_rn_n3" type="checkbox" id="cb_rn_l_7" value="VII">
-                      <label class="form-check-label" for="cb_rn_l_7">VII</label>
+                      <input class="form-check-input cb_rn cb_rn_l cb_rn_above cb_rn_rp" type="checkbox" id="cb_rn_l_VIIA" value="VIIA" title="Retropharyngeal">
+                      <label class="form-check-label" for="cb_rn_l_VIIA">VIIA</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_f" value="facial">
-                      <label class="form-check-label" for="cb_rn_l_f">facial</label>
+                      <input class="form-check-input cb_rn cb_rn_l cb_rn_above" type="checkbox" id="cb_rn_l_VIIB" value="VIIB" title="Retrostyloid">
+                      <label class="form-check-label" for="cb_rn_l_VIIB">VIIB</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_pp" value="parapharyngeal">
-                      <label class="form-check-label" for="cb_rn_l_pp">parapharyngeal</label>
+                      <input class="form-check-input cb_rn cb_rn_l cb_rn_above" type="checkbox" id="cb_rn_l_VIII" value="VIII" title="Parotid">
+                      <label class="form-check-label" for="cb_rn_l_VIII">VIII</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_p" value="parotid">
-                      <label class="form-check-label" for="cb_rn_l_p">parotid</label>
+                      <input class="form-check-input cb_rn cb_rn_l cb_rn_above" type="checkbox" id="cb_rn_l_IX" value="IX" title="Bucco-facial">
+                      <label class="form-check-label" for="cb_rn_l_IX">IX</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_so" value="suboccipital">
-                      <label class="form-check-label" for="cb_rn_l_so">suboccipital</label>
+                      <input class="form-check-input cb_rn cb_rn_l cb_rn_above" type="checkbox" id="cb_rn_l_XA" value="XA" title="Retro-auricular">
+                      <label class="form-check-label" for="cb_rn_l_XA">XA</label>
                     </div>
                     <div class="form-check form-check-inline items-start">
-                      <input class="form-check-input cb_rn cb_rn_l cb_rn_l_nrp" type="checkbox" id="cb_rn_l_ra" value="retroauricular">
-                      <label class="form-check-label" for="cb_rn_l_ra">retroauricular</label>
+                      <input class="form-check-input cb_rn cb_rn_l cb_rn_above" type="checkbox" id="cb_rn_l_XB" value="XB" title="Occipital">
+                      <label class="form-check-label" for="cb_rn_l_XB">XB</label>
                     </div>
                   </form>
                 </div>
@@ -570,5 +617,78 @@
 
     <!-- Vendors: jquery, bootstrap, clipboard.js -->
     <%= require('../partials/vendors_js.html').default %>
+
+    <!-- Neck Lymph Node Helper Modal -->
+    <dialog id="modal_neck_ln_helper" class="p-0 rounded-lg shadow-xl backdrop:bg-gray-900/50 dark:bg-gray-800 dark:text-gray-100 w-fit max-w-full">
+        <div class="flex flex-col max-h-[90vh]">
+            <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+                <h3 class="text-xl font-semibold">
+                    Neck Lymph Node Map Helper
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" onclick="document.getElementById('modal_neck_ln_helper').close()">
+                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto">
+                <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                    <p>Select involved lymph node stations on the map below.</p>
+                    <p class="mt-1"><span class="text-orange-600 dark:text-orange-400 font-medium">Orange stations</span> are below the caudal border of cricoid cartilage (N3 criteria).</p>
+                </div>
+
+                <div class="neck-ln-map-container bg-white rounded-lg shadow-inner overflow-hidden">
+                    <img src="../assets/images/neck_lymph_node_stations.webp" alt="Neck Lymph Node Stations" class="neck-ln-map-img">
+
+                    <!-- Right side (image left = patient right) -->
+                    <div class="neck-ln-station-btn ln-r-IA" data-uid="r-IA" data-station="IA" data-side="right" data-name="Submental" data-below-cricoid="false">IA</div>
+                    <div class="neck-ln-station-btn ln-r-IB" data-uid="r-IB" data-station="IB" data-side="right" data-name="Submandibular" data-below-cricoid="false">IB</div>
+                    <div class="neck-ln-station-btn ln-r-IIA" data-uid="r-IIA" data-station="IIA" data-side="right" data-name="Upper jugular (anterior)" data-below-cricoid="false">IIA</div>
+                    <div class="neck-ln-station-btn ln-r-IIB" data-uid="r-IIB" data-station="IIB" data-side="right" data-name="Upper jugular (posterior)" data-below-cricoid="false">IIB</div>
+                    <div class="neck-ln-station-btn ln-r-III" data-uid="r-III" data-station="III" data-side="right" data-name="Mid jugular" data-below-cricoid="false">III</div>
+                    <div class="neck-ln-station-btn ln-r-IVA" data-uid="r-IVA" data-station="IVA" data-side="right" data-name="Lower jugular" data-below-cricoid="true">IVA</div>
+                    <div class="neck-ln-station-btn ln-r-IVB" data-uid="r-IVB" data-station="IVB" data-side="right" data-name="Medial supraclavicular" data-below-cricoid="true">IVB</div>
+                    <div class="neck-ln-station-btn ln-r-VA" data-uid="r-VA" data-station="VA" data-side="right" data-name="Upper posterior triangle" data-below-cricoid="false">VA</div>
+                    <div class="neck-ln-station-btn ln-r-VB" data-uid="r-VB" data-station="VB" data-side="right" data-name="Lower posterior triangle" data-below-cricoid="true">VB</div>
+                    <div class="neck-ln-station-btn ln-r-VC" data-uid="r-VC" data-station="VC" data-side="right" data-name="Lateral supraclavicular" data-below-cricoid="true">VC</div>
+                    <div class="neck-ln-station-btn ln-r-VI" data-uid="r-VI" data-station="VI" data-side="right" data-name="Anterior cervical" data-below-cricoid="false">VI</div>
+                    <div class="neck-ln-station-btn ln-r-VIIA" data-uid="r-VIIA" data-station="VIIA" data-side="right" data-name="Retropharyngeal" data-below-cricoid="false">VIIA</div>
+                    <div class="neck-ln-station-btn ln-r-VIIB" data-uid="r-VIIB" data-station="VIIB" data-side="right" data-name="Retrostyloid" data-below-cricoid="false">VIIB</div>
+                    <div class="neck-ln-station-btn ln-r-VIII" data-uid="r-VIII" data-station="VIII" data-side="right" data-name="Parotid" data-below-cricoid="false">VIII</div>
+                    <div class="neck-ln-station-btn ln-r-IX" data-uid="r-IX" data-station="IX" data-side="right" data-name="Bucco-facial" data-below-cricoid="false">IX</div>
+                    <div class="neck-ln-station-btn ln-r-XA" data-uid="r-XA" data-station="XA" data-side="right" data-name="Retro-auricular" data-below-cricoid="false">XA</div>
+                    <div class="neck-ln-station-btn ln-r-XB" data-uid="r-XB" data-station="XB" data-side="right" data-name="Occipital" data-below-cricoid="false">XB</div>
+
+                    <!-- Left side (image right = patient left) -->
+                    <div class="neck-ln-station-btn ln-l-IA" data-uid="l-IA" data-station="IA" data-side="left" data-name="Submental" data-below-cricoid="false">IA</div>
+                    <div class="neck-ln-station-btn ln-l-IB" data-uid="l-IB" data-station="IB" data-side="left" data-name="Submandibular" data-below-cricoid="false">IB</div>
+                    <div class="neck-ln-station-btn ln-l-IIA" data-uid="l-IIA" data-station="IIA" data-side="left" data-name="Upper jugular (anterior)" data-below-cricoid="false">IIA</div>
+                    <div class="neck-ln-station-btn ln-l-IIB" data-uid="l-IIB" data-station="IIB" data-side="left" data-name="Upper jugular (posterior)" data-below-cricoid="false">IIB</div>
+                    <div class="neck-ln-station-btn ln-l-III" data-uid="l-III" data-station="III" data-side="left" data-name="Mid jugular" data-below-cricoid="false">III</div>
+                    <div class="neck-ln-station-btn ln-l-IVA" data-uid="l-IVA" data-station="IVA" data-side="left" data-name="Lower jugular" data-below-cricoid="true">IVA</div>
+                    <div class="neck-ln-station-btn ln-l-IVB" data-uid="l-IVB" data-station="IVB" data-side="left" data-name="Medial supraclavicular" data-below-cricoid="true">IVB</div>
+                    <div class="neck-ln-station-btn ln-l-VA" data-uid="l-VA" data-station="VA" data-side="left" data-name="Upper posterior triangle" data-below-cricoid="false">VA</div>
+                    <div class="neck-ln-station-btn ln-l-VB" data-uid="l-VB" data-station="VB" data-side="left" data-name="Lower posterior triangle" data-below-cricoid="true">VB</div>
+                    <div class="neck-ln-station-btn ln-l-VC" data-uid="l-VC" data-station="VC" data-side="left" data-name="Lateral supraclavicular" data-below-cricoid="true">VC</div>
+                    <div class="neck-ln-station-btn ln-l-VI" data-uid="l-VI" data-station="VI" data-side="left" data-name="Anterior cervical" data-below-cricoid="false">VI</div>
+                    <div class="neck-ln-station-btn ln-l-VIIA" data-uid="l-VIIA" data-station="VIIA" data-side="left" data-name="Retropharyngeal" data-below-cricoid="false">VIIA</div>
+                    <div class="neck-ln-station-btn ln-l-VIIB" data-uid="l-VIIB" data-station="VIIB" data-side="left" data-name="Retrostyloid" data-below-cricoid="false">VIIB</div>
+                    <div class="neck-ln-station-btn ln-l-VIII" data-uid="l-VIII" data-station="VIII" data-side="left" data-name="Parotid" data-below-cricoid="false">VIII</div>
+                    <div class="neck-ln-station-btn ln-l-IX" data-uid="l-IX" data-station="IX" data-side="left" data-name="Bucco-facial" data-below-cricoid="false">IX</div>
+                    <div class="neck-ln-station-btn ln-l-XA" data-uid="l-XA" data-station="XA" data-side="left" data-name="Retro-auricular" data-below-cricoid="false">XA</div>
+                    <div class="neck-ln-station-btn ln-l-XB" data-uid="l-XB" data-station="XB" data-side="left" data-name="Occipital" data-below-cricoid="false">XB</div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-700">
+                <button id="btn_neck_ln_submit" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Apply to Form
+                </button>
+                <button id="btn_neck_ln_clear" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                    Clear Selection
+                </button>
+            </div>
+        </div>
+    </dialog>
   </body>
 </html>
