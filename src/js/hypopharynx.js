@@ -5,6 +5,11 @@ if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/hypopharynx.html');
 }
 
+// Hypopharynx Neck Lymph Node Helper
+import '../css/nasopharynx_helper.css';  // 共用 nasopharynx 的 CSS
+import '../image/neck_lymph_node_stations.webp';
+import './hypopharynx_logic_helper.js';
+
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage} from './ajcc_common.js';
 
 const AJCC_T = new Map([
