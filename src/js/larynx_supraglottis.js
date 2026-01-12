@@ -1,6 +1,9 @@
 import './common.js';
 import '../css/dashboard.css';
 import '../css/ajcc_common.css';
+import '../css/nasopharynx_helper.css';
+import '../image/neck_lymph_node_stations.webp';
+import './larynx_logic_helper.js';
 if (process.env.NODE_ENV !== 'production') {
     require('raw-loader!../html/ajcc/larynx_supraglottis.html');
 }
