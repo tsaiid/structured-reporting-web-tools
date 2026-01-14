@@ -53,7 +53,7 @@ export function calculateLungStage(data) {
         } else if (data.invasion.t3) {
             t_stage.push("3");
         } else if (data.invasion.t2a) {
-            t_stage.push("2");
+            t_stage.push("2a");
         }
     }
 
