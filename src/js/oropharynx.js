@@ -2,7 +2,7 @@ import './common.js';
 import '../css/dashboard.css';
 import '../css/ajcc_common.css';
 if (process.env.NODE_ENV !== 'production') {
-    require('raw-loader!../html/ajcc/oropharynx.html');
+    require('../html/ajcc/oropharynx.html?raw');
 }
 
 // Oropharynx Neck Lymph Node Helper

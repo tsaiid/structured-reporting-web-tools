@@ -2,7 +2,7 @@ import './common.js';
 import '../css/dashboard.css';
 import '../css/ajcc_common.css';
 if (process.env.NODE_ENV !== 'production') {
-    require('raw-loader!../html/ajcc/nasopharynx.html');
+    require('../html/ajcc/nasopharynx.html?raw');
 }
 
 // Nasopharynx Neck Lymph Node Helper

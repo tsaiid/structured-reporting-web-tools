@@ -2,7 +2,7 @@ import './common.js';
 import '../css/dashboard.css';
 import '../css/ajcc_common.css';
 if (process.env.NODE_ENV !== 'production') {
-    require('raw-loader!../html/ajcc/gastric.html');
+    require('../html/ajcc/gastric.html?raw');
 }
 
 import '../css/gastric_helper.css';

@@ -2,7 +2,7 @@ import './common.js';
 import '../css/dashboard.css';
 import '../css/ajcc_common.css';
 if (process.env.NODE_ENV !== 'production') {
-    require('raw-loader!../html/ajcc/esophagus.html');
+    require('../html/ajcc/esophagus.html?raw');
 }
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage} from './ajcc_common.js';

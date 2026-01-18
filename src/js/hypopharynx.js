@@ -2,7 +2,7 @@ import './common.js';
 import '../css/dashboard.css';
 import '../css/ajcc_common.css';
 if (process.env.NODE_ENV !== 'production') {
-    require('raw-loader!../html/ajcc/hypopharynx.html');
+    require('../html/ajcc/hypopharynx.html?raw');
 }
 
 // Hypopharynx Neck Lymph Node Helper

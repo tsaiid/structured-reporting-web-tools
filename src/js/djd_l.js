@@ -1,7 +1,7 @@
 import '../css/dashboard.css';
 import '../css/djd-l.css';
 if (process.env.NODE_ENV !== 'production') {
-    require('raw-loader!../html/djd_l.html');
+    require('../html/djd_l.html?raw');
 }
 
 var DJDLForm = 'Lumbar spine:' + "\n";

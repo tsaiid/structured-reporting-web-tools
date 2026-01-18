@@ -111,6 +111,14 @@ module.exports = {
       test: /\.html$/i,
       include: path.resolve(__dirname, 'src/html/partials'),
       loader: "html-loader",
+      options: {
+        esModule: true,
+      },
+    },
+    {
+      test: /\.html$/i,
+      resourceQuery: /raw/,
+      type: 'asset/source',
     },
     {
       test: /\.css$/, // 針對所有.css 的檔案作預處理，這邊是用 regular express 的格式

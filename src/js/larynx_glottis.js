@@ -5,7 +5,7 @@ import '../css/nasopharynx_helper.css';
 import '../image/neck_lymph_node_stations.webp';
 import './larynx_logic_helper.js';
 if (process.env.NODE_ENV !== 'production') {
-    require('raw-loader!../html/ajcc/larynx_glottis.html');
+    require('../html/ajcc/larynx_glottis.html?raw');
 }
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage} from './ajcc_common.js';
