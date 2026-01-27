@@ -44,6 +44,11 @@
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2"
   },
+  "pnpm": {
+    "overrides": {
+      "lodash": "^4.17.23"
+    }
+  },
   "dependencies": {
     "@picocss/pico": "^2.1.1",
     "favicons": "^7.2.0",
