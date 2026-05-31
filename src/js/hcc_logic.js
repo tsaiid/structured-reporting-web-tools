@@ -4,7 +4,7 @@ export function calculateHCCStage(data) {
     //   tumorCount: number (or NaN if multiple/unspecified),
     //   largestTumorSize: number (cm),
     //   vascularInvasion: boolean (T2 criteria for solitary tumor > 2 cm),
-    //   majorVascularInvasion: boolean (T4 criteria),
+    //   hasT4Features: boolean,
     //   hasNodes: boolean,
     //   hasMetastasis: boolean
     // }
@@ -14,7 +14,7 @@ export function calculateHCCStage(data) {
     var m_stage = ["0"];
 
     // calculate T stage
-    if (data.majorVascularInvasion) {
+    if (data.hasT4Features || data.majorVascularInvasion) {
         t_stage.push('4');
     } else if (data.tumorCount === 1) {
         if (data.largestTumorSize > 2 && data.vascularInvasion) {

@@ -28,6 +28,20 @@ const AJCC_M = new Map([
     ['1', 'Distant metastasis'],
 ]);
 
+function appendTumorFeatureRows(report, selector) {
+    $(selector).each(function(){
+        let check_or_not = $(this).is(':checked') ? "+" : " ";
+        report += `    [${check_or_not}] ` + $(this).val();
+        if ($(this).hasClass('has_txt')) {
+            report += ", location: ";
+            let loc_txt = $(this).parent().next().children('input:text').val();
+            report += loc_txt ? loc_txt : "___";
+        }
+        report += "\n";
+    });
+    return report;
+}
+
 function generate_report(){
     var report = `1. Imaging modality
   - Imaging by `;
@@ -62,16 +76,10 @@ function generate_report(){
 
     // Tumor characteristics and associated liver features
     report += "3. Tumor characteristics and associated liver features\n";
-    $('.cb_tc').each(function(){
-        let check_or_not = $(this).is(':checked') ? "+" : " ";
-        report += `    [${check_or_not}] ` + $(this).val();
-        if ($(this).hasClass('has_txt')) {
-            report += ", location: ";
-            let loc_txt = $(this).parent().next().children('input:text').val();
-            report += loc_txt ? loc_txt : "___";
-        }
-        report += "\n";
-    });
+    report += "  - Staging features\n";
+    report = appendTumorFeatureRows(report, '.cb_tc_staging');
+    report += "  - Imaging and liver features\n";
+    report = appendTumorFeatureRows(report, '.cb_tc_liver');
     report += "\n";
 
     // Collect data for calculation
@@ -79,7 +87,7 @@ function generate_report(){
         tumorCount: tl_num,
         largestTumorSize: t_length,
         vascularInvasion: $('#cb_tc_vi').is(':checked'),
-        majorVascularInvasion: $('.cb_tc_t4:checked').length > 0,
+        hasT4Features: $('.cb_tc_t4:checked').length > 0,
         hasNodes: $('.cb_rn:checked').length > 0,
         hasMetastasis: $('.cb_dm:checked').length > 0
     };
