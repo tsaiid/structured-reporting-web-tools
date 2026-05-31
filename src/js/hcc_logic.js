@@ -3,6 +3,7 @@ export function calculateHCCStage(data) {
     // {
     //   tumorCount: number (or NaN if multiple/unspecified),
     //   largestTumorSize: number (cm),
+    //   vascularInvasion: boolean (T2 criteria for solitary tumor > 2 cm),
     //   majorVascularInvasion: boolean (T4 criteria),
     //   hasNodes: boolean,
     //   hasMetastasis: boolean
@@ -16,7 +17,9 @@ export function calculateHCCStage(data) {
     if (data.majorVascularInvasion) {
         t_stage.push('4');
     } else if (data.tumorCount === 1) {
-        if (data.largestTumorSize > 2) {
+        if (data.largestTumorSize > 2 && data.vascularInvasion) {
+            t_stage.push('2');
+        } else if (data.largestTumorSize > 2) {
             t_stage.push('1b');
         } else {
             // Includes size 0 or undefined as '1a' in legacy logic if not handled? 

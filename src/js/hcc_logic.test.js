@@ -35,6 +35,30 @@ describe('HCC Logic', () => {
             expect(result.t).toEqual(['1b']);
         });
 
+        test('T2: Single tumor > 2cm with vascular invasion', () => {
+            const result = calculateHCCStage({
+                tumorCount: 1,
+                largestTumorSize: 2.1,
+                vascularInvasion: true,
+                majorVascularInvasion: false,
+                hasNodes: false,
+                hasMetastasis: false
+            });
+            expect(result.t).toEqual(['2']);
+        });
+
+        test('T1a: Single tumor <= 2cm remains T1a with vascular invasion', () => {
+            const result = calculateHCCStage({
+                tumorCount: 1,
+                largestTumorSize: 2.0,
+                vascularInvasion: true,
+                majorVascularInvasion: false,
+                hasNodes: false,
+                hasMetastasis: false
+            });
+            expect(result.t).toEqual(['1a']);
+        });
+
         test('T2: Multiple tumors, none > 5cm', () => {
             const result = calculateHCCStage({
                 tumorCount: 2,

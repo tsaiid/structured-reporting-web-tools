@@ -78,6 +78,7 @@ function generate_report(){
     const data = {
         tumorCount: tl_num,
         largestTumorSize: t_length,
+        vascularInvasion: $('#cb_tc_vi').is(':checked'),
         majorVascularInvasion: $('.cb_tc_t4:checked').length > 0,
         hasNodes: $('.cb_rn:checked').length > 0,
         hasMetastasis: $('.cb_dm:checked').length > 0
@@ -96,13 +97,16 @@ function generate_report(){
     let rn_hl_check = $('#cb_rn_hl').is(':checked') ? "+" : " ";
     let rn_ip_check = $('#cb_rn_ip').is(':checked') ? "+" : " ";
     let rn_c_check = $('#cb_rn_c').is(':checked') ? "+" : " ";
+    let rn_cha_check = $('#cb_rn_cha').is(':checked') ? "+" : " ";
+    let rn_pv_check = $('#cb_rn_pv').is(':checked') ? "+" : " ";
     let rn_others_check = $('#cb_rn_others').is(':checked') ? "+" : " ";
     let txt_rn_others = $('#txt_rn_others').val() ? $('#txt_rn_others').val() : "___";
     report += `4. Regional nodal metastasis
     [${rn_no_check}] No or Equivocal
     [${rn_yes_check}] Yes, if yes, location (specified as below):
         [${rn_hh_check}] Hepatic hilum    [${rn_hl_check}] Hepatoduodenal ligament  [${rn_ip_check}] Inferior phrenic
-        [${rn_c_check}] Caval            [${rn_others_check}] Others: ${txt_rn_others}
+        [${rn_c_check}] Caval            [${rn_cha_check}] Common hepatic artery    [${rn_pv_check}] Portal vein
+        [${rn_others_check}] Others: ${txt_rn_others}
 
 `;
 
