@@ -34,10 +34,10 @@ function generate_report(){
     const data = {
         tumorSize: parseFloat($('#txt_ts_len').val()),
         isNonMeasurable: $('#cb_ts_nm').is(':checked'),
-        isT0: $('.cb_ti_t0:checked').length > 0,
-        isT2: $('#cb_ti_t2:is(":checked")').length > 0,
-        isT3: $('#cb_ti_t3:is(":checked")').length > 0,
-        isT4: $('#cb_ti_t4:is(":checked")').length > 0,
+        isT0: $('#cb_ti_t0').is(':checked'),
+        isT2: $('#cb_ti_t2').is(':checked'),
+        isT3: $('#cb_ti_t3').is(':checked'),
+        isT4: $('#cb_ti_t4').is(':checked'),
         isMultiple: $('input[name="radio_tn"]:checked').val() === 'multiple',
         hasRegionalNodes: $('.cb_rn:checked').length > 0,
         hasMetastasis: $('.cb_dm:checked').length > 0

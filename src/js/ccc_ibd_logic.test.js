@@ -52,6 +52,9 @@ describe('Intrahepatic Cholangiocarcinoma (IBD) Logic', () => {
     test('T3: Peritoneum perforation', () => {
         const data = { ...defaultData, tumorSize: 3.0, isT3: true };
         expect(calculate_staging(data).t).toContain('3');
+
+        const dataWithMultipleAndT2 = { ...defaultData, tumorSize: 12.0, isT2: true, isT3: true, isMultiple: true };
+        expect(calculate_staging(dataWithMultipleAndT2).t).toContain('3');
     });
 
     test('T4: Extrahepatic structures', () => {
