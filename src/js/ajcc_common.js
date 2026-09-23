@@ -133,13 +133,13 @@ export function generate_ajcc_table(t, n, m) {
     });
 
     const tableWrapperClass = "w-full mb-6 overflow-x-auto";
-    const tableClass = "w-full text-sm text-left border-collapse";
+    const tableClass = "w-full text-sm text-left border-collapse notranslate";
     const theadClass = "bg-gray-100 dark:bg-gray-800 text-xs uppercase text-gray-700 dark:text-gray-300";
     const thClass = "px-4 py-3 border-b border-gray-200 dark:border-gray-700";
 
     let ajcc_table = `
 <div class="${tableWrapperClass}">
-<table class="${tableClass}" id="ajcc_t">
+<table class="${tableClass}" id="ajcc_t" translate="no">
   <thead class="${theadClass}">
     <tr>
       <th scope="col" class="${thClass} w-32">T Category</th>
@@ -153,7 +153,7 @@ export function generate_ajcc_table(t, n, m) {
 </div>
 
 <div class="${tableWrapperClass}">
-<table class="${tableClass}" id="ajcc_n">
+<table class="${tableClass}" id="ajcc_n" translate="no">
   <thead class="${theadClass}">
     <tr>
       <th scope="col" class="${thClass} w-32">N Category</th>
@@ -167,7 +167,7 @@ export function generate_ajcc_table(t, n, m) {
 </div>
 
 <div class="${tableWrapperClass}">
-<table class="${tableClass}" id="ajcc_m">
+<table class="${tableClass}" id="ajcc_m" translate="no">
   <thead class="${theadClass}">
     <tr>
       <th scope="col" class="${thClass} w-32">M Category</th>
