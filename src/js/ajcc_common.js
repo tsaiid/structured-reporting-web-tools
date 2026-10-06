@@ -1,23 +1,26 @@
 export function ajcc_template(ca_str, t, t_str, n, n_str, m, m_str, ver = 8) {
+    const t_val = (t !== undefined && t !== null) ? String(t) : "";
+    const n_val = (n !== undefined && n !== null) ? String(n) : "";
+    const m_val = (m !== undefined && m !== null) ? String(m) : "";
     var report = `
 ===================================================
 AJCC Cancer Staging System, ${ver}th edition
 For ${ca_str}
 
 (T)  PRIMARY TUMOR:
- T${t} : ${t_str}
+ T${t_val} : ${t_str || ""}
 
 (N)  REGIONAL LYMPH NODES:
- N${n} : ${n_str}
+ N${n_val} : ${n_str || ""}
 
 (M)  DISTANT METASTASIS:
- M${m} : ${m_str}
+ M${m_val} : ${m_str || ""}
 ===================================================
 
 
 =====================
 AJCC ${ver}th edition Staging status:
-T${t}N${n}M${m}
+T${t_val}N${n_val}M${m_val}
 =====================`;
     return report;
 }
@@ -31,36 +34,48 @@ For ${ca_str}
 `;
     if (t_table instanceof Map) {
         t_table = Object.fromEntries(t_table);
+    } else if (!t_table) {
+        t_table = {};
     }
+    const t_val = (t !== undefined && t !== null) ? String(t) : "";
     report += "(T)  PRIMARY TUMOR:\n";
-    if (t.match(/[abc]/)) {
-        let t_p = parseInt(t);
-        let t_p_str = t_table[t_p];
+    if (t_val && t_val.match(/[abc]/)) {
+        let t_p = parseInt(t_val);
+        let t_p_str = t_table[t_p] || "";
         report += ` T${t_p} : ${t_p_str}\n  `;
     }
-    report += ` T${t} : ${t_table[t]}\n\n`;
+    let t_str = (t_val && t_table[t_val]) ? t_table[t_val] : "";
+    report += ` T${t_val} : ${t_str}\n\n`;
 
     if (n_table instanceof Map) {
         n_table = Object.fromEntries(n_table);
+    } else if (!n_table) {
+        n_table = {};
     }
+    const n_val = (n !== undefined && n !== null) ? String(n) : "";
     report += "(N)  REGIONAL LYMPH NODES:\n";
-    if (n.match(/[abc]/)) {
-        let n_p = parseInt(n);
-        let n_p_str = n_table[n_p];
+    if (n_val && n_val.match(/[abc]/)) {
+        let n_p = parseInt(n_val);
+        let n_p_str = n_table[n_p] || "";
         report += ` N${n_p} : ${n_p_str}\n  `;
     }
-    report += ` N${n} : ${n_table[n]}\n\n`;
+    let n_str = (n_val && n_table[n_val]) ? n_table[n_val] : "";
+    report += ` N${n_val} : ${n_str}\n\n`;
 
     if (m_table instanceof Map) {
         m_table = Object.fromEntries(m_table);
+    } else if (!m_table) {
+        m_table = {};
     }
+    const m_val = (m !== undefined && m !== null) ? String(m) : "";
     report += "(M)  DISTANT METASTASIS:\n";
-    if (m.match(/[abc]/)) {
-        let m_p = parseInt(m);
-        let m_p_str = m_table[m_p];
+    if (m_val && m_val.match(/[abc]/)) {
+        let m_p = parseInt(m_val);
+        let m_p_str = m_table[m_p] || "";
         report += ` M${m_p} : ${m_p_str}\n  `;
     }
-    report += ` M${m} : ${m_table[m]}`;
+    let m_str = (m_val && m_table[m_val]) ? m_table[m_val] : "";
+    report += ` M${m_val} : ${m_str}`;
 
     report += `
 ===================================================
@@ -68,7 +83,7 @@ For ${ca_str}
 
 =====================
 AJCC ${ver}th edition Staging status:
-T${t}N${n}M${m}
+T${t_val}N${n_val}M${m_val}
 =====================`;
     return report;
 }
