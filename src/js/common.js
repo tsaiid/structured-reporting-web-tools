@@ -8,9 +8,9 @@ import { getPreferredTheme, applyTheme, setTheme } from './theme.js';
 
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
 import { faGithub, faFacebookSquare, faXTwitter, faInstagram, faThreads, faYoutube } from "@fortawesome/free-brands-svg-icons";
-import { faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle, faFolder, faFolderOpen, faGlobe, faAngleDoubleLeft, faAngleDoubleRight, faBook, faCopy, faBars } from "@fortawesome/free-solid-svg-icons";
+import { faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle, faFolder, faFolderOpen, faGlobe, faAngleDoubleLeft, faAngleDoubleRight, faBook, faCopy, faBars, faCheck } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faGithub, faFacebookSquare, faXTwitter, faInstagram, faThreads, faYoutube, faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle, faFolder, faFolderOpen, faGlobe, faAngleDoubleLeft, faAngleDoubleRight, faBook, faCopy, faBars);
+library.add(faGithub, faFacebookSquare, faXTwitter, faInstagram, faThreads, faYoutube, faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle, faFolder, faFolderOpen, faGlobe, faAngleDoubleLeft, faAngleDoubleRight, faBook, faCopy, faBars, faCheck);
 dom.watch();
 
 // redirect to legacy version

@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 export function ajcc_template(ca_str, t, t_str, n, n_str, m, m_str, ver = 8) {
     const t_val = Array.isArray(t) ? getMaxStage(t) : (t !== undefined && t !== null) ? String(t) : "";
     const n_val = Array.isArray(n) ? getMaxStage(n) : (n !== undefined && n !== null) ? String(n) : "";
@@ -351,6 +353,105 @@ export function generate_ajcc_table(t, n, m) {
 }
 
 /**
+ * 顯示複製操作的視覺回饋（按鈕短暫變更圖示、文字與顏色，並可選更新 Modal 標題提示）
+ *
+ * @param {HTMLElement|jQuery|string} button - 目標按鈕元素或選取器
+ * @param {boolean} [isSuccess=true] - 複製是否成功
+ * @param {Object} [options]
+ * @param {number} [options.duration=2000] - 回饋顯示毫秒數
+ * @param {string} [options.modalTitleSelector] - 可選的 Modal 標題選取器
+ */
+export function showCopyFeedback(button, isSuccess = true, options = {}) {
+    const $btn = $(button);
+    if (!$btn.length) return;
+
+    const duration = options.duration || 2000;
+    const modalTitleSelector = options.modalTitleSelector;
+
+    // 清理既有定時器以防止快速連點競態
+    const existingTimer = $btn.data('copy-feedback-timer');
+    if (existingTimer) {
+        clearTimeout(existingTimer);
+    } else {
+        $btn.data('copy-feedback-original-html', $btn.html());
+        $btn.data('copy-feedback-original-title', $btn.attr('title') || '');
+    }
+
+    const originalHtml = $btn.data('copy-feedback-original-html');
+    const originalTitle = $btn.data('copy-feedback-original-title');
+
+    // 檢查是否有圖示與響應式 span (例如 <span class="hidden md:inline ...">)
+    const hasIcon = $btn.find('i, svg').length > 0;
+    const hasResponsiveSpan = $btn.find('span.hidden').length > 0;
+
+    const icon = isSuccess ? 'fas fa-check' : 'fas fa-times';
+    const text = isSuccess ? 'Copied!' : 'Failed!';
+
+    let feedbackHtml = '';
+    if (hasResponsiveSpan) {
+        feedbackHtml = `<i class="${icon}"></i><span class="hidden md:inline ml-1">${text}</span>`;
+    } else if (hasIcon) {
+        feedbackHtml = `<i class="${icon} mr-1"></i>${text}`;
+    } else {
+        feedbackHtml = `✓ ${text}`;
+    }
+
+    $btn.html(feedbackHtml);
+    $btn.attr('title', isSuccess ? 'Copied to clipboard!' : 'Copy failed!');
+
+    // 樣式變換（若按鈕有預設的藍色樣式）
+    const blueClasses = 'bg-blue-600 border-blue-700 hover:bg-blue-700 focus:ring-blue-500 focus:bg-blue-700';
+    const greenClasses = 'bg-green-600 border-green-700 hover:bg-green-700 focus:ring-green-500 focus:bg-green-700';
+    const redClasses = 'bg-red-600 border-red-700 hover:bg-red-700 focus:ring-red-500 focus:bg-red-700';
+
+    const hasBlueBg = $btn.hasClass('bg-blue-600');
+    if (hasBlueBg) {
+        $btn.removeClass(blueClasses);
+        if (isSuccess) {
+            $btn.addClass(greenClasses);
+        } else {
+            $btn.addClass(redClasses);
+        }
+    }
+
+    // Modal 標題輔助提示（若有提供且存在）
+    if (modalTitleSelector && $(modalTitleSelector).length) {
+        const badgeId = 'report-modal-copy-feedback-badge';
+        $(`#${badgeId}`).remove();
+        const badgeColor = isSuccess
+            ? 'text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-950/60 border-green-200 dark:border-green-800'
+            : 'text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-950/60 border-red-200 dark:border-red-800';
+        const badgeText = isSuccess ? 'Copied to clipboard' : 'Copy failed';
+        const $modalBadge = $(`<span id="${badgeId}" class="ml-2 text-xs font-normal ${badgeColor} border px-2 py-0.5 rounded inline-flex items-center gap-1"><i class="${icon}"></i> ${badgeText}</span>`);
+        $(modalTitleSelector).append($modalBadge);
+    }
+
+    const timer = setTimeout(() => {
+        if (originalHtml !== undefined) {
+            $btn.html(originalHtml);
+        }
+        if (originalTitle !== undefined) {
+            if (originalTitle === '') {
+                $btn.removeAttr('title');
+            } else {
+                $btn.attr('title', originalTitle);
+            }
+        }
+        if (hasBlueBg) {
+            $btn.removeClass(`${greenClasses} ${redClasses}`).addClass(blueClasses);
+        }
+        if (modalTitleSelector) {
+            $('#report-modal-copy-feedback-badge').remove();
+        }
+        $btn.removeData('copy-feedback-timer');
+        $btn.removeData('copy-feedback-original-html');
+        $btn.removeData('copy-feedback-original-title');
+    }, duration);
+
+    $btn.data('copy-feedback-timer', timer);
+}
+
+/**
  * Sets up the standard report page interactions:
  * - Copy button logic (ClipboardJS)
  * - AJCC Modal button logic
@@ -383,6 +484,7 @@ export function setupReportPage({
     // 1. Copy Button Click - Trigger Generation and Copy
     $(copyButtonId).on('click', function (event) {
         event.preventDefault();
+        const copyBtn = (this && this.nodeType) ? this : copyButtonId;
 
         // Generate report
         if (typeof generateReportFn === 'function') {
@@ -394,12 +496,17 @@ export function setupReportPage({
         const report_body = $(reportModalBodySelector).text();
         const text_to_copy = report_title + "\n\n" + report_body;
 
+        const feedbackOpts = {
+            modalTitleSelector: reportModalTitleId
+        };
+
         // Copy to clipboard
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(text_to_copy).then(() => {
-                // Optional: Feedback could be added here
+                showCopyFeedback(copyBtn, true, feedbackOpts);
             }).catch(err => {
                 console.error("Failed to copy: ", err);
+                showCopyFeedback(copyBtn, false, feedbackOpts);
             });
         } else {
             // Fallback for older browsers or non-secure contexts
@@ -410,9 +517,11 @@ export function setupReportPage({
             textArea.focus();
             textArea.select();
             try {
-                document.execCommand('copy');
+                const successful = document.execCommand('copy');
+                showCopyFeedback(copyBtn, Boolean(successful), feedbackOpts);
             } catch (err) {
                 console.error('Fallback: Oops, unable to copy', err);
+                showCopyFeedback(copyBtn, false, feedbackOpts);
             }
             document.body.removeChild(textArea);
         }

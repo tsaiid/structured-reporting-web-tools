@@ -1,4 +1,5 @@
-import { ajcc_template, ajcc_template_with_parent, getMaxStage, compareStage, getStageRank, getParentStage } from './ajcc_common';
+import $ from 'jquery';
+import { ajcc_template, ajcc_template_with_parent, getMaxStage, compareStage, getStageRank, getParentStage, showCopyFeedback, setupReportPage } from './ajcc_common';
 
 describe('ajcc_common', () => {
     const mockTMap = new Map([
@@ -277,6 +278,171 @@ describe('ajcc_common', () => {
             expect(getMaxStage([])).toBe('');
             expect(getMaxStage([null, undefined, ''])).toBe('');
             expect(getMaxStage(null)).toBe('');
+        });
+    });
+
+    describe('showCopyFeedback', () => {
+        beforeEach(() => {
+            jest.useFakeTimers();
+            document.body.innerHTML = `
+                <button type="button" id="btn_copy" class="px-3 py-1.5 text-sm font-medium text-white bg-blue-600 border border-blue-700 rounded-r-lg hover:bg-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:bg-blue-700">
+                    <i class="fas fa-copy"></i>
+                    <span class="hidden md:inline ml-1">Show &amp; Copy</span>
+                </button>
+                <button type="button" id="btn_plain">Copy</button>
+                <h5 id="reportModalLongTitle">Lung Cancer Staging Form</h5>
+            `;
+        });
+
+        afterEach(() => {
+            jest.runOnlyPendingTimers();
+            jest.useRealTimers();
+            document.body.innerHTML = '';
+        });
+
+        test('updates button text, icon, color and title upon copy success', () => {
+            const btn = document.getElementById('btn_copy');
+            showCopyFeedback(btn, true);
+
+            expect(btn.innerHTML).toContain('fa-check');
+            expect(btn.innerHTML).toContain('Copied!');
+            expect(btn.classList.contains('bg-green-600')).toBe(true);
+            expect(btn.classList.contains('bg-blue-600')).toBe(false);
+            expect(btn.getAttribute('title')).toBe('Copied to clipboard!');
+
+            // Timers advance
+            jest.advanceTimersByTime(2000);
+
+            expect(btn.innerHTML).toContain('fa-copy');
+            expect(btn.innerHTML).toContain('Show &amp; Copy');
+            expect(btn.classList.contains('bg-green-600')).toBe(false);
+            expect(btn.classList.contains('bg-blue-600')).toBe(true);
+            expect(btn.getAttribute('title')).toBeNull();
+        });
+
+        test('preserves original HTML across multiple rapid clicks', () => {
+            const btn = document.getElementById('btn_copy');
+
+            showCopyFeedback(btn, true);
+            jest.advanceTimersByTime(1000);
+            expect(btn.innerHTML).toContain('Copied!');
+
+            // Second click during active feedback
+            showCopyFeedback(btn, true);
+            jest.advanceTimersByTime(1500);
+            // Should still be showing Copied! because timer was reset
+            expect(btn.innerHTML).toContain('Copied!');
+
+            // Advance remaining time
+            jest.advanceTimersByTime(600);
+            expect(btn.innerHTML).toContain('Show &amp; Copy');
+            expect(btn.innerHTML).toContain('fa-copy');
+        });
+
+        test('handles copy failure with red styling and failed text', () => {
+            const btn = document.getElementById('btn_copy');
+            showCopyFeedback(btn, false);
+
+            expect(btn.innerHTML).toContain('fa-times');
+            expect(btn.innerHTML).toContain('Failed!');
+            expect(btn.classList.contains('bg-red-600')).toBe(true);
+            expect(btn.getAttribute('title')).toBe('Copy failed!');
+
+            jest.advanceTimersByTime(2000);
+
+            expect(btn.innerHTML).toContain('Show &amp; Copy');
+            expect(btn.classList.contains('bg-blue-600')).toBe(true);
+            expect(btn.classList.contains('bg-red-600')).toBe(false);
+        });
+
+        test('formats plain button without responsive span gracefully', () => {
+            const btn = document.getElementById('btn_plain');
+            showCopyFeedback(btn, true);
+
+            expect(btn.textContent).toContain('✓ Copied!');
+
+            jest.advanceTimersByTime(2000);
+            expect(btn.textContent).toBe('Copy');
+        });
+
+        test('appends feedback badge to modal title and removes after timeout', () => {
+            const btn = document.getElementById('btn_copy');
+            showCopyFeedback(btn, true, { modalTitleSelector: '#reportModalLongTitle' });
+
+            const title = document.getElementById('reportModalLongTitle');
+            expect(title.innerHTML).toContain('report-modal-copy-feedback-badge');
+            expect(title.innerHTML).toContain('Copied to clipboard');
+
+            jest.advanceTimersByTime(2000);
+            expect(title.innerHTML).not.toContain('report-modal-copy-feedback-badge');
+            expect(title.textContent).toBe('Lung Cancer Staging Form');
+        });
+    });
+
+    describe('setupReportPage', () => {
+        beforeEach(() => {
+            document.body.innerHTML = `
+                <button type="button" id="btn_copy" class="px-3 py-1.5 text-sm font-medium text-white bg-blue-600 border border-blue-700 rounded-r-lg hover:bg-blue-700">
+                    <i class="fas fa-copy"></i>
+                    <span class="hidden md:inline ml-1">Show &amp; Copy</span>
+                </button>
+                <div id="reportModalLongTitle">Oral Cancer Staging Form</div>
+                <div id="reportModalBody"><pre><code>T2N0M0 Staging Report</code></pre></div>
+            `;
+        });
+
+        afterEach(() => {
+            document.body.innerHTML = '';
+            jest.restoreAllMocks();
+        });
+
+        test('triggers generateReportFn and copies combined text with visual feedback', async () => {
+            const generateMock = jest.fn();
+            const writeTextMock = jest.fn().mockResolvedValue(undefined);
+            Object.assign(navigator, {
+                clipboard: {
+                    writeText: writeTextMock
+                }
+            });
+
+            setupReportPage({
+                generateReportFn: generateMock
+            });
+
+            $('#btn_copy').trigger('click');
+
+            expect(generateMock).toHaveBeenCalled();
+            expect(writeTextMock).toHaveBeenCalledWith('Oral Cancer Staging Form\n\nT2N0M0 Staging Report');
+
+            // Wait microtask for promise resolution
+            await Promise.resolve();
+
+            const btn = document.getElementById('btn_copy');
+            expect(btn.innerHTML).toContain('Copied!');
+            expect(btn.classList.contains('bg-green-600')).toBe(true);
+        });
+
+        test('falls back to execCommand when navigator.clipboard is unavailable', () => {
+            const generateMock = jest.fn();
+            const originalClipboard = navigator.clipboard;
+            delete navigator.clipboard;
+
+            const execCommandMock = jest.fn().mockReturnValue(true);
+            document.execCommand = execCommandMock;
+
+            setupReportPage({
+                generateReportFn: generateMock
+            });
+
+            $('#btn_copy').trigger('click');
+
+            expect(generateMock).toHaveBeenCalled();
+            expect(execCommandMock).toHaveBeenCalledWith('copy');
+
+            const btn = document.getElementById('btn_copy');
+            expect(btn.innerHTML).toContain('Copied!');
+
+            navigator.clipboard = originalClipboard;
         });
     });
 });
