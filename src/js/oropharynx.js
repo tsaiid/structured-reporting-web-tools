@@ -10,7 +10,7 @@ import '../css/nasopharynx_helper.css';  // 共用 nasopharynx 的 CSS
 import '../image/neck_lymph_node_stations.webp';
 import './oropharynx_logic_helper.js';
 
-import { join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage } from './ajcc_common.js';
+import { join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage, getMaxStage } from './ajcc_common.js';
 
 const AJCC_T_HPV = new Map([
     ['x', 'Primary tumor cannot be assessed'],
@@ -264,9 +264,9 @@ function generate_report() {
     report += "6. Other findings\n\n\n";
 
     // AJCC staging reference text
-    let t = t_stage.sort()[t_stage.length - 1];
-    let n = n_stage.sort()[n_stage.length - 1];
-    let m = m_stage.sort()[m_stage.length - 1];
+    let t = getMaxStage(t_stage);
+    let n = getMaxStage(n_stage);
+    let m = getMaxStage(m_stage);
     let FORM_TITLE = (is_hpv ? "HPV-Mediated Oropharyngeal Cancer Staging Form" : "Oropharyngeal Cancer (p16-) Staging Form");
     let AJCC_TITLE = (is_hpv ? "HPV-Mediated Oropharyngeal Carcinoma" : "Oropharyngeal Carcinoma (p16-)");
     let AJCC_T = (is_hpv ? AJCC_T_HPV : AJCC_T_NONHPV);

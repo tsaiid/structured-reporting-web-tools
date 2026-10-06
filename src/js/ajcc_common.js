@@ -1,7 +1,7 @@
 export function ajcc_template(ca_str, t, t_str, n, n_str, m, m_str, ver = 8) {
-    const t_val = (t !== undefined && t !== null) ? String(t) : "";
-    const n_val = (n !== undefined && n !== null) ? String(n) : "";
-    const m_val = (m !== undefined && m !== null) ? String(m) : "";
+    const t_val = Array.isArray(t) ? getMaxStage(t) : (t !== undefined && t !== null) ? String(t) : "";
+    const n_val = Array.isArray(n) ? getMaxStage(n) : (n !== undefined && n !== null) ? String(n) : "";
+    const m_val = Array.isArray(m) ? getMaxStage(m) : (m !== undefined && m !== null) ? String(m) : "";
     var report = `
 ===================================================
 AJCC Cancer Staging System, ${ver}th edition
@@ -25,6 +25,158 @@ T${t_val}N${n_val}M${m_val}
     return report;
 }
 
+/**
+ * 取得指定期別的直接父層期別代碼（例如 '1c1' -> '1c', '1b' -> '1', '4a' -> '4'）
+ * 避免因 parseInt 造成如肺癌 M1c1 被錯配為 M1 而非 M1c
+ * 
+ * @param {string} val - 分期代碼
+ * @param {Object|Map} [table] - 分期定義對照表
+ * @returns {string|null} 直接父層代碼，若無父層則返回 null
+ */
+export function getParentStage(val, table) {
+    if (!val || typeof val !== 'string') {
+        return null;
+    }
+    const s = val.trim();
+    const tableObj = (table instanceof Map) ? Object.fromEntries(table) : (table || {});
+
+    // 1. 三層子期，形如 1c1, 1c2, 1b1, 2a1
+    const matchSubSub = s.match(/^(\d+[a-z]+)\d+$/i);
+    if (matchSubSub) {
+        const directParent = matchSubSub[1];
+        // 若 table 存在且包含直接父層 (例如 1c, 1b, 2a)，優先返回
+        if (Object.prototype.hasOwnProperty.call(tableObj, directParent)) {
+            return directParent;
+        }
+        // 若 table 沒有 directParent 但有整數層級 (例如 1)，退回整數層級
+        const numParent = parseInt(s, 10).toString();
+        if (Object.prototype.hasOwnProperty.call(tableObj, numParent)) {
+            return numParent;
+        }
+        return directParent;
+    }
+
+    // 2. 兩層子期，形如 1a, 2b, 4a, 1mi, 2mi
+    const matchSub = s.match(/^(\d+)[a-z]+/i);
+    if (matchSub) {
+        return matchSub[1];
+    }
+
+    return null;
+}
+
+/**
+ * 計算分期代碼的臨床嚴重度權重階層
+ * 臨床層級：4b > 4a > 4 > 3c > 3b > 3a > 3 > 2c > 2b > 2a > 2 > 1c > 1b > 1a > 1mi > 1 > Tis (is) > Ta (a) > 0(i+) > 0 > x
+ * 
+ * @param {string|number} stage - 分期代碼
+ * @returns {number[]} 階層權重陣列
+ */
+export function getStageRank(stage) {
+    if (stage === undefined || stage === null) {
+        return [-1];
+    }
+    const s = String(stage).trim().toLowerCase();
+    if (s === "") {
+        return [-1];
+    }
+    // Tx, Nx, Mx: 臨床上無法評估，優先級高於未填，但低於任何確定期別
+    if (s === "x") {
+        return [0];
+    }
+    // T0, N0, M0: 無腫瘤/無轉移
+    if (s === "0") {
+        return [10, 0, 0];
+    }
+    // 0(i+): 孤立性腫瘤細胞 (Isolated tumor cells)
+    if (s.startsWith("0(") || s === "0(i+)") {
+        return [10, 1, 0];
+    }
+    // Ta: 非侵襲性乳突狀癌 (Noninvasive papillary carcinoma)
+    if (s === "a") {
+        return [20, 0, 0];
+    }
+    // Tis (is): 原位癌 (Carcinoma in situ)
+    if (s === "is") {
+        return [30, 0, 0];
+    }
+
+    // 數字開頭：1, 1a, 1b1, 2, 2a, 3, 4, 4b 等
+    const match = s.match(/^(\d+)(.*)$/);
+    if (match) {
+        const majorNum = parseInt(match[1], 10);
+        const suffix = match[2];
+        const baseWeight = 100 + majorNum * 100;
+
+        if (!suffix) {
+            // 純數字，例如 '1', '2', '3', '4'
+            return [baseWeight, 0, 0];
+        }
+        if (suffix === "mi") {
+            // 1mi, 2mi: 微小侵犯
+            return [baseWeight, 5, 0];
+        }
+
+        // 後綴字母與可選第二數字，例如 'a', 'a1', 'b', 'b2', 'c1'
+        const letterMatch = suffix.match(/^([a-z]+)(\d+)?$/);
+        if (letterMatch) {
+            const letters = letterMatch[1];
+            let letterWeight = 0;
+            for (let i = 0; i < letters.length; i++) {
+                letterWeight = letterWeight * 26 + (letters.charCodeAt(i) - 96) * 10;
+            }
+            const subNum = letterMatch[2] ? parseInt(letterMatch[2], 10) : 0;
+            return [baseWeight, letterWeight, subNum];
+        }
+
+        return [baseWeight, 999, 0];
+    }
+
+    // 其他未知非空字串
+    return [5];
+}
+
+/**
+ * 比較兩個分期代碼的臨床嚴重度
+ * 
+ * @param {string|number} a 
+ * @param {string|number} b 
+ * @returns {number} 1 (a > b), -1 (a < b), 0 (a === b)
+ */
+export function compareStage(a, b) {
+    const rankA = getStageRank(a);
+    const rankB = getStageRank(b);
+    const maxLen = Math.max(rankA.length, rankB.length);
+    for (let i = 0; i < maxLen; i++) {
+        const valA = rankA[i] !== undefined ? rankA[i] : 0;
+        const valB = rankB[i] !== undefined ? rankB[i] : 0;
+        if (valA !== valB) {
+            return valA > valB ? 1 : -1;
+        }
+    }
+    return 0;
+}
+
+/**
+ * 從分期陣列中取得臨床最高期別 (4b > 4a > 4 > 3 > 2 > 1 > 0 > x)
+ * 解決 JavaScript 原生 Array.prototype.sort() 字典序導致 'x' > '4' 覆寫 T4 侵犯的問題
+ * 
+ * @param {Array<string|number>} stage_arr - 分期代碼陣列
+ * @returns {string} 最高分期代碼，若無有效分期則返回空字串 ""
+ */
+export function getMaxStage(stage_arr) {
+    if (!Array.isArray(stage_arr) || stage_arr.length === 0) {
+        return "";
+    }
+    const validStages = stage_arr.filter(s => s !== null && s !== undefined && String(s).trim() !== "");
+    if (validStages.length === 0) {
+        return "";
+    }
+    return validStages.reduce((max, current) => {
+        return compareStage(current, max) > 0 ? String(current).trim() : max;
+    }, String(validStages[0]).trim());
+}
+
 export function ajcc_template_with_parent(ca_str, t, t_table, n, n_table, m, m_table, ver = 8) {
     var report = `
 ===================================================
@@ -37,10 +189,10 @@ For ${ca_str}
     } else if (!t_table) {
         t_table = {};
     }
-    const t_val = (t !== undefined && t !== null) ? String(t) : "";
+    const t_val = Array.isArray(t) ? getMaxStage(t) : (t !== undefined && t !== null) ? String(t) : "";
     report += "(T)  PRIMARY TUMOR:\n";
-    if (t_val && t_val.match(/[abc]/)) {
-        let t_p = parseInt(t_val);
+    const t_p = getParentStage(t_val, t_table);
+    if (t_p) {
         let t_p_str = t_table[t_p] || "";
         report += ` T${t_p} : ${t_p_str}\n  `;
     }
@@ -52,10 +204,10 @@ For ${ca_str}
     } else if (!n_table) {
         n_table = {};
     }
-    const n_val = (n !== undefined && n !== null) ? String(n) : "";
+    const n_val = Array.isArray(n) ? getMaxStage(n) : (n !== undefined && n !== null) ? String(n) : "";
     report += "(N)  REGIONAL LYMPH NODES:\n";
-    if (n_val && n_val.match(/[abc]/)) {
-        let n_p = parseInt(n_val);
+    const n_p = getParentStage(n_val, n_table);
+    if (n_p) {
         let n_p_str = n_table[n_p] || "";
         report += ` N${n_p} : ${n_p_str}\n  `;
     }
@@ -67,10 +219,10 @@ For ${ca_str}
     } else if (!m_table) {
         m_table = {};
     }
-    const m_val = (m !== undefined && m !== null) ? String(m) : "";
+    const m_val = Array.isArray(m) ? getMaxStage(m) : (m !== undefined && m !== null) ? String(m) : "";
     report += "(M)  DISTANT METASTASIS:\n";
-    if (m_val && m_val.match(/[abc]/)) {
-        let m_p = parseInt(m_val);
+    const m_p = getParentStage(m_val, m_table);
+    if (m_p) {
         let m_p_str = m_table[m_p] || "";
         report += ` M${m_p} : ${m_p_str}\n  `;
     }

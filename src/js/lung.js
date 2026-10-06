@@ -8,7 +8,7 @@ if (process.env.NODE_ENV !== 'production') {
 import '../css/lung_helper.css';
 import '../image/lung_lymph_node_stations.webp';
 
-import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage, getMaxStage} from './ajcc_common.js';
 import { calculateLungStage, getMaxStageNumber, resolveM1RadioState } from './lung_logic.js';
 import './lung_logic_helper.js';
 
@@ -268,9 +268,9 @@ function generate_report(){
     report += "6. Other findings\n\n\n";
 
     // AJCC staging reference text
-    var t = t_stage.sort()[t_stage.length-1];
-    var n = n_stage.sort()[n_stage.length-1];
-    var m = m_stage.sort()[m_stage.length-1];
+    var t = getMaxStage(t_stage);
+    var n = getMaxStage(n_stage);
+    var m = getMaxStage(m_stage);
     report += ajcc_template_with_parent("Lung Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 9);
 
     $('#reportModalLongTitle').html("Lung Cancer Staging Form");

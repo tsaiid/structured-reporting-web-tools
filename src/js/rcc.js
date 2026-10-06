@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('../html/ajcc/rcc.html?raw');
 }
 
-import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage} from './ajcc_common.js';
+import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage, getMaxStage} from './ajcc_common.js';
 import { calculateRCCStage } from './rcc_logic.js';
 
 const AJCC_T = new Map([
@@ -155,9 +155,9 @@ function generate_report(){
     report += "6. Other findings\n\n\n";
 
     // AJCC staging reference text
-    let t = t_stage.sort()[t_stage.length-1];
-    let n = n_stage.sort()[n_stage.length-1];
-    let m = m_stage.sort()[m_stage.length-1];
+    let t = getMaxStage(t_stage);
+    let n = getMaxStage(n_stage);
+    let m = getMaxStage(m_stage);
     report += ajcc_template_with_parent("Renal Cell Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Renal Cell Carcinoma Staging Form");

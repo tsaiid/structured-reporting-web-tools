@@ -1,4 +1,4 @@
-import { ajcc_template, ajcc_template_with_parent } from './ajcc_common';
+import { ajcc_template, ajcc_template_with_parent, getMaxStage, compareStage, getStageRank, getParentStage } from './ajcc_common';
 
 describe('ajcc_common', () => {
     const mockTMap = new Map([
@@ -160,5 +160,124 @@ describe('ajcc_common', () => {
                 expect(result).toContain('T1N0M0');
             }).not.toThrow();
         });
+
+        test('correctly matches M1c as parent for lung M1c1 instead of M1', () => {
+            const lungMMap = new Map([
+                ['0', 'No distant metastasis'],
+                ['1', 'Distant metastasis'],
+                ['1a', 'Pleural or pericardial nodules'],
+                ['1b', 'Single extrathoracic metastasis in a single organ system'],
+                ['1c', 'Multiple extrathoracic metastases'],
+                ['1c1', 'Multiple extrathoracic metastases in a single organ system'],
+                ['1c2', 'Multiple extrathoracic metastases in multiple organ systems'],
+            ]);
+
+            const result = ajcc_template_with_parent(
+                'Lung Carcinoma',
+                '1a',
+                mockTMap,
+                '0',
+                mockNMap,
+                '1c1',
+                lungMMap,
+                9
+            );
+
+            // 必須是 M1c 而非 M1 作為直接父層
+            expect(result).toContain('M1c : Multiple extrathoracic metastases');
+            expect(result).toContain('M1c1 : Multiple extrathoracic metastases in a single organ system');
+            expect(result).not.toContain('M1 : Distant metastasis');
+            expect(result).toContain('T1aN0M1c1');
+        });
+
+        test('accepts array parameters and automatically resolves max stage', () => {
+            const result = ajcc_template_with_parent(
+                'Colorectal Carcinoma',
+                ['x', '4a'],
+                mockTMap,
+                ['0', '1b'],
+                mockNMap,
+                ['0', '1c'],
+                mockMMap,
+                8
+            );
+
+            expect(result).toContain('T4 : Tumor invades adjacent structures');
+            expect(result).toContain('T4a : Tumor invades visceral peritoneum');
+            expect(result).toContain('N1b : Two or three regional lymph nodes');
+            expect(result).toContain('M1c : Metastasis to peritoneal surface');
+            expect(result).toContain('T4aN1bM1c');
+        });
+    });
+
+    describe('getParentStage', () => {
+        const lungMMap = new Map([
+            ['0', 'No distant metastasis'],
+            ['1', 'Distant metastasis'],
+            ['1c', 'Multiple extrathoracic metastases'],
+            ['1c1', 'Multiple extrathoracic metastases in a single organ system'],
+            ['1c2', 'Multiple extrathoracic metastases in multiple organ systems'],
+        ]);
+
+        test('returns direct parent for 3-part stages (e.g. 1c1 -> 1c, 1b1 -> 1b)', () => {
+            expect(getParentStage('1c1', lungMMap)).toBe('1c');
+            expect(getParentStage('1c2', lungMMap)).toBe('1c');
+            expect(getParentStage('1b1')).toBe('1b');
+            expect(getParentStage('2a2')).toBe('2a');
+        });
+
+        test('returns major stage for 2-part stages (e.g. 4a -> 4, 1b -> 1)', () => {
+            expect(getParentStage('4a')).toBe('4');
+            expect(getParentStage('1b')).toBe('1');
+            expect(getParentStage('2b')).toBe('2');
+            expect(getParentStage('1mi')).toBe('1');
+        });
+
+        test('returns null for base stages or special values', () => {
+            expect(getParentStage('1')).toBeNull();
+            expect(getParentStage('0')).toBeNull();
+            expect(getParentStage('x')).toBeNull();
+            expect(getParentStage('is')).toBeNull();
+            expect(getParentStage('a')).toBeNull();
+            expect(getParentStage('')).toBeNull();
+            expect(getParentStage(null)).toBeNull();
+        });
+    });
+
+    describe('getMaxStage', () => {
+        test('resolves T4 over Tx (fixes JS lexicographical sort bug where x > 4)', () => {
+            expect(getMaxStage(['4', 'x'])).toBe('4');
+            expect(getMaxStage(['x', '4'])).toBe('4');
+            expect(getMaxStage(['x', '4b'])).toBe('4b');
+            expect(getMaxStage(['x', '1a'])).toBe('1a');
+            expect(getMaxStage(['x', '0'])).toBe('0');
+        });
+
+        test('orders by clinical severity within the same major category', () => {
+            expect(getMaxStage(['4', '4a', '4b'])).toBe('4b');
+            expect(getMaxStage(['3', '3a', '3b', '3c'])).toBe('3c');
+            expect(getMaxStage(['2', '2a', '2a1', '2a2', '2b', '2c'])).toBe('2c');
+            expect(getMaxStage(['1', '1mi', '1a', '1b', '1c'])).toBe('1c');
+            expect(getMaxStage(['1c', '1c1', '1c2'])).toBe('1c2');
+            expect(getMaxStage(['1b', '1b1', '1b2', '1b3'])).toBe('1b3');
+        });
+
+        test('orders correctly across special non-invasive stages', () => {
+            // 1 > is (Tis) > a (Ta) > 0(i+) > 0 > x
+            expect(getMaxStage(['1', 'is'])).toBe('1');
+            expect(getMaxStage(['is', 'a'])).toBe('is');
+            expect(getMaxStage(['a', '0'])).toBe('a');
+            expect(getMaxStage(['0(i+)', '0'])).toBe('0(i+)');
+            expect(getMaxStage(['0', 'x'])).toBe('0');
+        });
+
+        test('handles empty or boundary inputs gracefully', () => {
+            expect(getMaxStage(['x'])).toBe('x');
+            expect(getMaxStage(['0'])).toBe('0');
+            expect(getMaxStage([])).toBe('');
+            expect(getMaxStage([null, undefined, ''])).toBe('');
+            expect(getMaxStage(null)).toBe('');
+        });
     });
 });
+
