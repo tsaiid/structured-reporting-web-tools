@@ -94,3 +94,42 @@ export function calculateLungStage(data) {
         m: m_stage
     };
 }
+
+/**
+ * 處理肺癌胸外轉移 (Extrathoracic Metastasis) 的單一/多處與多器官連動邏輯
+ * 
+ * @param {number} checkedCount - 勾選的胸外器官數量
+ * @param {string|null|undefined} currentRadio - 目前選取的 radio 值 ('1b' | '1c1' | '1c2')
+ * @returns {{ selectedRadio: string|null, isM1bDisabled: boolean }}
+ */
+export function resolveM1RadioState(checkedCount, currentRadio) {
+    if (checkedCount === 0) {
+        return {
+            selectedRadio: null,
+            isM1bDisabled: false
+        };
+    }
+
+    if (checkedCount === 1) {
+        let selected = currentRadio;
+        // 未選狀態下預設為 1b (單一器官單一病灶)
+        if (!selected) {
+            selected = '1b';
+        } else if (selected === '1c2') {
+            // 從多器官降至單一器官時，1c2 不再適用，轉為單一器官多發轉移 1c1
+            selected = '1c1';
+        }
+        // 若使用者已選取 1b 或 1c1，則予以保留，不強行覆蓋
+        return {
+            selectedRadio: selected,
+            isM1bDisabled: false
+        };
+    }
+
+    // checkedCount > 1：多個器官轉移必定為多個器官系統 (M1c2)
+    return {
+        selectedRadio: '1c2',
+        isM1bDisabled: true
+    };
+}
+

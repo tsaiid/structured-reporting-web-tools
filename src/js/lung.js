@@ -9,7 +9,7 @@ import '../css/lung_helper.css';
 import '../image/lung_lymph_node_stations.webp';
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage} from './ajcc_common.js';
-import { calculateLungStage, getMaxStageNumber } from './lung_logic.js';
+import { calculateLungStage, getMaxStageNumber, resolveM1RadioState } from './lung_logic.js';
 import './lung_logic_helper.js';
 
 const AJCC_T = new Map([
@@ -296,30 +296,15 @@ $('.cb_rn_n2').change(function(){
     }
 });
 
-// auto check M1c1/M1c2 radio button
+// auto check M1 radio buttons (1b / 1c1 / 1c2)
 $('.cb_dm_m1bc').change(function(){
     let cb_dm_num = $('.cb_dm_m1bc:checked').length;
-    if (cb_dm_num) {
-        const radio_dm_val = $("input[name='radio_m1bc']:checked").val();
-        if ($("input[name='radio_m1bc']:checked").length == 0) {
-            $("#radio_m1c1").prop("checked", true);
-        }
-        if (cb_dm_num == 1) {
-            if ($("#radio_m1b").prop("disabled")) {
-                $("#radio_m1b").prop("disabled", false)
-            }
-            if (radio_dm_val != "1c1") {
-                $("#radio_m1c1").prop("checked", true);
-            }
-        }
-        if (cb_dm_num > 1) {
-            if (!$("#radio_m1b").prop("disabled")) {
-                $("#radio_m1b").prop("disabled", true)
-            }
-            if (radio_dm_val != "1c2") {
-                $("#radio_m1c2").prop("checked", true);
-            }
-        }
+    const current_radio = $("input[name='radio_m1bc']:checked").val();
+    const state = resolveM1RadioState(cb_dm_num, current_radio);
+
+    $("#radio_m1b").prop("disabled", state.isM1bDisabled);
+    if (state.selectedRadio) {
+        $(`input[name='radio_m1bc'][value='${state.selectedRadio}']`).prop("checked", true);
     } else {
         $("input[name='radio_m1bc']").prop("checked", false);
     }

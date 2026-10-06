@@ -1,4 +1,4 @@
-import { get_t_stage_by_size, getMaxStageNumber, calculateLungStage } from './lung_logic';
+import { get_t_stage_by_size, getMaxStageNumber, calculateLungStage, resolveM1RadioState } from './lung_logic';
 
 describe('Lung Logic', () => {
   describe('get_t_stage_by_size', () => {
@@ -87,16 +87,85 @@ describe('Lung Logic', () => {
       expect(result.n).toContain('2b');
     });
 
+    test('M1b single extrathoracic metastasis', () => {
+      const data = {
+        tumorSize: 2,
+        isNonMeasurable: false,
+        invasion: { t4: false, t3: false, t2a: false },
+        nodes: { n1: false, n2: false, n2Type: null, n3: false },
+        metastasis: { m1a: false, m1bc: true, m1Type: '1b' }
+      };
+      const result = calculateLungStage(data);
+      expect(result.m).toContain('1b');
+    });
+
     test('M1c2 metastasis', () => {
-        const data = {
-          tumorSize: 2,
-          isNonMeasurable: false,
-          invasion: { t4: false, t3: false, t2a: false },
-          nodes: { n1: false, n2: false, n2Type: null, n3: false },
-          metastasis: { m1a: false, m1bc: true, m1Type: '1c2' }
-        };
-        const result = calculateLungStage(data);
-        expect(result.m).toContain('1c2');
+      const data = {
+        tumorSize: 2,
+        isNonMeasurable: false,
+        invasion: { t4: false, t3: false, t2a: false },
+        nodes: { n1: false, n2: false, n2Type: null, n3: false },
+        metastasis: { m1a: false, m1bc: true, m1Type: '1c2' }
+      };
+      const result = calculateLungStage(data);
+      expect(result.m).toContain('1c2');
+    });
+  });
+
+  describe('resolveM1RadioState', () => {
+    test('when checkedCount is 0, clears radio selection and enables 1b', () => {
+      expect(resolveM1RadioState(0, undefined)).toEqual({
+        selectedRadio: null,
+        isM1bDisabled: false
       });
+      expect(resolveM1RadioState(0, '1c1')).toEqual({
+        selectedRadio: null,
+        isM1bDisabled: false
+      });
+    });
+
+    test('when checkedCount is 1 with no prior selection, defaults to 1b', () => {
+      expect(resolveM1RadioState(1, undefined)).toEqual({
+        selectedRadio: '1b',
+        isM1bDisabled: false
+      });
+      expect(resolveM1RadioState(1, null)).toEqual({
+        selectedRadio: '1b',
+        isM1bDisabled: false
+      });
+    });
+
+    test('when checkedCount is 1, preserves user choice of 1b without overriding', () => {
+      expect(resolveM1RadioState(1, '1b')).toEqual({
+        selectedRadio: '1b',
+        isM1bDisabled: false
+      });
+    });
+
+    test('when checkedCount is 1, preserves user choice of 1c1 without overriding', () => {
+      expect(resolveM1RadioState(1, '1c1')).toEqual({
+        selectedRadio: '1c1',
+        isM1bDisabled: false
+      });
+    });
+
+    test('when checkedCount drops to 1 from multi-organ (1c2), converts to 1c1 and enables 1b', () => {
+      expect(resolveM1RadioState(1, '1c2')).toEqual({
+        selectedRadio: '1c1',
+        isM1bDisabled: false
+      });
+    });
+
+    test('when checkedCount is greater than 1, sets to 1c2 and disables 1b', () => {
+      expect(resolveM1RadioState(2, '1b')).toEqual({
+        selectedRadio: '1c2',
+        isM1bDisabled: true
+      });
+      expect(resolveM1RadioState(3, '1c1')).toEqual({
+        selectedRadio: '1c2',
+        isM1bDisabled: true
+      });
+    });
   });
 });
+
