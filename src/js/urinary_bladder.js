@@ -214,12 +214,6 @@ $('.cb_ti_t4a, input[name="radio_gender"]').change(function() {
     $(this).parent().parent().siblings().find('.cb_ti').prop('checked', false);
 });
 
-$('#cb_tp_ts_nm').change(function() {
-    if($("form.was-validated").length) {
-
-    }
-});
-
 setupReportPage({
     generateReportFn: generate_report,
     ajccData: {

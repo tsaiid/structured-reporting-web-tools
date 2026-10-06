@@ -278,12 +278,6 @@ function generate_report(){
     document.getElementById('reportModalLong').showModal();
 }
 
-$('#cb_tp_ts_nm').change(function() {
-    if($("form.was-validated").length) {
-
-    }
-});
-
 // auto check N2a/N2b radio button
 $('.cb_rn_n2').change(function(){
     let cb_n2_num = $('.cb_rn_n2:checked').length;

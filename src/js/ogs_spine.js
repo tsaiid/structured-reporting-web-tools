@@ -191,12 +191,6 @@ function generate_report(){
     document.getElementById('reportModalLong').showModal();
 }
 
-$('#cb_tp_ts_nm').change(function() {
-    if($("form.was-validated").length) {
-
-    }
-});
-
 // check if any nonadj vb seg
 $('.cb_ti_ss').change(function() {
     $('#cb_ti_navs').prop('checked', any_nonadjacent_vertebral_segments());

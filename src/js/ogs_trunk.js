@@ -126,12 +126,6 @@ function generate_report(){
     document.getElementById('reportModalLong').showModal();
 }
 
-$('#cb_tp_ts_nm').change(function() {
-    if($("form.was-validated").length) {
-
-    }
-});
-
 // auto- increase or decrease lymph node numbers
 $('.cb_rn').change(function(){
     let rln_num = +$('#txt_rln_num').val();

@@ -206,12 +206,6 @@ function generate_report(){
     document.getElementById('reportModalLong').showModal();
 }
 
-$('#cb_tp_ts_nm').change(function() {
-    if($("form.was-validated").length) {
-
-    }
-});
-
 setupReportPage({
     generateReportFn: generate_report,
     ajccData: {

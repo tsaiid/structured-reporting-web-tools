@@ -237,11 +237,6 @@ function generate_report(){
     document.getElementById('reportModalLong').showModal();
 }
 
-// ... event listeners remain the same ...
-$('#cb_tp_ts_nm').change(function() {
-    if($("form.was-validated").length) { }
-});
-
 $('.cb_rn').change(function(){
     let rln_num = +$('#txt_rln_num').val();
     if (this.checked) {

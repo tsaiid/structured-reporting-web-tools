@@ -157,12 +157,6 @@ function generate_report(){
     document.getElementById('reportModalLong').showModal();
 }
 
-$('#cb_tp_ts_nm').change(function() {
-    if($("form.was-validated").length) {
-
-    }
-});
-
 // (Auto-increment logic removed as txt_rln_num is not present in the current layout)
 
 setupReportPage({
