@@ -11,6 +11,7 @@ import '../image/neck_lymph_node_stations.webp';
 import './hypopharynx_logic_helper.js';
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage, getMaxStage} from './ajcc_common.js';
+import { calculateHypopharynxStage } from './hypopharynx_logic.js';
 
 const AJCC_T = new Map([
     ['x', 'Primary tumor cannot be assessed'],
@@ -41,9 +42,6 @@ const AJCC_M = new Map([
 ]);
 
 function generate_report(){
-    var t_stage = [];
-    var n_stage = ["0"];
-    var m_stage = ["0"];
     // Protocol
     var report = `1. Imaging modality
   - Imaging by `;
@@ -114,36 +112,6 @@ function generate_report(){
 
 `;
 
-    // calculate T stage
-    if (has_ts_nm) {
-        t_stage.push('x');
-    } else if (has_ts_no || !has_tl) {
-        t_stage.push('0');
-    } else {
-        // by invasion
-        if ($('.cb_ti_t4b:checked').length) {
-            t_stage.push("4b");
-        } else if ($('.cb_ti_t4a:checked').length) {
-            t_stage.push("4a");
-        } else if ($('.cb_ti_t3:checked').length) {
-            t_stage.push("3");
-        }
-
-        // by size
-        if (t_length > 4) {
-            t_stage.push("3");
-        } else if (t_length > 2) {
-            t_stage.push("2");
-        } else {
-            t_stage.push("1");
-        }
-
-        // by location
-        if ($('.cb_tl:checked').length > 1) {
-            t_stage.push('2');
-        }
-    }
-
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length > 0;
     let n_length = parseFloat($('#txt_rn_len').val());
@@ -183,25 +151,6 @@ function generate_report(){
 
 `;
 
-    // Calculate N stage
-    if (has_rln) {
-        if (has_ene) {
-            n_stage.push("3b");
-        } else if (n_length > 6.0) {
-            n_stage.push("3a");
-        } else if ((   $('.cb_rn_r:checked').length && $('.cb_rn_l:checked').length)        // bilateral
-                    || ($('.cb_tl_r:checked').length && $('.cb_rn_l:checked').length)       // tumor right, LAP left
-                    || ($('.cb_tl_l:checked').length && $('.cb_rn_r:checked').length)   ) { // tumor left, LAP right
-            n_stage.push("2c");
-        } else if (!has_sin) {          // multiple ipsilateral
-            n_stage.push("2b");
-        } else if (n_length > 3.0) {    // single ipsilateral, > 3 cm
-            n_stage.push("2a");
-        } else {                        // single ipsilateral, <= 3 cm
-            n_stage.push("1");
-        }
-    }
-
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
@@ -217,9 +166,6 @@ function generate_report(){
             }
             report += $('#txt_dm_others').val();
         }
-
-        m_stage.push("1");
-        //console.log(m_stage);
     } else {
         report += "___";
     }
@@ -229,9 +175,35 @@ function generate_report(){
     report += "6. Other findings\n\n\n";
 
     // AJCC staging reference text
-    let t = getMaxStage(t_stage);
-    let n = getMaxStage(n_stage);
-    let m = getMaxStage(m_stage);
+    const staging = calculateHypopharynxStage({
+        isNotAssessable: has_ts_nm,
+        isNoEvidence: has_ts_no,
+        hasTumorLocation: has_tl,
+        subsiteCount: $('.cb_tl:checked').length,
+        tumorSize: t_length,
+        invasion: {
+            t3: $('.cb_ti_t3:checked').length > 0,
+            t4a: $('.cb_ti_t4a:checked').length > 0,
+            t4b: $('.cb_ti_t4b:checked').length > 0
+        },
+        nodes: {
+            hasNodes: has_rln,
+            hasRightNodes: $('.cb_rn_r:checked').length > 0,
+            hasLeftNodes: $('.cb_rn_l:checked').length > 0,
+            isEne: has_ene,
+            size: n_length,
+            isSingle: has_sin
+        },
+        tumorSide: {
+            isRight: $('.cb_tl_r:checked').length > 0,
+            isLeft: $('.cb_tl_l:checked').length > 0
+        },
+        hasMetastasis: has_dm
+    });
+
+    let t = getMaxStage(staging.t);
+    let n = getMaxStage(staging.n);
+    let m = getMaxStage(staging.m);
     report += ajcc_template_with_parent("Hypopharynx Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Hypopharyngeal Cancer Staging Form");
