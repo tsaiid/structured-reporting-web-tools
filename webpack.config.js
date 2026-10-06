@@ -65,16 +65,18 @@ module.exports = {
     splitChunks: {
       chunks: 'all',
       cacheGroups: {
-        defaultVendors: {
+        defaultVendors: false,
+        default: false,
+        vendors: {
           test: /[\\/]node_modules[\\/]/,
           name: 'vendors',
-          chunks: 'all',
+          chunks: (chunk) => ajccPages.includes(chunk.name),
           priority: 20,
         },
         common: {
-          test: /[\\/]src[\\/]js[\\/](common|ajcc_common)\.js/,
+          test: /[\\/]src[\\/](js[\\/](common|ajcc_common)\.js|css[\\/](tailwind|ajcc_common|dashboard)\.css)/,
           name: 'common',
-          chunks: 'all',
+          chunks: (chunk) => ajccPages.includes(chunk.name),
           priority: 10,
           enforce: true,
         },
