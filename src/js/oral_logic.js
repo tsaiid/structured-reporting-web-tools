@@ -2,6 +2,7 @@ export function calculateOralStage(data) {
     // data structure expected:
     // {
     //   tumorSize: number,
+    //   depthOfInvasion: number,
     //   isNotAssessable: boolean,
     //   isNoEvidence: boolean,
     //   hasTumorLocation: boolean,
@@ -32,11 +33,14 @@ export function calculateOralStage(data) {
     } else if (data.isNoEvidence || !data.hasTumorLocation) {
         t_stage.push('0');
     } else {
-        // by size
+        // by size and depth of invasion (DOI)
         const t_length = data.tumorSize;
-        if (t_length > 4) {
+        const doi = data.depthOfInvasion;
+        const hasDoi = typeof doi === 'number' && !isNaN(doi);
+
+        if (t_length > 4 || (hasDoi && doi > 10)) {
             t_stage.push("3");
-        } else if (t_length > 2) {
+        } else if (t_length > 2 || (hasDoi && doi > 5)) {
             t_stage.push("2");
         } else {
             t_stage.push("1");

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh">
 
 <head>
@@ -77,6 +77,7 @@
                       type="number"
                       pattern="[0-9]+([\,|\.][0-9]+)?"
                       step="0.1"
+                      min="0"
                       class="h-10 w-40 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm focus:ring-blue-500 focus:border-blue-500 p-2.5"
                       aria-label="Largest diameter in cm"
                       id="txt_ts_len"
@@ -90,6 +91,32 @@
                     </div>
                     <small class="ml-2 text-gray-500 dark:text-gray-400">
                       (T1: ≤ 2 cm; T2: 2-4 cm; T3: > 4 cm)
+                    </small>
+                  </div>
+                  <div class="flex items-center mb-2">
+                    <label
+                      class="h-10 inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-200 dark:border-gray-600 whitespace-nowrap"
+                      for="txt_ts_doi"
+                    >
+                      DOI
+                    </label>
+                    <input
+                      type="number"
+                      pattern="[0-9]+([\,|\.][0-9]+)?"
+                      step="0.1"
+                      min="0"
+                      class="h-10 w-40 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                      aria-label="Depth of invasion in mm"
+                      id="txt_ts_doi"
+                      placeholder="Depth of invasion"
+                    />
+                    <div
+                      class="h-10 inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
+                    >
+                      mm
+                    </div>
+                    <small class="ml-2 text-gray-500 dark:text-gray-400">
+                      (T1: ≤ 5 mm; T2: 5-10 mm; T3: &gt; 10 mm)
                     </small>
                   </div>
                 </form>

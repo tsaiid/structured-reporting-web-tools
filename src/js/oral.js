@@ -17,23 +17,23 @@ const AJCC_T_LIP = new Map([
     ['x', 'Primary tumor cannot be assessed.'],
     ['0', 'No evidence of primary tumor.'],
     ['is', 'Tumor in situ.'],
-    ['1', 'Tumor ≤ 2 cm in greatest dimension.'],
-    ['2', 'Tumor > 2 cm but ≤ 4 cm in greatest dimension.'],
-    ['3', 'Tumor > 4 cm in greatest dimension.'],
+    ['1', 'Tumor ≤ 2 cm in greatest dimension and DOI ≤ 5 mm.'],
+    ['2', 'Tumor ≤ 2 cm in greatest dimension and DOI > 5 mm and ≤ 10 mm; or tumor > 2 cm but ≤ 4 cm in greatest dimension and DOI ≤ 10 mm.'],
+    ['3', 'Tumor > 4 cm in greatest dimension or any tumor with DOI > 10 mm.'],
     ['4', 'Moderately advanced local disease.'],
     ['4a', 'Tumor invades through cortical bone or involves the inferior alveolar nerve, floor of mouth, or skin of face (i.e., chin or nose).'],
-    ['4b', 'Very advanced local disease: Tumor invades lateral pterygoid muscle, pterygoid plates, lateral nasopharynx, or skull base or encases carotid artery.'],
+    ['4b', 'Very advanced local disease: Tumor invades masticator space, pterygoid plates, or skull base or encases internal carotid artery.'],
 ]);
 const AJCC_T_ORAL = new Map([
     ['x', 'Primary tumor cannot be assessed.'],
     ['0', 'No evidence of primary tumor.'],
     ['is', 'Tumor in situ.'],
-    ['1', 'Tumor ≤ 2 cm in greatest dimension.'],
-    ['2', 'Tumor > 2 cm but ≤ 4 cm in greatest dimension.'],
-    ['3', 'Tumor > 4 cm in greatest dimension.'],
+    ['1', 'Tumor ≤ 2 cm in greatest dimension and DOI ≤ 5 mm.'],
+    ['2', 'Tumor ≤ 2 cm in greatest dimension and DOI > 5 mm and ≤ 10 mm; or tumor > 2 cm but ≤ 4 cm in greatest dimension and DOI ≤ 10 mm.'],
+    ['3', 'Tumor > 4 cm in greatest dimension or any tumor with DOI > 10 mm.'],
     ['4', 'Moderately advanced local disease.'],
     ['4a', 'Tumor invades adjacent structures only (e.g., through cortical bone [mandible or maxilla] into deep [extrinsic] muscle of tongue [genioglossus, hyoglossus, palatoglossus, and styloglossus], maxillary sinus, skin of face).'],
-    ['4b', 'Very advanced local disease: Tumor invades lateral pterygoid muscle, pterygoid plates, lateral nasopharynx, or skull base or encases carotid artery.'],
+    ['4b', 'Very advanced local disease: Tumor invades masticator space, pterygoid plates, or skull base or encases internal carotid artery.'],
 ]);
 const AJCC_N = new Map([
     ['x', 'Regional lymph nodes cannot be assessed.'],
@@ -70,6 +70,8 @@ function generate_report(){
     let has_ts_no = $('#cb_ts_no').is(':checked');
     let t_length = parseFloat($('#txt_ts_len').val());
     let txt_ts_len = t_length ? t_length : "___";
+    let t_doi = parseFloat($('#txt_ts_doi').val());
+    let txt_ts_doi = !isNaN(t_doi) ? t_doi : "___";
     let has_tl = $('.cb_tl:checked').length ? true : false;
     let ts_nm_check = has_ts_nm ? "+" : " ";
     let ts_no_check = has_ts_no ? "+" : " ";
@@ -92,6 +94,7 @@ function generate_report(){
     [${ts_nm_check}] Not assessable
     [${ts_no_check}] No evidence of primary tumor
     Size: ${txt_ts_len} cm (largest diameter)
+    Depth of invasion (DOI): ${txt_ts_doi} mm
     Laterality: [${tl_l_check}] Left   [${tl_r_check}] Right   [${tl_b_check}] Bilateral
     Tumor location:
         [${tl_ul_check}] Upper Lip                    [${tl_ll_check}] Lower Lip           [${tl_ugm_check}] Upper gingivobuccal mucosa
@@ -192,6 +195,7 @@ function generate_report(){
     // Calculate staging via Logic
     const data = {
         tumorSize: t_length,
+        depthOfInvasion: t_doi,
         isNotAssessable: has_ts_nm,
         isNoEvidence: has_ts_no,
         hasTumorLocation: has_tl,
