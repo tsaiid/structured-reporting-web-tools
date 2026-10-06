@@ -48,9 +48,9 @@ function initTheme() {
     document.documentElement.setAttribute("data-theme", savedTheme);
     if (toggle) toggle.checked = savedTheme === "dark";
   } else {
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)",
-    ).matches;
+    const prefersDark = window.matchMedia
+      ? window.matchMedia("(prefers-color-scheme: dark)").matches
+      : false;
     const initialTheme = prefersDark ? "dark" : "light";
     document.documentElement.setAttribute("data-theme", initialTheme);
     if (toggle) toggle.checked = prefersDark;
@@ -779,8 +779,10 @@ function autoCalculateCategory() {
       )
         setScore(CAT_4B);
     } else if (density === "part-solid") {
+      // 實質成分 >= 8 mm 或新發現/增大結節之實質成分 >= 4 mm (總直徑 >= 6 mm) 為 4B
       if (solidPart >= 8) setScore(CAT_4B);
       if (
+        size >= 6 &&
         (status === "newly found" || status === "enlarging") &&
         solidPart >= 4
       )
@@ -804,9 +806,11 @@ function autoCalculateCategory() {
         if (status === "newly found" && size >= 6 && size < 8)
           setScore(CAT_4A);
       } else if (density === "part-solid") {
+        // baseline/unchanged 實質成分 6 至 < 8 mm，或新發現/增大結節 (總直徑 >= 6 mm) 之實質成分 < 4 mm 為 4A
         if (size >= 6 && solidPart >= 6 && solidPart < 8)
           setScore(CAT_4A);
         if (
+          size >= 6 &&
           (status === "newly found" || status === "enlarging") &&
           solidPart < 4
         )
@@ -829,7 +833,9 @@ function autoCalculateCategory() {
         if (status === "newly found" && size >= 4 && size < 6)
           setScore(CAT_3);
       } else if (density === "part-solid") {
+        // baseline/unchanged 總直徑 >= 6 mm 且實質成分 < 6 mm 判定為 3
         if (size >= 6 && solidPart < 6) setScore(CAT_3);
+        // 新發現部分實質結節若總直徑 < 6 mm 判定為 3 (Lung-RADS v2022)
         if (status === "newly found" && size < 6) setScore(CAT_3);
       } else if (density === "non-solid") {
         if (
@@ -860,6 +866,7 @@ function autoCalculateCategory() {
         if (size < 6) setScore(CAT_2);
         if (status === "newly found" && size < 4) setScore(CAT_2);
       } else if (density === "part-solid") {
+        // baseline/unchanged 總直徑 < 6 mm 判定為 2
         if (size < 6) setScore(CAT_2);
       } else if (density === "non-solid") {
         setScore(CAT_2);
@@ -888,10 +895,10 @@ function checkCategoryRadio(val) {
 
 document
   .querySelector("main")
-  .addEventListener("change", autoCalculateCategory);
+  ?.addEventListener("change", autoCalculateCategory);
 document
   .querySelector("main")
-  .addEventListener("input", autoCalculateCategory);
+  ?.addEventListener("input", autoCalculateCategory);
 
 // Expose functions to global window object
 window.toggleTheme = toggleTheme;
@@ -914,3 +921,6 @@ window.closeModal = closeModal;
 window.toggleModal = toggleModal;
 window.closeModalOnBackdrop = closeModalOnBackdrop;
 window.validateAndCopy = validateAndCopy;
+window.autoCalculateCategory = autoCalculateCategory;
+
+export { autoCalculateCategory };
