@@ -14,16 +14,33 @@ export function calculateRCCStage(data) {
     //   hasMetastasis: boolean
     // }
 
-    var t_stage = ["0"];
+    var t_stage = [];
     var n_stage = ["0"];
     var m_stage = ["0"];
 
-    // calculate T stage
-    if (data.isNotAssessable) {
-        t_stage.push("x");
-    } else {
-        // Size based
-        const t_dia = data.tumorSize;
+    const t_dia = data.tumorSize;
+    const hasValidSize = typeof t_dia === 'number' && !isNaN(t_dia) && t_dia > 0;
+    const invasion = data.invasion || {};
+
+    // 1. 侵犯深度判定 (Invasion based: T3 / T4 優先於腫瘤大小)
+    if (invasion.t4) {
+        t_stage.push("4");
+    }
+    if (invasion.t3bc) {
+        t_stage.push("3b"); // Default base for this group check
+        if (invasion.ivcLevel) {
+            t_stage.push(invasion.ivcLevel);
+        }
+        if (invasion.t3c) {
+            t_stage.push("3c");
+        }
+    }
+    if (invasion.t3a) {
+        t_stage.push("3a");
+    }
+
+    // 2. 大小判定 (Size based: 局限於腎臟之腫瘤)
+    if (hasValidSize) {
         if (t_dia > 10) {
             t_stage.push('2b');
         } else if (t_dia > 7) {
@@ -33,23 +50,20 @@ export function calculateRCCStage(data) {
         } else {
             t_stage.push('1a');
         }
+    }
 
-        // Invasion based (can override size)
-        if (data.invasion.t3a) {
-            t_stage.push("3a");
+    // 3. 處理未填寫、非可測量或無腫瘤之邊界情況
+    if (t_stage.length === 0) {
+        if (data.isT0 || t_dia === 0) {
+            // T0: 無原發腫瘤
+            t_stage.push("0");
+        } else {
+            // Tx: 非可測量或未填寫大小
+            t_stage.push("x");
         }
-        if (data.invasion.t3bc) {
-            t_stage.push("3b"); // Default base for this group check
-            if (data.invasion.ivcLevel) {
-                t_stage.push(data.invasion.ivcLevel);
-            }
-            if (data.invasion.t3c) {
-                t_stage.push("3c");
-            }
-        }
-        if (data.invasion.t4) {
-            t_stage.push("4");
-        }
+    } else if (data.isNotAssessable && !invasion.t4 && !invasion.t3bc && !invasion.t3a) {
+        // 若標註為不可評估且無明確侵犯，確保為 Tx
+        t_stage = ["x"];
     }
 
     // calculate N stage

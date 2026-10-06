@@ -13,24 +13,29 @@ export function calculateHCCStage(data) {
     var n_stage = ["0"];
     var m_stage = ["0"];
 
+    const hasValidSize = typeof data.largestTumorSize === 'number' && !isNaN(data.largestTumorSize) && data.largestTumorSize > 0;
+
     // calculate T stage
     if (data.hasT4Features || data.majorVascularInvasion) {
+        // T4: 侵犯主要門靜脈/肝靜脈分支，或侵犯鄰近器官/穿破臟層腹膜（不論大小或顆數）
         t_stage.push('4');
+    } else if (data.isT0 || data.tumorCount === 0) {
+        // T0: 無原發腫瘤
+        t_stage.push('0');
+    } else if (data.isNonMeasurable || !hasValidSize) {
+        // Tx: 未填寫腫瘤大小或標記為無法測量
+        t_stage.push('x');
     } else if (data.tumorCount === 1) {
+        // 單發腫瘤
         if (data.largestTumorSize > 2 && data.vascularInvasion) {
             t_stage.push('2');
         } else if (data.largestTumorSize > 2) {
             t_stage.push('1b');
         } else {
-            // Includes size 0 or undefined as '1a' in legacy logic if not handled? 
-            // Legacy code: let t_length = parseFloat($('#txt_ts_len').val()); 
-            // if empty, t_length is NaN. NaN > 2 is false. -> 1a.
-            // But if size is missing, it should probably be X or handle gracefully?
-            // The original code defaults to 1a if size is missing or 0.
             t_stage.push('1a');
         }
     } else {
-        // Multiple tumors (count > 1 or NaN/multiple)
+        // 多發腫瘤 (count > 1 或 NaN/multiple)
         if (data.largestTumorSize > 5) {
             t_stage.push('3');
         } else {

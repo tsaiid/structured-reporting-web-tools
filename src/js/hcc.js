@@ -86,6 +86,7 @@ function generate_report(){
     const data = {
         tumorCount: tl_num,
         largestTumorSize: t_length,
+        isNonMeasurable: $('#cb_ts_nm').is(':checked'),
         vascularInvasion: $('#cb_tc_vi').is(':checked'),
         hasT4Features: $('.cb_tc_t4:checked').length > 0,
         hasNodes: $('.cb_rn:checked').length > 0,
