@@ -1,9 +1,81 @@
 <!doctype html>
-<html lang="zh-TW" data-theme="light">
+<html lang="zh-TW">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
     <title>Lung-RADS v2022 報告產生器</title>
+    <!-- Theme Initialization Script (Prevents Flash of Unstyled Content) -->
+    <script>
+      (function() {
+        var savedTheme = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = (savedTheme === 'dark' || savedTheme === 'light') ? savedTheme : (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      html[data-theme="dark"],
+      html[data-theme="dark"] body {
+        background-color: #13171f !important;
+        color: #c2c7d0;
+        color-scheme: dark;
+      }
+      html[data-theme="light"],
+      html[data-theme="light"] body {
+        background-color: #ffffff !important;
+        color: #1e293b;
+        color-scheme: light;
+      }
+      html[data-theme="dark"] .sticky-nav {
+        background-color: rgba(19, 23, 31, 0.95);
+      }
+      /* Anti-FOUC 防護：隱藏未載入樣式之內容，避免巨大 SVG 與未格式化 HTML 閃爍 */
+      body:not(.ready) {
+        visibility: hidden;
+        opacity: 0;
+      }
+      body.ready {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.15s ease-in;
+      }
+      /* 防禦性膠囊與圖示大小限制 */
+      .theme-capsule {
+        display: inline-flex;
+        width: 64px;
+        height: 34px;
+        overflow: hidden;
+      }
+      .capsule-icon svg {
+        width: 20px;
+        height: 20px;
+        max-width: 20px;
+        max-height: 20px;
+      }
+      html[data-theme="dark"] .icon-sun {
+        display: none !important;
+      }
+    </style>
+    <noscript>
+      <style>
+        body:not(.ready) {
+          visibility: visible !important;
+          opacity: 1 !important;
+        }
+      </style>
+    </noscript>
+    <script>
+      // 容錯防禦：若 JS 異常延遲，400ms 後強制顯示 body
+      setTimeout(function() {
+        if (document.body && !document.body.classList.contains('ready')) {
+          document.body.classList.add('ready');
+        }
+      }, 400);
+    </script>
   </head>
 
   <body>
@@ -29,6 +101,8 @@
             <div class="capsule-content">
               <div class="capsule-icon icon-sun">
                 <svg
+                  width="20"
+                  height="20"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -44,6 +118,8 @@
               </div>
               <div class="capsule-icon icon-moon">
                 <svg
+                  width="20"
+                  height="20"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
                   viewBox="0 0 24 24"

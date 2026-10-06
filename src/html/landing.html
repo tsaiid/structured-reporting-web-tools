@@ -7,7 +7,59 @@
       name="description"
       content="Radiology Structured Reporting Tools - AJCC Cancer Staging and NHI Lung-RADS"
     />
+    <meta name="color-scheme" content="light dark" />
     <title>Structured Reporting Web Tools</title>
+    <!-- Theme Initialization Script (Prevents Flash of Unstyled Content) -->
+    <script>
+      (function() {
+        var savedTheme = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = (savedTheme === 'dark' || savedTheme === 'light') ? savedTheme : (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      html[data-theme="dark"],
+      html[data-theme="dark"] body {
+        background-color: #0f172a !important;
+        color: #f1f5f9;
+        color-scheme: dark;
+      }
+      html[data-theme="light"],
+      html[data-theme="light"] body {
+        background-color: #f8f9fa !important;
+        color: #212529;
+        color-scheme: light;
+      }
+      /* Anti-FOUC 防護：隱藏未載入樣式之內容 */
+      body:not(.ready) {
+        visibility: hidden;
+        opacity: 0;
+      }
+      body.ready {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.15s ease-in;
+      }
+    </style>
+    <noscript>
+      <style>
+        body:not(.ready) {
+          visibility: visible !important;
+          opacity: 1 !important;
+        }
+      </style>
+    </noscript>
+    <script>
+      setTimeout(function() {
+        if (document.body && !document.body.classList.contains('ready')) {
+          document.body.classList.add('ready');
+        }
+      }, 400);
+    </script>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

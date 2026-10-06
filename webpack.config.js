@@ -74,7 +74,7 @@ module.exports = {
           priority: 20,
         },
         common: {
-          test: /[\\/]src[\\/](js[\\/](common|ajcc_common)\.js|css[\\/](tailwind|ajcc_common|dashboard)\.css)/,
+          test: /[\\/]src[\\/](js[\\/](common|ajcc_common|theme)\.js|css[\\/](tailwind|ajcc_common|dashboard)\.css)/,
           name: 'common',
           chunks: (chunk) => ajccPages.includes(chunk.name),
           priority: 10,

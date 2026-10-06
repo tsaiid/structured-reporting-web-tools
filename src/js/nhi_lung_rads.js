@@ -5,6 +5,21 @@ import {
   generateReportText as formatReportText,
   generateNoduleText,
 } from './nhi_lung_rads_logic.js';
+import {
+  initTheme,
+  toggleTheme as coreToggleTheme,
+} from './theme.js';
+
+// 解除 Anti-FOUC 遮罩，顯示已注入樣式之頁面
+if (typeof document !== 'undefined') {
+  if (document.body) {
+    document.body.classList.add('ready');
+  } else {
+    document.addEventListener('DOMContentLoaded', () => {
+      document.body.classList.add('ready');
+    });
+  }
+}
 
 const $ = (id) => document.getElementById(id);
 const getValue = (id) => $(id)?.value.trim() || "";
@@ -25,36 +40,22 @@ document.addEventListener("input", function (e) {
 });
 
 // Theme 記憶功能與切換邏輯
-function initTheme() {
-  const savedTheme = localStorage.getItem("theme");
+function syncThemeToggle(theme) {
   const toggle = document.getElementById("theme_toggle");
-
-  if (savedTheme) {
-    document.documentElement.setAttribute("data-theme", savedTheme);
-    if (toggle) toggle.checked = savedTheme === "dark";
-  } else {
-    const prefersDark = window.matchMedia
-      ? window.matchMedia("(prefers-color-scheme: dark)").matches
-      : false;
-    const initialTheme = prefersDark ? "dark" : "light";
-    document.documentElement.setAttribute("data-theme", initialTheme);
-    if (toggle) toggle.checked = prefersDark;
+  if (toggle) {
+    toggle.checked = theme === "dark";
   }
 }
 
 function toggleTheme() {
-  const html = document.documentElement;
-  const currentTheme = html.getAttribute("data-theme");
-  const newTheme = currentTheme === "light" ? "dark" : "light";
-
-  html.setAttribute("data-theme", newTheme);
-  localStorage.setItem("theme", newTheme);
-
-  const toggle = document.getElementById("theme_toggle");
-  if (toggle) toggle.checked = newTheme === "dark";
+  const newTheme = coreToggleTheme();
+  syncThemeToggle(newTheme);
+  return newTheme;
 }
 
-initTheme();
+initTheme((theme) => {
+  syncThemeToggle(theme);
+});
 
 function toggleSection(elementId, show) {
   const el = $(elementId);

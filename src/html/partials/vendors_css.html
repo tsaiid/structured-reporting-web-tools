@@ -3,16 +3,22 @@
   (function() {
     var savedTheme = localStorage.getItem('theme');
     var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
+    var theme = (savedTheme === 'dark' || savedTheme === 'light') ? savedTheme : (prefersDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
   })();
 </script>
+<meta name="color-scheme" content="light dark" />
 <style>
   /* Critical CSS to prevent FOUC */
   /* Moved most styles to Tailwind, keeping theme logic for now */
   :root {
+      color-scheme: light dark;
       --sidebar-bg: #f8f9fa;
+  }
+  html[data-theme="dark"],
+  html[data-theme="dark"] body {
+      background-color: #121212 !important;
+      color-scheme: dark;
   }
   [data-theme="dark"] {
       --sidebar-bg: #1e1e1e;
