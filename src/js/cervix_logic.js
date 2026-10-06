@@ -12,6 +12,8 @@ export function calculateCervixStage(data) {
     var n_stage = ["0"];
     var m_stage = ["0"];
 
+    const hasValidSize = typeof data.tumorSize === 'number' && !isNaN(data.tumorSize) && data.tumorSize > 0;
+
     // calculate T stage
     if (data.invasion.t4) {
         t_stage.push("4");
@@ -22,14 +24,30 @@ export function calculateCervixStage(data) {
     } else if (data.invasion.t2b) {
         t_stage.push("2b");
     } else if (data.invasion.t2a) {
-        t_stage.push("2a");
+        // T2a: 陰道上 2/3 侵犯無子宮頸旁侵犯。依腫瘤大小細分：≤4 cm 為 2a1，>4 cm 為 2a2
+        if (!data.isNonMeasurable && hasValidSize) {
+            if (data.tumorSize <= 4.0) {
+                t_stage.push("2a1");
+            } else {
+                t_stage.push("2a2");
+            }
+        } else {
+            t_stage.push("2a");
+        }
     } else if (data.invasion.t1) {
-        if (!data.isNonMeasurable && data.tumorSize > 0) {
-            t_stage.push("1b");
+        // T1: 局限於子宮頸。依腫瘤大小細分：≤2 cm 為 1b1，>2 且 ≤4 cm 為 1b2，>4 cm 為 1b3
+        if (!data.isNonMeasurable && hasValidSize) {
+            if (data.tumorSize <= 2.0) {
+                t_stage.push("1b1");
+            } else if (data.tumorSize <= 4.0) {
+                t_stage.push("1b2");
+            } else {
+                t_stage.push("1b3");
+            }
         } else {
             t_stage.push("1a");
         }
-    } else if (data.tumorSize === 0) {
+    } else if (data.isT0 || data.tumorSize === 0) {
         t_stage.push("0");
     } else {
         t_stage.push("x");
