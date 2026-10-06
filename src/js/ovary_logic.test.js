@@ -38,7 +38,7 @@ describe('Ovary Logic', () => {
             expect(result.t).toContain('3c');
         });
 
-        test('N1 implies T3', () => {
+        test('T1a with N1: Regional nodes do not overwrite T stage', () => {
             const result = calculateOvaryStage({
                 tumorSize: 2.0,
                 hasInvasion: false,
@@ -48,7 +48,8 @@ describe('Ovary Logic', () => {
                 hasMetastasis: false
             });
             expect(result.n).toContain('1');
-            expect(result.t).toContain('3');
+            expect(result.t).toContain('1a');
+            expect(result.t).not.toContain('3');
         });
 
         test('M1: Metastasis', () => {

@@ -51,9 +51,8 @@ export function calculateOvaryStage(data) {
         }
     }
 
-    // calculate N stage (and T3 adjustment)
+    // 計算 N 分期（後腹腔淋巴結轉移屬於 N1，不影響原發腫瘤 T 分期）
     if (data.hasNodes) {
-        t_stage.push("3"); // Legacy behavior: Nodes implies T3 category in this definition set
         n_stage.push("1");
     }
 
