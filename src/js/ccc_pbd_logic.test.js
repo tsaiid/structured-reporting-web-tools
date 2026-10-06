@@ -60,4 +60,12 @@ describe('Perihilar Cholangiocarcinoma (PBD) Logic', () => {
     test('M1: Distant metastasis', () => {
         expect(calculate_staging({ ...defaultData, tumorSize: 1.0, hasMetastasis: true }).m).toContain('1');
     });
+
+    test('Invasion stages independent of tumor size (Non-measurable does not override T stage)', () => {
+        expect(calculate_staging({ ...defaultData, isNonMeasurable: true, isT4: true }).t).toContain('4');
+        expect(calculate_staging({ ...defaultData, tumorSize: 0, isT3: true }).t).toContain('3');
+        expect(calculate_staging({ ...defaultData, isNonMeasurable: true, isT2b: true }).t).toContain('2b');
+        expect(calculate_staging({ ...defaultData, tumorSize: 0, isT2a: true }).t).toContain('2a');
+        expect(calculate_staging({ ...defaultData, tumorSize: 0, isT1: true }).t).toContain('1');
+    });
 });

@@ -43,4 +43,11 @@ describe('Distal Cholangiocarcinoma (DBD) Logic', () => {
     test('M1: Distant metastasis', () => {
         expect(calculate_staging({ ...defaultData, invasionDepth: 5, hasMetastasis: true }).m).toContain('1');
     });
+
+    test('T4 and invasion depth stage independent of tumor length measurability', () => {
+        expect(calculate_staging({ ...defaultData, isMeasurable: false, isT4: true }).t).toContain('4');
+        expect(calculate_staging({ ...defaultData, isMeasurable: false, invasionDepth: 8 }).t).toContain('2');
+        expect(calculate_staging({ ...defaultData, isMeasurable: false, invasionDepth: 15 }).t).toContain('3');
+        expect(calculate_staging({ ...defaultData, isMeasurable: false, invasionDepth: 3 }).t).toContain('1');
+    });
 });

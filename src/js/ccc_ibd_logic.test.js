@@ -71,4 +71,11 @@ describe('Intrahepatic Cholangiocarcinoma (IBD) Logic', () => {
         const data = { ...defaultData, tumorSize: 3.0, hasMetastasis: true };
         expect(calculate_staging(data).m).toContain('1');
     });
+
+    test('T4/T3/T2 stages independent of tumor size (Non-measurable does not override T stage)', () => {
+        expect(calculate_staging({ ...defaultData, isNonMeasurable: true, isT4: true }).t).toContain('4');
+        expect(calculate_staging({ ...defaultData, tumorSize: 0, isT3: true }).t).toContain('3');
+        expect(calculate_staging({ ...defaultData, isNonMeasurable: true, isT2: true }).t).toContain('2');
+        expect(calculate_staging({ ...defaultData, tumorSize: 0, isMultiple: true }).t).toContain('2');
+    });
 });

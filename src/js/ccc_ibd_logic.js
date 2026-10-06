@@ -3,17 +3,17 @@ export function calculate_staging(data) {
     const n_stage = ["0"];
     const m_stage = ["0"];
 
-    // calculate T stage
-    if (data.isT0) {
-        t_stage.push('0');
-    } else if (data.isNonMeasurable || !data.tumorSize) {
-        t_stage.push('x');
-    } else if (data.isT4) {
+    // calculate T stage: 侵犯與多發腫瘤 (T4, T3, T2) 優先於 size 判定
+    if (data.isT4) {
         t_stage.push('4');
     } else if (data.isT3) {
         t_stage.push('3');
     } else if (data.isT2 || data.isMultiple) {
         t_stage.push('2');
+    } else if (data.isT0) {
+        t_stage.push('0');
+    } else if (data.isNonMeasurable || !data.tumorSize) {
+        t_stage.push('x');
     } else {
         t_stage.push('1');
         if (data.tumorSize > 5.0) {

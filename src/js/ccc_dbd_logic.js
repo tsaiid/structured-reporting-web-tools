@@ -3,16 +3,15 @@ export function calculate_staging(data) {
     const n_stage = ["0"];
     const m_stage = ["0"];
 
-    // calculate T stage
-    if (!data.isMeasurable || (!data.hasInvasion && !data.isT4)) {
-        t_stage.push('x');
-    } else if (data.isT4) {
+    // calculate T stage: T4 侵犯與侵犯深度 (DOI) 判定，腫瘤長徑非 T 期必要條件
+    const hasInvasion = data.hasInvasion !== false;
+    if (data.isT4) {
         t_stage.push('4');
-    } else if (data.invasionDepth > 12) {
+    } else if (hasInvasion && data.invasionDepth > 12) {
         t_stage.push('3');
-    } else if (data.invasionDepth >= 5) {
+    } else if (hasInvasion && data.invasionDepth >= 5) {
         t_stage.push('2');
-    } else if (data.invasionDepth > 0) {
+    } else if (hasInvasion && data.invasionDepth > 0) {
         t_stage.push('1');
     } else {
         t_stage.push('x');

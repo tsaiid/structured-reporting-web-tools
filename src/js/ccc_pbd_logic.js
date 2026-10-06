@@ -3,12 +3,8 @@ export function calculate_staging(data) {
     const n_stage = ["0"];
     const m_stage = ["0"];
 
-    // calculate T stage
-    if (data.isT0) {
-        t_stage.push('0');
-    } else if (data.isNonMeasurable || !data.tumorSize) {
-        t_stage.push('x');
-    } else if (data.isT4) {
+    // calculate T stage: 侵犯深度 (T4, T3, T2b, T2a, T1) 優先於 T0 / Tx 判定，腫瘤大小非必要條件
+    if (data.isT4) {
         t_stage.push('4');
     } else if (data.isT3) {
         t_stage.push('3');
@@ -18,6 +14,8 @@ export function calculate_staging(data) {
         t_stage.push('2a');
     } else if (data.isT1) {
         t_stage.push('1');
+    } else if (data.isT0) {
+        t_stage.push('0');
     } else {
         t_stage.push('x');
     }
