@@ -14,12 +14,6 @@ importers:
       '@picocss/pico':
         specifier: ^2.1.1
         version: 2.1.1
-      favicons:
-        specifier: ^7.3.1
-        version: 7.3.1(@types/node@26.6.4)
-      favicons-webpack-plugin:
-        specifier: ^6.0.1
-        version: 6.0.1(favicons@7.3.1(@types/node@26.6.4))(webpack@5.111.1)
       jquery:
         specifier: ^3.7.1
         version: 3.7.1
@@ -51,9 +45,12 @@ importers:
       css-loader:
         specifier: ^7.1.5
         version: 7.1.5(webpack@5.111.1)
-      expose-loader:
-        specifier: ^5.0.1
-        version: 5.0.1(webpack@5.111.1)
+      favicons:
+        specifier: ^7.3.1
+        version: 7.3.1(@types/node@26.6.4)
+      favicons-webpack-plugin:
+        specifier: ^6.0.1
+        version: 6.0.1(favicons@7.3.1(@types/node@26.6.4))(webpack@5.111.1)
       glob:
         specifier: ^13.0.6
         version: 13.0.6
@@ -2285,12 +2282,6 @@ packages:
   expect@30.5.2:
     resolution: {integrity: sha512-0LNuMvs8/5mRYhnCR4k+lGV7fqPMs6Bnksda4S3zsCUmdxBpAn4zU4NNzXdq1pMKe/H4W5t/zVIDSJ/H3e0vDA==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
-
-  expose-loader@5.0.1:
-    resolution: {integrity: sha512-5YPZuszN/eWND/B+xuq5nIpb/l5TV1HYmdO6SubYtHv+HenVw9/6bn33Mm5reY8DNid7AVtbARvyUD34edfCtg==}
-    engines: {node: '>= 18.12.0'}
-    peerDependencies:
-      webpack: ^5.0.0
 
   express@4.22.3:
     resolution: {integrity: sha512-Bdcs4+3qlpVlx2NRn6fgX2Ue2/gGRaPeawebgclM0ERSCqDpA+owF1fdPwjJUTAJWMTuAaxjDf+hzb0/4eKvvw==}
@@ -6375,10 +6366,6 @@ snapshots:
       jest-message-util: 30.5.1
       jest-mock: 30.5.2
       jest-util: 30.5.1
-
-  expose-loader@5.0.1(webpack@5.111.1):
-    dependencies:
-      webpack: 5.111.1(clean-css@5.3.3)(html-minifier-terser@7.2.0)(lightningcss@1.32.0)(postcss@8.5.28)(sharp@0.35.5(@types/node@26.6.4))(webpack-cli@6.0.1)
 
   express@4.22.3(supports-color@8.1.1):
     dependencies:
