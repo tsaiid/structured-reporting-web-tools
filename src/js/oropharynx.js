@@ -11,55 +11,17 @@ import '../image/neck_lymph_node_stations.webp';
 import './oropharynx_logic_helper.js';
 
 import { join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage, getMaxStage } from './ajcc_common.js';
-
-const AJCC_T_HPV = new Map([
-    ['x', 'Primary tumor cannot be assessed'],
-    ['0', 'No primary identified'],
-    ['is', 'Carcinoma in situ'],
-    ['1', 'Tumor 2 cm or smaller in greatest dimension'],
-    ['2', 'Tumor larger than 2 cm but not larger than 4 cm in greatest dimension'],
-    ['3', 'Tumor larger than 4 cm in greatest dimension or extension to lingual surface of epiglottis'],
-    ['4', 'Moderately advanced or very advanced local disease; Tumor invades the larynx, extrinsic muscle of tongue, medial pterygoid, hard palate, or mandible or beyond (* Mucosal extension to lingual surface of epiglottis from primary tumors of the base of the tongue and vallecula does not constitute invasion of the larynx.)'],
-]);
-const AJCC_T_NONHPV = new Map([
-    ['x', 'Primary tumor cannot be assessed'],
-    ['0', 'No primary identified'],
-    ['is', 'Carcinoma in situ'],
-    ['1', 'Tumor 2 cm or smaller in greatest dimension'],
-    ['2', 'Tumor larger than 2 cm but not larger than 4 cm in greatest dimension'],
-    ['3', 'Tumor larger than 4 cm in greatest dimension or extension to lingual surface of epiglottis'],
-    ['4', 'Moderately advanced or very advanced local disease'],
-    ['4a', 'Moderately advanced local disease: Tumor invades the larynx, extrinsic muscle of tongue, medial pterygoid, hard palate, or mandible'],
-    ['4b', 'Very advanced local disease: Tumor invades lateral pterygoid muscle, pterygoid plates, lateral nasopharynx, or skull base or encases carotid artery'],
-]);
-const AJCC_N_HPV = new Map([
-    ['x', 'Regional lymph nodes cannot be assessed'],
-    ['0', 'No regional lymph node metastasis'],
-    ['1', 'One or more ipsilateral lymph nodes, none larger than 6 cm'],
-    ['2', 'Contralateral or bilateral lymph nodes, none larger than 6 cm'],
-    ['3', 'Lymph node(s) larger than 6 cm'],
-]);
-const AJCC_N_NONHPV = new Map([
-    ['x', 'Regional lymph nodes cannot be assessed'],
-    ['0', 'No regional lymph node metastasis'],
-    ['1', 'Metastasis in a single ipsilateral lymph node, 3 cm or smaller in greatest dimension and ENE(−)'],
-    ['2', 'Metastasis in a single ipsilateral node larger than 3 cm but not larger than 6 cm in greatest dimension and ENE(−); or metastases in multiple ipsilateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(−); or in bilateral or contralateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(−)'],
-    ['2a', 'Metastasis in a single ipsilateral node larger than 3 cm but not larger than 6 cm in greatest dimension and ENE(−)'],
-    ['2b', 'Metastases in multiple ipsilateral nodes, none larger than 6 cm in greatest dimension and ENE(−)'],
-    ['2c', 'Metastases in bilateral or contralateral lymph nodes, none larger than 6 cm in greatest dimension and ENE(−)'],
-    ['3', 'Metastasis in a lymph node larger than 6 cm in greatest dimension and ENE(−); or metastasis in any node(s) and clinically overt ENE(+)'],
-    ['3a', 'Metastasis in a lymph node larger than 6 cm in greatest dimension and ENE(−)'],
-    ['3b', 'Metastasis in any node(s) and clinically overt ENE(+)'],
-]);
-const AJCC_M = new Map([
-    ['0', 'No distant metastasis (in this study)'],
-    ['1', 'Distant metastasis'],
-]);
+import {
+    calculateOropharynxStage,
+    AJCC_T_HPV,
+    AJCC_T_NONHPV,
+    AJCC_N_HPV,
+    AJCC_N_NONHPV,
+    AJCC_M
+} from './oropharynx_logic.js';
 
 function generate_report() {
-    var t_stage = [];
-    var n_stage = ["0"];
-    var m_stage = ["0"];
+    let is_hpv = $('#cb_rn_hpv').is(':checked');
     // Protocol
     var report = `1. Imaging modality
   - Imaging by `;
@@ -130,39 +92,6 @@ function generate_report() {
 
 `;
 
-    // calculate T stage
-    let is_hpv = $('#cb_rn_hpv').is(':checked');
-    if (has_ts_nm) {
-        t_stage.push('x');
-    } else if (has_ts_no || !has_tl) {
-        t_stage.push('0');
-    } else {
-        // by invasion
-        if ($('.cb_ti_t3:checked').length) {
-            t_stage.push("3");
-        }
-        if (is_hpv) {
-            if ($('.cb_ti_t4:checked').length) {
-                t_stage.push("4");
-            }
-        } else {
-            if ($('.cb_ti_t4a:checked').length) {
-                t_stage.push("4a");
-            }
-            if ($('.cb_ti_t4b:checked').length) {
-                t_stage.push("4b");
-            }
-        }
-
-        // by size
-        if (t_length > 4) {
-            t_stage.push("3");
-        } else if (t_length > 2) {
-            t_stage.push("2");
-        } else {
-            t_stage.push("1");
-        }
-    }
 
     // Regional nodal metastasis
     let has_rln = $('.cb_rn:checked').length > 0;
@@ -205,38 +134,6 @@ function generate_report() {
 
 `;
 
-    // Calculate N stage
-    if (is_hpv) {
-        if ((has_rln && n_length > 6.0)) {
-            n_stage.push("3");
-        } else if (($('.cb_rn_r:checked').length && $('.cb_rn_l:checked').length)           // bilateral
-            || ($('#cb_tl_r').is(':checked') && $('.cb_rn_l:checked').length)       // tumor right, LAP left
-            || ($('#cb_tl_l').is(':checked') && $('.cb_rn_r:checked').length)) {    // tumor left, LAP right
-            n_stage.push("2");
-        } else if (($('#cb_tl_r').is(':checked') && $('.cb_rn_r:checked').length)           // tumor right, LAP right
-            || ($('#cb_tl_l').is(':checked') && $('.cb_rn_l:checked').length)) {    // tumor left, LAP left
-            n_stage.push("1");
-        }
-    } else {    // non-viral
-        if (has_rln) {
-            if (has_ene) {
-                n_stage.push("3b");
-            } else if (n_length > 6.0) {
-                n_stage.push("3a");
-            } else if (($('.cb_rn_r:checked').length && $('.cb_rn_l:checked').length)       // bilateral
-                || ($('#cb_tl_r').is(':checked') && $('.cb_rn_l:checked').length)       // tumor right, LAP left
-                || ($('#cb_tl_l').is(':checked') && $('.cb_rn_r:checked').length)) {    // tumor left, LAP right
-                n_stage.push("2c");
-            } else if (!has_sin) {          // multiple ipsilateral
-                n_stage.push("2b");
-            } else if (n_length > 3.0) {    // single ipsilateral, > 3 cm
-                n_stage.push("2a");
-            } else {                        // single ipsilateral, <= 3 cm
-                n_stage.push("1");
-            }
-        }
-    }
-
     // Distant metastasis
     let has_dm = $('.cb_dm:checked').length > 0;
     report += "5. Distant metastasis (In this study)\n";
@@ -252,9 +149,6 @@ function generate_report() {
             }
             report += $('#txt_dm_others').val();
         }
-
-        m_stage.push("1");
-        //console.log(m_stage);
     } else {
         report += "___";
     }
@@ -264,9 +158,36 @@ function generate_report() {
     report += "6. Other findings\n\n\n";
 
     // AJCC staging reference text
-    let t = getMaxStage(t_stage);
-    let n = getMaxStage(n_stage);
-    let m = getMaxStage(m_stage);
+    const staging = calculateOropharynxStage({
+        isHpv: is_hpv,
+        isNotAssessable: has_ts_nm,
+        isNoEvidence: has_ts_no,
+        hasTumorLocation: has_tl,
+        tumorSize: t_length,
+        invasion: {
+            t3: $('.cb_ti_t3:checked').length > 0,
+            t4: $('.cb_ti_t4:checked').length > 0,
+            t4a: $('.cb_ti_t4a:checked').length > 0,
+            t4b: $('.cb_ti_t4b:checked').length > 0
+        },
+        nodes: {
+            hasNodes: has_rln,
+            hasRightNodes: $('.cb_rn_r:checked').length > 0,
+            hasLeftNodes: $('.cb_rn_l:checked').length > 0,
+            isEne: has_ene,
+            size: n_length,
+            isSingle: has_sin
+        },
+        tumorSide: {
+            isRight: $('#cb_tl_r').is(':checked'),
+            isLeft: $('#cb_tl_l').is(':checked')
+        },
+        hasMetastasis: has_dm
+    });
+
+    let t = getMaxStage(staging.t);
+    let n = getMaxStage(staging.n);
+    let m = getMaxStage(staging.m);
     let FORM_TITLE = (is_hpv ? "HPV-Mediated Oropharyngeal Cancer Staging Form" : "Oropharyngeal Cancer (p16-) Staging Form");
     let AJCC_TITLE = (is_hpv ? "HPV-Mediated Oropharyngeal Carcinoma" : "Oropharyngeal Carcinoma (p16-)");
     let AJCC_T = (is_hpv ? AJCC_T_HPV : AJCC_T_NONHPV);
