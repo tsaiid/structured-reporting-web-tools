@@ -52,8 +52,10 @@ A web-based tool suite for generating structured medical reports, specifically f
 
 ### Prerequisites
 
-*   Node.js (LTS version recommended)
-*   pnpm (v9+ recommended, or enable via `corepack enable`)
+*   [mise](https://mise.jdx.dev/) (推薦，專案已於 `.mise.toml` 鎖定 Node.js 22 與 pnpm 9)
+*   或手動安裝：
+    *   Node.js (v22 LTS 推薦)
+    *   pnpm (v9+ 推薦)
 
 ### Installation
 
@@ -65,6 +67,10 @@ A web-based tool suite for generating structured medical reports, specifically f
 
 2.  Install dependencies:
     ```bash
+    # 若使用 mise，自動安裝鎖定的 Node 與 pnpm 版本
+    mise install
+
+    # 安裝相依套件
     pnpm install
     ```
 
