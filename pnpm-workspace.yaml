@@ -1,3 +1,6 @@
+packages:
+  - '.'
+
 allowBuilds:
   '@parcel/watcher': true
   sharp: true
@@ -5,3 +8,4 @@ allowBuilds:
 
 overrides:
   lodash: ^4.17.23
+
