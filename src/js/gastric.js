@@ -145,6 +145,7 @@ function generate_report(){
     // Calculate staging via Logic
     const data = {
         tStageValue: $('input[name="radios_tid"]:checked').val(),
+        isNonMeasurable: $('#cb_ts_nm').is(':checked'),
         nodesCount: ($('.cb_rn:checked').length && $('#txt_rln_num').val() > 0) ? parseInt($('#txt_rln_num').val()) : 0,
         hasMetastasis: has_dm
     };
@@ -167,6 +168,20 @@ function generate_report(){
     $('#reportModalBody pre code').html(report);
     document.getElementById('reportModalLong').showModal();
 }
+
+// 連動腫瘤大小與非可測量選項
+$('#cb_ts_nm').change(function(){
+    if ($(this).is(':checked')) {
+        $('#txt_ts_len').val('');
+        $('#radio_tid_na').prop('checked', true);
+    }
+});
+
+$('#txt_ts_len').on('input', function(){
+    if ($(this).val()) {
+        $('#cb_ts_nm').prop('checked', false);
+    }
+});
 
 // auto- increase or decrease lymph node numbers
 $('.cb_rn').change(function(){

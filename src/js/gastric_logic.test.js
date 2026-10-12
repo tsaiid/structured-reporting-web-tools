@@ -46,5 +46,62 @@ describe('Gastric Logic', () => {
             });
             expect(result.m).toContain('1');
         });
+
+        test('Tx: "x" selected results in Tx and not T0', () => {
+            const result = calculateGastricStage({
+                tStageValue: 'x',
+                nodesCount: 0,
+                hasMetastasis: false
+            });
+            expect(result.t).toEqual(['x']);
+            expect(result.t).not.toContain('0');
+        });
+
+        test('Tx: isNonMeasurable results in Tx', () => {
+            const result = calculateGastricStage({
+                isNonMeasurable: true,
+                nodesCount: 0,
+                hasMetastasis: false
+            });
+            expect(result.t).toEqual(['x']);
+            expect(result.t).not.toContain('0');
+        });
+
+        test('Tx: isNonMeasurable with default tStageValue "x"', () => {
+            const result = calculateGastricStage({
+                isNonMeasurable: true,
+                tStageValue: 'x',
+                nodesCount: 0,
+                hasMetastasis: false
+            });
+            expect(result.t).toEqual(['x']);
+        });
+
+        test('T4b: invasion stage preserved even when non-measurable', () => {
+            const result = calculateGastricStage({
+                isNonMeasurable: true,
+                tStageValue: '4b',
+                nodesCount: 0,
+                hasMetastasis: false
+            });
+            expect(result.t).toEqual(['4b']);
+        });
+
+        test('T0: explicitly no tumor results in T0', () => {
+            const result = calculateGastricStage({
+                isT0: true,
+                nodesCount: 0,
+                hasMetastasis: false
+            });
+            expect(result.t).toEqual(['0']);
+        });
+
+        test('Tx: default/empty data fallback results in Tx', () => {
+            const result = calculateGastricStage({
+                nodesCount: 0,
+                hasMetastasis: false
+            });
+            expect(result.t).toEqual(['x']);
+        });
     });
 });
