@@ -100,6 +100,28 @@ To build the project for production (outputs to `dist/`):
 pnpm build
 ```
 
+### Deployment
+
+本專案已設定 GitHub Actions 自動建置並部署至 [radtools.tsai.it](https://radtools.tsai.it/structure-report/)：
+
+1. **日常版本發佈 (Tag 觸發)**：
+   推動版本 Tag 即會自動建置並發佈到目標 repository：
+   ```bash
+   # 1. 建立版號 Tag（例如 v2.2.4）
+   git tag v2.2.4
+
+   # 2. 推送 Tag 至 GitHub
+   git push origin v2.2.4
+   ```
+2. **手動部署 (Workflow Dispatch)**：
+   若需立即同步，可至 GitHub 儲存庫的 **Actions** 頁籤，選擇 **「Build and Deploy to radtools.tsai.it」** 並點選 **「Run workflow」**。
+3. **本地部署 (Legacy)**：
+   若目標 repo clone 於同層目錄 (`../radtools.tsai.it`)，仍可透過本地腳本發佈：
+   ```bash
+   pnpm run deploy
+   ```
+
+
 ## Usage
 
 1.  Open the application in a desktop browser (recommended width > 760px).

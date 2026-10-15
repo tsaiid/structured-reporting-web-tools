@@ -1,0 +1,91 @@
+name: Build and Deploy to radtools.tsai.it
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Build project
+        run: pnpm run build
+
+      - name: Checkout destination repository (radtools.tsai.it)
+        uses: actions/checkout@v4
+        with:
+          repository: 'tsaiid/radtools.tsai.it'
+          token: ${{ secrets.DEPLOY_TOKEN }}
+          path: 'target-repo'
+
+      - name: Sync dist to structure-report
+        shell: bash
+        run: |
+          TARGET_DIR="target-repo/structure-report"
+          mkdir -p "$TARGET_DIR"
+          rsync -av --delete \
+            --exclude '.git' \
+            --exclude 'ajcc8' \
+            --exclude 'ajcc9' \
+            --exclude 'vendor' \
+            --exclude 'legacy' \
+            dist/ "$TARGET_DIR/"
+
+      - name: Commit and push changes to radtools.tsai.it
+        shell: bash
+        working-directory: target-repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # 僅針對 structure-report 變更進行 stage
+          git add structure-report
+
+          # 檢查是否有實際變更
+          if git diff --staged --quiet; then
+            echo "No changes detected in build output. Nothing to commit."
+          else
+            TRIGGER_REF="${{ github.ref_name }}"
+            git commit -m "Deploy structure-report: ${TRIGGER_REF} (${{ github.sha }})"
+            git push
+            echo "Successfully deployed to radtools.tsai.it!"
+          fi
