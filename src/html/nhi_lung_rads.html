@@ -88,6 +88,31 @@
 
         <div class="nav-controls">
           <button
+            type="button"
+            id="btn_lung_rads_def"
+            class="btn-def"
+            onclick="openModal('lung_rads_modal')"
+            title="Lung-RADS v2022 Definitions"
+            aria-label="Lung-RADS Definitions"
+          >
+            <svg
+              class="btn-def-icon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            </svg>
+            <span class="btn-def-text">Lung-RADS Definitions</span>
+          </button>
+
+          <button
             class="btn-about"
             onclick="openModal('about_modal')"
             title="About this project"
@@ -1249,6 +1274,430 @@
             onclick="toggleModal(event)"
           >
             關閉
+          </button>
+        </footer>
+      </article>
+    </dialog>
+    <dialog id="lung_rads_modal" onclick="closeModalOnBackdrop(event)">
+      <article>
+        <header class="def-modal-header">
+          <div>
+            <h3>ACR Lung-RADS® v2022 Assessment Categories</h3>
+            <p>American College of Radiology (ACR) Lung CT Screening Reporting and Data System (v2022)</p>
+          </div>
+          <a
+            href="#close"
+            aria-label="Close"
+            class="close"
+            data-target="lung_rads_modal"
+            onclick="toggleModal(event)"
+          ></a>
+        </header>
+
+        <div class="def-modal-body notranslate" translate="no">
+          <!-- Quick Jump Navigation Bar -->
+          <div class="def-nav-bar">
+            <a href="#def_cat0" class="def-nav-link"><span class="def-dot cat-0"></span>Cat 0 (Incomplete)</a>
+            <a href="#def_cat1" class="def-nav-link"><span class="def-dot cat-1"></span>Cat 1 (Negative)</a>
+            <a href="#def_cat2" class="def-nav-link"><span class="def-dot cat-2"></span>Cat 2 (Benign)</a>
+            <a href="#def_cat3" class="def-nav-link"><span class="def-dot cat-3"></span>Cat 3 (Probably Benign)</a>
+            <a href="#def_cat4a" class="def-nav-link"><span class="def-dot cat-4a"></span>Cat 4A (Suspicious)</a>
+            <a href="#def_cat4b" class="def-nav-link"><span class="def-dot cat-4b"></span>Cat 4B (Very Suspicious)</a>
+            <a href="#def_cat4x" class="def-nav-link"><span class="def-dot cat-4x"></span>Cat 4X (Additional Features)</a>
+            <a href="#def_modifiers" class="def-nav-link"><span class="def-dot cat-mod"></span>Modifiers &amp; Notes</a>
+          </div>
+
+          <!-- Quick Summary Matrix (Controlled wrapping, no horizontal scroll) -->
+          <div class="def-table-container">
+            <table class="def-matrix-table">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Solid Nodule</th>
+                  <th>Part-Solid Nodule</th>
+                  <th>Non-Solid Nodule</th>
+                  <th>Management</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="def-badge cat-1">Cat 1</span></td>
+                  <td colspan="3">No nodules, or definite benign features (complete, central, popcorn, concentric rings of calcification, fat-containing)</td>
+                  <td>12-month annual screening LDCT</td>
+                </tr>
+                <tr>
+                  <td><span class="def-badge cat-2">Cat 2</span></td>
+                  <td>
+                    <div class="def-criterion">• Baseline: <span class="size-pill pill-green">&lt; 6 mm</span></div>
+                    <div class="def-criterion">• New: <span class="size-pill pill-green">&lt; 4 mm</span></div>
+                    <div class="def-criterion">• Unchanged: <span class="size-pill pill-green">&lt; 6 mm</span></div>
+                  </td>
+                  <td>
+                    <div class="def-part-solid-item">• Total diameter: <span class="size-pill pill-green">&lt; 6 mm</span></div>
+                    <small style="color: var(--pico-muted-color);">(baseline, new, or unchanged)</small>
+                  </td>
+                  <td>
+                    <div class="def-part-solid-item">• <span class="size-pill pill-green">&lt; 30 mm</span></div>
+                    <div class="def-part-solid-item">• <span class="size-pill pill-green">≥ 30 mm</span> and stable</div>
+                  </td>
+                  <td>12-month annual screening LDCT</td>
+                </tr>
+                <tr>
+                  <td><span class="def-badge cat-3">Cat 3</span></td>
+                  <td>
+                    <div class="def-criterion">• Baseline: <span class="size-pill pill-blue">6 to &lt; 8 mm</span></div>
+                    <div class="def-criterion">• New: <span class="size-pill pill-blue">4 to &lt; 6 mm</span></div>
+                    <div class="def-criterion">• Unchanged: <span class="size-pill pill-blue">6 to &lt; 8 mm</span></div>
+                  </td>
+                  <td>
+                    <div class="def-part-solid-item">• Baseline or unchanged: total ≥ 6 mm with solid component <span class="size-pill pill-blue">&lt; 6 mm</span></div>
+                    <div class="def-part-solid-item">• New: total diameter <span class="size-pill pill-blue">&lt; 6 mm</span></div>
+                  </td>
+                  <td>
+                    <div class="def-part-solid-item">• Baseline or new: <span class="size-pill pill-blue">≥ 30 mm</span></div>
+                  </td>
+                  <td>6-month LDCT</td>
+                </tr>
+                <tr>
+                  <td><span class="def-badge cat-4a">Cat 4A</span></td>
+                  <td>
+                    <div class="def-criterion">• Baseline: <span class="size-pill pill-amber">8 to &lt; 15 mm</span></div>
+                    <div class="def-criterion">• New: <span class="size-pill pill-amber">6 to &lt; 8 mm</span></div>
+                    <div class="def-criterion">• Growing: <span class="size-pill pill-amber">&lt; 8 mm</span></div>
+                    <div class="def-criterion">• Unchanged: <span class="size-pill pill-amber">8 to &lt; 15 mm</span></div>
+                  </td>
+                  <td>
+                    <div class="def-part-solid-item">• Baseline or unchanged: total ≥ 6 mm with solid component <span class="size-pill pill-amber">6 to &lt; 8 mm</span></div>
+                    <div class="def-part-solid-item">• New or growing: total ≥ 6 mm with solid component <span class="size-pill pill-amber">&lt; 4 mm</span></div>
+                  </td>
+                  <td>—</td>
+                  <td>3-month LDCT; PET/CT may be considered when solid component ≥ 8 mm</td>
+                </tr>
+                <tr>
+                  <td><span class="def-badge cat-4b">Cat 4B</span></td>
+                  <td>
+                    <div class="def-criterion">• Baseline: <span class="size-pill pill-red">≥ 15 mm</span></div>
+                    <div class="def-criterion">• New or growing: <span class="size-pill pill-red">≥ 8 mm</span></div>
+                  </td>
+                  <td>
+                    <div class="def-part-solid-item">• Solid component: <span class="size-pill pill-red">≥ 8 mm</span> (baseline or unchanged)</div>
+                    <div class="def-part-solid-item">• New or growing: total ≥ 6 mm with solid component <span class="size-pill pill-red">≥ 4 mm</span></div>
+                  </td>
+                  <td>—</td>
+                  <td>Diagnostic chest CT (with/without contrast), PET/CT, and/or tissue sampling</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Category 0 -->
+          <div id="def_cat0" class="def-category-card">
+            <div class="def-card-header">
+              <div class="def-card-title-group">
+                <span class="def-badge cat-0">Category 0</span>
+                <span class="def-card-name">Incomplete</span>
+              </div>
+              <div class="def-meta-group">
+                <span class="def-meta-item"><strong>Malignancy Risk:</strong> N/A</span>
+                <span class="def-meta-item"><strong>Management:</strong> Comparison with prior CT, or 1–3 month follow-up LDCT</span>
+              </div>
+            </div>
+            <div class="def-card-content">
+              <table class="def-table">
+                <tr>
+                  <th>Prior CT</th>
+                  <td>Prior chest CT examination being located for comparison.</td>
+                </tr>
+                <tr>
+                  <th>Unevaluated</th>
+                  <td>Lungs cannot be fully evaluated due to severe motion artifact, incomplete field of coverage, or missing key series.</td>
+                </tr>
+                <tr>
+                  <th>Infection / Inflammation</th>
+                  <td>Findings suggestive of an acute infectious or inflammatory process (e.g., new or enlarging consolidations, tree-in-bud opacities, centrilobular nodules, or ground glass). A 1–3 month follow-up LDCT or clinical evaluation is recommended.</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Category 1 -->
+          <div id="def_cat1" class="def-category-card">
+            <div class="def-card-header">
+              <div class="def-card-title-group">
+                <span class="def-badge cat-1">Category 1</span>
+                <span class="def-card-name">Negative</span>
+              </div>
+              <div class="def-meta-group">
+                <span class="def-meta-item"><strong>Malignancy Risk:</strong> &lt; 1%</span>
+                <span class="def-meta-item"><strong>Management:</strong> 12-month annual screening LDCT</span>
+              </div>
+            </div>
+            <div class="def-card-content">
+              <table class="def-table">
+                <tr>
+                  <th>No Lung Nodules</th>
+                  <td>No lung nodules detected.</td>
+                </tr>
+                <tr>
+                  <th>Definite Benign Features</th>
+                  <td>Nodule(s) with specific definitely benign characteristics: complete, central, popcorn, concentric rings of calcification, or fat-containing (e.g., hamartoma).</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Category 2 -->
+          <div id="def_cat2" class="def-category-card">
+            <div class="def-card-header">
+              <div class="def-card-title-group">
+                <span class="def-badge cat-2">Category 2</span>
+                <span class="def-card-name">Benign Appearance or Behavior</span>
+              </div>
+              <div class="def-meta-group">
+                <span class="def-meta-item"><strong>Malignancy Risk:</strong> &lt; 1%</span>
+                <span class="def-meta-item"><strong>Management:</strong> 12-month annual screening LDCT</span>
+              </div>
+            </div>
+            <div class="def-card-content">
+              <table class="def-table">
+                <tr>
+                  <th>Solid Nodule</th>
+                  <td>
+                    <div class="def-criterion">• Baseline: <span class="size-pill pill-green">&lt; 6 mm</span></div>
+                    <div class="def-criterion">• New: <span class="size-pill pill-green">&lt; 4 mm</span></div>
+                    <div class="def-criterion">• Unchanged: <span class="size-pill pill-green">&lt; 6 mm</span> (or stable at 3-month CT)</div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Part-Solid Nodule</th>
+                  <td>
+                    <div class="def-criterion">• Total diameter: <span class="size-pill pill-green">&lt; 6 mm</span> (baseline, new, or unchanged)</div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Non-Solid Nodule (GGN)</th>
+                  <td>
+                    <div class="def-criterion">• Total diameter: <span class="size-pill pill-green">&lt; 30 mm</span> (baseline, new, or unchanged)</div>
+                    <div class="def-criterion">• Total diameter: <span class="size-pill pill-green">≥ 30 mm</span> and stable or slowly growing</div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Perifissural Nodule</th>
+                  <td>Typical perifissural or juxtapleural nodule (smooth, oval or lentiform, contiguous with fissure) &lt; 10 mm.</td>
+                </tr>
+                <tr>
+                  <th>Airway Nodule</th>
+                  <td>Subsegmental nodule, or nodule favoring secretions.</td>
+                </tr>
+                <tr>
+                  <th>Stable Cat 3 / 4 Nodule</th>
+                  <td>Category 3 or 4 nodule stable for ≥ 3 months (solid or part-solid) or unchanged for 2–3 years.</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Category 3 -->
+          <div id="def_cat3" class="def-category-card">
+            <div class="def-card-header">
+              <div class="def-card-title-group">
+                <span class="def-badge cat-3">Category 3</span>
+                <span class="def-card-name">Probably Benign</span>
+              </div>
+              <div class="def-meta-group">
+                <span class="def-meta-item"><strong>Malignancy Risk:</strong> 1% – 2%</span>
+                <span class="def-meta-item"><strong>Management:</strong> 6-month LDCT</span>
+              </div>
+            </div>
+            <div class="def-card-content">
+              <table class="def-table">
+                <tr>
+                  <th>Solid Nodule</th>
+                  <td>
+                    <div class="def-criterion">• Baseline: <span class="size-pill pill-blue">6 to &lt; 8 mm</span></div>
+                    <div class="def-criterion">• New: <span class="size-pill pill-blue">4 to &lt; 6 mm</span></div>
+                    <div class="def-criterion">• Unchanged: <span class="size-pill pill-blue">6 to &lt; 8 mm</span></div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Part-Solid Nodule</th>
+                  <td>
+                    <div class="def-criterion">• Baseline or unchanged: total diameter ≥ 6 mm with solid component <span class="size-pill pill-blue">&lt; 6 mm</span></div>
+                    <div class="def-criterion">• New: total diameter <span class="size-pill pill-blue">&lt; 6 mm</span> (Lung-RADS v2022 update)</div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Non-Solid Nodule (GGN)</th>
+                  <td>
+                    <div class="def-criterion">• Baseline or new: total diameter <span class="size-pill pill-blue">≥ 30 mm</span></div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Atypical Pulmonary Cyst</th>
+                  <td>Thin-walled cyst with growing internal/circumferential nodule, or thick-walled cyst with stable appearance.</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Category 4A -->
+          <div id="def_cat4a" class="def-category-card">
+            <div class="def-card-header">
+              <div class="def-card-title-group">
+                <span class="def-badge cat-4a">Category 4A</span>
+                <span class="def-card-name">Suspicious</span>
+              </div>
+              <div class="def-meta-group">
+                <span class="def-meta-item"><strong>Malignancy Risk:</strong> 5% – 15%</span>
+                <span class="def-meta-item"><strong>Management:</strong> 3-month LDCT; PET/CT may be considered when solid component ≥ 8 mm</span>
+              </div>
+            </div>
+            <div class="def-card-content">
+              <table class="def-table">
+                <tr>
+                  <th>Solid Nodule</th>
+                  <td>
+                    <div class="def-criterion">• Baseline: <span class="size-pill pill-amber">8 to &lt; 15 mm</span></div>
+                    <div class="def-criterion">• New: <span class="size-pill pill-amber">6 to &lt; 8 mm</span></div>
+                    <div class="def-criterion">• Growing: <span class="size-pill pill-amber">&lt; 8 mm</span> (increase &gt; 1.5 mm within 12 months)</div>
+                    <div class="def-criterion">• Unchanged: <span class="size-pill pill-amber">8 to &lt; 15 mm</span></div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Part-Solid Nodule</th>
+                  <td>
+                    <div class="def-criterion">• Baseline or unchanged: total diameter ≥ 6 mm with solid component <span class="size-pill pill-amber">6 to &lt; 8 mm</span></div>
+                    <div class="def-criterion">• New or growing: total diameter ≥ 6 mm with solid component <span class="size-pill pill-amber">&lt; 4 mm</span></div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Airway Nodule</th>
+                  <td>Endobronchial nodule in segmental or more proximal airway.</td>
+                </tr>
+                <tr>
+                  <th>Atypical Pulmonary Cyst</th>
+                  <td>Thick-walled cyst with growing internal/circumferential component, or multilocular cyst with progressive nodularity.</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Category 4B -->
+          <div id="def_cat4b" class="def-category-card">
+            <div class="def-card-header">
+              <div class="def-card-title-group">
+                <span class="def-badge cat-4b">Category 4B</span>
+                <span class="def-card-name">Very Suspicious</span>
+              </div>
+              <div class="def-meta-group">
+                <span class="def-meta-item"><strong>Malignancy Risk:</strong> &gt; 15%</span>
+                <span class="def-meta-item"><strong>Management:</strong> Diagnostic chest CT (± IV contrast), PET/CT, and/or tissue sampling</span>
+              </div>
+            </div>
+            <div class="def-card-content">
+              <table class="def-table">
+                <tr>
+                  <th>Solid Nodule</th>
+                  <td>
+                    <div class="def-criterion">• Baseline: <span class="size-pill pill-red">≥ 15 mm</span></div>
+                    <div class="def-criterion">• New or growing: <span class="size-pill pill-red">≥ 8 mm</span></div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Part-Solid Nodule</th>
+                  <td>
+                    <div class="def-criterion">• Solid component: <span class="size-pill pill-red">≥ 8 mm</span> (baseline or unchanged)</div>
+                    <div class="def-criterion">• New or growing: total diameter ≥ 6 mm with solid component <span class="size-pill pill-red">≥ 4 mm</span></div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Airway Nodule</th>
+                  <td>Endobronchial nodule persistent on 3-month follow-up CT.</td>
+                </tr>
+                <tr>
+                  <th>Atypical Pulmonary Cyst</th>
+                  <td>Thick-walled or cavitary nodule with growing solid component.</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Category 4X -->
+          <div id="def_cat4x" class="def-category-card">
+            <div class="def-card-header">
+              <div class="def-card-title-group">
+                <span class="def-badge cat-4x">Category 4X</span>
+                <span class="def-card-name">Very Suspicious with Additional Features</span>
+              </div>
+              <div class="def-meta-group">
+                <span class="def-meta-item"><strong>Malignancy Risk:</strong> &gt; 15%</span>
+                <span class="def-meta-item"><strong>Management:</strong> Diagnostic workup (contrast-enhanced CT, PET/CT, biopsy)</span>
+              </div>
+            </div>
+            <div class="def-card-content">
+              <table class="def-table">
+                <tr>
+                  <th>Additional Features</th>
+                  <td>
+                    Category 3 or 4 nodules with additional imaging findings that increase suspicion of lung cancer:<br />
+                    • Spiculated margins<br />
+                    • Associated enlarged mediastinal or hilar lymphadenopathy<br />
+                    • Frank pleural retraction or invasion<br />
+                    • New or rapidly enlarging ground glass halo
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Modifiers & Notes -->
+          <div id="def_modifiers" class="def-category-card">
+            <div class="def-card-header">
+              <div class="def-card-title-group">
+                <span class="def-badge cat-mod">Modifiers</span>
+                <span class="def-card-name">Modifiers &amp; Definitions</span>
+              </div>
+              <div class="def-meta-group">
+                <span class="def-meta-item">S &amp; C Modifiers</span>
+              </div>
+            </div>
+            <div class="def-card-content">
+              <table class="def-table">
+                <tr>
+                  <th>S Modifier</th>
+                  <td>
+                    <strong>Significant Other Finding:</strong> Clinically significant or potentially significant non-lung cancer finding.<br />
+                    • Cardiovascular: Severe coronary artery calcification (CAC), thoracic aortic aneurysm, pericardial effusion<br />
+                    • Pulmonary &amp; Chest: Interstitial lung disease (ILD), marked bronchiectasis, emphysema, pleural effusion<br />
+                    • Extrapulmonary: Suspicious renal, adrenal, thyroid, or bone lesions
+                  </td>
+                </tr>
+                <tr>
+                  <th>C Modifier</th>
+                  <td>
+                    <strong>Prior Lung Cancer:</strong> Patient has a personal history of lung cancer returning to annual screening after completion of definitive therapy.
+                  </td>
+                </tr>
+                <tr>
+                  <th>Growth Definition</th>
+                  <td>An increase in mean diameter of <strong>&gt; 1.5 mm</strong> within a 12-month interval.</td>
+                </tr>
+                <tr>
+                  <th>Measurement Guidelines</th>
+                  <td>Nodule size is based on the average of the longest diameter and perpendicular short-axis diameter on the same CT slice, rounded to the nearest whole millimeter.</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <footer class="def-modal-footer">
+          <button
+            class="secondary"
+            data-target="lung_rads_modal"
+            onclick="toggleModal(event)"
+          >
+            Close
           </button>
         </footer>
       </article>

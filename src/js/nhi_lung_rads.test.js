@@ -261,4 +261,44 @@ describe('NHI Lung-RADS Auto Calculate Category', () => {
       expect(getSelectedCategory()).toBe('0');
     });
   });
+
+  describe('Lung-RADS v2022 Definition Button & Modal', () => {
+    test('Definition button exists and is placed immediately to the left of question mark button', () => {
+      const defBtn = document.getElementById('btn_lung_rads_def');
+      const aboutBtn = document.querySelector('.btn-about');
+      expect(defBtn).not.toBeNull();
+      expect(aboutBtn).not.toBeNull();
+      expect(defBtn.nextElementSibling).toBe(aboutBtn);
+    });
+
+    test('Lung-RADS modal dialog exists with comprehensive category definitions in English', () => {
+      const modal = document.getElementById('lung_rads_modal');
+      expect(modal).not.toBeNull();
+      expect(modal.querySelector('#def_cat0')).not.toBeNull();
+      expect(modal.querySelector('#def_cat1')).not.toBeNull();
+      expect(modal.querySelector('#def_cat2')).not.toBeNull();
+      expect(modal.querySelector('#def_cat3')).not.toBeNull();
+      expect(modal.querySelector('#def_cat4a')).not.toBeNull();
+      expect(modal.querySelector('#def_cat4b')).not.toBeNull();
+      expect(modal.querySelector('#def_cat4x')).not.toBeNull();
+      expect(modal.querySelector('#def_modifiers')).not.toBeNull();
+
+      // Check criteria elements with nowrap class
+      const criteria = modal.querySelectorAll('.def-criterion');
+      expect(criteria.length).toBeGreaterThan(10);
+
+      // Verify header uses official English title
+      expect(modal.querySelector('.def-modal-header h3').textContent).toBe(
+        'ACR Lung-RADS® v2022 Assessment Categories'
+      );
+    });
+
+    test('Clicking definition button invokes openModal for lung_rads_modal', () => {
+      const defBtn = document.getElementById('btn_lung_rads_def');
+      const modal = document.getElementById('lung_rads_modal');
+      modal.showModal = jest.fn();
+      defBtn.click();
+      expect(modal.showModal).toHaveBeenCalled();
+    });
+  });
 });

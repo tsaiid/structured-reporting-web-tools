@@ -513,6 +513,343 @@ dialog article {
   text-align: left;
 }
 
+/* --- Lung-RADS Definition Button & Modal --- */
+.btn-def {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  height: 32px;
+  padding: 0 0.75rem;
+  background: transparent;
+  border: 1.5px solid var(--pico-muted-border-color);
+  color: var(--pico-color);
+  border-radius: 20px;
+  font-size: 0.825rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 0;
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-def:hover {
+  border-color: var(--pico-primary);
+  color: var(--pico-primary);
+  background: var(--pico-card-background-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.btn-def-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .btn-def {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  .btn-def .btn-def-text {
+    display: none;
+  }
+}
+
+#lung_rads_modal article {
+  width: 96vw;
+  max-width: 1400px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+  background: var(--pico-card-background-color);
+}
+
+.def-modal-header {
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid var(--pico-muted-border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0 !important;
+  background: var(--pico-background-color);
+}
+
+.def-modal-header h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+  color: var(--pico-h3-color);
+}
+
+.def-modal-header p {
+  font-size: 0.8rem;
+  color: var(--pico-muted-color);
+  margin: 0.2rem 0 0 0;
+}
+
+.def-modal-body {
+  padding: 1.25rem 1.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1 1 auto;
+}
+
+.def-modal-footer {
+  padding: 0.75rem 1.5rem;
+  border-top: 1px solid var(--pico-muted-border-color);
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0 !important;
+  background: var(--pico-background-color);
+}
+
+/* Quick Navigator Bar */
+.def-nav-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+  padding: 0.5rem;
+  background: var(--pico-muted-background-color);
+  border-radius: 6px;
+  border: 1px solid var(--pico-muted-border-color);
+}
+
+.def-nav-link {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  background: var(--pico-card-background-color);
+  color: var(--pico-color);
+  border: 1px solid var(--pico-muted-border-color);
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.def-nav-link:hover {
+  border-color: var(--pico-primary);
+  color: var(--pico-primary);
+}
+
+.def-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Category Cards */
+.def-category-card {
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--pico-card-background-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.def-card-header {
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--pico-muted-border-color);
+  background: rgba(125, 125, 125, 0.05);
+}
+
+.def-card-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.def-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.def-card-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--pico-color);
+}
+
+.def-meta-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.def-meta-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background: var(--pico-muted-background-color);
+  border: 1px solid var(--pico-muted-border-color);
+  color: var(--pico-muted-color);
+  font-weight: 500;
+}
+
+.def-meta-item strong {
+  margin-right: 0.3rem;
+  color: var(--pico-color);
+}
+
+.def-card-content {
+  padding: 0.9rem 1rem;
+}
+
+.def-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin-bottom: 0;
+}
+
+.def-table th,
+.def-table td {
+  padding: 0.55rem 0.85rem;
+  border-bottom: 1px solid var(--pico-muted-border-color);
+  vertical-align: top;
+  text-align: left;
+}
+
+.def-table th {
+  background: var(--pico-muted-background-color);
+  font-weight: 600;
+  width: 180px;
+  color: var(--pico-color);
+  white-space: nowrap;
+}
+
+.def-table tr:last-child th,
+.def-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Category Colors */
+.cat-0 { background-color: #64748b; }
+.cat-1 { background-color: #10b981; }
+.cat-2 { background-color: #0d9488; }
+.cat-3 { background-color: #0284c7; }
+.cat-4a { background-color: #d97706; }
+.cat-4b { background-color: #dc2626; }
+.cat-4x { background-color: #9333ea; }
+.cat-mod { background-color: #4f46e5; }
+
+/* Size Badges & Criterion line */
+.def-criterion {
+  white-space: nowrap;
+  margin-bottom: 0.25rem;
+  line-height: 1.5;
+}
+
+.def-part-solid-item {
+  white-space: normal;
+  margin-bottom: 0.35rem;
+  line-height: 1.4;
+}
+
+.size-pill {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  margin-left: 0.35rem;
+  font-family: var(--pico-font-family-monospace);
+  border: 1px solid currentColor;
+  white-space: nowrap;
+}
+
+.pill-red { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+.pill-amber { color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
+.pill-blue { color: #0ea5e9; background: rgba(14, 165, 233, 0.1); }
+.pill-teal { color: #14b8a6; background: rgba(20, 184, 166, 0.1); }
+.pill-green { color: #10b981; background: rgba(16, 185, 129, 0.1); }
+
+/* Quick Summary Matrix (No horizontal scroll, controlled nowrap) */
+.def-table-container {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.def-matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin-bottom: 0;
+  table-layout: auto;
+}
+
+.def-matrix-table th,
+.def-matrix-table td {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--pico-muted-border-color);
+  text-align: left;
+  vertical-align: top;
+}
+
+.def-matrix-table thead th {
+  background: var(--pico-muted-background-color);
+  font-weight: 700;
+  color: var(--pico-color);
+}
+
+/* Category column: 絕對不換行 */
+.def-matrix-table th:first-child,
+.def-matrix-table td:first-child {
+  white-space: nowrap !important;
+  width: 1%;
+  text-align: center;
+}
+
+/* Solid Nodule column: 盡量不換行 */
+.def-matrix-table th:nth-child(2),
+.def-matrix-table td:nth-child(2) {
+  white-space: nowrap;
+}
+
+/* Part-Solid Nodule column: 文字較長，允許自然換行 */
+.def-matrix-table th:nth-child(3),
+.def-matrix-table td:nth-child(3) {
+  white-space: normal;
+  word-break: normal;
+}
+
+/* Non-Solid & Management columns: 允許自然換行 */
+.def-matrix-table th:nth-child(4),
+.def-matrix-table td:nth-child(4),
+.def-matrix-table th:nth-child(5),
+.def-matrix-table td:nth-child(5) {
+  white-space: normal;
+}
+
 .modal-actions {
   display: flex;
   justify-content: center;
