@@ -202,6 +202,7 @@ function updateNoduleCount() {
   show("block_n2", count >= 2);
   show("block_n3", count >= 3);
   show("block_else", count >= 4);
+  autoCalculateCategory();
 }
 
 let noduleToDelete = null;
@@ -320,6 +321,7 @@ function handlePriorDateInput() {
     noPriorCheckbox.disabled = false;
   }
   updateNoduleStatusBasedOnPrior(hasText);
+  autoCalculateCategory();
 }
 function togglePriorDate(isNoPriorChecked) {
   const priorDateInput = $("prior_date");
@@ -331,6 +333,7 @@ function togglePriorDate(isNoPriorChecked) {
     priorDateInput.disabled = false;
     updateNoduleStatusBasedOnPrior(false, false);
   }
+  autoCalculateCategory();
 }
 function updateNoduleStatusBasedOnPrior(
   hasDate,
@@ -583,8 +586,18 @@ function generateAndCopySimple() {
   );
 }
 
+function isDomEvent(data) {
+  return Boolean(
+    data &&
+      (typeof data.preventDefault === "function" ||
+        typeof data.stopPropagation === "function" ||
+        (typeof Event !== "undefined" && data instanceof Event))
+  );
+}
+
 function autoCalculateCategory(data) {
-  const formData = data && typeof data === "object" ? data : collectFormData();
+  const isCustomData = data && typeof data === "object" && !isDomEvent(data);
+  const formData = isCustomData ? data : collectFormData();
   const category = calculateLungRadsCategory(formData);
   if (category && typeof document !== "undefined") {
     checkCategoryRadio(category);
@@ -601,10 +614,10 @@ function checkCategoryRadio(val) {
 
 document
   .querySelector("main")
-  ?.addEventListener("change", autoCalculateCategory);
+  ?.addEventListener("change", () => autoCalculateCategory());
 document
   .querySelector("main")
-  ?.addEventListener("input", autoCalculateCategory);
+  ?.addEventListener("input", () => autoCalculateCategory());
 
 // Expose functions to global window object
 window.toggleTheme = toggleTheme;

@@ -210,6 +210,42 @@ describe('NHI Lung-RADS Auto Calculate Category', () => {
       autoCalculateCategory();
       expect(getSelectedCategory()).toBe('4B');
     });
+
+    test('DOM input event with 1 solid nodule, 21 mm, no prior CT should calculate Category 4B', () => {
+      setNodule1({
+        size: 21,
+        density: 'solid',
+        status: 'no prior',
+      });
+      document.getElementById('n1_size').dispatchEvent(new Event('input', { bubbles: true }));
+      expect(getSelectedCategory()).toBe('4B');
+    });
+
+    test('User workflow: check nodule_gte6 -> input 21mm solid -> check no_prior checkbox should automatically update to Category 4B', () => {
+      // 1. Check nodule_gte6
+      const noduleGte6 = document.getElementById('nodule_gte6');
+      noduleGte6.checked = true;
+      window.handleNoduleGte6Change(true);
+      window.updateNoNoduleState();
+
+      // 2. Select solid density
+      const solidRadio = document.querySelector('input[name="n1_density"][value="solid"]');
+      solidRadio.checked = true;
+      solidRadio.dispatchEvent(new Event('change', { bubbles: true }));
+
+      // 3. Input size 21
+      const sizeInput = document.getElementById('n1_size');
+      sizeInput.value = '21';
+      sizeInput.dispatchEvent(new Event('input', { bubbles: true }));
+
+      // 4. Click no prior CT checkbox
+      const noPriorCb = document.getElementById('no_prior');
+      noPriorCb.checked = true;
+      window.togglePriorDate(true);
+      noPriorCb.dispatchEvent(new Event('change', { bubbles: true }));
+
+      expect(getSelectedCategory()).toBe('4B');
+    });
   });
 
   describe('Non-nodule and Category 0 findings', () => {
