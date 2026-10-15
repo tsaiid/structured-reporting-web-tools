@@ -44,6 +44,17 @@
         transition: opacity 0.15s ease-in;
       }
       /* 防禦性膠囊與圖示大小限制 */
+      .btn-home {
+        display: inline-flex;
+        width: 34px;
+        height: 34px;
+      }
+      .btn-home svg {
+        width: 18px;
+        height: 18px;
+        max-width: 18px;
+        max-height: 18px;
+      }
       .theme-capsule {
         display: inline-flex;
         width: 64px;
@@ -81,9 +92,33 @@
   <body>
     <nav class="sticky-nav">
       <div class="nav-content">
-        <div class="nav-title-group">
-          <h1>Lung-RADS v2022 報告產生器</h1>
-          <p>填寫以下欄位，點擊「複製報告」按鈕即可產生純文字報告。</p>
+        <div class="nav-left-group">
+          <a
+            href="../"
+            id="btn_home"
+            class="btn-home"
+            title="返回首頁 (Home)"
+            aria-label="返回首頁 (Home)"
+          >
+            <svg
+              class="btn-home-icon"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+          </a>
+          <div class="nav-title-group">
+            <h1>Lung-RADS v2022 報告產生器</h1>
+            <p>填寫以下欄位，點擊「複製報告」按鈕即可產生純文字報告。</p>
+          </div>
         </div>
 
         <div class="nav-controls">
