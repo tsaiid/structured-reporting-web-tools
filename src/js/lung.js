@@ -9,7 +9,7 @@ import '../css/lung_helper.css';
 import '../image/lung_lymph_node_stations.webp';
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage, getMaxStage} from './ajcc_common.js';
-import { calculateLungStage, getMaxStageNumber, resolveM1RadioState } from './lung_logic.js';
+import { calculateLungStage, getMaxStageNumber, resolveM1RadioState, resolveN2RadioState } from './lung_logic.js';
 import './lung_logic_helper.js';
 
 const AJCC_T = new Map([
@@ -280,11 +280,15 @@ function generate_report(){
 
 // auto check N2a/N2b radio button
 $('.cb_rn_n2').change(function(){
-    let cb_n2_num = $('.cb_rn_n2:checked').length;
-    if (cb_n2_num) {
-        if ($("input[name='radio_n2']:checked").length == 0) {
-            $("#radio_n2a").prop("checked", true);
-        }
+    const hasIM = $('#cb_rn_im').is(':checked');
+    const hasSBC = $('#cb_rn_sbc').is(':checked');
+    const currentRadio = $("input[name='radio_n2']:checked").val();
+    const state = resolveN2RadioState(hasIM, hasSBC, currentRadio);
+
+    $("#radio_n2a").prop("disabled", state.isN2aDisabled);
+    $("#radio_n2b").prop("disabled", state.isN2bDisabled);
+    if (state.selectedRadio) {
+        $(`input[name='radio_n2'][value='${state.selectedRadio}']`).prop("checked", true);
     } else {
         $("input[name='radio_n2']").prop("checked", false);
     }

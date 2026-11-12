@@ -133,3 +133,48 @@ export function resolveM1RadioState(checkedCount, currentRadio) {
     };
 }
 
+/**
+ * 處理肺癌 N2 淋巴結轉移 (Ipsilateral mediastinal / Subcarinal) 的單一/多站與選項連動邏輯
+ * 
+ * @param {boolean} hasIM - 是否勾選 ipsilateral mediastinal
+ * @param {boolean} hasSBC - 是否勾選 subcarinal
+ * @param {string|null|undefined} currentRadio - 目前選取的 radio 值 ('2a' | '2b')
+ * @returns {{ selectedRadio: string|null, isN2aDisabled: boolean, isN2bDisabled: boolean }}
+ */
+export function resolveN2RadioState(hasIM, hasSBC, currentRadio) {
+    if (!hasIM && !hasSBC) {
+        return {
+            selectedRadio: null,
+            isN2aDisabled: false,
+            isN2bDisabled: false
+        };
+    }
+
+    // 兩者皆勾選：必定為多站侵犯 (N2b)
+    if (hasIM && hasSBC) {
+        return {
+            selectedRadio: '2b',
+            isN2aDisabled: true,
+            isN2bDisabled: false
+        };
+    }
+
+    // 僅勾選 subcarinal：Station 7 為單一站，必定為 N2a
+    if (!hasIM && hasSBC) {
+        return {
+            selectedRadio: '2a',
+            isN2aDisabled: false,
+            isN2bDisabled: true
+        };
+    }
+
+    // 僅勾選 ipsilateral mediastinal (hasIM && !hasSBC)：
+    // 可為單站 (2a) 或多站 (2b)；若原先已選取 2b 則保留，否則預設為 2a
+    return {
+        selectedRadio: currentRadio === '2b' ? '2b' : '2a',
+        isN2aDisabled: false,
+        isN2bDisabled: false
+    };
+}
+
+

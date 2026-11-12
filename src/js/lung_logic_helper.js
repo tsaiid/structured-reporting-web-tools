@@ -142,6 +142,7 @@ $('#btn_ln_submit').click(function() {
             $('#radio_n2a').prop('checked', true);
         }
     }
+    $('.cb_rn_n2').first().trigger('change');
 
     document.getElementById('modal_ln_helper').close();
 });

@@ -1,4 +1,4 @@
-import { get_t_stage_by_size, getMaxStageNumber, calculateLungStage, resolveM1RadioState } from './lung_logic';
+import { get_t_stage_by_size, getMaxStageNumber, calculateLungStage, resolveM1RadioState, resolveN2RadioState } from './lung_logic';
 
 describe('Lung Logic', () => {
   describe('get_t_stage_by_size', () => {
@@ -164,6 +164,83 @@ describe('Lung Logic', () => {
       expect(resolveM1RadioState(3, '1c1')).toEqual({
         selectedRadio: '1c2',
         isM1bDisabled: true
+      });
+    });
+  });
+
+  describe('resolveN2RadioState', () => {
+    test('when neither is checked, returns null and enables both', () => {
+      expect(resolveN2RadioState(false, false, undefined)).toEqual({
+        selectedRadio: null,
+        isN2aDisabled: false,
+        isN2bDisabled: false
+      });
+      expect(resolveN2RadioState(false, false, '2a')).toEqual({
+        selectedRadio: null,
+        isN2aDisabled: false,
+        isN2bDisabled: false
+      });
+    });
+
+    test('when both ipsilateral mediastinal and subcarinal are checked, selects 2b and disables 2a', () => {
+      expect(resolveN2RadioState(true, true, undefined)).toEqual({
+        selectedRadio: '2b',
+        isN2aDisabled: true,
+        isN2bDisabled: false
+      });
+      expect(resolveN2RadioState(true, true, '2a')).toEqual({
+        selectedRadio: '2b',
+        isN2aDisabled: true,
+        isN2bDisabled: false
+      });
+      expect(resolveN2RadioState(true, true, '2b')).toEqual({
+        selectedRadio: '2b',
+        isN2aDisabled: true,
+        isN2bDisabled: false
+      });
+    });
+
+    test('when only subcarinal is checked, forces 2a and disables 2b', () => {
+      expect(resolveN2RadioState(false, true, undefined)).toEqual({
+        selectedRadio: '2a',
+        isN2aDisabled: false,
+        isN2bDisabled: true
+      });
+      expect(resolveN2RadioState(false, true, '2b')).toEqual({
+        selectedRadio: '2a',
+        isN2aDisabled: false,
+        isN2bDisabled: true
+      });
+      expect(resolveN2RadioState(false, true, '2a')).toEqual({
+        selectedRadio: '2a',
+        isN2aDisabled: false,
+        isN2bDisabled: true
+      });
+    });
+
+    test('when only ipsilateral mediastinal is checked with no prior selection or 2a, defaults to 2a and enables both', () => {
+      expect(resolveN2RadioState(true, false, undefined)).toEqual({
+        selectedRadio: '2a',
+        isN2aDisabled: false,
+        isN2bDisabled: false
+      });
+      expect(resolveN2RadioState(true, false, null)).toEqual({
+        selectedRadio: '2a',
+        isN2aDisabled: false,
+        isN2bDisabled: false
+      });
+      expect(resolveN2RadioState(true, false, '2a')).toEqual({
+        selectedRadio: '2a',
+        isN2aDisabled: false,
+        isN2bDisabled: false
+      });
+    });
+
+    test('when only ipsilateral mediastinal is checked and user had selected 2b, preserves 2b and enables both', () => {
+      expect(resolveN2RadioState(true, false, '2b')).toEqual({
+        selectedRadio: '2b',
+        isN2aDisabled: false,
+        isN2bDisabled: false
       });
     });
   });
