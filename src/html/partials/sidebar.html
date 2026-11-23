@@ -2,21 +2,17 @@
 <nav id="main-sidebar" class="sidebar-nav w-full md:w-48 lg:w-56 static md:fixed left-0 md:top-12 bottom-0 bg-gray-50 dark:bg-gray-900 border-t md:border-t-0 md:border-r border-gray-200 dark:border-gray-700 z-40 order-2 md:order-0 flex flex-col">
   <!-- 頂部固定區：不裁切內容，確保 Tooltip 正常顯示 -->
   <div class="flex-none flex items-center justify-start p-2 relative">
-    <div class="relative group">
+    <div class="relative group shrink-0">
       <button id="sidebar-collapse-toggle" class="w-10 h-10 hidden md:flex items-center justify-center text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
         <i class="fas fa-bars fa-lg" id="sidebar-collapse-icon"></i>
       </button>
       <!-- Tailwind Tooltip: 立即顯現, 定位在按鈕右侧 -->
-      <span id="sidebar-tooltip" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-none whitespace-nowrap z-50">
+      <span id="sidebar-tooltip" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-none whitespace-nowrap pointer-events-none z-50">
         收合選單
       </span>
     </div>
-  </div>
-
-  <!-- 內容滾動區 -->
-  <div class="flex-1 overflow-y-auto p-3 pt-0">
-    <!-- 快速篩選框 -->
-    <div id="sidebar-filter-wrapper" class="mb-2 px-1">
+    <!-- 快速篩選框：與展開／收合按鈕同行以節省垂直空間 -->
+    <div id="sidebar-filter-wrapper" class="flex-1 min-w-0 md:ml-1 pr-1">
       <input
         type="search"
         id="sidebar-filter"
@@ -25,13 +21,24 @@
         class="w-full px-2 py-1 text-xs bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded text-gray-800 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
       />
     </div>
+  </div>
+
+  <!-- 內容滾動區 -->
+  <div class="flex-1 overflow-y-auto p-3 pt-0">
     <div class="flex items-center justify-between mb-2 px-2">
-      <h6 class="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider mb-0">
-        <span>AJCC</span>
-        <button id="ajcc-toggle" class="hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none bg-transparent border-0 p-0 cursor-pointer" aria-label="Toggle AJCC items">
-          <i class="fas fa-folder-open"></i>
-        </button>
-      </h6>
+      <div class="flex items-center gap-2">
+        <h6 class="flex items-center text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider mb-0">
+          <span>AJCC</span>
+        </h6>
+        <div class="relative group inline-flex items-center text-gray-500 dark:text-gray-400 text-xs">
+          <button id="ajcc-toggle" class="hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none bg-transparent border-0 p-0 cursor-pointer" aria-label="Toggle AJCC items" title="收合次要癌別">
+            <i class="fas fa-folder-open"></i>
+          </button>
+          <span id="ajcc-tooltip" role="tooltip" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-2 py-1 bg-gray-800 text-white text-xs font-normal rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-none whitespace-nowrap pointer-events-none z-50">
+            收合次要癌別
+          </span>
+        </div>
+      </div>
     </div>
     <ul class="space-y-0.5" id="ajcc-sidebar-list">
       <li>

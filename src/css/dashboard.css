@@ -370,6 +370,11 @@ html[data-ajcc-collapsed="true"] .ajcc-optional {
   transition: opacity 0.1s ease, visibility 0.1s ease;
 }
 
+/* 收合時取消篩選框的 flex 延展，避免佔用頂部列寬度 */
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) #sidebar-filter-wrapper {
+  flex: 0 0 0%;
+}
+
 /* Ensure consistent anchor box model */
 :is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) a {
   justify-content: center;
@@ -463,6 +468,10 @@ html[data-ajcc-collapsed="true"] .ajcc-optional {
     width: auto !important;
     height: auto !important;
     overflow: visible !important;
+  }
+
+  :is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) #sidebar-filter-wrapper {
+    flex: 1 1 0% !important;
   }
 
   :is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) a {

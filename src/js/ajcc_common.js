@@ -811,7 +811,15 @@ export function initSidebar() {
         isAjccExpanded = true;
     }
 
+    const $ajccTooltip = $('#ajcc-tooltip');
+
     function updateAjccState(expanded) {
+        const tooltipText = expanded ? '收合次要癌別' : '展開全部癌別';
+        $toggleBtn.attr('title', tooltipText);
+        if ($ajccTooltip.length) {
+            $ajccTooltip.text(tooltipText);
+        }
+
         if (expanded) {
             document.documentElement.removeAttribute('data-ajcc-collapsed');
             $toggleBtn.html('<i class="fas fa-folder-open"></i>');

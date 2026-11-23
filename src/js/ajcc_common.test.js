@@ -566,6 +566,7 @@ describe('ajcc_common', () => {
                     <span id="sidebar-tooltip"></span>
                     <input type="search" id="sidebar-filter" />
                     <button id="ajcc-toggle"></button>
+                    <span id="ajcc-tooltip"></span>
                     <ul id="ajcc-sidebar-list">
                         <li><a href="lung.html"><span class="sidebar-label">Lung</span></a></li>
                         <li class="ajcc-optional"><a href="rcc.html"><span class="sidebar-label">RCC</span></a></li>
@@ -590,6 +591,8 @@ describe('ajcc_common', () => {
             expect(document.documentElement.getAttribute('data-sidebar-collapsed')).toBe('true');
             expect(document.documentElement.getAttribute('data-ajcc-collapsed')).toBe('true');
             expect(document.body.classList.contains('sidebar-collapsed')).toBe(true);
+            expect($('#ajcc-tooltip').text()).toBe('展開全部癌別');
+            expect($('#ajcc-toggle').attr('title')).toBe('展開全部癌別');
 
             // Toggle expand sidebar & AJCC optional items
             $('#sidebar-collapse-toggle').trigger('click');
@@ -598,6 +601,8 @@ describe('ajcc_common', () => {
             expect(document.documentElement.hasAttribute('data-sidebar-collapsed')).toBe(false);
             expect(document.documentElement.hasAttribute('data-ajcc-collapsed')).toBe(false);
             expect(document.body.classList.contains('sidebar-collapsed')).toBe(false);
+            expect($('#ajcc-tooltip').text()).toBe('收合次要癌別');
+            expect($('#ajcc-toggle').attr('title')).toBe('收合次要癌別');
         });
 
         test('filters sidebar items including optional items when searching', () => {
