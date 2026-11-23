@@ -115,12 +115,6 @@ pnpm build
    ```
 2. **手動部署 (Workflow Dispatch)**：
    若需立即同步，可至 GitHub 儲存庫的 **Actions** 頁籤，選擇 **「Build and Deploy to radtools.tsai.it」** 並點選 **「Run workflow」**。
-3. **本地部署 (Legacy)**：
-   若目標 repo clone 於同層目錄 (`../radtools.tsai.it`)，仍可透過本地腳本發佈：
-   ```bash
-   pnpm run deploy
-   ```
-
 
 ## Usage
 
