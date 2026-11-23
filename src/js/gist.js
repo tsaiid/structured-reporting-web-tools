@@ -47,7 +47,7 @@ function generate_report(){
 
     let t_length = parseFloat($('#txt_ts_len').val());
     report += "--- Size:\n";
-    if ($('#cb_ts_nm').is(':checked')) {
+    if ($('#cb_ts_nm').is(':checked') || isNaN(t_length)) {
         report += "* Non-measurable";
     } else {
         report += "* Measurable: " + t_length + " cm (greatest dimension of the largest tumor)";
@@ -130,21 +130,9 @@ function generate_report(){
     report += ajcc_template_with_parent("Gastrointestinal Stromal Tumor", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Gastrointestinal Stromal Tumor Staging Form");
-    $('#reportModalBody pre code').html(report);
+    $('#reportModalBody pre code').text(report);
     document.getElementById('reportModalLong').showModal();
 }
-
-// auto- increase or decrease lymph node numbers
-$('.cb_rn').change(function(){
-    let rln_num = +$('#txt_rln_num').val();
-    if (this.checked) {
-        $('#txt_rln_num').val(rln_num + 1);
-    } else {
-        if (rln_num > 0) {
-            $('#txt_rln_num').val(rln_num - 1);
-        }
-    }
-});
 
 setupReportPage({
     generateReportFn: generate_report,
@@ -153,7 +141,7 @@ setupReportPage({
         N: AJCC_N,
         M: AJCC_M
     },
-    ajccTitleHtml: "AJCC Definitions for Gastrointestinal Stromal Tumor <span class='badge badge-secondary ml-2' style='font-size: 60%; vertical-align: super;'>8th</span>"
+    ajccTitleHtml: "AJCC Definitions for Gastrointestinal Stromal Tumor <span class='inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 ml-2 align-super'>8th</span>"
 });
 
 

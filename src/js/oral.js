@@ -8,7 +8,7 @@ if (process.env.NODE_ENV !== 'production') {
 // Oral Cavity Neck Lymph Node Helper
 import '../css/nasopharynx_helper.css';  // 共用 nasopharynx 的 CSS
 import '../image/neck_lymph_node_stations.webp';
-import './oral_logic_helper.js';
+import { initNeckLnHelper } from './neck_ln_helper.js';
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage, getMaxStage} from './ajcc_common.js';
 import { calculateOralStage } from './oral_logic.js';
@@ -236,25 +236,26 @@ function generate_report(){
     report += ajcc_template_with_parent("Oral Cavity Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Oral Cancer Staging Form");
-    $('#reportModalBody pre code').html(report);
+    $('#reportModalBody pre code').text(report);
     document.getElementById('reportModalLong').showModal();
 }
 
-// auto- increase or decrease lymph node numbers
-$('.cb_rn').change(function(){
-    let rln_num = +$('#txt_rln_num').val();
-    if (this.checked) {
-        $('#txt_rln_num').val(rln_num + 1);
-    } else {
-        if (rln_num > 0) {
-            $('#txt_rln_num').val(rln_num - 1);
-        }
-    }
-});
+initNeckLnHelper();
 
 let has_lip_initial = $('.cb_tl_l:checked').length > 0;
 
-// Toggle regional lymph node extra items (Removed)
+// 依勾選部位動態切換 AJCC Definitions (Lip vs Oral Cavity)
+function updateOralAjccModal() {
+    const isLip = $('.cb_tl_l:checked').length > 0;
+    const ajccT = isLip ? AJCC_T_LIP : AJCC_T_ORAL;
+    const titlePrefix = isLip ? "Lip Carcinoma" : "Oral Cavity Carcinoma";
+    const ajccTitleHtml = `AJCC Definitions for ${titlePrefix} <span class='inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 ml-2 align-super'>8th</span>`;
+    $('#ajccModalLongTitle').html(ajccTitleHtml);
+    $('#ajccModalBody').html(generate_ajcc_table(ajccT, AJCC_N, AJCC_M));
+}
+
+$('.cb_tl_l').change(updateOralAjccModal);
+
 setupReportPage({
     generateReportFn: generate_report,
     ajccData: {
@@ -262,7 +263,7 @@ setupReportPage({
         N: AJCC_N,
         M: AJCC_M
     },
-    ajccTitleHtml: "AJCC Definitions for Oral Cavity Carcinoma <span class='badge badge-secondary ml-2' style='font-size: 60%; vertical-align: super;'>8th</span>"
+    ajccTitleHtml: "AJCC Definitions for Oral Cavity Carcinoma <span class='inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 ml-2 align-super'>8th</span>"
 });
 
 

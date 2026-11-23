@@ -28,6 +28,7 @@
 .ln-station-btn {
     position: absolute;
     transform: translate(-50%, -50%);
+    padding: 0;
     /* 使用 clamp() 讓按鈕隨容器大小縮放：最小 18px，最大 32px */
     width: clamp(18px, 5.5%, 32px);
     aspect-ratio: 1;

@@ -8,9 +8,9 @@ import { getPreferredTheme, applyTheme, setTheme } from './theme.js';
 
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
 import { faGithub, faFacebookSquare, faXTwitter, faInstagram, faThreads, faYoutube } from "@fortawesome/free-brands-svg-icons";
-import { faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle, faFolder, faFolderOpen, faGlobe, faAngleDoubleLeft, faAngleDoubleRight, faBook, faCopy, faBars, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle, faFolder, faFolderOpen, faGlobe, faAngleDoubleLeft, faAngleDoubleRight, faBook, faCopy, faBars, faCheck, faTimes, faRotateLeft } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faGithub, faFacebookSquare, faXTwitter, faInstagram, faThreads, faYoutube, faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle, faFolder, faFolderOpen, faGlobe, faAngleDoubleLeft, faAngleDoubleRight, faBook, faCopy, faBars, faCheck);
+library.add(faGithub, faFacebookSquare, faXTwitter, faInstagram, faThreads, faYoutube, faFileContract, faAt, faSun, faMoon, faFileMedical, faPlusCircle, faFolder, faFolderOpen, faGlobe, faAngleDoubleLeft, faAngleDoubleRight, faBook, faCopy, faBars, faCheck, faTimes, faRotateLeft);
 dom.watch();
 
 // redirect to legacy version
@@ -43,18 +43,6 @@ $(document).ready(function () {
         const newTheme = this.checked ? 'dark' : 'light';
         setTheme(newTheme);
     });
-});
-
-// Remove loader when page is fully loaded
-$(window).on('load', function () {
-    const loader = $('#global-loader');
-    // Small delay to ensure everything is painted
-    setTimeout(() => {
-        loader.css('opacity', '0');
-        setTimeout(() => {
-            loader.remove();
-        }, 300); // Matches transition duration
-    }, 100);
 });
 
 // Global behavior: Close dialog when clicking outside (backdrop)

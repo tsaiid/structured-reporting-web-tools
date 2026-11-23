@@ -18,8 +18,6 @@
       <script src="js/html5shiv.js"></script>
     <![endif]-->
 
-    <!-- Google Analytics -->
-    <%= require('../partials/google_analytics.html').default %>
 
     <!-- Vendors: jquery, bootstrap, clipboard.js -->
     <%= require('../partials/vendors_css.html').default %>
@@ -679,29 +677,29 @@
                     <img src="../assets/images/stomach_lymph_node_stations.webp" alt="Gastric Lymph Node Stations" class="ln-map-img">
 
                     <!-- Regional -->
-                    <div class="ln-station-btn ln-station-1" data-station="1" data-uid="1" data-name="Right Paracardial (1)">1</div>
-                    <div class="ln-station-btn ln-station-2" data-station="2" data-uid="2" data-name="Left Paracardial (2)">2</div>
-                    <div class="ln-station-btn ln-station-3" data-station="3" data-uid="3" data-name="Lesser Curvature (3)">3</div>
-                    <div class="ln-station-btn ln-station-4sa" data-station="4" data-uid="4sa" data-name="Short Gastric (4sa)">4sa</div>
-                    <div class="ln-station-btn ln-station-4sb" data-station="4" data-uid="4sb" data-name="Left Gastroepiploic (4sb)">4sb</div>
-                    <div class="ln-station-btn ln-station-4d" data-station="4" data-uid="4d" data-name="Right Gastroepiploic (4d)">4d</div>
-                    <div class="ln-station-btn ln-station-5" data-station="5" data-uid="5" data-name="Suprapyloric (5)">5</div>
-                    <div class="ln-station-btn ln-station-6" data-station="6" data-uid="6" data-name="Infrapyloric (6)">6</div>
-                    <div class="ln-station-btn ln-station-7" data-station="7" data-uid="7" data-name="Left Gastric Artery (7)">7</div>
-                    <div class="ln-station-btn ln-station-8" data-station="8" data-uid="8" data-name="Common Hepatic Artery (8)">8</div>
-                    <div class="ln-station-btn ln-station-9" data-station="9" data-uid="9" data-name="Celiac Artery (9)">9</div>
-                    <div class="ln-station-btn ln-station-10" data-station="10" data-uid="10" data-name="Splenic Hilum (10)">10</div>
-                    <div class="ln-station-btn ln-station-11 dashed" data-station="11" data-uid="11" data-name="Splenic Artery (11)">11</div>
-                    <div class="ln-station-btn ln-station-12" data-station="12" data-uid="12" data-name="Hepatic Pedicle (12)">12</div>
-                    <div class="ln-station-btn ln-station-14v" data-station="14v" data-uid="14v" data-name="Sup. Mesenteric Vein (14v)">14v</div>
+                    <button type="button" class="ln-station-btn ln-station-1" data-station="1" data-uid="1" data-name="Right Paracardial (1)" aria-label="Right Paracardial (1)" aria-pressed="false">1</button>
+                    <button type="button" class="ln-station-btn ln-station-2" data-station="2" data-uid="2" data-name="Left Paracardial (2)" aria-label="Left Paracardial (2)" aria-pressed="false">2</button>
+                    <button type="button" class="ln-station-btn ln-station-3" data-station="3" data-uid="3" data-name="Lesser Curvature (3)" aria-label="Lesser Curvature (3)" aria-pressed="false">3</button>
+                    <button type="button" class="ln-station-btn ln-station-4sa" data-station="4" data-uid="4sa" data-name="Short Gastric (4sa)" aria-label="Short Gastric (4sa)" aria-pressed="false">4sa</button>
+                    <button type="button" class="ln-station-btn ln-station-4sb" data-station="4" data-uid="4sb" data-name="Left Gastroepiploic (4sb)" aria-label="Left Gastroepiploic (4sb)" aria-pressed="false">4sb</button>
+                    <button type="button" class="ln-station-btn ln-station-4d" data-station="4" data-uid="4d" data-name="Right Gastroepiploic (4d)" aria-label="Right Gastroepiploic (4d)" aria-pressed="false">4d</button>
+                    <button type="button" class="ln-station-btn ln-station-5" data-station="5" data-uid="5" data-name="Suprapyloric (5)" aria-label="Suprapyloric (5)" aria-pressed="false">5</button>
+                    <button type="button" class="ln-station-btn ln-station-6" data-station="6" data-uid="6" data-name="Infrapyloric (6)" aria-label="Infrapyloric (6)" aria-pressed="false">6</button>
+                    <button type="button" class="ln-station-btn ln-station-7" data-station="7" data-uid="7" data-name="Left Gastric Artery (7)" aria-label="Left Gastric Artery (7)" aria-pressed="false">7</button>
+                    <button type="button" class="ln-station-btn ln-station-8" data-station="8" data-uid="8" data-name="Common Hepatic Artery (8)" aria-label="Common Hepatic Artery (8)" aria-pressed="false">8</button>
+                    <button type="button" class="ln-station-btn ln-station-9" data-station="9" data-uid="9" data-name="Celiac Artery (9)" aria-label="Celiac Artery (9)" aria-pressed="false">9</button>
+                    <button type="button" class="ln-station-btn ln-station-10" data-station="10" data-uid="10" data-name="Splenic Hilum (10)" aria-label="Splenic Hilum (10)" aria-pressed="false">10</button>
+                    <button type="button" class="ln-station-btn ln-station-11 dashed" data-station="11" data-uid="11" data-name="Splenic Artery (11)" aria-label="Splenic Artery (11)" aria-pressed="false">11</button>
+                    <button type="button" class="ln-station-btn ln-station-12" data-station="12" data-uid="12" data-name="Hepatic Pedicle (12)" aria-label="Hepatic Pedicle (12)" aria-pressed="false">12</button>
+                    <button type="button" class="ln-station-btn ln-station-14v" data-station="14v" data-uid="14v" data-name="Sup. Mesenteric Vein (14v)" aria-label="Sup. Mesenteric Vein (14v)" aria-pressed="false">14v</button>
 
                      <!-- Distant -->
-                    <div class="ln-station-btn ln-station-13 dashed" data-station="13" data-uid="13" data-type="distant" data-name="Retropancreatic (13)">13</div>
-                    <div class="ln-station-btn ln-station-13b dashed" data-station="13" data-uid="13b" data-type="distant" data-name="Retropancreatic (13)">13</div>
-                    <div class="ln-station-btn ln-station-14a" data-station="14a" data-uid="14a" data-type="distant" data-name="Sup. Mesenteric Artery (14a)">14a</div>
-                    <div class="ln-station-btn ln-station-15" data-station="15" data-uid="15" data-type="distant" data-name="Middle Colic Artery (15)">15</div>
-                    <div class="ln-station-btn ln-station-16" data-station="16" data-uid="16" data-type="distant" data-name="Para-aortic (16)">16</div>
-                    <div class="ln-station-btn ln-station-16b" data-station="16" data-uid="16b" data-type="distant" data-name="Para-aortic (16)">16</div>
+                    <button type="button" class="ln-station-btn ln-station-13 dashed" data-station="13" data-uid="13" data-type="distant" data-name="Retropancreatic (13)" aria-label="Retropancreatic (13)" aria-pressed="false">13</button>
+                    <button type="button" class="ln-station-btn ln-station-13b dashed" data-station="13" data-uid="13b" data-type="distant" data-name="Retropancreatic (13)" aria-label="Retropancreatic (13)" aria-pressed="false">13</button>
+                    <button type="button" class="ln-station-btn ln-station-14a" data-station="14a" data-uid="14a" data-type="distant" data-name="Sup. Mesenteric Artery (14a)" aria-label="Sup. Mesenteric Artery (14a)" aria-pressed="false">14a</button>
+                    <button type="button" class="ln-station-btn ln-station-15" data-station="15" data-uid="15" data-type="distant" data-name="Middle Colic Artery (15)" aria-label="Middle Colic Artery (15)" aria-pressed="false">15</button>
+                    <button type="button" class="ln-station-btn ln-station-16" data-station="16" data-uid="16" data-type="distant" data-name="Para-aortic (16)" aria-label="Para-aortic (16)" aria-pressed="false">16</button>
+                    <button type="button" class="ln-station-btn ln-station-16b" data-station="16" data-uid="16b" data-type="distant" data-name="Para-aortic (16)" aria-label="Para-aortic (16)" aria-pressed="false">16</button>
                 </div>
             </div>
 

@@ -153,7 +153,7 @@ function generate_report(){
     report += ajcc_template_with_parent("Hepatocellular Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M);
 
     $('#reportModalLongTitle').html("Hepatocellular Carcinoma Staging Form");
-    $('#reportModalBody pre code').html(report);
+    $('#reportModalBody pre code').text(report);
     document.getElementById('reportModalLong').showModal();
 }
 
@@ -166,7 +166,7 @@ setupReportPage({
         N: AJCC_N,
         M: AJCC_M
     },
-    ajccTitleHtml: "AJCC Definitions for Hepatocellular Carcinoma <span class='badge badge-secondary ml-2' style='font-size: 60%; vertical-align: super;'>8th</span>"
+    ajccTitleHtml: "AJCC Definitions for Hepatocellular Carcinoma <span class='inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 ml-2 align-super'>8th</span>"
 });
 
 

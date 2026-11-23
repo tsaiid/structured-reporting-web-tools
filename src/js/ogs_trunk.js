@@ -30,7 +30,7 @@ function generate_report(){
     report += "--- Size: ";
     const isNonMeasurable = $('#cb_ts_nm').is(':checked');
     const t_length = parseFloat($('#txt_ts_len').val());
-    if (isNonMeasurable) {
+    if (isNonMeasurable || isNaN(t_length)) {
         report += "Non-measurable";
     } else {
         report += "Measurable: " + t_length + " cm (greatest dimension of the largest tumor)\n";
@@ -97,21 +97,9 @@ function generate_report(){
     report += ajcc_template_with_parent("OGS for Appendicular Skeleton, Trunk, Skull and Facial Bones", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("OGS for Appendicular Skeleton, Trunk, Skull and Facial Bones Staging Form");
-    $('#reportModalBody pre code').html(report);
+    $('#reportModalBody pre code').text(report);
     document.getElementById('reportModalLong').showModal();
 }
-
-// auto- increase or decrease lymph node numbers
-$('.cb_rn').change(function(){
-    let rln_num = +$('#txt_rln_num').val();
-    if (this.checked) {
-        $('#txt_rln_num').val(rln_num + 1);
-    } else {
-        if (rln_num > 0) {
-            $('#txt_rln_num').val(rln_num - 1);
-        }
-    }
-});
 
 setupReportPage({
     generateReportFn: generate_report,

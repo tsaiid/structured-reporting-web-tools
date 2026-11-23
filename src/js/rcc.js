@@ -55,7 +55,8 @@ function generate_report(){
         if ($('.cb_tl:checked').length) {
             report += join_checkbox_values($('.cb_tl:checked')) + "\n";
         }
-        report += `Size: ${t_dia} cm (largest diameter of the biggest tumor)`;
+        let txt_t_dia = !isNaN(t_dia) ? t_dia : "___";
+        report += `Size: ${txt_t_dia} cm (largest diameter of the biggest tumor)`;
     }
     report += "\n\n";
 
@@ -161,7 +162,7 @@ function generate_report(){
     report += ajcc_template_with_parent("Renal Cell Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Renal Cell Carcinoma Staging Form");
-    $('#reportModalBody pre code').html(report);
+    $('#reportModalBody pre code').text(report);
     document.getElementById('reportModalLong').showModal();
 }
 

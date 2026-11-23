@@ -409,6 +409,7 @@ describe('NHI Lung-RADS v2022 Logic Module', () => {
       expect(report).toContain('Lung nodule findings related to cancer screening');
       expect(report).toContain('[+] No lung nodule');
       expect(report).toContain('[ ] Lung nodule(s) (<6mm) (選填 SE: , IM:  )');
+      expect(report).toContain('[ ] Lung nodules else [ ] RUL [ ] RML [ ] RLL [ ] LUL [ ] LLL');
       expect(report).toContain('Overall recommendation');
       expect(report).toContain('[+] Category 1: Negative.');
     });

@@ -12,8 +12,6 @@
 
     <title>Structure Report for Lung Cancer Staging</title>
 
-    <!-- Google Analytics -->
-    <%= require('../partials/google_analytics.html').default %>
 
     <!-- Vendors: jquery, clipboard.js (Bootstrap CSS removed) -->
     <%= require('../partials/vendors_css.html').default %>
@@ -1124,33 +1122,33 @@
                     <img src="../assets/images/lung_lymph_node_stations.webp" alt="Lung Lymph Node Stations" class="ln-map-img">
 
                     <!-- Superior Mediastinal -->
-                    <div class="ln-station-btn ln-station-1" data-station="1" data-uid="1">1</div>
-                    <div class="ln-station-btn ln-station-1b" data-station="1" data-uid="1b">1</div>
-                    <div class="ln-station-btn ln-station-1c" data-station="1" data-uid="1c">1</div>
-                    <div class="ln-station-btn ln-station-2R" data-station="2R" data-uid="2R">2R</div>
-                    <div class="ln-station-btn ln-station-2L" data-station="2L" data-uid="2L">2L</div>
-                    <div class="ln-station-btn ln-station-3a" data-station="3A" data-uid="3A">3A</div>
-                    <div class="ln-station-btn ln-station-4R" data-station="4R" data-uid="4R">4R</div>
-                    <div class="ln-station-btn ln-station-4Rb" data-station="4R" data-uid="4Rb">4R</div>
-                    <div class="ln-station-btn ln-station-4L" data-station="4L" data-uid="4L">4L</div>
-                    <div class="ln-station-btn ln-station-4Lb" data-station="4L" data-uid="4Lb">4L</div>
+                    <button type="button" class="ln-station-btn ln-station-1" data-station="1" data-uid="1" aria-label="Station 1" aria-pressed="false">1</button>
+                    <button type="button" class="ln-station-btn ln-station-1b" data-station="1" data-uid="1b" aria-label="Station 1 Right" aria-pressed="false">1</button>
+                    <button type="button" class="ln-station-btn ln-station-1c" data-station="1" data-uid="1c" aria-label="Station 1 Left" aria-pressed="false">1</button>
+                    <button type="button" class="ln-station-btn ln-station-2R" data-station="2R" data-uid="2R" aria-label="Station 2R" aria-pressed="false">2R</button>
+                    <button type="button" class="ln-station-btn ln-station-2L" data-station="2L" data-uid="2L" aria-label="Station 2L" aria-pressed="false">2L</button>
+                    <button type="button" class="ln-station-btn ln-station-3a" data-station="3A" data-uid="3A" aria-label="Station 3A" aria-pressed="false">3A</button>
+                    <button type="button" class="ln-station-btn ln-station-4R" data-station="4R" data-uid="4R" aria-label="Station 4R" aria-pressed="false">4R</button>
+                    <button type="button" class="ln-station-btn ln-station-4Rb" data-station="4R" data-uid="4Rb" aria-label="Station 4R Lower" aria-pressed="false">4R</button>
+                    <button type="button" class="ln-station-btn ln-station-4L" data-station="4L" data-uid="4L" aria-label="Station 4L" aria-pressed="false">4L</button>
+                    <button type="button" class="ln-station-btn ln-station-4Lb" data-station="4L" data-uid="4Lb" aria-label="Station 4L Lower" aria-pressed="false">4L</button>
 
                     <!-- Aortic -->
-                    <div class="ln-station-btn ln-station-5" data-station="5" data-uid="5">5</div>
-                    <div class="ln-station-btn ln-station-6" data-station="6" data-uid="6">6</div>
+                    <button type="button" class="ln-station-btn ln-station-5" data-station="5" data-uid="5" aria-label="Station 5" aria-pressed="false">5</button>
+                    <button type="button" class="ln-station-btn ln-station-6" data-station="6" data-uid="6" aria-label="Station 6" aria-pressed="false">6</button>
 
                     <!-- Inferior Mediastinal -->
-                    <div class="ln-station-btn ln-station-7" data-station="7" data-uid="7">7</div>
-                    <div class="ln-station-btn ln-station-8R" data-station="8R" data-uid="8R">8R</div>
-                    <div class="ln-station-btn ln-station-8L" data-station="8L" data-uid="8L">8L</div>
-                    <div class="ln-station-btn ln-station-9R" data-station="9R" data-uid="9R">9R</div>
-                    <div class="ln-station-btn ln-station-9L" data-station="9L" data-uid="9L">9L</div>
+                    <button type="button" class="ln-station-btn ln-station-7" data-station="7" data-uid="7" aria-label="Station 7" aria-pressed="false">7</button>
+                    <button type="button" class="ln-station-btn ln-station-8R" data-station="8R" data-uid="8R" aria-label="Station 8R" aria-pressed="false">8R</button>
+                    <button type="button" class="ln-station-btn ln-station-8L" data-station="8L" data-uid="8L" aria-label="Station 8L" aria-pressed="false">8L</button>
+                    <button type="button" class="ln-station-btn ln-station-9R" data-station="9R" data-uid="9R" aria-label="Station 9R" aria-pressed="false">9R</button>
+                    <button type="button" class="ln-station-btn ln-station-9L" data-station="9L" data-uid="9L" aria-label="Station 9L" aria-pressed="false">9L</button>
 
                     <!-- Hilar & Interlobar -->
-                    <div class="ln-station-btn ln-station-10R" data-station="10R" data-uid="10R">10R</div>
-                    <div class="ln-station-btn ln-station-10L" data-station="10L" data-uid="10L">10L</div>
-                    <div class="ln-station-btn ln-station-11R" data-station="11R" data-uid="11R">11R</div>
-                    <div class="ln-station-btn ln-station-11L" data-station="11L" data-uid="11L">11L</div>
+                    <button type="button" class="ln-station-btn ln-station-10R" data-station="10R" data-uid="10R" aria-label="Station 10R" aria-pressed="false">10R</button>
+                    <button type="button" class="ln-station-btn ln-station-10L" data-station="10L" data-uid="10L" aria-label="Station 10L" aria-pressed="false">10L</button>
+                    <button type="button" class="ln-station-btn ln-station-11R" data-station="11R" data-uid="11R" aria-label="Station 11R" aria-pressed="false">11R</button>
+                    <button type="button" class="ln-station-btn ln-station-11L" data-station="11L" data-uid="11L" aria-label="Station 11L" aria-pressed="false">11L</button>
                 </div>
             </div>
 

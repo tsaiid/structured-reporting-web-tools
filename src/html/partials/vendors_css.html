@@ -9,52 +9,18 @@
 </script>
 <meta name="color-scheme" content="light dark" />
 <style>
-  /* Critical CSS to prevent FOUC */
-  /* Moved most styles to Tailwind, keeping theme logic for now */
+  /* Critical CSS to prevent FOUC before stylesheet finishes loading */
   :root {
       color-scheme: light dark;
       --sidebar-bg: #f8f9fa;
   }
   html[data-theme="dark"],
   html[data-theme="dark"] body {
-      background-color: #121212 !important;
+      background-color: #282a36;
       color-scheme: dark;
   }
   [data-theme="dark"] {
-      --sidebar-bg: #1e1e1e;
-  }
-
-  /* Page Loader */
-  #global-loader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10000;
-    background-color: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 0.3s ease-out;
-  }
-  html[data-theme="dark"] #global-loader {
-    background-color: #121212;
-  }
-  .loader-spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid rgba(0, 0, 0, 0.1);
-    border-left-color: #007bff;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-  html[data-theme="dark"] .loader-spinner {
-    border-color: rgba(255, 255, 255, 0.1);
-    border-left-color: #3794ff;
-  }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
+      --sidebar-bg: #282a36;
   }
 </style>
 

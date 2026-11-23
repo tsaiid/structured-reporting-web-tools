@@ -446,7 +446,7 @@ export function generateReportText(data = {}, isSimple = false) {
     report += `${showElse ? cbInline(elseRul, "RUL") : "[ ] RUL"} `;
     report += `${showElse ? cbInline(elseRml, "RML") : "[ ] RML"} `;
     report += `${showElse ? cbInline(elseRll, "RLL") : "[ ] RLL"} `;
-    report += `${showElse ? cbInline(elseLul, "LUL") : "[ ] LLL"} `;
+    report += `${showElse ? cbInline(elseLul, "LUL") : "[ ] LUL"} `;
     report += `${showElse ? cbInline(elseLll, "LLL") : "[ ] LLL"} `;
     report += `(SE:${showElse ? txtVal(elseSe) : "_"}, IM:${
       showElse ? txtVal(elseIm) : "_"

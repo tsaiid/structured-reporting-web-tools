@@ -1,12 +1,11 @@
-// Nasopharynx Neck Lymph Node Helper Logic
-// 頸部淋巴結地圖輔助工具邏輯
+// 共用頸部淋巴結地圖輔助工具邏輯 (Head & Neck: Oral, Oropharynx, Hypopharynx, Nasopharynx, Larynx)
+import $ from 'jquery';
 
 const NECK_LN_HELPER_STATE = {
     selectedUIDs: new Set()
 };
 
-// 定義所有 Lymph Node Stations
-// 圖片右側對應人體左側
+// 定義所有 Lymph Node Stations (每側 17 個，圖片右側對應人體左側)
 const NECK_LN_STATIONS = [
     // 右側
     { uid: 'r-IA', station: 'IA', side: 'right', name: 'IA - Submental', belowCricoid: false },
@@ -46,54 +45,6 @@ const NECK_LN_STATIONS = [
     { uid: 'l-XB', station: 'XB', side: 'left', name: 'XB - Occipital', belowCricoid: false },
 ];
 
-// 開啟 Modal
-$('#btn_neck_ln_helper').click(function() {
-    // 從 form checkboxes 同步狀態到 helper
-    syncFormToHelper();
-
-    // 更新 UI 選取狀態
-    $('.neck-ln-station-btn').removeClass('selected');
-    NECK_LN_HELPER_STATE.selectedUIDs.forEach(uid => {
-        $(`.neck-ln-station-btn[data-uid='${uid}']`).addClass('selected');
-    });
-
-    // 開啟 Modal
-    document.getElementById('modal_neck_ln_helper').showModal();
-});
-
-// 點擊 station 按鈕切換選取狀態
-$('.neck-ln-station-btn').click(function() {
-    $(this).toggleClass('selected');
-    const uid = $(this).data('uid');
-
-    if ($(this).hasClass('selected')) {
-        NECK_LN_HELPER_STATE.selectedUIDs.add(uid.toString());
-    } else {
-        NECK_LN_HELPER_STATE.selectedUIDs.delete(uid.toString());
-    }
-});
-
-// 清除所有選取
-$('#btn_neck_ln_clear').click(function() {
-    NECK_LN_HELPER_STATE.selectedUIDs.clear();
-    $('.neck-ln-station-btn').removeClass('selected');
-});
-
-// 套用到表單
-$('#btn_neck_ln_submit').click(function() {
-    // 清除所有 regional lymph node checkboxes
-    $('.cb_rn:not(#cb_rn_ene)').prop('checked', false);
-
-    // 套用選取的 stations
-    NECK_LN_HELPER_STATE.selectedUIDs.forEach(uid => {
-        const checkboxId = `#cb_rn_${uid.replace('-', '_')}`;
-        $(checkboxId).prop('checked', true);
-    });
-
-    // 關閉 Modal
-    document.getElementById('modal_neck_ln_helper').close();
-});
-
 // 從 form checkboxes 同步狀態到 helper
 function syncFormToHelper() {
     NECK_LN_HELPER_STATE.selectedUIDs.clear();
@@ -106,5 +57,74 @@ function syncFormToHelper() {
     });
 }
 
-// 匯出供外部使用
+/**
+ * 初始化頸部淋巴結地圖輔助工具
+ * @param {Object} [options]
+ * @param {boolean} [options.highlightBelowCricoid=false] - 是否標示 cricoid 以下區域 (NPC N3)
+ */
+export function initNeckLnHelper({ highlightBelowCricoid = false } = {}) {
+    if (highlightBelowCricoid) {
+        $('#neck_ln_cricoid_legend').removeClass('hidden');
+        NECK_LN_STATIONS.forEach(station => {
+            if (station.belowCricoid) {
+                $(`.neck-ln-station-btn[data-uid='${station.uid}']`).attr('data-below-cricoid', 'true');
+            }
+        });
+    }
+
+    // 開啟 Modal
+    $('#btn_neck_ln_helper').off('click.neckLnHelper').on('click.neckLnHelper', function() {
+        syncFormToHelper();
+
+        $('.neck-ln-station-btn').removeClass('selected').attr('aria-pressed', 'false');
+        NECK_LN_HELPER_STATE.selectedUIDs.forEach(uid => {
+            $(`.neck-ln-station-btn[data-uid='${uid}']`).addClass('selected').attr('aria-pressed', 'true');
+        });
+
+        const modal = document.getElementById('modal_neck_ln_helper');
+        if (modal) {
+            modal.showModal();
+        }
+    });
+
+    // 點擊 station 按鈕切換選取狀態
+    $('.neck-ln-station-btn').off('click.neckLnHelper').on('click.neckLnHelper', function() {
+        $(this).toggleClass('selected');
+        const isSelected = $(this).hasClass('selected');
+        $(this).attr('aria-pressed', String(isSelected));
+        const uid = $(this).data('uid');
+
+        if (isSelected) {
+            NECK_LN_HELPER_STATE.selectedUIDs.add(uid.toString());
+        } else {
+            NECK_LN_HELPER_STATE.selectedUIDs.delete(uid.toString());
+        }
+    });
+
+    // 清除所有選取
+    $('#btn_neck_ln_clear').off('click.neckLnHelper').on('click.neckLnHelper', function() {
+        NECK_LN_HELPER_STATE.selectedUIDs.clear();
+        $('.neck-ln-station-btn').removeClass('selected').attr('aria-pressed', 'false');
+    });
+
+    // 套用到表單並觸發連動更新
+    $('#btn_neck_ln_submit').off('click.neckLnHelper').on('click.neckLnHelper', function() {
+        const $nodeCheckboxes = $('.cb_rn:not(#cb_rn_ene)');
+        $nodeCheckboxes.prop('checked', false);
+
+        NECK_LN_HELPER_STATE.selectedUIDs.forEach(uid => {
+            const checkboxId = `#cb_rn_${uid.replace('-', '_')}`;
+            $(checkboxId).prop('checked', true);
+        });
+
+        // 觸發一次 change 事件，讓單顆淋巴結 (#cb_rn_sin) 互斥與即時分期預覽同步更新
+        $nodeCheckboxes.first().trigger('change');
+
+        const modal = document.getElementById('modal_neck_ln_helper');
+        if (modal) {
+            modal.close();
+        }
+    });
+}
+
 export { NECK_LN_STATIONS, NECK_LN_HELPER_STATE };

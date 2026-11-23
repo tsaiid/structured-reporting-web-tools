@@ -67,6 +67,9 @@ importers:
       jest-environment-jsdom:
         specifier: ^30.5.2
         version: 30.5.2
+      mini-css-extract-plugin:
+        specifier: ^2.10.2
+        version: 2.10.2(webpack@5.111.1)
       postcss:
         specifier: ^8.5.28
         version: 8.5.28
@@ -2898,6 +2901,12 @@ packages:
   mimic-fn@2.1.0:
     resolution: {integrity: sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==}
     engines: {node: '>=6'}
+
+  mini-css-extract-plugin@2.10.2:
+    resolution: {integrity: sha512-AOSS0IdEB95ayVkxn5oGzNQwqAi2J0Jb/kKm43t7H73s8+f5873g0yuj0PNvK4dO75mu5DHg4nlgp4k6Kga8eg==}
+    engines: {node: '>= 12.13.0'}
+    peerDependencies:
+      webpack: ^5.0.0
 
   minimatch@11.0.9:
     resolution: {integrity: sha512-KCFkfyjqerNlSstjlhIGNXIKZGA/6O4V4RlhZ+Dsr621SPPw0mzlypE9D9ZOoPiVefHID+j7/XuMMlqfD/F60Q==}
@@ -7027,6 +7036,12 @@ snapshots:
       mime-db: 1.54.0
 
   mimic-fn@2.1.0: {}
+
+  mini-css-extract-plugin@2.10.2(webpack@5.111.1):
+    dependencies:
+      schema-utils: 4.5.0
+      tapable: 2.3.3
+      webpack: 5.111.1(postcss@8.5.28)(webpack-cli@6.0.1)
 
   minimatch@11.0.9:
     dependencies:

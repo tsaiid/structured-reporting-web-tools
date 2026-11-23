@@ -12,17 +12,17 @@
 }
 
 html[data-theme="dark"] {
-  --bg-color: #121212;
-  --text-color: #e0e0e0;
-  --sidebar-bg: #1e1e1e;
-  --card-bg: #2c2c2c;
-  --border-color: #444;
-  --input-bg: #3a3a3a;
-  --input-text: #e0e0e0;
-  --modal-content-bg: #2c2c2c;
+  --bg-color: #282a36;
+  --text-color: #f8f8f2;
+  --sidebar-bg: #282a36;
+  --card-bg: #383a59;
+  --border-color: #6272a4;
+  --input-bg: #44475a;
+  --input-text: #f8f8f2;
+  --modal-content-bg: #383a59;
   --input-group-text-bg: var(--card-bg);
-  --scrollbar-thumb: #3a3a3a;
-  --scrollbar-thumb-hover: #555;
+  --scrollbar-thumb: #44475a;
+  --scrollbar-thumb-hover: #6272a4;
 }
 
 /* Custom breakpoint for sidebar labels */
@@ -246,101 +246,7 @@ html[data-theme="dark"] .input-group-text {
   border-color: var(--border-color);
 }
 
-/*
- * Toggle Switch
- */
-.theme-switch-wrapper {
-  display: flex;
-  /* Changed from inline-flex to flex */
-  align-items: center;
-}
-
-.theme-switch {
-  display: inline-block;
-  height: 20px;
-  /* Reduced from 24px */
-  position: relative;
-  width: 40px;
-  /* Reduced from 50px */
-  margin-bottom: 0;
-}
-
-.theme-switch input {
-  display: none;
-}
-
-.slider {
-  background-color: #ccc;
-  bottom: 0;
-  cursor: pointer;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  transition: .4s;
-  border-radius: 34px;
-}
-
-.knob {
-  background-color: #fff;
-  bottom: 3px;
-  height: 14px;
-  /* Reduced from 18px */
-  left: 3px;
-  position: absolute;
-  transition: .4s;
-  width: 14px;
-  /* Reduced from 18px */
-  border-radius: 50%;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-input:checked+.slider {
-  background-color: #666;
-}
-
-input:checked+.slider .knob {
-  transform: translateX(20px);
-  /* 40px width - 3px left - 3px right - 14px width = 20px travel */
-}
-
-/* Icons mapping */
-.theme-switch .icon-sun,
-.theme-switch .icon-moon {
-  transition: opacity 0.3s;
-  /* FontAwesome SVG sizing */
-  width: 10px;
-  /* Reduced from 12px */
-  height: 10px;
-}
-
-/* Light state: Sun visible */
-.theme-switch .icon-sun {
-  opacity: 1;
-  color: #f39c12;
-  /* Sun color */
-  position: absolute;
-}
-
-.theme-switch .icon-moon {
-  opacity: 0;
-  color: #f1c40f;
-  /* Moon color */
-  position: absolute;
-}
-
-/* Dark state: Moon visible */
-input:checked+.slider .icon-sun {
-  opacity: 0;
-}
-
-input:checked+.slider .icon-moon {
-  opacity: 1;
-}
+/* Theme switch styles are managed in tailwind.css & nav.html */
 
 /* Custom Scrollbar (Global Auto-hiding) */
 ::-webkit-scrollbar {
@@ -430,12 +336,16 @@ body.sidebar-collapsed main[role="main"] {
 
 /* Initially hidden state when collapsed */
 body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) .sidebar-label,
+body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) #sidebar-filter-wrapper,
 body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) h6 span,
 body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) #ajcc-toggle,
 body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) a svg {
   opacity: 0 !important;
   visibility: hidden;
   width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
   transition: opacity 0.1s ease, visibility 0.1s ease;
 }
@@ -486,11 +396,13 @@ body.sidebar-collapsed .sidebar-nav.hover-expanded {
 
 /* Fade in ALL text elements AFTER sidebar width transition */
 body.sidebar-collapsed .sidebar-nav.hover-expanded .sidebar-label,
+body.sidebar-collapsed .sidebar-nav.hover-expanded #sidebar-filter-wrapper,
 body.sidebar-collapsed .sidebar-nav.hover-expanded h6 span,
 body.sidebar-collapsed .sidebar-nav.hover-expanded #ajcc-toggle {
   opacity: 1 !important;
   visibility: visible;
   width: auto;
+  height: auto;
   transition: opacity 0.3s ease 0.2s, visibility 0.3s ease 0.2s;
 }
 
@@ -521,12 +433,14 @@ body.sidebar-collapsed .sidebar-nav.hover-expanded a svg {
 
   /* 忽略 collapsed 隱藏文字的效果 */
   body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) .sidebar-label,
+  body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) #sidebar-filter-wrapper,
   body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) h6 span,
   body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) #ajcc-toggle,
   body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) a svg {
     opacity: 1 !important;
     visibility: visible !important;
     width: auto !important;
+    height: auto !important;
     overflow: visible !important;
   }
 

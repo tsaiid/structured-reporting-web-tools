@@ -441,6 +441,38 @@ function validateAndCopy(type) {
   else generateAndCopySimple();
 }
 
+function resetForm() {
+  document
+    .querySelectorAll(".input-error")
+    .forEach((el) => el.classList.remove("input-error"));
+
+  const mainEl = document.querySelector("main");
+  if (!mainEl) return;
+
+  mainEl.querySelectorAll("input, select, textarea").forEach((el) => {
+    el.disabled = false;
+    if (el.type === "checkbox" || el.type === "radio") {
+      el.checked = el.defaultChecked;
+    } else if (el.tagName === "SELECT") {
+      Array.from(el.options).forEach((opt) => {
+        opt.selected = opt.defaultSelected;
+      });
+    } else {
+      el.value = el.defaultValue;
+    }
+  });
+
+  $("positive_nodule_group")?.classList.remove("disabled-group");
+  handleNoduleGte6Change(false);
+  [1, 2, 3].forEach((i) => {
+    toggleSolidPart(`n${i}_solid_container`, "");
+    const block = $(`block_n${i}`);
+    if (block) block.classList.add("hidden");
+  });
+  $("block_else")?.classList.add("hidden");
+  autoCalculateCategory();
+}
+
 function collectFormData() {
   return {
     quality: getRadio("quality") || "Good",
@@ -640,6 +672,7 @@ window.closeModal = closeModal;
 window.toggleModal = toggleModal;
 window.closeModalOnBackdrop = closeModalOnBackdrop;
 window.validateAndCopy = validateAndCopy;
+window.resetForm = resetForm;
 window.autoCalculateCategory = autoCalculateCategory;
 window.generateReportText = generateReportText;
 

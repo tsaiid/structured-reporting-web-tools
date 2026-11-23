@@ -8,7 +8,7 @@ if (process.env.NODE_ENV !== 'production') {
 // Oropharynx Neck Lymph Node Helper
 import '../css/nasopharynx_helper.css';  // 共用 nasopharynx 的 CSS
 import '../image/neck_lymph_node_stations.webp';
-import './oropharynx_logic_helper.js';
+import { initNeckLnHelper } from './neck_ln_helper.js';
 
 import { join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage, getMaxStage } from './ajcc_common.js';
 import {
@@ -195,21 +195,11 @@ function generate_report() {
     report += ajcc_template_with_parent(AJCC_TITLE, t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html(FORM_TITLE);
-    $('#reportModalBody pre code').html(report);
+    $('#reportModalBody pre code').text(report);
     document.getElementById('reportModalLong').showModal();
 }
 
-// auto- increase or decrease lymph node numbers
-$('.cb_rn').change(function () {
-    let rln_num = +$('#txt_rln_num').val();
-    if (this.checked) {
-        $('#txt_rln_num').val(rln_num + 1);
-    } else {
-        if (rln_num > 0) {
-            $('#txt_rln_num').val(rln_num - 1);
-        }
-    }
-});
+initNeckLnHelper();
 
 let is_hpv_initial = $('#cb_rn_hpv').is(':checked');
 let AJCC_TITLE_INIT = (is_hpv_initial ? "HPV-Mediated Oropharyngeal Carcinoma" : "Oropharyngeal Carcinoma (p16-)");
@@ -221,16 +211,7 @@ setupReportPage({
         N: (is_hpv_initial ? AJCC_N_HPV : AJCC_N_NONHPV),
         M: AJCC_M
     },
-    ajccTitleHtml: `AJCC Definitions for ${AJCC_TITLE_INIT} <span class='badge badge-secondary ml-2' style='font-size: 60%; vertical-align: super;'>8th</span>`
-});
-
-$('#ajccModalLong').on('show.bs.modal', function () {
-    $('body > *:not(#ajccModalLong)').attr('inert', 'true'); // 禁用背景內容
-});
-
-
-$('#ajccModalLong').on('hidden.bs.modal', function () {
-    $('body > *:not(#ajccModalLong)').removeAttr('inert'); // 恢復互動
+    ajccTitleHtml: `AJCC Definitions for ${AJCC_TITLE_INIT} <span class='inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 ml-2 align-super'>8th</span>`
 });
 
 $('#cb_rn_hpv').change(function () {
@@ -239,7 +220,7 @@ $('#cb_rn_hpv').change(function () {
     let AJCC_N = (is_hpv ? AJCC_N_HPV : AJCC_N_NONHPV);
 
     let AJCC_TITLE = (is_hpv ? "HPV-Mediated Oropharyngeal Carcinoma" : "Oropharyngeal Carcinoma (p16-)");
-    let ajccTitleHtml = `AJCC Definitions for ${AJCC_TITLE} <span class='badge badge-secondary ml-2' style='font-size: 60%; vertical-align: super;'>8th</span>`;
+    let ajccTitleHtml = `AJCC Definitions for ${AJCC_TITLE} <span class='inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 ml-2 align-super'>8th</span>`;
 
     let ajcc_table = generate_ajcc_table(AJCC_T, AJCC_N, AJCC_M);
     $('#ajccModalLongTitle').html(ajccTitleHtml);

@@ -146,30 +146,9 @@ function generate_report(){
     report += ajcc_template_with_parent("Cholangiocarcinoma: Perihilar Bile Duct", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Cholangiocarcinoma: Perihilar Bile Duct Staging Form");
-    $('#reportModalBody pre code').html(report);
+    $('#reportModalBody pre code').text(report);
     document.getElementById('reportModalLong').showModal();
 }
-
-$('.cb_rn, input[name="radio_rn"]').change(function() {
-    if ($(this).parent().parent().find('.cb_rn:checked').length) {
-        $(this).parent().parent().find('input[name="radio_rn"]').prop("checked", true);
-    } else {
-        $(this).parent().parent().find('input[name="radio_rn"]').prop("checked", false);
-    }
-    $(this).parent().parent().siblings().find('.cb_rn').prop('checked', false);
-});
-
-// auto- increase or decrease lymph node numbers
-$('.cb_rn').change(function(){
-    let rln_num = +$('#txt_rln_num').val();
-    if (this.checked) {
-        $('#txt_rln_num').val(rln_num + 1);
-    } else {
-        if (rln_num > 0) {
-            $('#txt_rln_num').val(rln_num - 1);
-        }
-    }
-});
 
 setupReportPage({
     generateReportFn: generate_report,
@@ -178,7 +157,7 @@ setupReportPage({
         N: AJCC_N,
         M: AJCC_M
     },
-    ajccTitleHtml: "AJCC Definitions for Cholangiocarcinoma: Perihilar Bile Duct <span class='badge badge-secondary ml-2' style='font-size: 60%; vertical-align: super;'>8th</span>"
+    ajccTitleHtml: "AJCC Definitions for Cholangiocarcinoma: Perihilar Bile Duct <span class='inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 ml-2 align-super'>8th</span>"
 });
 
 

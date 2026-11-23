@@ -3,7 +3,7 @@ import '../css/dashboard.css';
 import '../css/ajcc_common.css';
 import '../css/nasopharynx_helper.css';
 import '../image/neck_lymph_node_stations.webp';
-import './larynx_logic_helper.js';
+import { initNeckLnHelper } from './neck_ln_helper.js';
 if (process.env.NODE_ENV !== 'production') {
     require('../html/ajcc/larynx_supraglottis.html?raw');
 }
@@ -100,7 +100,8 @@ function generate_report(){
         report += "--- No evidence of primary tumor";
     } else {
         let t_length = parseFloat($('#txt_ts_dia').val());
-        report += "--- Size: " + t_length + " cm (largest diameter)\n";
+        let txt_t_length = !isNaN(t_length) ? t_length : "___";
+        report += "--- Size: " + txt_t_length + " cm (largest diameter)\n";
     }
     report += "\n";
 
@@ -132,6 +133,7 @@ function generate_report(){
 
     // Regional nodal metastasis
     let n_length = parseFloat($('#txt_rn_len').val());
+    let txt_n_length = !isNaN(n_length) ? n_length : "___";
     report += "5. Regional nodal metastasis\n";
     if ($('.cb_rn:checked').length) {
         report += "--- Yes:\n";
@@ -141,7 +143,7 @@ function generate_report(){
         if ($('.cb_rn_l:checked').length) {
             report += "* Left neck level: " + join_checkbox_values($('.cb_rn_l:checked')) + "\n";
         }
-        report += "* Maximum size of the largest positive node: " + n_length + " cm.\n";
+        report += "* Maximum size of the largest positive node: " + txt_n_length + " cm.\n";
     }
     if ($('.cb_rn:not(:checked)').length) {
         report += "--- No or Equivocal:\n";
@@ -183,21 +185,11 @@ function generate_report(){
     report += ajcc_template_with_parent("Laryngeal Cancer (Supraglottis) Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 8);
 
     $('#reportModalLongTitle').html("Laryngeal Cancer (Supraglottis) Staging Form");
-    $('#reportModalBody pre code').html(report);
+    $('#reportModalBody pre code').text(report);
     document.getElementById('reportModalLong').showModal();
 }
 
-// auto- increase or decrease lymph node numbers
-$('.cb_rn').change(function(){
-    let rln_num = +$('#txt_rln_num').val();
-    if (this.checked) {
-        $('#txt_rln_num').val(rln_num + 1);
-    } else {
-        if (rln_num > 0) {
-            $('#txt_rln_num').val(rln_num - 1);
-        }
-    }
-});
+initNeckLnHelper();
 
 setupReportPage({
     generateReportFn: generate_report,
@@ -206,7 +198,7 @@ setupReportPage({
         N: AJCC_N,
         M: AJCC_M
     },
-    ajccTitleHtml: "AJCC Definitions for Laryngeal Cancer (Supraglottis) Carcinoma <span class='badge badge-secondary ml-2' style='font-size: 60%; vertical-align: super;'>8th</span>"
+    ajccTitleHtml: "AJCC Definitions for Laryngeal Cancer (Supraglottis) Carcinoma <span class='inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 ml-2 align-super'>8th</span>"
 });
 
 

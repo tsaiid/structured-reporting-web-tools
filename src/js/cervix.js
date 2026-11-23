@@ -202,7 +202,7 @@ function generate_report(){
     report += ajcc_template_with_parent("Cervical Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 9);
 
     $('#reportModalLongTitle').html("Cervical Cancer Staging Form");
-    $('#reportModalBody pre code').html(report);
+    $('#reportModalBody pre code').text(report);
     document.getElementById('reportModalLong').showModal();
 }
 
@@ -213,7 +213,7 @@ setupReportPage({
         N: AJCC_N,
         M: AJCC_M
     },
-    ajccTitleHtml: "AJCC Definitions for Cervical Cancer <span class='badge badge-primary ml-2' style='font-size: 60%; vertical-align: super;'>9th</span>"
+    ajccTitleHtml: "AJCC Definitions for Cervical Cancer <span class='inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-blue-100 ml-2 align-super'>9th</span>"
 });
 
 /*

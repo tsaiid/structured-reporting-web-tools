@@ -29,9 +29,9 @@ $('#btn_ln_helper').click(function() {
     $('#lbl_helper_lat').text(LN_HELPER_STATE.tumorSide);
 
     // Restore selection UI
-    $('.ln-station-btn').removeClass('selected');
+    $('.ln-station-btn').removeClass('selected').attr('aria-pressed', 'false');
     LN_HELPER_STATE.selectedUIDs.forEach(uid => {
-        $(`.ln-station-btn[data-uid='${uid}']`).addClass('selected');
+        $(`.ln-station-btn[data-uid='${uid}']`).addClass('selected').attr('aria-pressed', 'true');
     });
 
     // Open Modal
@@ -40,9 +40,11 @@ $('#btn_ln_helper').click(function() {
 
 $('.ln-station-btn').click(function() {
     $(this).toggleClass('selected');
+    const isSelected = $(this).hasClass('selected');
+    $(this).attr('aria-pressed', String(isSelected));
     const uid = $(this).data('uid');
 
-    if ($(this).hasClass('selected')) {
+    if (isSelected) {
         LN_HELPER_STATE.selectedUIDs.add(uid.toString());
     } else {
         LN_HELPER_STATE.selectedUIDs.delete(uid.toString());
@@ -51,7 +53,7 @@ $('.ln-station-btn').click(function() {
 
 $('#btn_ln_clear').click(function() {
     LN_HELPER_STATE.selectedUIDs.clear();
-    $('.ln-station-btn').removeClass('selected');
+    $('.ln-station-btn').removeClass('selected').attr('aria-pressed', 'false');
 });
 
 $('#btn_ln_submit').click(function() {

@@ -3,6 +3,7 @@ var webpack = require('webpack'); // 這裡
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 // 定義所有 AJCC 頁面
 const ajccPages = [
@@ -32,7 +33,10 @@ const htmlPlugins = ajccPages.map(page => {
   });
 });
 
-module.exports = {
+module.exports = (env, argv) => {
+  const isProd = argv && argv.mode === 'production';
+
+  return {
 
   // https://webpack.js.org/concepts/entry-points/#multi-page-application
   entry: entries,
@@ -74,7 +78,7 @@ module.exports = {
           priority: 20,
         },
         common: {
-          test: /[\\/]src[\\/](js[\\/](common|ajcc_common|theme)\.js|css[\\/](tailwind|ajcc_common|dashboard)\.css)/,
+          test: /[\\/]src[\\/](js[\\/](common|ajcc_common|theme|neck_ln_helper)\.js|css[\\/](tailwind|ajcc_common|dashboard)\.css)/,
           name: 'common',
           chunks: (chunk) => ajccPages.includes(chunk.name),
           priority: 10,
@@ -115,6 +119,7 @@ module.exports = {
       loader: "html-loader",
       options: {
         esModule: true,
+        sources: false,
       },
     },
     {
@@ -125,7 +130,7 @@ module.exports = {
     {
       test: /\.css$/, // 針對所有.css 的檔案作預處理，這邊是用 regular express 的格式
       use: [
-        'style-loader', // 這個會後執行 (順序很重要)
+        isProd ? MiniCssExtractPlugin.loader : 'style-loader', // Production 抽離獨立 CSS 避免 FOUC；Dev 保留 style-loader 支援 HMR
         'css-loader', // 這個會先執行
         'postcss-loader'
       ]
@@ -142,6 +147,14 @@ module.exports = {
 
   // https://webpack.js.org/concepts/plugins/
   plugins: [
+    ...(isProd ? [new MiniCssExtractPlugin({
+      filename: (pathData) => {
+        return ajccPages.includes(pathData.chunk.name)
+          ? 'ajcc/[name].[contenthash].css'
+          : 'assets/css/[name].[contenthash].css';
+      },
+    })] : []),
+
     ...htmlPlugins, // 展開所有動態產生的 HtmlWebpackPlugin
 
     // NHI Lung RADS
@@ -187,4 +200,5 @@ module.exports = {
       'window.jQuery': 'jquery',
     }),
   ],
+  };
 };

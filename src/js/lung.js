@@ -170,7 +170,7 @@ function generate_report(){
     (${t3_check}) T3:
         [${t3_sz_check}] 5 cm < Tumor <= 7 cm
         [${t3_pp_check}] Parietal pleura      [${t3_cw_check}] Chest wall     [${t3_pc_check}] Pericardium
-        [${t3_pn_check}] Phrenic nerve        [${t3_av_check}] Pericardium
+        [${t3_pn_check}] Phrenic nerve        [${t3_av_check}] Azygos vein
         [${t3_tnr_check}] Thoracic nerve roots or stellate ganglion
         [${t3_sln_check}] Separate tumor nodule(s) in same lobe
     (${t4_check}) T4:
@@ -274,7 +274,7 @@ function generate_report(){
     report += ajcc_template_with_parent("Lung Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 9);
 
     $('#reportModalLongTitle').html("Lung Cancer Staging Form");
-    $('#reportModalBody pre code').html(report);
+    $('#reportModalBody pre code').text(report);
     document.getElementById('reportModalLong').showModal();
 }
 
@@ -315,7 +315,7 @@ setupReportPage({
         N: AJCC_N,
         M: AJCC_M
     },
-    ajccTitleHtml: "AJCC Definitions for Lung Cancer <span class='badge badge-primary ml-2' style='font-size: 60%; vertical-align: super;'>9th</span>"
+    ajccTitleHtml: "AJCC Definitions for Lung Cancer <span class='inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-blue-100 ml-2 align-super'>9th</span>"
 });
 
 

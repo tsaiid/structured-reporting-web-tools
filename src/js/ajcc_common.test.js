@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import { ajcc_template, ajcc_template_with_parent, getMaxStage, compareStage, getStageRank, getParentStage, showCopyFeedback, setupReportPage } from './ajcc_common';
+import { ajcc_template, ajcc_template_with_parent, getMaxStage, compareStage, getStageRank, getParentStage, showCopyFeedback, setupReportPage, initFormEnhancements, resetReportForm, initSidebar } from './ajcc_common';
 
 describe('ajcc_common', () => {
     const mockTMap = new Map([
@@ -443,6 +443,154 @@ describe('ajcc_common', () => {
             expect(btn.innerHTML).toContain('Copied!');
 
             navigator.clipboard = originalClipboard;
+        });
+
+        test('updates live TNM preview badge without opening report modal and supports reset', () => {
+            document.body.innerHTML = `
+                <main>
+                    <span id="live_tnm_badge">TxN0M0</span>
+                    <button type="button" id="btn_reset">Reset</button>
+                    <button type="button" id="btn_copy">Show & Copy</button>
+                    <input type="checkbox" id="cb_t2" />
+                </main>
+                <dialog id="reportModalLong">
+                    <h5 id="reportModalLongTitle"></h5>
+                    <div id="reportModalBody"><pre><code></code></pre></div>
+                    <button type="button" id="btn_modal_copy">Copy</button>
+                </dialog>
+            `;
+            const modal = document.getElementById('reportModalLong');
+            modal.showModal = jest.fn();
+
+            const generateFn = () => {
+                const t = $('#cb_t2').is(':checked') ? '2' : 'x';
+                const report = ajcc_template_with_parent('Test Cancer', t, mockTMap, '0', mockNMap, '0', mockMMap, 8);
+                $('#reportModalLongTitle').text('Test Staging Form');
+                $('#reportModalBody pre code').text(report);
+                modal.showModal();
+            };
+
+            setupReportPage({ generateReportFn: generateFn });
+
+            // Initial live preview should compute TxN0M0 without calling showModal
+            expect(modal.showModal).not.toHaveBeenCalled();
+            expect($('#live_tnm_badge').text()).toBe('TxN0M0');
+
+            // Checking input updates live badge
+            $('#cb_t2').prop('checked', true).trigger('change');
+            expect($('#live_tnm_badge').text()).toBe('T2N0M0');
+            expect(modal.showModal).not.toHaveBeenCalled();
+
+            // Clicking reset restores defaults and updates badge back to TxN0M0
+            $('#btn_reset').trigger('click');
+            expect($('#cb_t2').is(':checked')).toBe(false);
+            expect($('#live_tnm_badge').text()).toBe('TxN0M0');
+        });
+
+        test('strips copy feedback badge text when copying again from report modal', async () => {
+            document.body.innerHTML = `
+                <button type="button" id="btn_copy">Copy</button>
+                <button type="button" id="btn_modal_copy">Copy</button>
+                <h5 id="reportModalLongTitle">Lung Cancer Staging Form<span id="report-modal-copy-feedback-badge">Copied to clipboard</span></h5>
+                <div id="reportModalBody"><pre><code>T2aN1M0</code></pre></div>
+            `;
+            const writeTextMock = jest.fn().mockResolvedValue(undefined);
+            Object.assign(navigator, {
+                clipboard: { writeText: writeTextMock }
+            });
+
+            setupReportPage({ generateReportFn: jest.fn() });
+            $('#btn_modal_copy').trigger('click');
+
+            expect(writeTextMock).toHaveBeenCalledWith('Lung Cancer Staging Form\n\nT2aN1M0');
+        });
+    });
+
+    describe('initFormEnhancements', () => {
+        afterEach(() => {
+            document.body.innerHTML = '';
+        });
+
+        test('clamps negative numbers, syncs Non-measurable, auto-checks Others, and syncs #cb_rn_sin', () => {
+            document.body.innerHTML = `
+                <main>
+                    <input type="number" id="txt_ts_len" value="" />
+                    <input type="checkbox" id="cb_ts_nm" />
+                    <input type="checkbox" id="cb_dm_others" />
+                    <input type="text" id="txt_dm_others" value="" />
+                    <input type="checkbox" class="cb_rn" id="cb_rn_r_IIA" />
+                    <input type="checkbox" class="cb_rn" id="cb_rn_r_III" />
+                    <input type="checkbox" id="cb_rn_sin" checked />
+                </main>
+            `;
+
+            initFormEnhancements();
+
+            // 1. Non-negative validation
+            expect($('#txt_ts_len').attr('min')).toBe('0');
+            $('#txt_ts_len').val('-5').trigger('input');
+            expect($('#txt_ts_len').val()).toBe('0');
+
+            // 2. Non-measurable mutual sync
+            $('#txt_ts_len').val('3.5').trigger('input');
+            $('#cb_ts_nm').prop('checked', true).trigger('change');
+            expect($('#txt_ts_len').val()).toBe('');
+            $('#txt_ts_len').val('2.1').trigger('input');
+            expect($('#cb_ts_nm').is(':checked')).toBe(false);
+
+            // 3. Auto-check Others checkbox
+            $('#txt_dm_others').val('peritoneum').trigger('input');
+            expect($('#cb_dm_others').is(':checked')).toBe(true);
+
+            // 4. Multi-station neck LN unchecks and disables #cb_rn_sin
+            $('#cb_rn_r_IIA').prop('checked', true).trigger('change');
+            expect($('#cb_rn_sin').is(':checked')).toBe(true);
+            expect($('#cb_rn_sin').prop('disabled')).toBe(false);
+
+            $('#cb_rn_r_III').prop('checked', true).trigger('change');
+            expect($('#cb_rn_sin').is(':checked')).toBe(false);
+            expect($('#cb_rn_sin').prop('disabled')).toBe(true);
+
+            // Unchecking one station re-enables #cb_rn_sin
+            $('#cb_rn_r_III').prop('checked', false).trigger('change');
+            expect($('#cb_rn_sin').prop('disabled')).toBe(false);
+        });
+    });
+
+    describe('initSidebar', () => {
+        beforeEach(() => {
+            localStorage.clear();
+            document.body.innerHTML = `
+                <nav id="main-sidebar">
+                    <button id="sidebar-collapse-toggle"></button>
+                    <span id="sidebar-tooltip"></span>
+                    <input type="search" id="sidebar-filter" />
+                    <button id="ajcc-toggle"></button>
+                    <ul id="ajcc-sidebar-list">
+                        <li><a href="lung.html"><span class="sidebar-label">Lung</span></a></li>
+                        <li class="ajcc-optional"><a href="rcc.html"><span class="sidebar-label">RCC</span></a></li>
+                    </ul>
+                </nav>
+            `;
+        });
+
+        afterEach(() => {
+            document.body.innerHTML = '';
+            localStorage.clear();
+        });
+
+        test('filters sidebar items including optional items when searching', () => {
+            localStorage.setItem('ajcc_sidebar_state', 'collapsed');
+            initSidebar();
+
+            $('#sidebar-filter').val('rcc').trigger('input');
+            expect($('a[href="lung.html"]').closest('li').css('display')).toBe('none');
+            expect($('a[href="rcc.html"]').closest('li').css('display')).not.toBe('none');
+            expect($('a[href="rcc.html"]').closest('li').css('opacity')).toBe('1');
+
+            // Clearing filter restores list visibility
+            $('#sidebar-filter').val('').trigger('input');
+            expect($('a[href="lung.html"]').closest('li').css('display')).not.toBe('none');
         });
     });
 });

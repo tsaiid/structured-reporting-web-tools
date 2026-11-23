@@ -1,9 +1,17 @@
 import $ from 'jquery';
 
+// 記錄最近一次透過模板產生的 TNM 期別，供 Toolbar 即時預覽徽章使用
+let lastComputedStage = null;
+
+export function getLastComputedStage() {
+    return lastComputedStage;
+}
+
 export function ajcc_template(ca_str, t, t_str, n, n_str, m, m_str, ver = 8) {
     const t_val = Array.isArray(t) ? getMaxStage(t) : (t !== undefined && t !== null) ? String(t) : "";
     const n_val = Array.isArray(n) ? getMaxStage(n) : (n !== undefined && n !== null) ? String(n) : "";
     const m_val = Array.isArray(m) ? getMaxStage(m) : (m !== undefined && m !== null) ? String(m) : "";
+    lastComputedStage = { t: t_val, n: n_val, m: m_val };
     var report = `
 ===================================================
 AJCC Cancer Staging System, ${ver}th edition
@@ -239,6 +247,7 @@ For ${ca_str}
 AJCC ${ver}th edition Staging status:
 T${t_val}N${n_val}M${m_val}
 =====================`;
+    lastComputedStage = { t: t_val, n: n_val, m: m_val };
     return report;
 }
 
@@ -452,20 +461,179 @@ export function showCopyFeedback(button, isSuccess = true, options = {}) {
 }
 
 /**
+ * 將指定文字複製到剪貼簿並觸發視覺回饋
+ *
+ * @param {string} textToCopy
+ * @param {HTMLElement|jQuery|string} button
+ * @param {Object} feedbackOpts
+ */
+function copyTextToClipboard(textToCopy, button, feedbackOpts = {}) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            showCopyFeedback(button, true, feedbackOpts);
+        }).catch(err => {
+            console.error("Failed to copy: ", err);
+            showCopyFeedback(button, false, feedbackOpts);
+        });
+    } else {
+        // Fallback for older browsers or non-secure contexts
+        const textArea = document.createElement("textarea");
+        textArea.value = textToCopy;
+        textArea.style.position = "fixed";  // Avoid scrolling to bottom
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            const successful = document.execCommand('copy');
+            showCopyFeedback(button, Boolean(successful), feedbackOpts);
+        } catch (err) {
+            console.error('Fallback: Oops, unable to copy', err);
+            showCopyFeedback(button, false, feedbackOpts);
+        }
+        document.body.removeChild(textArea);
+    }
+}
+
+/**
+ * 取得純淨的報告標題與內文（排除複製回饋 badge 文字）
+ */
+function getReportClipboardText(reportModalTitleId, reportModalBodySelector) {
+    // 避免快速連點時把先前加入標題內的回饋 badge 文字一併複製進 RIS 報告
+    $('#report-modal-copy-feedback-badge').remove();
+    const report_title = $(reportModalTitleId).text().trim();
+    const report_body = $(reportModalBodySelector).text();
+    return report_title + "\n\n" + report_body;
+}
+
+/**
+ * 初始化共通表單防呆與連動（非負數、Non-measurable 互斥、Others 自動勾選、頭頸癌 Single LN 連動）
+ */
+export function initFormEnhancements() {
+    const $main = $('main');
+    if (!$main.length) return;
+
+    // 1. 數值輸入框統一加上非負數限制 (min="0") 並防止負值輸入
+    $main.find('input[type="number"]').each(function () {
+        if ($(this).attr('min') === undefined) {
+            $(this).attr('min', '0');
+        }
+    });
+    $main.off('input.nonNeg change.nonNeg', 'input[type="number"]').on('input.nonNeg change.nonNeg', 'input[type="number"]', function () {
+        const val = parseFloat($(this).val());
+        if (!isNaN(val) && val < 0) {
+            $(this).val(0);
+        }
+    });
+
+    // 2. 腫瘤大小與 Non-measurable 雙向互斥連動
+    const sizePairs = [
+        { nm: '#cb_ts_nm', inputs: '#txt_ts_len, #txt_ts_dia, #txt_ts_thick' },
+        { nm: '#cb_tp_ts_nm', inputs: '#txt_tp_ts_diameter' }
+    ];
+    sizePairs.forEach(({ nm, inputs }) => {
+        const $nm = $(nm);
+        const $inputs = $(inputs);
+        if (!$nm.length || !$inputs.length) return;
+
+        $nm.off('change.sizeSync').on('change.sizeSync', function () {
+            if ($(this).is(':checked')) {
+                $inputs.val('');
+            }
+        });
+        $inputs.off('input.sizeSync').on('input.sizeSync', function () {
+            if (String($(this).val()).trim() !== '') {
+                $nm.prop('checked', false);
+            }
+        });
+    });
+
+    // 3. 在 Others 文字輸入框鍵入內容時，自動勾選對應的 Others checkbox
+    $main.off('input.othersSync', 'input[type="text"][id^="txt_"]').on('input.othersSync', 'input[type="text"][id^="txt_"]', function () {
+        const id = this.id;
+        if (!id || !id.endsWith('_others')) return;
+        const val = String($(this).val()).trim();
+        if (val !== '') {
+            const cbSelector = `#cb_${id.slice(4)}`;
+            const $cb = $(cbSelector);
+            if ($cb.length && !$cb.is(':checked')) {
+                $cb.prop('checked', true).trigger('change');
+            }
+        }
+    });
+
+    // 4. 頭頸癌多站淋巴結勾選時自動取消並鎖定 Single lymphadenopathy (#cb_rn_sin)
+    const $singleNodeCb = $('#cb_rn_sin');
+    if ($singleNodeCb.length) {
+        const syncSingleNodeState = () => {
+            const checkedStations = $('.cb_rn:not(#cb_rn_ene):checked').length;
+            if (checkedStations > 1) {
+                $singleNodeCb.prop('checked', false).prop('disabled', true);
+            } else {
+                $singleNodeCb.prop('disabled', false);
+            }
+        };
+        $main.off('change.singleNodeSync', '.cb_rn:not(#cb_rn_ene)').on('change.singleNodeSync', '.cb_rn:not(#cb_rn_ene)', syncSingleNodeState);
+        syncSingleNodeState();
+    }
+}
+
+/**
+ * 重設表單內所有欄位回初始預設狀態
+ */
+export function resetReportForm() {
+    const $main = $('main');
+    if (!$main.length) return;
+
+    // 重設所有原生 <form>
+    $main.find('form').each(function () {
+        this.reset();
+    });
+
+    // 重設不在 <form> 內的表單控制項並解除鎖定狀態
+    $main.find('input, select, textarea').each(function () {
+        this.disabled = this.hasAttribute('disabled');
+        if (!this.form) {
+            if (this.type === 'checkbox' || this.type === 'radio') {
+                this.checked = this.defaultChecked;
+            } else if (this.tagName === 'SELECT') {
+                Array.from(this.options).forEach(opt => {
+                    opt.selected = opt.defaultSelected;
+                });
+            } else {
+                this.value = this.defaultValue;
+            }
+        }
+    });
+
+    // 同步清除淋巴結地圖選取狀態
+    $('.ln-station-btn, .neck-ln-station-btn').removeClass('selected').attr('aria-pressed', 'false');
+
+    // 觸發相關聯動（如 HPV / Lip AJCC 表格切換與 Single LN 狀態）
+    $('#cb_rn_hpv').trigger('change');
+    $('.cb_tl_l').first().trigger('change');
+}
+
+/**
  * Sets up the standard report page interactions:
- * - Copy button logic (ClipboardJS)
- * - AJCC Modal button logic
- * - Populates AJCC Modal content on load
+ * - Copy button logic (Clipboard API + fallback)
+ * - Report modal Copy button & Reset button & Ctrl/Cmd+Enter shortcut
+ * - Live TNM staging preview badge
+ * - AJCC Modal button logic & content population
+ * - Standardized form enhancements
  *
  * @param {Object} options
  * @param {Function} options.generateReportFn - Function to call when copy is clicked (to generate text).
  * @param {Object} options.ajccData - { T: Map, N: Map, M: Map } Definitions for the table.
  * @param {string} options.ajccTitleHtml - HTML content for #ajccModalLongTitle.
  * @param {string} [options.copyButtonId='#btn_copy']
+ * @param {string} [options.modalCopyButtonId='#btn_modal_copy']
+ * @param {string} [options.resetButtonId='#btn_reset']
+ * @param {string} [options.liveBadgeId='#live_tnm_badge']
  * @param {string} [options.ajccButtonId='#btn_ajcc']
  * @param {string} [options.ajccModalId='#ajccModalLong']
  * @param {string} [options.ajccModalTitleId='#ajccModalLongTitle']
  * @param {string} [options.ajccModalBodyId='#ajccModalBody']
+ * @param {string} [options.reportModalId='#reportModalLong']
  * @param {string} [options.reportModalTitleId='#reportModalLongTitle']
  * @param {string} [options.reportModalBodySelector='#reportModalBody pre code']
  */
@@ -474,13 +642,49 @@ export function setupReportPage({
     ajccData,
     ajccTitleHtml,
     copyButtonId = '#btn_copy',
+    modalCopyButtonId = '#btn_modal_copy',
+    resetButtonId = '#btn_reset',
+    liveBadgeId = '#live_tnm_badge',
     ajccButtonId = '#btn_ajcc',
     ajccModalId = '#ajccModalLong',
     ajccModalTitleId = '#ajccModalLongTitle',
     ajccModalBodyId = '#ajccModalBody',
+    reportModalId = '#reportModalLong',
     reportModalTitleId = '#reportModalLongTitle',
     reportModalBodySelector = '#reportModalBody pre code'
 }) {
+    const updateLiveStagePreview = () => {
+        const $badge = $(liveBadgeId);
+        if (!$badge.length || typeof generateReportFn !== 'function') return;
+
+        const reportModal = document.querySelector(reportModalId);
+        // 若報告 Modal 目前已開啟，則不覆寫其狀態
+        if (reportModal && reportModal.open) return;
+
+        const origShowModal = reportModal ? reportModal.showModal : null;
+        if (reportModal) {
+            reportModal.showModal = () => {};
+        }
+        try {
+            lastComputedStage = null;
+            generateReportFn();
+            if (lastComputedStage) {
+                const { t, n, m } = lastComputedStage;
+                $badge.text(`T${t}N${n}M${m}`);
+            }
+        } catch (err) {
+            console.error('Live stage preview failed:', err);
+        } finally {
+            if (reportModal) {
+                if (origShowModal) {
+                    reportModal.showModal = origShowModal;
+                } else {
+                    delete reportModal.showModal;
+                }
+            }
+        }
+    };
+
     // 1. Copy Button Click - Trigger Generation and Copy
     $(copyButtonId).on('click', function (event) {
         event.preventDefault();
@@ -489,42 +693,33 @@ export function setupReportPage({
         // Generate report
         if (typeof generateReportFn === 'function') {
             generateReportFn();
+            if (lastComputedStage && $(liveBadgeId).length) {
+                const { t, n, m } = lastComputedStage;
+                $(liveBadgeId).text(`T${t}N${n}M${m}`);
+            }
         }
 
         // Get text to copy
-        const report_title = $(reportModalTitleId).text();
-        const report_body = $(reportModalBodySelector).text();
-        const text_to_copy = report_title + "\n\n" + report_body;
-
-        const feedbackOpts = {
+        const text_to_copy = getReportClipboardText(reportModalTitleId, reportModalBodySelector);
+        copyTextToClipboard(text_to_copy, copyBtn, {
             modalTitleSelector: reportModalTitleId
-        };
+        });
+    });
 
-        // Copy to clipboard
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(text_to_copy).then(() => {
-                showCopyFeedback(copyBtn, true, feedbackOpts);
-            }).catch(err => {
-                console.error("Failed to copy: ", err);
-                showCopyFeedback(copyBtn, false, feedbackOpts);
-            });
-        } else {
-            // Fallback for older browsers or non-secure contexts
-            const textArea = document.createElement("textarea");
-            textArea.value = text_to_copy;
-            textArea.style.position = "fixed";  // Avoid scrolling to bottom
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            try {
-                const successful = document.execCommand('copy');
-                showCopyFeedback(copyBtn, Boolean(successful), feedbackOpts);
-            } catch (err) {
-                console.error('Fallback: Oops, unable to copy', err);
-                showCopyFeedback(copyBtn, false, feedbackOpts);
-            }
-            document.body.removeChild(textArea);
-        }
+    // 1b. Report Modal Copy Button Click - Copy current preview text again
+    $(modalCopyButtonId).on('click', function (event) {
+        event.preventDefault();
+        const text_to_copy = getReportClipboardText(reportModalTitleId, reportModalBodySelector);
+        copyTextToClipboard(text_to_copy, this, {
+            modalTitleSelector: reportModalTitleId
+        });
+    });
+
+    // 1c. Reset Form Button Click
+    $(resetButtonId).on('click', function (event) {
+        event.preventDefault();
+        resetReportForm();
+        updateLiveStagePreview();
     });
 
     // 2. AJCC Button Click
@@ -536,16 +731,39 @@ export function setupReportPage({
         }
     });
 
-    // 3. Document Ready - Populate AJCC Table
-    $(document).ready(function () {
-        // console.log("setupReportPage: Document loaded");
+    // 2b. Keyboard Shortcut: Ctrl+Enter / Cmd+Enter to Show & Copy
+    $(document).off('keydown.ajccShortcut').on('keydown.ajccShortcut', function (event) {
+        if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+            const hasOpenDialog = document.querySelector('dialog[open]');
+            if (!hasOpenDialog && $(copyButtonId).length) {
+                event.preventDefault();
+                $(copyButtonId).trigger('click');
+            }
+        }
+    });
+
+    // 3. Document Ready - Populate AJCC Table, Form Enhancements & Live Stage Preview
+    const onReady = () => {
         if (ajccData && ajccData.T && ajccData.N && ajccData.M) {
             const ajcc_table = generate_ajcc_table(ajccData.T, ajccData.N, ajccData.M);
             $(ajccModalTitleId).html(ajccTitleHtml);
             $(ajccModalBodyId).html(ajcc_table);
         }
         initSidebar();
-    });
+        initFormEnhancements();
+
+        // 監聽表單變更即時更新 Toolbar TNM 徽章
+        if ($(liveBadgeId).length) {
+            $('main').off('change.liveStage input.liveStage').on('change.liveStage input.liveStage', 'input, select, textarea', updateLiveStagePreview);
+            updateLiveStagePreview();
+        }
+    };
+
+    if (document.readyState === 'loading') {
+        $(document).ready(onReady);
+    } else {
+        onReady();
+    }
 }
 
 export function initSidebar() {
@@ -588,6 +806,10 @@ export function initSidebar() {
 
     // --- 1. AJCC Optional Items Toggle ---
     let isAjccExpanded = localStorage.getItem('ajcc_sidebar_state') !== 'collapsed';
+    // 若當前正在瀏覽的頁面屬於 optional 項目，強制展開避免在選單中消失
+    if ($activeLink.length && $activeLink.closest('li').hasClass('ajcc-optional')) {
+        isAjccExpanded = true;
+    }
 
     function updateAjccState(expanded) {
         if (expanded) {
@@ -620,6 +842,39 @@ export function initSidebar() {
         updateAjccState(newState);
         localStorage.setItem('ajcc_sidebar_state', newState ? 'expanded' : 'collapsed');
     });
+
+    // --- 1b. Sidebar Quick Filter ---
+    const $sidebarFilter = $('#sidebar-filter');
+    if ($sidebarFilter.length) {
+        $sidebarFilter.on('input', function () {
+            const query = String($(this).val()).trim().toLowerCase();
+            if (!query) {
+                $list.children('li').show();
+                updateAjccState(isAjccExpanded);
+                return;
+            }
+            $list.children('li').each(function () {
+                const $li = $(this);
+                const text = $li.find('.sidebar-label').first().text().toLowerCase();
+                const href = ($li.find('a').attr('href') || '').toLowerCase();
+                const matched = text.includes(query) || href.includes(query);
+                if (matched) {
+                    $li.show();
+                    if ($li.hasClass('ajcc-optional')) {
+                        $li.css({
+                            'max-height': '50px',
+                            'opacity': '1',
+                            'margin-bottom': '',
+                            'padding-top': '',
+                            'padding-bottom': ''
+                        });
+                    }
+                } else {
+                    $li.hide();
+                }
+            });
+        });
+    }
 
     // --- 2. Full Sidebar Collapse Logic ---
     let isSidebarCollapsed = localStorage.getItem('sidebar_collapsed_locked') === 'true';

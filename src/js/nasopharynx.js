@@ -8,7 +8,7 @@ if (process.env.NODE_ENV !== 'production') {
 // Nasopharynx Neck Lymph Node Helper
 import '../css/nasopharynx_helper.css';
 import '../image/neck_lymph_node_stations.webp';
-import './nasopharynx_logic_helper.js';
+import { initNeckLnHelper } from './neck_ln_helper.js';
 
 import {join_checkbox_values, ajcc_template_with_parent, generate_ajcc_table, setupReportPage, getMaxStage} from './ajcc_common.js';
 import { calculateNasopharynxStage } from './nasopharynx_logic.js';
@@ -27,15 +27,15 @@ const AJCC_T = new Map([
 const AJCC_N = new Map([
     ['x', 'Regional lymph nodes cannot be assessed'],
     ['0', 'No tumor involvement of regional lymph node(s)'],
-    ['1', 'Unilateral cervical lymph node(s) and/or unilateral or bilateral retropharyngeal lymph node(s), &le; 6 cm, above caudal border of cricoid cartilage, without advanced extranodal extension'],
-    ['2', 'Bilateral cervical lymph nodes, &le; 6 cm, above caudal border of cricoid cartilage, without advanced extranodal extension'],
+    ['1', 'Unilateral cervical lymph node(s) and/or unilateral or bilateral retropharyngeal lymph node(s), ≤ 6 cm, above caudal border of cricoid cartilage, without advanced extranodal extension'],
+    ['2', 'Bilateral cervical lymph nodes, ≤ 6 cm, above caudal border of cricoid cartilage, without advanced extranodal extension'],
     ['3', 'Unilateral or bilateral cervical lymph node(s) > 6 cm, and/or extension below the caudal border of cricoid cartilage, and/or advanced radiologic extranodal extension with involvement of adjacent muscles, skin, and/or neurovascular bundle'],
 ]);
 
 const AJCC_M = new Map([
     ['0', 'No distant metastasis'],
     ['1', 'Distant metastasis'],
-    ['1a', '&le; 3 metastatic lesions in one or more organs/sites'],
+    ['1a', '≤ 3 metastatic lesions in one or more organs/sites'],
     ['1b', '> 3 metastatic lesions in one or more organs/sites'],
 ]);
 
@@ -233,20 +233,11 @@ function generate_report(){
     report += ajcc_template_with_parent("Nasopharyngeal Carcinoma", t, AJCC_T, n, AJCC_N, m, AJCC_M, 9);
 
     $('#reportModalLongTitle').html("Nasopharyngeal Carcinoma Staging Form (AJCC 9th)");
-    $('#reportModalBody pre code').html(report);
+    $('#reportModalBody pre code').text(report);
     document.getElementById('reportModalLong').showModal();
 }
 
-$('.cb_rn').change(function(){
-    let rln_num = +$('#txt_rln_num').val();
-    if (this.checked) {
-        $('#txt_rln_num').val(rln_num + 1);
-    } else {
-        if (rln_num > 0) {
-            $('#txt_rln_num').val(rln_num - 1);
-        }
-    }
-});
+initNeckLnHelper({ highlightBelowCricoid: true });
 
 setupReportPage({
     generateReportFn: generate_report,
@@ -255,5 +246,5 @@ setupReportPage({
         N: AJCC_N,
         M: AJCC_M
     },
-    ajccTitleHtml: "AJCC Definitions for Nasopharyngeal Carcinoma <span class='badge badge-primary ml-2' style='font-size: 60%; vertical-align: super;'>9th</span>"
+    ajccTitleHtml: "AJCC Definitions for Nasopharyngeal Carcinoma <span class='inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-blue-100 ml-2 align-super'>9th</span>"
 });
