@@ -576,7 +576,28 @@ describe('ajcc_common', () => {
 
         afterEach(() => {
             document.body.innerHTML = '';
+            document.body.className = '';
+            document.documentElement.removeAttribute('data-sidebar-collapsed');
+            document.documentElement.removeAttribute('data-ajcc-collapsed');
             localStorage.clear();
+        });
+
+        test('syncs data-sidebar-collapsed and data-ajcc-collapsed attributes on documentElement', () => {
+            localStorage.setItem('sidebar_collapsed_locked', 'true');
+            localStorage.setItem('ajcc_sidebar_state', 'collapsed');
+            initSidebar();
+
+            expect(document.documentElement.getAttribute('data-sidebar-collapsed')).toBe('true');
+            expect(document.documentElement.getAttribute('data-ajcc-collapsed')).toBe('true');
+            expect(document.body.classList.contains('sidebar-collapsed')).toBe(true);
+
+            // Toggle expand sidebar & AJCC optional items
+            $('#sidebar-collapse-toggle').trigger('click');
+            $('#ajcc-toggle').trigger('click');
+
+            expect(document.documentElement.hasAttribute('data-sidebar-collapsed')).toBe(false);
+            expect(document.documentElement.hasAttribute('data-ajcc-collapsed')).toBe(false);
+            expect(document.body.classList.contains('sidebar-collapsed')).toBe(false);
         });
 
         test('filters sidebar items including optional items when searching', () => {

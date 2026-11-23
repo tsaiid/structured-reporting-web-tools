@@ -1,15 +1,29 @@
-<!-- Theme Initialization Script (Prevents Flash of Unstyled Content) -->
+<!-- Theme & Sidebar Initialization Script (Prevents FOUC & Layout Shift) -->
 <script>
   (function() {
-    var savedTheme = localStorage.getItem('theme');
-    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    var theme = (savedTheme === 'dark' || savedTheme === 'light') ? savedTheme : (prefersDark ? 'dark' : 'light');
-    document.documentElement.setAttribute('data-theme', theme);
+    var root = document.documentElement;
+    // 首幀渲染階段暫停所有過渡動畫，避免換頁時出現 Sidebar 展開後再縮合或開關滑動閃爍
+    root.classList.add('preload-no-transition');
+    try {
+      var savedTheme = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme = (savedTheme === 'dark' || savedTheme === 'light') ? savedTheme : (prefersDark ? 'dark' : 'light');
+      root.setAttribute('data-theme', theme);
+
+      if (localStorage.getItem('sidebar_collapsed_locked') === 'true') {
+        root.setAttribute('data-sidebar-collapsed', 'true');
+      }
+      if (localStorage.getItem('ajcc_sidebar_state') === 'collapsed') {
+        root.setAttribute('data-ajcc-collapsed', 'true');
+      }
+    } catch (e) {
+      root.setAttribute('data-theme', 'light');
+    }
   })();
 </script>
 <meta name="color-scheme" content="light dark" />
 <style>
-  /* Critical CSS to prevent FOUC before stylesheet finishes loading */
+  /* Critical CSS to prevent FOUC and initial transition flash */
   :root {
       color-scheme: light dark;
       --sidebar-bg: #f8f9fa;
@@ -21,6 +35,11 @@
   }
   [data-theme="dark"] {
       --sidebar-bg: #282a36;
+  }
+  html.preload-no-transition *,
+  html.preload-no-transition *::before,
+  html.preload-no-transition *::after {
+      transition: none !important;
   }
 </style>
 

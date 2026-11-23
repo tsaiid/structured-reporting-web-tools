@@ -303,12 +303,30 @@ main[role="main"] {
   transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* When collapsed */
-body.sidebar-collapsed .sidebar-nav {
+/* 預留側邊欄圖示固定寬高，避免 FontAwesome SVG 取代 <i> 時文字橫向跳動 */
+.sidebar-nav a > i.fas,
+.sidebar-nav a > svg {
+  width: 0.875rem;
+  height: 1rem;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* 首幀即同步隱藏收合中的 optional 項目，避免載入後才縮合 */
+html[data-ajcc-collapsed="true"] .ajcc-optional {
+  max-height: 0;
+  opacity: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* When collapsed (支援首幀 html[data-sidebar-collapsed] 與 body.sidebar-collapsed) */
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav {
   width: 4rem !important; /* w-16: 64px */
 }
 
-body.sidebar-collapsed main[role="main"] {
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) main[role="main"] {
   margin-left: 4rem !important;
 }
 
@@ -322,6 +340,7 @@ body.sidebar-collapsed main[role="main"] {
 .sidebar-nav .sidebar-label,
 .sidebar-nav h6 span,
 .sidebar-nav #ajcc-toggle,
+.sidebar-nav a i,
 .sidebar-nav a svg {
   opacity: 1;
   visibility: visible;
@@ -335,11 +354,12 @@ body.sidebar-collapsed main[role="main"] {
 }
 
 /* Initially hidden state when collapsed */
-body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) .sidebar-label,
-body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) #sidebar-filter-wrapper,
-body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) h6 span,
-body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) #ajcc-toggle,
-body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) a svg {
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) .sidebar-label,
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) #sidebar-filter-wrapper,
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) h6 span,
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) #ajcc-toggle,
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) a i,
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) a svg {
   opacity: 0 !important;
   visibility: hidden;
   width: 0;
@@ -351,54 +371,54 @@ body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) a svg {
 }
 
 /* Ensure consistent anchor box model */
-body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) a {
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) a {
   justify-content: center;
   padding-left: 0;
   padding-right: 0;
   font-size: 0;
 }
 
-body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) h6 {
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) h6 {
   justify-content: center;
   padding-left: 0;
   padding-right: 0;
   margin-bottom: 0;
 }
 
-body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) .flex.items-center.justify-between {
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) .flex.items-center.justify-between {
   justify-content: center;
   padding-left: 0;
   padding-right: 0;
 }
 
-body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) .flex.items-center.justify-start {
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) .flex.items-center.justify-start {
   justify-content: flex-start;
   padding: 0.5rem; /* Matches p-2 */
 }
 
 /* No manual margin needed if parent padding matches */
-body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) #sidebar-collapse-toggle {
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) #sidebar-collapse-toggle {
   margin-left: 0;
 }
 
 /* Hover Expansion (JavaScript controlled) */
-body.sidebar-collapsed .sidebar-nav.hover-expanded {
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav.hover-expanded {
   width: 12rem !important; /* w-48 by default (md) */
   box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
   z-index: 50;
 }
 
 @media (min-width: 1024px) {
-  body.sidebar-collapsed .sidebar-nav.hover-expanded {
+  :is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav.hover-expanded {
     width: 14rem !important; /* w-56 on lg */
   }
 }
 
 /* Fade in ALL text elements AFTER sidebar width transition */
-body.sidebar-collapsed .sidebar-nav.hover-expanded .sidebar-label,
-body.sidebar-collapsed .sidebar-nav.hover-expanded #sidebar-filter-wrapper,
-body.sidebar-collapsed .sidebar-nav.hover-expanded h6 span,
-body.sidebar-collapsed .sidebar-nav.hover-expanded #ajcc-toggle {
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav.hover-expanded .sidebar-label,
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav.hover-expanded #sidebar-filter-wrapper,
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav.hover-expanded h6 span,
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav.hover-expanded #ajcc-toggle {
   opacity: 1 !important;
   visibility: visible;
   width: auto;
@@ -407,8 +427,8 @@ body.sidebar-collapsed .sidebar-nav.hover-expanded #ajcc-toggle {
 }
 
 /* Special handling for SVG icons to ensure fade-in works */
-/* Special handling for SVG icons to ensure fade-in works */
-body.sidebar-collapsed .sidebar-nav.hover-expanded a svg {
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav.hover-expanded a i,
+:is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav.hover-expanded a svg {
   opacity: 1 !important;
   visibility: visible;
   /* width/height removed to match "expanded" natural size */
@@ -426,17 +446,18 @@ body.sidebar-collapsed .sidebar-nav.hover-expanded a svg {
  * ======================================== */
 @media (max-width: 767.98px) {
   /* 忽略 collapsed 的固定定位和窄寬度設定 */
-  body.sidebar-collapsed .sidebar-nav {
+  :is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav {
     width: 100% !important;
     position: static !important;
   }
 
   /* 忽略 collapsed 隱藏文字的效果 */
-  body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) .sidebar-label,
-  body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) #sidebar-filter-wrapper,
-  body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) h6 span,
-  body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) #ajcc-toggle,
-  body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) a svg {
+  :is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) .sidebar-label,
+  :is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) #sidebar-filter-wrapper,
+  :is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) h6 span,
+  :is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) #ajcc-toggle,
+  :is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) a i,
+  :is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) a svg {
     opacity: 1 !important;
     visibility: visible !important;
     width: auto !important;
@@ -444,26 +465,26 @@ body.sidebar-collapsed .sidebar-nav.hover-expanded a svg {
     overflow: visible !important;
   }
 
-  body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) a {
+  :is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) a {
     justify-content: flex-start !important;
     padding-left: 0.5rem !important;
     padding-right: 0.5rem !important;
     font-size: 0.875rem !important;
   }
 
-  body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) h6 {
+  :is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) h6 {
     justify-content: flex-start !important;
     padding-left: 0.5rem !important;
     padding-right: 0.5rem !important;
     margin-bottom: 0.5rem !important;
   }
 
-  body.sidebar-collapsed .sidebar-nav:not(.hover-expanded) .flex.items-center.justify-between {
+  :is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) .sidebar-nav:not(.hover-expanded) .flex.items-center.justify-between {
     justify-content: space-between !important;
   }
 
   /* 忽略 main margin-left */
-  body.sidebar-collapsed main[role="main"] {
+  :is(html[data-sidebar-collapsed="true"], body.sidebar-collapsed) main[role="main"] {
     margin-left: 0 !important;
   }
 }

@@ -791,7 +791,7 @@ export function initSidebar() {
     function toggleHighlight(show) {
         if (!$activeLink.length) return;
 
-        const $icon = $activeLink.find('i');
+        const $icon = $activeLink.find('i, svg');
         if (show) {
             $activeLink.addClass('bg-gray-200 dark:bg-gray-800');
             $icon.removeClass('text-gray-400 dark:text-gray-500')
@@ -813,6 +813,7 @@ export function initSidebar() {
 
     function updateAjccState(expanded) {
         if (expanded) {
+            document.documentElement.removeAttribute('data-ajcc-collapsed');
             $toggleBtn.html('<i class="fas fa-folder-open"></i>');
             $list.find('.ajcc-optional').css({
                 'max-height': '50px',
@@ -822,6 +823,7 @@ export function initSidebar() {
                 'padding-bottom': ''
             });
         } else {
+            document.documentElement.setAttribute('data-ajcc-collapsed', 'true');
             $toggleBtn.html('<i class="fas fa-folder"></i>');
             $list.find('.ajcc-optional').css({
                 'max-height': '0',
@@ -883,12 +885,14 @@ export function initSidebar() {
     function updateSidebarCollapseState(collapsed) {
         const $tooltip = $('#sidebar-tooltip');
         if (collapsed) {
+            document.documentElement.setAttribute('data-sidebar-collapsed', 'true');
             $body.addClass('sidebar-collapsed');
             $tooltip.text('展開選單');
 
             // Hide highlight when collapsed
             toggleHighlight(false);
         } else {
+            document.documentElement.removeAttribute('data-sidebar-collapsed');
             $body.removeClass('sidebar-collapsed');
             $tooltip.text('收合選單');
 

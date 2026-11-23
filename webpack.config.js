@@ -130,7 +130,7 @@ module.exports = (env, argv) => {
     {
       test: /\.css$/, // 針對所有.css 的檔案作預處理，這邊是用 regular express 的格式
       use: [
-        isProd ? MiniCssExtractPlugin.loader : 'style-loader', // Production 抽離獨立 CSS 避免 FOUC；Dev 保留 style-loader 支援 HMR
+        MiniCssExtractPlugin.loader, // Dev 與 Production 皆抽離獨立 CSS 至 <head>，徹底消除換頁無樣式閃爍 (FOUC)
         'css-loader', // 這個會先執行
         'postcss-loader'
       ]
@@ -147,13 +147,14 @@ module.exports = (env, argv) => {
 
   // https://webpack.js.org/concepts/plugins/
   plugins: [
-    ...(isProd ? [new MiniCssExtractPlugin({
+    new MiniCssExtractPlugin({
       filename: (pathData) => {
+        const suffix = isProd ? '.[contenthash]' : '';
         return ajccPages.includes(pathData.chunk.name)
-          ? 'ajcc/[name].[contenthash].css'
-          : 'assets/css/[name].[contenthash].css';
+          ? `ajcc/[name]${suffix}.css`
+          : `assets/css/[name]${suffix}.css`;
       },
-    })] : []),
+    }),
 
     ...htmlPlugins, // 展開所有動態產生的 HtmlWebpackPlugin
 

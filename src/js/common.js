@@ -43,6 +43,17 @@ $(document).ready(function () {
         const newTheme = this.checked ? 'dark' : 'light';
         setTheme(newTheme);
     });
+
+    // 首幀繪製完成後再重新啟用過渡動畫，確保換頁無閃爍且互動維持滑順
+    if (typeof requestAnimationFrame === 'function') {
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                document.documentElement.classList.remove('preload-no-transition');
+            });
+        });
+    } else {
+        document.documentElement.classList.remove('preload-no-transition');
+    }
 });
 
 // Global behavior: Close dialog when clicking outside (backdrop)
