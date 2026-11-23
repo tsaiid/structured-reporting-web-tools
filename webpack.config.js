@@ -1,9 +1,32 @@
 var path = require('path');
 var webpack = require('webpack'); // 這裡
+const { execSync } = require('child_process');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const pkg = require('./package.json');
+
+// 建置時取得版本號、Git 短 Hash 與建置日期（Single Source of Truth: package.json）
+function getBuildMetadata() {
+  const appVersion = `v${pkg.version}`;
+  let gitHash = '';
+  try {
+    gitHash = execSync('git rev-parse --short HEAD', {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+  } catch (e) {
+    // 無 .git 目錄或 git 指令不可用時略過
+  }
+  const buildDate = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD
+  const appBuildInfo = gitHash
+    ? `${appVersion} (${gitHash} · ${buildDate})`
+    : `${appVersion} (${buildDate})`;
+  return { appVersion, appBuildInfo };
+}
+
+const { appVersion, appBuildInfo } = getBuildMetadata();
 
 // 定義所有 AJCC 頁面
 const ajccPages = [
@@ -120,6 +143,11 @@ module.exports = (env, argv) => {
       options: {
         esModule: true,
         sources: false,
+        // 於建置期將版本號與建置資訊直接注入 partials，避免執行期閃爍
+        preprocessor: (content) =>
+          content
+            .replace(/__APP_VERSION__/g, appVersion)
+            .replace(/__APP_BUILD_INFO__/g, appBuildInfo),
       },
     },
     {
@@ -163,6 +191,7 @@ module.exports = (env, argv) => {
       template: './src/html/nhi_lung_rads.html',
       filename: 'nhi-lung-rads/index.html', // Output to dist/nhi-lung-rads/
       chunks: ['nhi_lung_rads'],
+      templateParameters: { appVersion, appBuildInfo },
     }),
 
     // Landing Page
@@ -170,6 +199,7 @@ module.exports = (env, argv) => {
       template: './src/html/landing.html',
       filename: 'index.html', // Output to dist/index.html
       chunks: ['landing'],
+      templateParameters: { appVersion, appBuildInfo },
     }),
 
     new FaviconsWebpackPlugin({

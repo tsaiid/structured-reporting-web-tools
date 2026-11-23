@@ -20,8 +20,8 @@ $('#link_legacy').on('click', function (event) {
     window.location.href = '../legacy/ajcc/' + fileName;
 });
 
-// show about modal
-$('#link_about').on('click', function (event) {
+// show about modal (點擊 About 按鈕或版本號徽章皆可開啟)
+$('#link_about, #app-version-badge').on('click', function (event) {
     event.preventDefault(); // To prevent following the link (optional)
     const modal = document.querySelector('#aboutModalLong');
     if (modal) {
